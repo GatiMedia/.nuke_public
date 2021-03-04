@@ -1,0 +1,151 @@
+BackdropNode {
+inputs 0
+name BackdropNode36
+tile_color 0x555555ff
+label "<center><font color=orange>UV projection"
+note_font "Bitstream Vera Sans Bold"
+note_font_size 52
+selected true
+xpos 20458
+ypos 35200
+bdwidth 884
+bdheight 783
+z_order -1
+}
+BackdropNode {
+inputs 0
+name BackdropNode27
+tile_color 0x888888ff
+label <center>UV
+note_font "Bitstream Vera Sans Bold"
+note_font_size 20
+selected true
+xpos 20803
+ypos 35529
+bdwidth 195
+bdheight 126
+}
+BackdropNode {
+inputs 0
+name BackdropNode37
+tile_color 0x888888ff
+label "<center>render camera"
+note_font "Bitstream Vera Sans Bold"
+note_font_size 20
+selected true
+xpos 20803
+ypos 35793
+bdwidth 195
+bdheight 126
+}
+Camera2 {
+inputs 0
+name Camera1
+label "File: \[file tail \[value file]]"
+selected true
+xpos 21090
+ypos 35586
+}
+set Ndad2c0e0 [stack 0]
+Dot {
+name Dot67
+selected true
+xpos 21114
+ypos 35874
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Camera1
+}
+push $Ndad2c0e0
+push $Ndad2c0e0
+Dot {
+name Dot68
+selected true
+xpos 21114
+ypos 35370
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Camera1
+}
+Input {
+inputs 0
+name Input1
+selected true
+xpos 20860
+ypos 35295
+}
+Project3D2 {
+inputs 2
+project_on front
+crop false
+name Project3D7
+selected true
+xpos 20860
+ypos 35367
+}
+ReadGeo2 {
+name ReadGeo1
+label "File: \[file tail \[value file]]\n\[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]"
+selected true
+xpos 20860
+ypos 35444
+}
+push $cut_paste_input
+Reformat {
+name Reformat18
+selected true
+xpos 20530
+ypos 35607
+}
+set N9b4d870 [stack 0]
+ScanlineRender {
+inputs 3
+conservative_shader_sampling false
+filter Lanczos6
+projection_mode uv
+overscan 1000
+motion_vectors_type distance
+name ScanlineRender19
+selected true
+xpos 20860
+ypos 35607
+}
+FrameHold {
+first_frame 1130
+name FrameHold21
+selected true
+xpos 20860
+ypos 35673
+}
+ReadGeo2 {
+name ReadGeo2
+label "File: \[file tail \[value file]]\n\[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]"
+selected true
+xpos 20860
+ypos 35732
+}
+push $N9b4d870
+Dot {
+name Dot70
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 20564
+ypos 35874
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Reformat18
+}
+ScanlineRender {
+inputs 3
+conservative_shader_sampling false
+filter Lanczos6
+samples 14.3
+shutter 0.575
+motion_vectors_type distance
+name ScanlineRender20
+selected true
+xpos 20860
+ypos 35871
+}
