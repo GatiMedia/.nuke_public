@@ -1,0 +1,180 @@
+BackdropNode {
+inputs 0
+name BackdropNode117
+tile_color 0x5d5d5dff
+label "<center><font color=#AFFF1F>Colorspace_Key "
+note_font "Bitstream Vera Sans Bold Bold"
+note_font_size 42
+selected true
+xpos 19619
+ypos 35321
+bdwidth 582
+bdheight 493
+}
+push $cut_paste_input
+Colorspace {
+colorspace_out HSL
+illuminant_out F7
+name Color
+selected true
+xpos 19870
+ypos 35439
+}
+set Nae1e1780 [stack 0]
+Dot {
+name Dot66
+selected true
+xpos 20124
+ypos 35442
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Color
+}
+Text2 {
+font_size_toolbar 100
+font_width_toolbar 100
+font_height_toolbar 100
+message RGB
+old_message {{82 71 66}
+  }
+box {60.00000008 884.5 699.9999999 985.5}
+transforms {{0 2}
+  }
+cursor_position 3
+scale {1 1}
+cursor_initialised true
+autofit_bbox false
+initial_cursor_position {{200.0004883 1919.999878}
+  }
+group_animations {{0} imported: 0 selected: items: "root transform/"}
+animation_layers {{1 11 2048 1024 0 0 1 1 0 0 0 0}
+  }
+name Text8
+selected true
+xpos 20090
+ypos 35727
+}
+push $Nae1e1780
+Shuffle {
+red blue
+green blue
+alpha blue
+name Blue
+tile_color 0xffff
+label "\[value in 1]"
+selected true
+xpos 19980
+ypos 35553
+}
+Text2 {
+font_size_toolbar 100
+font_width_toolbar 100
+font_height_toolbar 100
+message Blue
+old_message {{66 108 117 101}
+  }
+box {47.5 873.5 252.5 974.5}
+transforms {{0 2}
+  }
+cursor_position 4
+scale {1 1}
+cursor_initialised true
+autofit_bbox false
+initial_cursor_position {{200.0004883 1919.999878}
+  }
+group_animations {{0} imported: 0 selected: items: "root transform/"}
+animation_layers {{1 11 2048 1024 0 0 1 1 0 0 0 0}
+  }
+name Text9
+selected true
+xpos 19980
+ypos 35631
+}
+push $Nae1e1780
+Shuffle {
+red green
+blue green
+alpha green
+name Green
+tile_color 0xff00ff
+label "\[value in 1]"
+selected true
+xpos 19870
+ypos 35553
+}
+Text2 {
+font_size_toolbar 100
+font_width_toolbar 100
+font_height_toolbar 100
+message Green
+old_message {{71 114 101 101 110}
+  }
+box {36.5 879.5 311.5 980.5}
+transforms {{0 2}
+  }
+cursor_position 5
+scale {1 1}
+cursor_initialised true
+initial_cursor_position {{36.5 980.5}
+  }
+group_animations {{0} imported: 0 selected: items: "root transform/"}
+animation_layers {{1 11 2048 1024 0 0 1 1 0 0 0 0}
+  }
+name Text10
+selected true
+xpos 19870
+ypos 35631
+}
+push $Nae1e1780
+Shuffle {
+green red
+blue red
+alpha red
+name Red
+tile_color 0xff0000ff
+label "\[value in 1]"
+selected true
+xpos 19760
+ypos 35553
+}
+Text2 {
+font_size_toolbar 100
+font_width_toolbar 100
+font_height_toolbar 100
+message Red
+old_message {{82 101 100}
+  }
+box {79 885.5 253 986.5}
+transforms {{0 2}
+  }
+cursor_position 3
+scale {1 1}
+cursor_initialised true
+autofit_bbox false
+initial_cursor_position {{200.0004883 1919.999878}
+  }
+group_animations {{0} imported: 0 selected: items: "root transform/"}
+animation_layers {{1 11 2048 1024 0 0 1 1 0 0 0 0}
+  }
+enable_shadows true
+shadow_opacity 1
+shadow_distance 0
+shadow_size 5
+name Text11
+selected true
+xpos 19760
+ypos 35631
+}
+ContactSheet {
+inputs 4
+width {{input.width*2}}
+height {{input.height*2}}
+rows 2
+columns 2
+center true
+colorder Snake
+name ContactSheet2
+selected true
+xpos 19870
+ypos 35727
+}
