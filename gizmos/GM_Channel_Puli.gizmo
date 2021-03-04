@@ -1,0 +1,382 @@
+Group {
+ name GM_Channel_Puli
+ tile_color 0xffae53ff
+ selected true
+ xpos 400
+ ypos 902
+ addUserKnob {20 tab1 l Settings}
+ addUserKnob {26 info_title l Information}
+ addUserKnob {26 info l "" +STARTLINE T "The node automacially sends the alpha\nvalue to the channel that is the input`s\nname and keeps the incoming alpha\nvalue on the alpha channel combined."}
+ addUserKnob {26 adj_out l "Adjust RGBA "}
+ addUserKnob {6 rem_alpha l "Remove Alpha" t "Allows you to remove the alpha value." +STARTLINE}
+ addUserKnob {6 rem_a_r l "Remove Alpha from Red" t "Allows you to remove the alpha value from the outcome that comes in on the Red input. " +STARTLINE}
+ addUserKnob {6 rem_a_g l "Remove Alpha from Green" t "Allows you to remove the alpha value from the outcome that comes in on the Green input. " +STARTLINE}
+ addUserKnob {6 rem_a_b l "Remove Alpha from Blue" t "Allows you to remove the alpha value from the outcome that comes in on the Blue input. " +STARTLINE}
+ addUserKnob {6 rem_rgb l "Remove RGB" t "Allows you to remove the rgb value." +STARTLINE}
+ addUserKnob {6 shuff_a_rgb l "Shuffle Alpha to RGB" t "Allows you to shuffle alpha value to rgb." +STARTLINE}
+ addUserKnob {26 cr_ch l "Create new channels"}
+ addUserKnob {41 out l "Red to" t "Allows you to shuffle the `alpha` on the `Red` input to a different channel. " T ShuffleCopy_r.out}
+ addUserKnob {41 out_1 l "Green to" t "Allows you to shuffle the `alpha` on the `Green` input to a different channel. " T ShuffleCopy_g.out}
+ addUserKnob {41 out_2 l "Blue to" t "Allows you to shuffle the `alpha` on the `Blue` input to a different channel. " T ShuffleCopy_b.out}
+ addUserKnob {41 out_3 l "Red Invert to" t "Allows you to shuffle the inverted `alpha` on the `Red` input to a different channel. " T ShuffleCopy_r_inv.out}
+ addUserKnob {41 out_4 l "Green Invert to " t "Allows you to shuffle the inverted `alpha` on the `Green` input to a different channel. " T ShuffleCopy_g_inv.out}
+ addUserKnob {41 out_5 l "Blue Invert to " t "Allows you to shuffle the inverted `alpha` on the `Blue` input to a different channel. " T ShuffleCopy_b_inv.out}
+ addUserKnob {26 layer_cs l "Layer Contact Sheet"}
+ addUserKnob {6 show_lcs l "Show in Layer Contact Sheet" t "Allows you to turn on the Layer Contact Sheet view." +STARTLINE}
+ addUserKnob {41 showLayerNames l "Show Layer Names" t "Allows you to turn on the names of the layers." T LayerContactSheet.showLayerNames}
+ addUserKnob {41 width l Resolution T LayerContactSheet.width}
+ addUserKnob {41 height l "" -STARTLINE T LayerContactSheet.height}
+ addUserKnob {26 ref_puli l "Crop / Reformat"}
+ addUserKnob {6 crop_inpu l "Crop Inputs" t "Allows you to crop your inputs." +STARTLINE}
+ addUserKnob {6 app_ref l "Apply Reformat" t "Allows you to reformat the output. " +STARTLINE}
+ addUserKnob {41 format l "Output Format" T Reformat_c_p.format}
+ addUserKnob {26 ""}
+ addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/channel-puli')\n"}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.01 version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Channel Puli© by Attila Gasparetz</font>"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x777777ff
+  label <center>Inputs
+  note_font_size 42
+  xpos 127
+  ypos -734
+  bdwidth 406
+  bdheight 124
+ }
+ Input {
+  inputs 0
+  name Blue
+  tile_color 0x3fffff
+  xpos 400
+  ypos -658
+ }
+ Crop {
+  box {0 0 4096 2304}
+  crop false
+  name Crop
+  tile_color 0x888888ff
+  xpos 400
+  ypos -538
+  disable {{crop_inpu==0}}
+ }
+ set Cca284a80 [stack 0]
+ Dot {
+  name Dot3
+  xpos 434
+  ypos -294
+ }
+set Nca284700 [stack 0]
+ Dot {
+  name Dot6
+  xpos 434
+  ypos -78
+ }
+set Nca284380 [stack 0]
+ Shuffle {
+  red black
+  green black
+  blue alpha
+  name Shuffle_b
+  tile_color 0x3fffff
+  label "\[value in 1]"
+  xpos 400
+  ypos 224
+ }
+set Nca284000 [stack 0]
+ Remove {
+  channels alpha
+  name Remove_a_b
+  tile_color 0x3fffff
+  xpos 400
+  ypos 272
+  disable {{"(parent.rem_a_b) == 0"}}
+ }
+push 0
+ Input {
+  inputs 0
+  name Green
+  tile_color 0x1fff00ff
+  xpos 290
+  ypos -658
+  number 1
+ }
+clone $Cca284a80 {
+  xpos 290
+  ypos -538
+  selected false
+ }
+ Dot {
+  name Dot2
+  xpos 324
+  ypos -342
+ }
+set Nd47f9180 [stack 0]
+ Dot {
+  name Dot5
+  xpos 324
+  ypos -126
+ }
+set Nd47f8e00 [stack 0]
+ Shuffle {
+  red black
+  green alpha
+  blue black
+  name Shuffle_g
+  tile_color 0x1fff00ff
+  label "\[value in 1]"
+  xpos 290
+  ypos 152
+ }
+set Nd47f8a80 [stack 0]
+ Remove {
+  channels alpha
+  name Remove_a_g
+  tile_color 0x1fff00ff
+  xpos 290
+  ypos 272
+  disable {{"(parent.rem_a_g) == 0"}}
+ }
+ Input {
+  inputs 0
+  name Red
+  tile_color 0xff0000ff
+  xpos 180
+  ypos -658
+  number 2
+ }
+clone $Cca284a80 {
+  xpos 180
+  ypos -538
+  selected false
+ }
+ Dot {
+  name Dot1
+  xpos 214
+  ypos -390
+ }
+set Nd4821c00 [stack 0]
+ Dot {
+  name Dot4
+  xpos 214
+  ypos -174
+ }
+set Nd4821880 [stack 0]
+ Shuffle {
+  red alpha
+  green black
+  blue black
+  name Shuffle_r
+  tile_color 0xff0000ff
+  label "\[value in 1]"
+  xpos 180
+  ypos 80
+ }
+set Nd4821500 [stack 0]
+ Remove {
+  channels alpha
+  name Remove_a_r
+  tile_color 0xff0000ff
+  xpos 180
+  ypos 272
+  disable {{"(parent.rem_a_r) == 0"}}
+ }
+ Merge2 {
+  inputs 3+1
+  operation max
+  name Merge_channel
+  tile_color 0x777777ff
+  label "\[value operation]"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 290
+  ypos 440
+ }
+push $Nca284000
+push $Nd47f8a80
+push $Nd4821500
+push $Nca284380
+ Invert {
+  name Invert_b
+  tile_color 0x777777ff
+  xpos 620
+  ypos -88
+ }
+push $Nd47f8e00
+ Invert {
+  name Invert_g
+  tile_color 0x777777ff
+  xpos 620
+  ypos -136
+ }
+push $Nd4821880
+ Invert {
+  name Invert_r
+  tile_color 0x777777ff
+  xpos 620
+  ypos -184
+ }
+push $Nca284700
+push $Nd47f9180
+push $Nd4821c00
+ Constant {
+  inputs 0
+  channels rgb
+  name base
+  xpos 840
+  ypos -658
+  postage_stamp false
+ }
+ ShuffleCopy {
+  inputs 2
+  red alpha
+  green alpha
+  blue alpha
+  name ShuffleCopy_r
+  tile_color 0xff0000ff
+  label "\[value out]"
+  xpos 840
+  ypos -400
+ }
+ ShuffleCopy {
+  inputs 2
+  red alpha
+  green alpha
+  blue alpha
+  name ShuffleCopy_g
+  tile_color 0x1fff00ff
+  label "\[value out]"
+  xpos 840
+  ypos -352
+ }
+ ShuffleCopy {
+  inputs 2
+  red alpha
+  green alpha
+  blue alpha
+  name ShuffleCopy_b
+  tile_color 0x3fffff
+  label "\[value out]"
+  note_font Verdana
+  xpos 840
+  ypos -304
+ }
+ ShuffleCopy {
+  inputs 2
+  red alpha
+  green alpha
+  blue alpha
+  name ShuffleCopy_r_inv
+  tile_color 0xff0000ff
+  label "\[value out]"
+  xpos 840
+  ypos -184
+ }
+ ShuffleCopy {
+  inputs 2
+  red alpha
+  green alpha
+  blue alpha
+  name ShuffleCopy_g_inv
+  tile_color 0x1fff00ff
+  label "\[value out]"
+  xpos 840
+  ypos -136
+ }
+ ShuffleCopy {
+  inputs 2
+  red alpha
+  green alpha
+  blue alpha
+  name ShuffleCopy_b_inv
+  tile_color 0x3fffff
+  label "\[value out]"
+  note_font Verdana
+  xpos 840
+  ypos -88
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  name Copy_r
+  tile_color 0xff0000ff
+  xpos 840
+  ypos 80
+ }
+ Copy {
+  inputs 2
+  from0 rgba.green
+  to0 rgba.green
+  name Copy_g
+  tile_color 0x1fff00ff
+  xpos 840
+  ypos 152
+ }
+ Copy {
+  inputs 2
+  from0 rgba.blue
+  to0 rgba.blue
+  name Copy_b
+  tile_color 0x3fffff
+  xpos 840
+  ypos 224
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy4
+  tile_color 0xaaaaaaff
+  xpos 840
+  ypos 440
+ }
+ Remove {
+  channels alpha
+  name Remove_a
+  tile_color 0xaaaaaaff
+  xpos 840
+  ypos 536
+  disable {{"(parent.rem_alpha) == 0"}}
+ }
+ Remove {
+  channels rgb
+  name Remove_rgb
+  tile_color 0xaaaaaaff
+  label "\[value channels]"
+  xpos 840
+  ypos 608
+  disable {{"(parent.rem_rgb) == 0"}}
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle_a_rgb
+  tile_color 0x666666ff
+  label "\[value in 1]"
+  xpos 840
+  ypos 680
+  disable {{"(parent.shuff_a_rgb) == 0"}}
+ }
+ Reformat {
+  name Reformat_c_p
+  tile_color 0x888888ff
+  xpos 840
+  ypos 752
+  disable {{"(parent.app_ref) ==0"}}
+ }
+ LayerContactSheet {
+  name LayerContactSheet
+  xpos 840
+  ypos 830
+  disable {{"(parent.show_lcs) == 0" x1024 1}}
+ }
+ Output {
+  name Output1
+  xpos 840
+  ypos 902
+ }
+end_group
