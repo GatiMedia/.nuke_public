@@ -1,0 +1,11 @@
+set cut_paste_input [stack 0]
+version 11.1 v6
+push $cut_paste_input
+Expression {
+channel3 alpha
+expr3 "a==1 ? 1:0"
+name Alpha_to_Zero
+selected true
+xpos 3173
+ypos 4932
+}
