@@ -128,8 +128,7 @@ nuke.knobDefault('Project3D.crop', "false")
 
 
 #other
-nuke.knobDefault('nuke_dispatch.batch', "1")
-#nuke.knobDefault('nuke_dispatch.ServiceKeyExpr', "dc-lon-64")
+
 nuke.knobDefault('Dot.note_font_size', "72")
 nuke.knobDefault('BackdropNode.note_font_size', "72")
 nuke.knobDefault('StickyNote.note_font_size', "22")
@@ -165,8 +164,6 @@ GM_Menu.addCommand('GM_Switch_Highlight', 'nuke.createNode("GM_Switch_Highlight"
 
 
 
-
-
 # ----- CREATE UTILITIES MENU & ASSIGN ITEMS -------------------
 
 utilitiesMenu = nuke.menu('Nuke').addMenu('My Menu')
@@ -185,7 +182,6 @@ def close():
         node.hideControlPanel()
 
 utilitiesMenu.addCommand('close', 'close()' , 'shift+d', index=1 )
-# nuke.menu('Nodes').addCommand('close', 'close()' , 'shift+d')
 
 # Tracker ref frame on current frame
 
@@ -221,19 +217,6 @@ def RotoBlur_Shortcut():
 
 nuke.menu('Nodes').addMenu('Draw').addCommand('Create Roto and Blur node.', 'RotoBlur_Shortcut()', shortcut='o', icon='Roto.png')
 
-
-
-# from http://www.nukepedia.com/python/ui/iconpanel
-
-# def addIconPanel():
-#     global iconPanel
-#     iconPanel = IconPanel.IconPanel()
-#     return iconPanel.addToPane()
-#
-# paneMenu = nuke.menu('Pane')
-# paneMenu.addCommand('Universal Icons', addIconPanel)
-# nukescripts.registerPanel('com.ohufx.iconPanel', addIconPanel)
-
 # based on Ben`s NodeSandwhich: https://github.com/BenMcEwan/nuke_public/blob/master/python/bm_NodeSandwich.py
 
 def SharpenSandwhich():
@@ -259,29 +242,6 @@ def SharpenSandwhich():
 
 
 nuke.menu('Nodes').addMenu('Filter').addCommand('SharpenSandwhich', 'SharpenSandwhich()', shortcut='ctrl+l', icon='Sharpen.png', index=26)
-
-
-def IrrColorspace():
-    nodes = nuke.allNodes('Read')
-    for node in nodes:
-        if "dmp" not in node['file'].value():
-                if "offline" not in node['file'].value():
-                    if "SV" not in node['file'].value():
-                        node.knob("colorspace").setValue('ACES - ACES2065-1')
-
-utilitiesMenu.addCommand('IrrColorspace All', 'IrrColorspace()' , index=2 )
-
-
-
-def IrrColorspaceSel():
-    nodes = nuke.selectedNodes('Read')
-    for node in nodes:
-        if "dmp" not in node['file'].value():
-                if "offline" not in node['file'].value():
-                    if "SV" not in node['file'].value():
-                        node.knob("colorspace").setValue('ACES - ACES2065-1')
-
-utilitiesMenu.addCommand('IrrColorspace Selected', 'IrrColorspaceSel()' , index=3 )
 
 
 
@@ -328,208 +288,80 @@ def openFolder():
 
 utilitiesMenu.addCommand('Open Folder in file browser', 'openFolder()', shortcut='ctrl+f', index=4)
 
+# Create Backdrop_Adjust
+
+def create_BD_Adj():
+    z_List = []
+    if nuke.selectedNodes():
+
+        if nuke.selectedNodes('BackdropNode'):
+            sel_bd = nuke.selectedNodes('BackdropNode')
+            for s in sel_bd:
+                z_List.append(s['z_order'].value())
+            else:
+                pass
+
+        if not z_List:
+            z_List.append(1)
+        z_Min = min(z_List)
 
 
-# def create_BD_Adj():
-#     z_List = []
-#     if nuke.selectedNodes():
-#
-#         if nuke.selectedNodes('BackdropNode'):
-#             sel_bd = nuke.selectedNodes('BackdropNode')
-#             for s in sel_bd:
-#                 z_List.append(s['z_order'].value())
-#             else:
-#                 pass
-#
-#         if not z_List:
-#             z_List.append(1)
-#         z_Min = min(z_List)
-#
-#
-#         nodes = nuke.selectedNodes()
-#
-#         # Calculate bounds for the backdrop node.
-#         bdX = min([node.xpos() for node in nodes])
-#         bdY = min([node.ypos() for node in nodes])
-#         bdW = max([node.xpos() + node.screenWidth() for node in nodes]) - bdX
-#         bdH = max([node.ypos() + node.screenHeight() for node in nodes]) - bdY
-#
-#         # Expand the bounds to leave a little border. Elements are offsets for left, top, right and bottom edges respectively
-#         left, top, right, bottom = (-100, -200, 100, 100)
-#         bdX += left
-#         bdY += top
-#         bdW += (right - left)
-#         bdH += (bottom - top)
-#
-#         # Creating the node
-#         bd_this = nuke.nodes.Backdrop_Adjust()
-#         bd_this["xpos"].setValue(bdX)
-#         bd_this["bdwidth"].setValue(bdW)
-#         bd_this["ypos"].setValue(bdY)
-#         bd_this["bdheight"].setValue(bdH)
-#         #bd_this['z_order'].setValue(z_Min - 1)
-#
-#         # GBK BD size method
-#         bd_this['z_order'].setValue(bdW * bdH * -1)
-#
-#         # Handle tile_color by Borsari Nicola
-#         ok_colors = [3149642751, 2863311615, 2576980479, 2290649343, 2004318207, 1717987071, 1431655935, 1145324799,
-#                      572662527, 286331391, 255]
-#
-#         if nuke.selectedNodes('BackdropNode'):
-#             existing_indexes = [0]
-#             for bd in nuke.selectedNodes('BackdropNode'):
-#                 color = int(bd['tile_color'].getValue())
-#                 try:
-#                     curr_index = ok_colors.index(color)
-#                     existing_indexes.append(curr_index)
-#                 except ValueError:
-#                     continue
-#
-#             new_index = sorted(existing_indexes)[-1] + 1
-#
-#             try:
-#                 bd_this['tile_color'].setValue(ok_colors[new_index])
-#             except IndexError:
-#                 bd_this['tile_color'].setValue(ok_colors[-1])
-#         else:
-#             bd_this['tile_color'].setValue(3149642751)
-#
-#         bd_this.hideControlPanel()
-#     else:
-#         bd_that = nuke.createNode('Backdrop_Adjust')
-#         bd_that['tile_color'].setValue(3149642751)
-#         bd_that['z_order'].setValue(-250000)
-#         bd_that.hideControlPanel()
-#
-# nuke.menu('Nodes').addMenu('Other').addCommand('BackdropAdjust.', 'create_BD_Adj()', shortcut='ctrl+b', icon='Backdrop.png', index=3)
+        nodes = nuke.selectedNodes()
 
-# --------------------------------------------------------------
-#  BOFP MENU :::::::::::::::::::::::::::::::::::::::::::::::::::
-# --------------------------------------------------------------
+        # Calculate bounds for the backdrop node.
+        bdX = min([node.xpos() for node in nodes])
+        bdY = min([node.ypos() for node in nodes])
+        bdW = max([node.xpos() + node.screenWidth() for node in nodes]) - bdX
+        bdH = max([node.ypos() + node.screenHeight() for node in nodes]) - bdY
 
-bopMenu = nuke.menu('Nuke').addMenu('BofP Tools')
+        # Expand the bounds to leave a little border. Elements are offsets for left, top, right and bottom edges respectively
+        left, top, right, bottom = (-100, -200, 100, 100)
+        bdX += left
+        bdY += top
+        bdW += (right - left)
+        bdH += (bottom - top)
 
-#bopMenu.addCommand('test', "nuke.message('yay, it works too')", index=0)
+        # Creating the node
+        bd_this = nuke.nodes.Backdrop_Adjust()
+        bd_this["xpos"].setValue(bdX)
+        bd_this["bdwidth"].setValue(bdW)
+        bd_this["ypos"].setValue(bdY)
+        bd_this["bdheight"].setValue(bdH)
+        bd_this['z_order'].setValue(z_Min - 1)
 
-## SmartVector to STMap ##
+        # Handle tile_color by Borsari Nicola
+        ok_colors = [3149642751, 2863311615, 2576980479, 2290649343, 2004318207, 1717987071, 1431655935, 1145324799,
+                     572662527, 286331391, 255]
 
-def smartvectorToStmap():
+        if nuke.selectedNodes('BackdropNode'):
+            existing_indexes = [0]
+            for bd in nuke.selectedNodes('BackdropNode'):
+                color = int(bd['tile_color'].getValue())
+                try:
+                    curr_index = ok_colors.index(color)
+                    existing_indexes.append(curr_index)
+                except ValueError:
+                    continue
 
-    selCheck = nuke.selectedNodes('Read')
+            new_index = sorted(existing_indexes)[-1] + 1
 
-    if selCheck:
-        selSV = nuke.selectedNode()
-        # Getting the n-th value from the user
-        frameNumber = nuke.getInput(
-            """<center><b><font color=orange>\nEvery n-th frame to create\n STMap & Write node from</b>\n\n(10 is a recommanded value,\nchange only if necessary)\n""",
-            '10')
-
-        # Checking if the value is integer
-        if frameNumber.isdigit():
-
-            # Getting the values from the selected Read node
-            sv_x = selSV['xpos'].value()
-            sv_y = selSV['ypos'].value()
-            sv_first = selSV['first'].value()
-            sv_last = selSV['last'].value()
-            sv_range = range(selSV['last'].value() - sv_first)
-            selSV.setSelected(False)
-
-            # Creating the first setup
-            dot = nuke.nodes.Dot()
-            dot.setInput(0, selSV)
-            dot['xpos'].setValue(sv_x + 35)
-            dotx = dot['xpos'].value()
-            dot['ypos'].setValue(sv_y + 200)
-            doty = dot['ypos'].value()
-            dot.setSelected(True)
-
-            # Creating the first VectorDistort using the first frame as a reference
-            vecDist1 = nuke.createNode('VectorDistort')
-            vecDist1.setInput(0, dot)
-            vecDist1['reference_frame'].setValue(sv_first)
-            vecDist1['output_mode'].setValue('st-map')
-            vecDist1['label'].setValue("""Ref fr.: [value reference_frame]\nOutput: [value output_mode]""")
-            vecDist1['xpos'].setValue(sv_x)
-            vecDist1['ypos'].setValue(doty + 200)
-            vecDistY = vecDist1['ypos'].value()
-            dot.setSelected(False)
-            vecDist1.setSelected(True)
-
-            # Create GBKWrite
-            from scarecrow.common import usage_logger;
-            usage_logger.write_usage_log("nuke-menu", "Write GBK");
-            from nuketools import writetab;
-            writetab.createFidoWriteNode()
-
-            nDispatch = nuke.selectedNode()
-
-            nDispatch['removelicense'].setValue(True)
-            nDispatch['label'].setValue(
-                """Range: [value framestart] - [value frameend]\nBatch: [value batch]\nLic. Rem.: [if {[value removelicense]==true} {return "On"} {return "Off"}]\n[if { [value framestart] == [getenv FS] && [value frameend] == [getenv FE]} {return [knob tile_color 16711935]} else {return [knob tile_color 4278190335]}]""")
-
-            writeNode = nDispatch.dependencies()[0]
-
-            writeNode['precomp'].setValue(True)
-            writeNode['channel'].setValue("rgb")
-            writeNode['fecompname'].setValue("stmap_fr" + str(sv_first))
-
-            dot.setSelected(True)
-
-            for i in sv_range[0::int(frameNumber)]:
-                if i > 2:
-                    try:
-                        vecDist2 = nuke.createNode('VectorDistort')
-                        vecDist2.setInput(0, dot)
-                        vecDist2['reference_frame'].setValue(sv_first + i)
-                        vecDist2['output_mode'].setValue('st-map')
-                        vecDist1['label'].setValue("""Ref fr.: [value reference_frame]\nOutput: [value output_mode]""")
-                        vecDist2['ypos'].setValue(vecDistY)
-                        vecDist2_x = sv_x
-                        vecDist2['xpos'].setValue(vecDist2_x + (i * 33))
-                        vecDist2_x = vecDist2['xpos'].value()
-                        vecDist2.setSelected(True)
-
-                        # Create GBKWrite #
-                        from scarecrow.common import usage_logger;
-                        usage_logger.write_usage_log("nuke-menu", "Write GBK");
-                        from nuketools import writetab;
-                        writetab.createFidoWriteNode()
-
-                        nDispatch = nuke.selectedNode()
-                        nDispatch['removelicense'].setValue(True)
-                        nDispatch['label'].setValue(
-                            """Range: [value framestart] - [value frameend]\nBatch: [value batch]\nLic. Rem.: [if {[value removelicense]==true} {return "On"} {return "Off"}]\n[if { [value framestart] == [getenv FS] && [value frameend] == [getenv FE]} {return [knob tile_color 16711935]} else {return [knob tile_color 4278190335]}]""")
-
-                        writeNode = nDispatch.dependencies()[0]
-                        writeNode['precomp'].setValue(True)
-                        writeNode['channel'].setValue("rgb")
-                        writeNode['fecompname'].setValue("stmap_fr" + str(sv_first + i))
-
-
-                    except Exception:
-                        pass
+            try:
+                bd_this['tile_color'].setValue(ok_colors[new_index])
+            except IndexError:
+                bd_this['tile_color'].setValue(ok_colors[-1])
         else:
-            nuke.message("""<center><b><font color=orange>Given value need to be an integer!""")
+            bd_this['tile_color'].setValue(3149642751)
+
+        bd_this.hideControlPanel()
     else:
-        nuke.message("""<center><b><font color=orange>Select a single node first\ncontaining a smartvector layer!""")
+        bd_that = nuke.createNode('Backdrop_Adjust')
+        bd_that['tile_color'].setValue(3149642751)
+        bd_that['z_order'].setValue(0)
+        bd_that.hideControlPanel()
+
+nuke.menu('Nodes').addMenu('Other').addCommand('BackdropAdjust.', 'create_BD_Adj()', shortcut='ctrl+b', icon='Backdrop.png', index=3)
 
 
-bopMenu.addCommand('SmartVector to STMap', 'smartvectorToStmap()', index=0 )
-
-## Submit renders to the farm ##
-
-def dispatchToFarm():
-    nodes = nuke.selectedNodes('nuke_dispatch')
-    if nodes:
-        for s in nodes:
-            s['submit'].execute()
-    else:
-        nuke.message("""<center><b><font color=orange>Select only nuke_dispatch nodes!""")
-
-
-bopMenu.addCommand('Selected dispatch nodes to Farm', 'dispatchToFarm()' , index=1 )
 
 ####-----------####
 #### TextFixer ####
@@ -1196,406 +1028,3 @@ TextFixer.addCommand('Open Page', 'OpenPage()')
 # --------------------------------------------------------------
 
 nuke.toolbar('Nodes').addCommand('Channel/ChannelMerge', 'nuke.createNode("ChannelMerge")', 'shift+c', shortcutContext=dagContext)
-
-
-# --------------------------------------------------------------
-#  GBK MENU ::::::::::::::::::::::::::::::::::::::::::::::::::
-# --------------------------------------------------------------
-
-#### Main Menu ####
-
-xN = None
-
-gbkMenu = nuke.menu('Nodes').addMenu('gbk_menu', icon="test_010.png", index=16)
-
-gbkMeShow = gbkMenu.addMenu('Show', icon="test_017.png")
-gbkMeNode = gbkMenu.addMenu('Nodes', icon="test_018.png")
-gbkMeTemp = gbkMenu.addMenu('Templates', icon="test_016.png")
-gbkMePy = gbkMenu.addMenu('Python', icon="test_014.png")
-gbkMe3rd = gbkMenu.addMenu('3rdParty', icon="test_009.png")
-
-
-### Show Menu ###
-
-ShowPath = '/mnt/home/attila.gasparetz/AttilaG/GBKtoolbar_test/Shows'
-
-shows = []
-
-showPathes = []
-
-# r=root, d=directories, f = files
-
-for r, d, f in os.walk(ShowPath):
-    for folder in d:
-        shows.append(folder)
-        showNum = (len(shows))
-
-    for name in d:
-        showPathes.append(os.path.join(r, name + "/"))
-
-for i in showPathes:
-    for ro, di, fi in os.walk(i):
-        showMenu = gbkMeShow.addMenu(ro.split("/")[-2], icon="test_022.png")
-        for Showgizmo in fi:
-            menuEntry = Showgizmo.replace(".gizmo", "")
-            showMenu.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="")
-
-
-### Node Menu ###
-
-gbkImage = gbkMeNode.addMenu('Image', icon="ToolbarImage.png")
-gbkDraw = gbkMeNode.addMenu('Draw', icon="ToolbarDraw.png")
-gbkTime = gbkMeNode.addMenu('Time', icon="ToolbarTime.png")
-gbkChannel = gbkMeNode.addMenu('Channel', icon="ToolbarChannel.png")
-gbkColor = gbkMeNode.addMenu('Color', icon="ToolbarColor.png")
-gbkFilter = gbkMeNode.addMenu('Filter', icon="ToolbarFilter.png")
-gbkKeyer = gbkMeNode.addMenu('Keyer', icon="ToolbarKeyer.png")
-gbkTransform = gbkMeNode.addMenu('Transform', icon="ToolbarTransform.png")
-gbk3D = gbkMeNode.addMenu('3D', icon="Toolbar3D.png")
-gbkParticles = gbkMeNode.addMenu('Particles', icon="ToolbarParticles.png")
-gbkDeep = gbkMeNode.addMenu('Deep', icon="ToolbarDeep.png")
-gbkMetadata = gbkMeNode.addMenu('Metadata', icon="MetaData.png")
-gbkOther = gbkMeNode.addMenu('Other', icon="ToolbarOther.png")
-
-### SubMenus for Node ###
-
-NodePath = '/mnt/home/attila.gasparetz/AttilaG/GBKtoolbar_test/Node/'
-
-## Node / Image ##
-
-pathImage = NodePath+'Image'
-
-files = os.listdir(pathImage)
-Imagegizmos = []
-for f in files:
-    Imagegizmos.append(f)
-
-for g in sorted(Imagegizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkImage.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="ToolbarImage.png")
-
-## Node / Draw ##
-
-pathDraw = NodePath+'Draw'
-
-files = os.listdir(pathDraw)
-Drawgizmos = []
-for f in files:
-    Drawgizmos.append(f)
-
-for g in sorted(Drawgizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkDraw.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="ToolbarDraw.png")
-
-## Node / Channel ##
-
-pathChannel = NodePath+'Channel'
-
-files = os.listdir(pathChannel)
-Channelgizmos = []
-for f in files:
-    Channelgizmos.append(f)
-
-for g in sorted(Channelgizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkChannel.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="ToolbarChannel.png")
-
-## Node / Color ##
-
-pathColor = NodePath+'Color'
-
-files = os.listdir(pathColor)
-Colorgizmos = []
-for f in files:
-    Colorgizmos.append(f)
-
-for g in sorted(Colorgizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkColor.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="ToolbarColor.png")
-
-## Node / Filter ##
-
-pathFilter = NodePath+'Filter'
-
-files = os.listdir(pathFilter)
-Filtergizmos = []
-for f in files:
-    Filtergizmos.append(f)
-
-for g in sorted(Filtergizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkFilter.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="ToolbarFilter.png")
-
-## Node / Keyer ##
-
-pathKeyer = NodePath+'Keyer'
-
-files = os.listdir(pathKeyer)
-Keyergizmos = []
-for f in files:
-    Keyergizmos.append(f)
-
-for g in sorted(Keyergizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkKeyer.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="ToolbarKeyer.png")
-
-## Node / Transform ##
-
-pathTransform = NodePath+'Transform'
-
-files = os.listdir(pathTransform)
-Transformgizmos = []
-for f in files:
-    Transformgizmos.append(f)
-
-for g in sorted(Transformgizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkTransform.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="ToolbarTransform.png")
-
-## Node / 3D ##
-
-path3D = NodePath+'3D'
-
-files = os.listdir(path3D)
-ThreeDgizmos = []
-for f in files:
-    ThreeDgizmos.append(f)
-
-for g in sorted(ThreeDgizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbk3D.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="Toolbar3D.png")
-
-## Node / Particles ##
-
-pathParticles = NodePath+'Particles'
-
-files = os.listdir(pathParticles)
-Particlesgizmos = []
-for f in files:
-    Particlesgizmos.append(f)
-
-for g in sorted(Particlesgizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkParticles.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="ToolbarParticles.png")
-
-## Node / Deep ##
-
-pathDeep = NodePath+'Deep'
-
-files = os.listdir(pathDeep)
-Deepgizmos = []
-for f in files:
-    Deepgizmos.append(f)
-
-for g in sorted(Deepgizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkDeep.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="ToolbarDeep.png")
-
-## Node / MetaData ##
-
-pathMetadata = NodePath+'Metadata'
-
-files = os.listdir(pathMetadata)
-Metadatagizmos = []
-for f in files:
-    Metadatagizmos.append(f)
-
-for g in sorted(Metadatagizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkMetadata.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="MetaData.png")
-
-## Node / Other ##
-
-pathOther = NodePath+'Other'
-
-files = os.listdir(pathOther)
-Othergizmos = []
-for f in files:
-    Othergizmos.append(f)
-
-for g in sorted(Othergizmos):
-    menuEntry = g.replace(".gizmo", "")
-    gbkOther.addCommand(menuEntry, "nuke.createNode('" + menuEntry + "')", icon="ToolbarOther.png")
-
-
-### Template Menu ###
-
-tempImage = gbkMeTemp.addMenu('Image', icon="ToolbarImage.png")
-tempDraw = gbkMeTemp.addMenu('Draw', icon="ToolbarDraw.png")
-tempTime = gbkMeTemp.addMenu('Time', icon="ToolbarTime.png")
-tempChannel = gbkMeTemp.addMenu('Channel', icon="ToolbarChannel.png")
-tempColor = gbkMeTemp.addMenu('Color', icon="ToolbarColor.png")
-tempFilter = gbkMeTemp.addMenu('Filter', icon="ToolbarFilter.png")
-tempKeyer = gbkMeTemp.addMenu('Keyer', icon="ToolbarKeyer.png")
-tempTransform = gbkMeTemp.addMenu('Transform', icon="ToolbarTransform.png")
-temp3D = gbkMeTemp.addMenu('3D', icon="Toolbar3D.png")
-tempParticles = gbkMeTemp.addMenu('Particles', icon="ToolbarParticles.png")
-tempDeep = gbkMeTemp.addMenu('Deep', icon="ToolbarDeep.png")
-tempMetadata = gbkMeTemp.addMenu('Metadata', icon="MetaData.png")
-tempOther = gbkMeTemp.addMenu('Other', icon="ToolbarOther.png")
-
-
-Templatepath = '/mnt/home/attila.gasparetz/AttilaG/GBKtoolbar_test/Templates/'
-
-## Template / Image ##
-
-template_folder = Templatepath + 'Image/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempImage.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / Draw ##
-
-template_folder = Templatepath + 'Draw/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempDraw.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / Time ##
-
-template_folder = Templatepath + 'Time/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempTime.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / Channel ##
-
-template_folder = Templatepath + 'Channel/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempChannel.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / Color ##
-
-template_folder = Templatepath + 'Color/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempColor.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / Filter ##
-
-template_folder = Templatepath + 'Filter/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempFilter.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / Keyer ##
-
-template_folder = Templatepath + 'Keyer/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempKeyer.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / Transform ##
-
-template_folder = Templatepath + 'Transform/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempTransform.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / 3D ##
-
-template_folder = Templatepath + '3D/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    temp3D.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / Particles ##
-
-template_folder = Templatepath + 'Particles/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempParticles.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / Deep ##
-
-template_folder = Templatepath + 'Deep/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempDeep.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / MetaData ##
-
-template_folder = Templatepath + 'Metadata/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempMetadata.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-## Template / Other ##
-
-template_folder = Templatepath + 'Other/*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    tempOther.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-
-
-## Template / NKs in root folder ##
-
-template_folder = Templatepath + '*.nk'
-
-templates = glob.glob(template_folder)
-
-for template in sorted(templates):
-    menu_name = format(os.path.basename(template).replace('.nk', ''))
-    gbkMeTemp.addCommand(menu_name, 'nuke.nodePaste("{}")'.format(template), icon="test_019.png")
-
-
-
-### Python Menu ###
-
-# gbkMePy.addCommand('PostageStampDis', 'xN', icon="ToolbarImage.png")
-
-gbkMePy.addCommand('CloseWindows', 'close()' , icon="test_024.png")
-
-gbkMePy.addCommand('Disconnect Viewers', 'disconnectViewers()' , icon="test_024.png")
-
-gbkMePy.addCommand('Roto n Blur', 'RotoBlur_Shortcut()' , icon="test_024.png")
-
-### 3rdParty Menu ###
-
-Plugins = ['3DE4', 'RandomTiles','VideoCopilot','Mocha','HigX Tools','Cryptomatte','KeenTools','Peregrine','Projectionist','Pixelfudger']
-
-for plugin in sorted(Plugins):
-    gbkMe3rd.addCommand(plugin, 'xN', icon="Plugin.png")
-
-
