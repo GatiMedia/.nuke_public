@@ -1,0 +1,166 @@
+BackdropNode {
+inputs 0
+name BackdropNode43
+tile_color 0x767676ff
+label "<center><font color=#aFFFFF>Edge_ext_w_iDistort"
+note_font_size 42
+selected true
+xpos 21729
+ypos 34838
+bdwidth 762
+bdheight 836
+}
+push $cut_paste_input
+Dot {
+name Dot154
+label " RGB with Alpha IN"
+note_font "Bitstream Vera Sans Bold Bold Bold Bold"
+note_font_size 31
+selected true
+xpos 21774
+ypos 34962
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+}
+EdgeBlur {
+size 7
+name EdgeBlur25
+label "Size: \[value size]"
+selected true
+xpos 21740
+ypos 35018
+}
+Dot {
+name Dot150
+selected true
+xpos 21774
+ypos 35106
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput EdgeBlur25
+}
+set N25c273a0 [stack 0]
+Shuffle {
+red alpha
+green alpha
+blue alpha
+name Shuffle4
+label "\[value in 1]"
+selected true
+xpos 21850
+ypos 35097
+}
+Dot {
+name Dot151
+selected true
+xpos 21994
+ypos 35106
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Shuffle4
+}
+set N245f4220 [stack 0]
+Dot {
+name Dot152
+selected true
+xpos 22104
+ypos 35106
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot151
+}
+set N245e93e0 [stack 0]
+Matrix {
+channels {-rgba.red rgba.green -rgba.blue none}
+matrix {
+    {0 1 0}
+    {0 -1 0}
+    {0 0 0}
+  }
+name Matrix2
+label "\[value matrix]"
+selected true
+xpos 22070
+ypos 35289
+}
+push $N245f4220
+Matrix {
+channels {rgba.red -rgba.green -rgba.blue none}
+matrix {
+    {0 0 0}
+    {0 -1 1}
+    {0 0 0}
+  }
+name Matrix1
+label "\[value matrix]"
+selected true
+xpos 21960
+ypos 35193
+}
+push $N245e93e0
+Shuffle {
+red black
+green black
+blue black
+alpha black
+name Shuffle5
+label "\[value in 1]"
+selected true
+xpos 22290
+ypos 35097
+}
+Copy {
+inputs 2
+from0 rgba.red
+to0 rgba.red
+name Copy24
+selected true
+xpos 22290
+ypos 35193
+}
+Copy {
+inputs 2
+from0 rgba.green
+to0 rgba.green
+name Copy25
+selected true
+xpos 22290
+ypos 35289
+}
+Grade {
+white 300
+black_clamp false
+name Grade32
+selected true
+xpos 22290
+ypos 35367
+}
+push $N25c273a0
+Dot {
+name Dot153
+selected true
+xpos 21774
+ypos 35442
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot150
+}
+Copy {
+inputs 2
+from0 rgba.red
+to0 forward.u
+from1 rgba.green
+to1 forward.v
+name Copy26
+selected true
+xpos 22290
+ypos 35426
+}
+IDistort {
+uv motion
+uv_scale 0.13
+name IDistort1
+selected true
+xpos 22290
+ypos 35529
+}
