@@ -1,0 +1,206 @@
+BackdropNode {
+inputs 0
+name BackdropNode24
+tile_color 0x595959ff
+label "<center><font color=#AFFF1F>Screen Correct"
+note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+note_font_size 42
+selected true
+xpos 20709
+ypos 34913
+bdwidth 822
+bdheight 734
+z_order -603348
+}
+Input {
+inputs 0
+name Input1
+selected true
+xpos 20970
+ypos 35031
+}
+Dot {
+name Dot67
+selected true
+xpos 21004
+ypos 35082
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Input1
+}
+set Nae0bace0 [stack 0]
+Dot {
+name Dot68
+selected true
+xpos 21224
+ypos 35082
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot67
+}
+set N4013c8c0 [stack 0]
+Dot {
+name Dot69
+selected true
+xpos 21444
+ypos 35082
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot68
+}
+Dot {
+name Dot70
+selected true
+xpos 21444
+ypos 35538
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot69
+}
+Constant {
+inputs 0
+channels rgb
+color {0.1241941079 0.3422160149 0.1056096405 0}
+color_panelDropped true
+name BG_Color
+label "<center><font color=#AFFF1F>SELECT_AVG_SCREEN_COLOR"
+note_font "Bitstream Vera Sans Bold"
+note_font_size 14
+selected true
+xpos 20860
+ypos 35391
+}
+push $Nae0bace0
+IBKColourV3 {
+name IBKColourV3_5
+selected true
+xpos 20970
+ypos 35271
+Size 1
+multi 500
+}
+set N80475080 [stack 0]
+Merge2 {
+inputs 2
+operation minus
+name Merge30
+selected true
+xpos 20970
+ypos 35439
+}
+push $N4013c8c0
+clone node7f2a91665440|OFXuk.co.thefoundry.keylight.keylight_v201|61057 OFXuk.co.thefoundry.keylight.keylight_v201 {
+show "Final Result"
+unPreMultiply false
+screenColour {0.3025105 0.2937563956 1.066293478}
+screenGain 1.05
+screenBalance 0.95
+alphaBias {0.5 0.5 0.5}
+despillBias {0.5 0.5 0.5}
+gangBiases true
+preBlur 0
+"Screen Matte" 1
+screenClipMin 0
+screenClipMax 0.92
+screenClipRollback 0
+screenGrowShrink 0
+screenSoftness 0
+screenDespotBlack 0
+screenDespotWhite 0
+screenReplaceMethod "Soft Colour"
+screenReplaceColour {0.5 0.5 0.5}
+Tuning 0
+midPoint 0.5
+lowGain 1
+midGain 1
+highGain 1
+"Inside Mask" 0
+sourceAlphaHandling Ignore
+insideReplaceMethod "Soft Colour"
+insideReplaceColour {0.5 0.5 0.5}
+Crops 0
+SourceXMethod Colour
+SourceYMethod Colour
+SourceEdgeColour 0
+SourceCropL 0
+SourceCropR 1
+SourceCropB 0
+SourceCropT 1
+balanceSet false
+insideComponent None
+outsideComponent None
+cacheBreaker true
+name Keylight7
+selected true
+xpos 21190
+ypos 35127
+}
+set C91665440 [stack 0]
+Invert {
+name Invert8
+selected true
+xpos 21190
+ypos 35193
+}
+Dot {
+name Dot117
+selected true
+xpos 21334
+ypos 35202
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Invert8
+}
+push $N80475080
+clone $C91665440 {
+xpos 21190
+ypos 35271
+selected true
+}
+Invert {
+name Invert9
+selected true
+xpos 21190
+ypos 35313
+}
+ChannelMerge {
+inputs 2
+operation divide
+name ChannelMerge16
+label "\[value operation]"
+selected true
+xpos 21300
+ypos 35300
+}
+Shuffle {
+red alpha
+green alpha
+blue alpha
+name Shuffle3
+label "\[value in 1]"
+selected true
+xpos 21300
+ypos 35385
+}
+Merge2 {
+inputs 2
+operation multiply
+name Merge32
+selected true
+xpos 21300
+ypos 35439
+}
+Merge2 {
+inputs 2
+operation plus
+name Merge33
+selected true
+xpos 21300
+ypos 35535
+}
+Output {
+name Output1
+selected true
+xpos 21300
+ypos 35607
+}
