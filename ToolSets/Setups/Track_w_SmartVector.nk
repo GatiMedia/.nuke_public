@@ -1,0 +1,176 @@
+BackdropNode {
+inputs 0
+name BackdropNode26
+tile_color 0x777777ff
+label "<font color=aqua><center>Track with\nSmart Vector"
+note_font "Bitstream Vera Sans Bold"
+note_font_size 42
+selected true
+xpos 21856
+ypos 35058
+bdwidth 728
+bdheight 924
+z_order -672672
+}
+Input {
+inputs 0
+name Image
+note_font "Bitstream Vera Sans Bold Bold"
+selected true
+xpos 22290
+ypos 35222
+number 2
+}
+Dot {
+name Dot71
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 22324
+ypos 35418
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Image
+}
+Input {
+inputs 0
+name Smart_Vector
+note_font "Bitstream Vera Sans Bold"
+selected true
+xpos 22070
+ypos 35222
+number 1
+}
+VectorDistort {
+inputs 2
+first 1001
+last 1058
+reference_frame_set true
+name VectorDistort2
+selected true
+xpos 22070
+ypos 35415
+}
+Dot {
+name Dot69
+tile_color 0x949494ff
+label " 'output'\n on 'st-map'"
+note_font_size 32
+note_font_color 0xffffffff
+selected true
+xpos 22104
+ypos 35490
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput VectorDistort2
+}
+Group {
+name STMAP_to_tracker
+selected true
+xpos 22070
+ypos 35559
+addUserKnob {20 User}
+addUserKnob {18 sample t "select stmap color"}
+sample {0.4084669352 0.3261243701 1}
+addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {7 blur t "blur the sample pixel"}
+blur 3
+addUserKnob {7 size t "range of the sampled values"}
+size 0.001
+}
+Input {
+inputs 0
+name Input1
+xpos 180
+ypos -298
+}
+Expression {
+expr0 "r >= (sample.r-size)  && r <= (sample.r+size) ? 1 : 0"
+expr1 "g >= (sample.g-size)  && g <= (sample.g+size) ? 1 : 0"
+name Expression4
+xpos 180
+ypos -226
+addUserKnob {20 User}
+addUserKnob {7 size}
+size {{parent.size}}
+addUserKnob {18 sample}
+sample {{parent.sample.r} {parent.sample.g} {parent.sample.b}}
+addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+}
+Expression {
+expr0 "r == 1 && g ==1 ? 1:0"
+name Expression5
+xpos 180
+ypos -202
+}
+Blur {
+channels rgb
+size {{parent.blur}}
+name Blur2
+xpos 180
+ypos -154
+}
+Shuffle {
+green red
+blue red
+alpha red
+name Shuffle2
+label "\[value in 1]"
+xpos 180
+ypos -112
+}
+Output {
+name Output1
+xpos 180
+ypos -34
+}
+end_group
+Dot {
+name Dot72
+tile_color 0x949494ff
+label " Sample point\n on STMap"
+note_font_size 32
+note_font_color 0xffffffff
+selected true
+xpos 22104
+ypos 35610
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput STMAP_to_tracker
+}
+CurveTool {
+operation "Max Luma Pixel"
+ROI {0 0 3840 2160}
+autocropdata {960 540 2880 1620}
+name CurveTool3
+selected true
+xpos 22070
+ypos 35679
+}
+Dot {
+name Dot73
+tile_color 0x949494ff
+label " 'Curve Type'\n on 'Max Luma Pixel'"
+note_font_size 32
+note_font_color 0xffffffff
+selected true
+xpos 22104
+ypos 35754
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput CurveTool3
+}
+Dot {
+name Dot74
+tile_color 0x949494ff
+label " Now can copy the \n 'MaxLumaData' to\n a Transform node"
+note_font_size 32
+note_font_color 0xffffffff
+selected true
+xpos 22104
+ypos 35898
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot73
+}
