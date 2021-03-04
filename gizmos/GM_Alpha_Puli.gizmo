@@ -1,0 +1,1854 @@
+Gizmo {
+ name GM_Alpha_Puli
+ tile_color 0xffae53ff
+ selected true
+ xpos -58
+ ypos -264
+ addUserKnob {20 checker l Checker}
+ addUserKnob {4 over l Mode t "Choose between the preferred visibility modes to test your matte. For `Overlay` you can choose between colors. " M {Overlay Grey Black White Checkerboard "" "" "" "" "" "" "" "" ""}}
+ addUserKnob {4 overlay l Overlay t "Choose between the colors to see the edges better when the Mode is on `Overlay`." M {Pink Blue Yellow Green Red "" "" "" "" "" "" ""}}
+ addUserKnob {41 mix l "Color Mix" t "Adjust the Mix of the preferred color." T Keymix2.mix}
+ addUserKnob {41 boxsize l "Box size" t "Adjust the size of the checkerboard IF that is selected." T CheckerBoard2.boxsize}
+ addUserKnob {6 invert l "Invert Alpha" +STARTLINE}
+ addUserKnob {26 fg l "Adjust RGB"}
+ addUserKnob {41 saturation t "Allows to change the saturation of the plate" T ColorCorrect1.saturation}
+ addUserKnob {41 contrast t "Allows to change the contrast of the plate" T ColorCorrect1.contrast}
+ addUserKnob {41 gamma t "Allows to change the gamma of the plate" T ColorCorrect1.gamma}
+ addUserKnob {41 gain t "Allows to change the gain of the plate" T ColorCorrect1.gain}
+ addUserKnob {26 chcker l "Adjust Alpha"}
+ addUserKnob {4 checker_1 l "Checker " t "Allows to check for holes ( high values ) and rogue alpha patches ( low values ) on the `matte`. " M {"Leave Alpha" "Check high values" "Check low values " "" ""}}
+ addUserKnob {6 exposure l "Show illegal values ( a<0, 1<a)" t "Highlights the alpha values that are lower than 0 or higher than 1 with red. " +STARTLINE}
+ addUserKnob {26 format_1 l Format}
+ addUserKnob {41 type T Reformat_MAIN.type}
+ addUserKnob {41 format l "output format" T Reformat_MAIN.format}
+ addUserKnob {41 disable_1 l disable T Reformat_MAIN.disable}
+ addUserKnob {26 ""}
+ addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/alpha-puli')\n"}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.02 version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Alpha Puli© by Attila Gasparetz</font>"}
+ addUserKnob {20 qc l QC}
+ addUserKnob {6 c_sheet l "Contact Sheet View" t "Allows you to turn on the Contact Sheet View and view your rgba in different setups" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 info l "" +STARTLINE T "Further settings are ONLY working if the `Contact Sheet View` is selected"}
+ addUserKnob {26 ""}
+ addUserKnob {6 contact_labels l Labels t "Allows you to turn on the labels of the setups" +STARTLINE}
+ contact_labels true
+ addUserKnob {7 lab_size l "Label Scale" t "Allows you to change the size of the letters" R 0 2}
+ lab_size 0.5
+ addUserKnob {4 bg_color l "Background Color" t "Allows you to change the background for `high values` and `low values` " M {Grey Black White Checkerboard ""}}
+ addUserKnob {4 over_color l "Overlay Color" t "Allows you to change the color for `outline` `overlay` and `overlay invert`" M {Red Blue Yellow Green Pink "" ""}}
+ addUserKnob {41 mix_1 l "Overlay Mix" t "Adjust the Mix of the preferred color on `outline` `overlay` and `overlay invert`" T Keymix_overlay.mix}
+ addUserKnob {41 scale l INVISIBLE +INVISIBLE T Image_Res.scale}
+ addUserKnob {7 sheet_res l "Sheet Resolution" t "Allows you to change the resolution of the contact sheet"}
+ sheet_res 1
+ addUserKnob {20 endGroup n -1}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x656565ff
+  label "<center>Illegal\nValues"
+  note_font_size 42
+  xpos 2687
+  ypos -92
+  bdwidth 566
+  bdheight 1240
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode10
+  tile_color 0x656565ff
+  label <center>Checker
+  note_font_size 72
+  xpos -304
+  ypos -40
+  bdwidth 2368
+  bdheight 1855
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x656565ff
+  label "<center>High\nValues"
+  note_font_size 42
+  xpos 3347
+  ypos -92
+  bdwidth 566
+  bdheight 1240
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x656565ff
+  label "<center>Low\nValues"
+  note_font_size 42
+  xpos 4007
+  ypos -92
+  bdwidth 566
+  bdheight 1240
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x656565ff
+  label <center>Overlay
+  note_font_size 42
+  xpos 4667
+  ypos -92
+  bdwidth 566
+  bdheight 1240
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x656565ff
+  label "<center>Overlay\nInvert"
+  note_font_size 42
+  xpos 5327
+  ypos -92
+  bdwidth 566
+  bdheight 1240
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x656565ff
+  label "<center>Low\nAlpha"
+  note_font_size 42
+  xpos 8077
+  ypos -92
+  bdwidth 566
+  bdheight 1240
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  tile_color 0x656565ff
+  label <center>Outline
+  note_font_size 42
+  xpos 5987
+  ypos -92
+  bdwidth 566
+  bdheight 1240
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode8
+  tile_color 0x656565ff
+  label "<center>Only\nAlpha"
+  note_font_size 42
+  xpos 6757
+  ypos -92
+  bdwidth 566
+  bdheight 1240
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode9
+  tile_color 0x656565ff
+  label "<center>High\nAlpha"
+  note_font_size 42
+  xpos 7417
+  ypos -92
+  bdwidth 566
+  bdheight 1240
+ }
+ Input {
+  inputs 0
+  name Matte
+  xpos 730
+  ypos -994
+  number 1
+ }
+ Dot {
+  name Dot14
+  xpos 764
+  ypos -534
+ }
+set N3cc93500 [stack 0]
+ Crop {
+  box {0 0 {width} {height}}
+  name Crop1
+  xpos 2600
+  ypos -538
+ }
+ set C3cc93180 [stack 0]
+ Dot {
+  name Dot16
+  xpos 3074
+  ypos -534
+ }
+set N3cc92e00 [stack 0]
+ Dot {
+  name Dot20
+  xpos 3734
+  ypos -534
+ }
+set N3cc92a80 [stack 0]
+ Dot {
+  name Dot23
+  xpos 4394
+  ypos -534
+ }
+set N3cc92700 [stack 0]
+ Dot {
+  name Dot29
+  xpos 4944
+  ypos -534
+ }
+set N3cc92380 [stack 0]
+ Dot {
+  name Dot34
+  xpos 5604
+  ypos -534
+ }
+set N3cc92000 [stack 0]
+ Dot {
+  name Dot43
+  xpos 6264
+  ypos -534
+ }
+set N3ccadc00 [stack 0]
+ Dot {
+  name Dot35
+  xpos 7034
+  ypos -534
+ }
+set N3ccad880 [stack 0]
+ Dot {
+  name Dot51
+  xpos 7694
+  ypos -534
+ }
+set N3ccad500 [stack 0]
+ Dot {
+  name Dot41
+  xpos 8354
+  ypos -534
+ }
+ Grade {
+  channels alpha
+  gamma 10
+  name Grade_LOW_VALUE2
+  xpos 8320
+  ypos 104
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle3
+  label "\[value in 1]"
+  xpos 8320
+  ypos 248
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green rgba.blue mask.a}
+  message "LOW ALPHA"
+  old_message {{76 79 87 32 65 76 80 72 65}
+    }
+  box {{parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box}}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150}
+    }
+  cursor_position 9
+  font {{ Bitstream Charter : Regular : BitstreamCharter.pfb : 0 }}
+  global_font_scale {{parent.lab_size}}
+  font_size 150
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2304}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 2048 1152 0 0 1 1 0 0 0 0}
+    }
+  name Text_QC7
+  xpos 8320
+  ypos 944
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+set N3ccac700 [stack 0]
+push $N3ccac700
+ Dilate {
+  channels mask
+  size 8
+  name Dilate8
+  xpos 8210
+  ypos 944
+ }
+ Multiply {
+  inputs 1+1
+  channels mask
+  value 0
+  maskChannelMask mask.a
+  name Multiply7
+  xpos 8210
+  ypos 1040
+ }
+push $N3ccac700
+ Multiply {
+  inputs 1+1
+  value 0
+  maskChannelMask mask.a
+  name Multiply15
+  xpos 8320
+  ypos 1040
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+ Reformat {
+  type scale
+  name Image_Res
+  xpos 8320
+  ypos 1214
+ }
+ set C3cce5500 [stack 0]
+ Dot {
+  name Dot42
+  xpos 8354
+  ypos 1458
+ }
+push $N3ccad500
+ Grade {
+  channels alpha
+  gamma 1e-06
+  name Grade_HIGH_VALUE2
+  xpos 7660
+  ypos 104
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle2
+  label "\[value in 1]"
+  xpos 7660
+  ypos 248
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green rgba.blue mask.a}
+  message "HIGH ALPHA"
+  old_message {{72 73 71 72 32 65 76 80 72 65}
+    }
+  box {{parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box}}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 9 150 0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 9 150}
+    }
+  cursor_position 10
+  font {{ Bitstream Charter : Regular : BitstreamCharter.pfb : 0 }}
+  global_font_scale {{parent.lab_size}}
+  font_size 150
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2304}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 2048 1152 0 0 1 1 0 0 0 0}
+    }
+  name Text_QC6
+  xpos 7660
+  ypos 944
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+set N3cce4700 [stack 0]
+push $N3cce4700
+ Dilate {
+  channels mask
+  size 8
+  name Dilate5
+  xpos 7550
+  ypos 944
+ }
+ Multiply {
+  inputs 1+1
+  channels mask
+  value 0
+  maskChannelMask mask.a
+  name Multiply5
+  xpos 7550
+  ypos 1040
+ }
+push $N3cce4700
+ Multiply {
+  inputs 1+1
+  value 0
+  maskChannelMask mask.a
+  name Multiply14
+  xpos 7660
+  ypos 1040
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+clone $C3cce5500 {
+  xpos 7660
+  ypos 1214
+  selected false
+ }
+ Dot {
+  name Dot52
+  xpos 7694
+  ypos 1458
+ }
+push $N3ccad880
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle1
+  label "\[value in 1]"
+  xpos 7000
+  ypos 248
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green rgba.blue mask.a}
+  message ALPHA
+  old_message {{65 76 80 72 65}
+    }
+  box {{parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box}}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 0 150 1 150 2 150 3 150 4 150}
+    }
+  cursor_position 5
+  font {{ Bitstream Charter : Regular : BitstreamCharter.pfb : 0 }}
+  global_font_scale {{parent.lab_size}}
+  font_size 150
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2304}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 2048 1152 0 0 1 1 0 0 0 0}
+    }
+  name Text_QC5
+  xpos 7000
+  ypos 944
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+set N3cd20a80 [stack 0]
+push $N3cd20a80
+ Dilate {
+  channels mask
+  size 8
+  name Dilate4
+  xpos 6890
+  ypos 944
+ }
+ Multiply {
+  inputs 1+1
+  channels mask
+  value 0
+  maskChannelMask mask.a
+  name Multiply4
+  xpos 6890
+  ypos 1040
+ }
+push $N3cd20a80
+ Multiply {
+  inputs 1+1
+  value 0
+  maskChannelMask mask.a
+  name Multiply13
+  xpos 7000
+  ypos 1040
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+clone $C3cce5500 {
+  xpos 7000
+  ypos 1214
+  selected false
+ }
+ Dot {
+  name Dot47
+  xpos 7034
+  ypos 1458
+ }
+push $N3ccadc00
+ Grade {
+  channels alpha
+  blackpoint 0.1
+  whitepoint 0.5
+  name Grade1
+  xpos 6230
+  ypos -16
+ }
+ Dot {
+  name Dot48
+  xpos 6264
+  ypos 66
+ }
+set N3cd5ee00 [stack 0]
+ Dot {
+  name Dot49
+  xpos 6154
+  ypos 66
+ }
+ FilterErode {
+  size 5
+  name FilterErode6
+  tile_color 0x6aff55ff
+  label IN
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 12
+  xpos 6120
+  ypos 96
+ }
+ Blur {
+  channels alpha
+  size 2
+  name Blur8
+  tile_color 0x6aff55ff
+  xpos 6120
+  ypos 176
+ }
+ Dot {
+  name Dot50
+  xpos 6154
+  ypos 234
+ }
+push $N3cd5ee00
+ Dot {
+  name Dot53
+  xpos 6374
+  ypos 66
+ }
+ FilterErode {
+  size -5
+  name FilterErode7
+  tile_color 0xff5594ff
+  label OUT
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_size 12
+  xpos 6340
+  ypos 96
+ }
+ Blur {
+  channels alpha
+  size 2
+  name Blur9
+  tile_color 0xff5594ff
+  xpos 6340
+  ypos 176
+ }
+ Dot {
+  name Dot54
+  xpos 6374
+  ypos 234
+ }
+ ChannelMerge {
+  inputs 2
+  operation xor
+  name ChannelMerge4
+  xpos 6230
+  ypos 217
+ }
+set N3cd8ee00 [stack 0]
+ Dot {
+  name Dot64
+  xpos 6264
+  ypos 282
+ }
+set N3cd8ea80 [stack 0]
+ Dot {
+  name Dot65
+  xpos 6044
+  ypos 282
+ }
+ Dot {
+  name Dot63
+  xpos 6044
+  ypos 522
+ }
+push $N3cd8ea80
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 1 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant19
+  xpos 5240
+  ypos -897
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 1 0 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant17
+  xpos 5130
+  ypos -897
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 1 0 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant18
+  xpos 5020
+  ypos -897
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 1 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant20
+  xpos 4910
+  ypos -897
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 0 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant12
+  xpos 4800
+  ypos -897
+ }
+set N3cdb5180 [stack 0]
+ Switch {
+  inputs 5
+  which {{parent.over_color}}
+  name QC_Overlay_Color
+  xpos 5020
+  ypos -682
+ }
+set N3cdb4e00 [stack 0]
+ Dot {
+  name Dot55
+  label " RED"
+  note_font_size 21
+  xpos 6154
+  ypos 330
+  hide_input true
+ }
+set N3cdb4a80 [stack 0]
+push $N3cd8ee00
+ Invert {
+  name Invert7
+  xpos 6340
+  ypos 272
+ }
+push $N3cdb4a80
+ Invert {
+  name Invert6
+  xpos 6340
+  ypos 320
+ }
+ Input {
+  inputs 0
+  name RGB
+  xpos 400
+  ypos -994
+ }
+ Dot {
+  name Dot15
+  xpos 434
+  ypos -342
+ }
+set N3cde3c00 [stack 0]
+clone $C3cc93180 {
+  xpos 2600
+  ypos -346
+  selected false
+ }
+ Dot {
+  name Dot17
+  xpos 2854
+  ypos -342
+ }
+set N3cde3500 [stack 0]
+ Dot {
+  name Dot21
+  xpos 3624
+  ypos -342
+ }
+set N3cde3180 [stack 0]
+ Dot {
+  name Dot24
+  xpos 4284
+  ypos -342
+ }
+set N3cde2e00 [stack 0]
+ Dot {
+  name Dot31
+  xpos 4834
+  ypos -342
+ }
+set N3cde2a80 [stack 0]
+ Dot {
+  name Dot36
+  xpos 5714
+  ypos -342
+ }
+set N3cde2700 [stack 0]
+ Dot {
+  name Dot44
+  xpos 6484
+  ypos -342
+ }
+ Merge2 {
+  inputs 2+1
+  mix 0.3
+  name Merge12
+  xpos 6450
+  ypos 326
+ }
+ Dot {
+  name Dot45
+  xpos 6484
+  ypos 426
+ }
+ Keymix {
+  inputs 3
+  mix 0.5
+  name Keymix_overlay
+  xpos 6230
+  ypos 416
+ }
+ set C3ce01880 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy9
+  xpos 6230
+  ypos 512
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green rgba.blue mask.a}
+  message OUTLINE
+  old_message {{79 85 84 76 73 78 69}
+    }
+  box {{parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box}}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 5 150 6 150 0 150 1 150 2 150 3 150 4 150 5 150 6 150}
+    }
+  cursor_position 7
+  font {{ Bitstream Charter : Regular : BitstreamCharter.pfb : 0 }}
+  global_font_scale {{parent.lab_size}}
+  font_size 150
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2304}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 2048 1152 0 0 1 1 0 0 0 0}
+    }
+  name Text_QC8
+  xpos 6230
+  ypos 944
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+set N3ce01180 [stack 0]
+push $N3ce01180
+ Dilate {
+  channels mask
+  size 8
+  name Dilate9
+  xpos 6120
+  ypos 944
+ }
+ Multiply {
+  inputs 1+1
+  channels mask
+  value 0
+  maskChannelMask mask.a
+  name Multiply6
+  xpos 6120
+  ypos 1040
+ }
+push $N3ce01180
+ Multiply {
+  inputs 1+1
+  value 0
+  maskChannelMask mask.a
+  name Multiply16
+  xpos 6230
+  ypos 1040
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+clone $C3cce5500 {
+  xpos 6230
+  ypos 1214
+  selected false
+ }
+ Dot {
+  name Dot46
+  xpos 6264
+  ypos 1434
+ }
+push $N3cc92380
+push $N3cc92380
+push $N3cdb4e00
+ Dot {
+  name Dot30
+  xpos 5054
+  ypos 426
+ }
+set N3ce39880 [stack 0]
+push $N3cde2a80
+ Dot {
+  name Dot32
+  xpos 4834
+  ypos 426
+ }
+clone $C3ce01880 {
+  inputs 3
+  xpos 4910
+  ypos 416
+  selected false
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy10
+  xpos 4910
+  ypos 536
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green rgba.blue mask.a}
+  message OVERLAY
+  old_message {{79 86 69 82 76 65 89}
+    }
+  box {{parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box}}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 5 150 6 150 0 150 1 150 2 150 3 150 4 150 5 150 6 150}
+    }
+  font {{ Bitstream Charter : Regular : BitstreamCharter.pfb : 0 }}
+  global_font_scale {{parent.lab_size}}
+  font_size 150
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2304}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 2048 1152 0 0 1 1 0 0 0 0}
+    }
+  name Text_QC3
+  xpos 4910
+  ypos 944
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+set N3ce38a80 [stack 0]
+push $N3ce38a80
+ Dilate {
+  channels mask
+  size 8
+  name Dilate2
+  xpos 4800
+  ypos 944
+ }
+ Multiply {
+  inputs 1+1
+  channels mask
+  value 0
+  maskChannelMask mask.a
+  name Multiply2
+  xpos 4800
+  ypos 1040
+ }
+push $N3ce38a80
+ Multiply {
+  inputs 1+1
+  value 0
+  maskChannelMask mask.a
+  name Multiply11
+  xpos 4910
+  ypos 1040
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+clone $C3cce5500 {
+  xpos 4910
+  ypos 1214
+  selected false
+ }
+ Dot {
+  name Dot33
+  xpos 4944
+  ypos 1434
+ }
+push $N3cc92000
+ Invert {
+  name Invert5
+  xpos 5570
+  ypos 248
+ }
+set N3d04f180 [stack 0]
+push $N3d04f180
+push $N3ce39880
+push $N3cde2700
+ Dot {
+  name Dot37
+  xpos 5714
+  ypos 426
+ }
+clone $C3ce01880 {
+  inputs 3
+  xpos 5570
+  ypos 416
+  selected false
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy11
+  xpos 5570
+  ypos 560
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green rgba.blue mask.a}
+  message "OVERLAY INVERT"
+  old_message {{79 86 69 82 76 65 89 32 73 78 86 69 82 84}
+    }
+  box {{parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box}}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 9 150 10 150 11 150 12 150 13 150 0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 9 150 10 150 11 150 12 150 13 150}
+    }
+  cursor_position 14
+  font {{ Bitstream Charter : Regular : BitstreamCharter.pfb : 0 }}
+  global_font_scale {{parent.lab_size}}
+  font_size 150
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2304}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 2048 1152 0 0 1 1 0 0 0 0}
+    }
+  name Text_QC4
+  xpos 5570
+  ypos 944
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+set N3d04e380 [stack 0]
+push $N3d04e380
+ Dilate {
+  channels mask
+  size 8
+  name Dilate3
+  xpos 5460
+  ypos 944
+ }
+ Multiply {
+  inputs 1+1
+  channels mask
+  value 0
+  maskChannelMask mask.a
+  name Multiply3
+  xpos 5460
+  ypos 1040
+ }
+push $N3d04e380
+ Multiply {
+  inputs 1+1
+  value 0
+  maskChannelMask mask.a
+  name Multiply12
+  xpos 5570
+  ypos 1040
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+clone $C3cce5500 {
+  xpos 5570
+  ypos 1214
+  selected false
+ }
+ Dot {
+  name Dot40
+  xpos 5604
+  ypos 1434
+ }
+push $N3cc92700
+ Grade {
+  channels alpha
+  gamma 10
+  name Grade_LOW_VALUE1
+  xpos 4360
+  ypos 200
+ }
+push $N3cde2e00
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy6
+  xpos 4250
+  ypos 200
+ }
+ Premult {
+  name Premult5
+  xpos 4250
+  ypos 446
+ }
+ CheckerBoard2 {
+  inputs 0
+  format {{{Reformat_MAIN.format}}}
+  centerlinewidth 0
+  name CheckerBoard1
+  xpos 3590
+  ypos -873
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 1 1 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant14
+  xpos 3480
+  ypos -873
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 0 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant15
+  xpos 3370
+  ypos -873
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color 0.18
+  format {{{Reformat_MAIN.format}}}
+  name Constant16
+  xpos 3260
+  ypos -873
+ }
+ Switch {
+  inputs 4
+  which {{parent.bg_color}}
+  name QC_BG_Color
+  xpos 3480
+  ypos -682
+ }
+ Dot {
+  name Dot26
+  xpos 3514
+  ypos 378
+ }
+set N3d0c8e00 [stack 0]
+ Dot {
+  name Dot25
+  xpos 4174
+  ypos 378
+ }
+ Merge2 {
+  inputs 2
+  name Merge11
+  xpos 4140
+  ypos 446
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green rgba.blue mask.a}
+  message "LOW VALUES"
+  old_message {{76 79 87 32 86 65 76 85 69 83}
+    }
+  box {{parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box}}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 9 150 0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 9 150}
+    }
+  cursor_position 10
+  font {{ Bitstream Charter : Regular : BitstreamCharter.pfb : 0 }}
+  global_font_scale {{parent.lab_size}}
+  font_size 150
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2304}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 2048 1152 0 0 1 1 0 0 0 0}
+    }
+  name Text_QC2
+  xpos 4140
+  ypos 944
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+set N3d0c8380 [stack 0]
+push $N3d0c8380
+ Dilate {
+  channels mask
+  size 8
+  name Dilate1
+  xpos 4030
+  ypos 944
+ }
+ Multiply {
+  inputs 1+1
+  channels mask
+  value 0
+  maskChannelMask mask.a
+  name Multiply1
+  xpos 4030
+  ypos 1040
+ }
+push $N3d0c8380
+ Multiply {
+  inputs 1+1
+  value 0
+  maskChannelMask mask.a
+  name Multiply10
+  xpos 4140
+  ypos 1040
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+clone $C3cce5500 {
+  xpos 4140
+  ypos 1214
+  selected false
+ }
+ Dot {
+  name Dot28
+  xpos 4174
+  ypos 1410
+ }
+push $N3cc92a80
+ Grade {
+  channels alpha
+  gamma 1e-06
+  name Grade_HIGH_VALUE1
+  xpos 3700
+  ypos 224
+ }
+push $N3cde3180
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy5
+  xpos 3590
+  ypos 224
+ }
+ Premult {
+  name Premult4
+  xpos 3590
+  ypos 446
+ }
+push $N3d0c8e00
+ Merge2 {
+  inputs 2
+  name Merge10
+  xpos 3480
+  ypos 446
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green rgba.blue mask.a}
+  message "HIGH VALUES"
+  old_message {{72 73 71 72 32 86 65 76 85 69 83}
+    }
+  box {{parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box} {parent.Text_QC.box}}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 9 150 10 150 0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 9 150 10 150}
+    }
+  cursor_position 11
+  font {{ Bitstream Charter : Regular : BitstreamCharter.pfb : 0 }}
+  global_font_scale {{parent.lab_size}}
+  font_size 150
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2304}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 2048 1152 0 0 1 1 0 0 0 0}
+    }
+  name Text_QC1
+  xpos 3480
+  ypos 944
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+set N3d135c00 [stack 0]
+push $N3d135c00
+ Dilate {
+  channels mask
+  size 8
+  name Dilate7
+  xpos 3370
+  ypos 944
+ }
+ Multiply {
+  inputs 1+1
+  channels mask
+  value 0
+  maskChannelMask mask.a
+  name Multiply8
+  xpos 3370
+  ypos 1040
+ }
+push $N3d135c00
+ Multiply {
+  inputs 1+1
+  value 0
+  maskChannelMask mask.a
+  name Multiply9
+  xpos 3480
+  ypos 1040
+  disable {{"parent.contact_labels== 0 ? 1 : 0"}}
+ }
+clone $C3cce5500 {
+  xpos 3480
+  ypos 1214
+  selected false
+ }
+ Dot {
+  name Dot27
+  xpos 3514
+  ypos 1410
+ }
+push $N3cc92e00
+ Dot {
+  name Dot18
+  xpos 3074
+  ypos 450
+ }
+set N3d134380 [stack 0]
+ Clamp {
+  channels alpha
+  name Clamp4
+  xpos 3150
+  ypos 440
+ }
+push $N3d134380
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge7
+  xpos 3040
+  ypos 566
+ }
+ Clamp {
+  name Clamp5
+  xpos 3040
+  ypos 632
+ }
+ Expression {
+  channel3 alpha
+  expr3 "a==0 ? 0:1"
+  name Expression2
+  xpos 3040
+  ypos 710
+ }
+push $N3cdb5180
+ Dot {
+  name Dot19
+  label " RED"
+  note_font_size 21
+  xpos 2964
+  ypos 354
+  hide_input true
+ }
+set N3d16ee00 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy4
+  xpos 2930
+  ypos 704
+ }
+ Premult {
+  name Premult3
+  xpos 2930
+  ypos 782
+ }
+push $N3d16ee00
+ Invert {
+  name Invert4
+  xpos 2930
+  ypos 488
+ }
+push $N3cde3500
+ Merge2 {
+  inputs 2
+  name Merge8
+  xpos 2820
+  ypos 494
+ }
+ Shuffle {
+  alpha black
+  name Shuffle5
+  label "\[value in 1]"
+  xpos 2820
+  ypos 704
+ }
+ Merge2 {
+  inputs 2
+  name Merge9
+  xpos 2820
+  ypos 782
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green rgba.blue mask.a}
+  message "ILLEGAL VALUES"
+  old_message {{73 76 76 69 71 65 76 32 86 65 76 85 69 83}
+    }
+  box {0 {(height)-(height/10)} {width} {height-50}}
+  xjustify center
+  yjustify center
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 9 150 10 150 11 150 12 150 13 150 0 150 1 150 2 150 3 150 4 150 5 150 6 150 7 150 8 150 9 150 10 150 11 150 12 150 13 150}
+    }
+  cursor_position 14
+  font {{ Bitstream Charter : Bold : BitstreamCharterBold.pfb : 0 }}
+  global_font_scale {{parent.lab_size}}
+  font_size 150
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2304}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 2048 1152 0 0 1 1 0 0 0 0}
+    }
+  name Text_QC
+  xpos 2820
+  ypos 944
+  disable {{"parent.contact_labels== 0 ? 1 : 0" x1018 1}}
+ }
+set N3d1a7500 [stack 0]
+push $N3d1a7500
+ Dilate {
+  channels mask
+  size 8
+  name Dilate6
+  xpos 2710
+  ypos 944
+ }
+ Multiply {
+  inputs 1+1
+  channels mask
+  value 0
+  maskChannelMask mask.a
+  name Multiply19
+  xpos 2710
+  ypos 1040
+ }
+push $N3d1a7500
+ Multiply {
+  inputs 1+1
+  value 0
+  maskChannelMask mask.a
+  name Multiply20
+  xpos 2820
+  ypos 1040
+  disable {{"parent.contact_labels== 0 ? 1 : 0" x1001 0}}
+ }
+clone $C3cce5500 {
+  xpos 2820
+  ypos 1214
+  selected false
+ }
+ Dot {
+  name Dot22
+  xpos 2854
+  ypos 1410
+ }
+ ContactSheet {
+  inputs 9
+  width {{(parent.Crop1.box.r)*3}}
+  height {{(parent.Crop1.box.t)*3}}
+  columns 3
+  gap 10
+  roworder TopBottom
+  colorder Snake
+  name ContactSheet1
+  xpos 5130
+  ypos 2078
+ }
+ Crop {
+  box {0 0 {"parent.ContactSheet1.knob.width + ContactSheet1.knob.gap"} {"parent.ContactSheet1.knob.height+ ContactSheet1.knob.gap"}}
+  reformat true
+  crop false
+  name Crop2
+  xpos 5130
+  ypos 2318
+ }
+ Reformat {
+  type scale
+  scale {{parent.sheet_res}}
+  name Contact_Res
+  xpos 4470
+  ypos 2318
+ }
+push $N3cc93500
+ Dot {
+  name Dot1
+  xpos 764
+  ypos 162
+ }
+set N3d1e5180 [stack 0]
+ Dot {
+  name Dot2
+  xpos 874
+  ypos 162
+ }
+set N3d1e4e00 [stack 0]
+ Dot {
+  name Dot3
+  xpos 984
+  ypos 162
+ }
+set N3d1e4a80 [stack 0]
+ Grade {
+  channels alpha
+  gamma 10
+  name Grade_LOW_VALUE
+  xpos 950
+  ypos 200
+ }
+push $N3d1e4e00
+ Grade {
+  channels alpha
+  gamma 1e-06
+  name Grade_HIGH_VALUE
+  xpos 840
+  ypos 200
+ }
+push $N3d1e5180
+ Switch {
+  inputs 3
+  which {{parent.checker_1}}
+  name Switch_CHECKER
+  xpos 730
+  ypos 278
+ }
+ Invert {
+  name Invert2
+  xpos 730
+  ypos 344
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos 730
+  ypos 632
+  disable {{parent.invert}}
+ }
+ Clamp {
+  name Clamp3
+  xpos 510
+  ypos 632
+ }
+push $N3cde3c00
+ Dot {
+  name Dot11
+  xpos 434
+  ypos 498
+ }
+set N3d21b180 [stack 0]
+ ColorCorrect {
+  shadows 0
+  midtones 0
+  highlights 0
+  name ColorCorrect1
+  xpos 400
+  ypos 566
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 400
+  ypos 632
+ }
+ Reformat {
+  name Reformat_MAIN
+  note_font "Verdana Bold Bold"
+  note_font_size 21
+  xpos 400
+  ypos 950
+ }
+ Dot {
+  name Dot38
+  xpos 434
+  ypos 1050
+ }
+set N3d21a380 [stack 0]
+ Dot {
+  name Dot4
+  xpos 434
+  ypos 1674
+ }
+ Constant {
+  inputs 0
+  channels alpha
+  color {1 1 1 1}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant10
+  xpos 510
+  ypos 1520
+ }
+set N3d251c00 [stack 0]
+push $N3d21a380
+ Dot {
+  name Dot39
+  xpos 544
+  ypos 1050
+ }
+set N3d251880 [stack 0]
+ Premult {
+  name Premult2
+  xpos 620
+  ypos 1046
+ }
+set N3d251500 [stack 0]
+ Dot {
+  name Dot7
+  xpos 654
+  ypos 1098
+ }
+set N3d251180 [stack 0]
+ Dot {
+  name Dot13
+  xpos 654
+  ypos 1146
+ }
+set N3d250e00 [stack 0]
+ Dot {
+  name Dot12
+  xpos 654
+  ypos 1194
+ }
+ CheckerBoard2 {
+  inputs 0
+  format {{{Reformat_MAIN.format}}}
+  centerlinewidth 0
+  name CheckerBoard2
+  xpos 1060
+  ypos 927
+ }
+ Merge2 {
+  inputs 2
+  name Merge6
+  xpos 1060
+  ypos 1190
+ }
+push $N3d250e00
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 1 1 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant8
+  xpos 950
+  ypos 927
+ }
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos 950
+  ypos 1142
+ }
+push $N3d251180
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 0 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant7
+  xpos 840
+  ypos 927
+ }
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos 840
+  ypos 1094
+ }
+push $N3d251500
+ Constant {
+  inputs 0
+  channels rgb
+  color 0.18
+  format {{{Reformat_MAIN.format}}}
+  name Constant4
+  xpos 730
+  ypos 927
+ }
+ Merge2 {
+  inputs 2
+  name Merge21
+  xpos 730
+  ypos 1046
+ }
+push $N3d21a380
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 0 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant3
+  xpos 180
+  ypos 1239
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 1 0 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant2
+  xpos 70
+  ypos 1239
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 1 0 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant1
+  xpos -40
+  ypos 1239
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 1 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant5
+  xpos -150
+  ypos 1239
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 1 0}
+  color_panelDropped true
+  format {{{Reformat_MAIN.format}}}
+  name Constant6
+  xpos -260
+  ypos 1239
+ }
+ Switch {
+  inputs 5
+  which {{parent.overlay}}
+  name Colors
+  xpos -40
+  ypos 1406
+ }
+push $N3d251880
+ Keymix {
+  inputs 3
+  mix 0.2
+  name Keymix2
+  xpos 510
+  ypos 1400
+ }
+ Switch {
+  inputs 5
+  which {{parent.over}}
+  name Mode_Controller
+  xpos 730
+  ypos 1406
+ }
+set N3d2ad180 [stack 0]
+ Dot {
+  name Dot10
+  xpos 874
+  ypos 1410
+ }
+ Dot {
+  name Dot9
+  xpos 874
+  ypos 1626
+ }
+push $N3d251c00
+push $N3d1e4a80
+ Dot {
+  name Dot6
+  xpos 1864
+  ypos 162
+ }
+ Dot {
+  name Dot5
+  xpos 1864
+  ypos 930
+ }
+set N3d2ac380 [stack 0]
+ Clamp {
+  channels alpha
+  name Clamp1
+  xpos 1940
+  ypos 920
+ }
+push $N3d2ac380
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge1
+  xpos 1830
+  ypos 1046
+ }
+ Clamp {
+  name Clamp2
+  xpos 1830
+  ypos 1160
+ }
+ Expression {
+  channel3 alpha
+  expr3 "a==0 ? 0:1"
+  name Expression1
+  xpos 1830
+  ypos 1238
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 0 0}
+  format {{{Reformat_MAIN.format}}}
+  name Constant9
+  xpos 1720
+  ypos 831
+ }
+ Dot {
+  name Dot56
+  xpos 1754
+  ypos 978
+ }
+set N3d2d6a80 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos 1720
+  ypos 1232
+ }
+ Premult {
+  name Premult1
+  xpos 1720
+  ypos 1550
+ }
+push $N3d2d6a80
+ Invert {
+  name Invert3
+  xpos 1610
+  ypos 968
+ }
+push $N3d21b180
+ Dot {
+  name Dot8
+  xpos 1424
+  ypos 498
+ }
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos 1390
+  ypos 974
+ }
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 1390
+  ypos 1550
+ }
+push $N3d2ad180
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos 730
+  ypos 1544
+ }
+ Keymix {
+  inputs 3
+  name Keymix3
+  xpos 730
+  ypos 1616
+  disable {{parent.exposure x1 1}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 730
+  ypos 1664
+ }
+ Switch {
+  inputs 2
+  which {{parent.c_sheet}}
+  name Switch_contact_sheet
+  xpos 730
+  ypos 2318
+ }
+ Output {
+  name Output1
+  xpos 730
+  ypos 3110
+ }
+end_group
