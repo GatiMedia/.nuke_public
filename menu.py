@@ -1,7 +1,7 @@
 # --------------------------------------------------------------
 #  menu.py
 #  Version: 1.0.10
-#  Last Updated: Apr 2nd, 2020
+#  Last Updated: March 4th, 2020
 # --------------------------------------------------------------
 
 # --------------------------------------------------------------
@@ -12,11 +12,6 @@ import nuke
 import platform
 import os
 import glob, os
-
-# import bm_NodeSandwich
-
-# from http://www.nukepedia.com/python/ui/iconpanel
-# import IconPanel
 
 
 # --------------------------------------------------------------
@@ -288,7 +283,9 @@ def openFolder():
 
 utilitiesMenu.addCommand('Open Folder in file browser', 'openFolder()', shortcut='ctrl+f', index=4)
 
-# Create Backdrop_Adjust
+
+
+# Create Backdrop_Adjust by Attila Gasparetz
 
 def create_BD_Adj():
     z_List = []
