@@ -1,0 +1,413 @@
+BackdropNode {
+inputs 0
+name BackdropNode27
+tile_color 0x5d5d5dff
+label "<center><font color=#4FFF9F>Edge ext with UV "
+note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+note_font_size 42
+selected true
+xpos 2374
+ypos 32389
+bdwidth 2073
+bdheight 1798
+z_order -3727254
+}
+StickyNote {
+inputs 0
+name StickyNote29
+label " Horizontal \nu"
+note_font_size 22
+selected true
+xpos 3686
+ypos 33142
+}
+StickyNote {
+inputs 0
+name StickyNote30
+label " Vertical \nv"
+note_font_size 22
+selected true
+xpos 4138
+ypos 33142
+}
+StickyNote {
+inputs 0
+name StickyNote31
+label " Roto where it is needed "
+note_font_size 22
+selected true
+xpos 2737
+ypos 33778
+}
+StickyNote {
+inputs 0
+name StickyNote32
+label " Outer mask "
+note_font_size 22
+selected true
+xpos 3565
+ypos 33826
+}
+StickyNote {
+inputs 0
+name StickyNote33
+label " Edge Ext amount"
+note_font_size 22
+selected true
+xpos 3544
+ypos 33754
+}
+push $cut_paste_input
+Roto {
+output alpha
+cliptype bbox
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 0}
+    {t x44d60000 x4489a000}
+    {a pt1x 0 pt1y 0 pt2x 0 pt2y 0 pt3x 0 pt3y 0 pt4x 0 pt4y 0 ptex00 0 ptex01 0 ptex02 0 ptex03 0 ptex10 0 ptex11 0 ptex12 0 ptex13 0 ptex20 0 ptex21 0 ptex22 0 ptex23 0 ptex30 0 ptex31 0 ptex32 0 ptex33 0 ptof1x 0 ptof1y 0 ptof2x 0 ptof2y 0 ptof3x 0 ptof3y 0 ptof4x 0 ptof4y 0 pterr 0 ptrefset 0 ptmot x40800000 ptref 0}}}}}
+toolbox {createBezier {
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {1712 1101}
+name Roto71
+selected true
+xpos 2820
+ypos 33873
+}
+Blur {
+size 2
+name Blur79
+label "Size: \[value size]"
+selected true
+xpos 2820
+ypos 33938
+}
+Input {
+inputs 0
+name Alpha
+note_font_size 31
+selected true
+xpos 3370
+ypos 32718
+number 5
+}
+Input {
+inputs 0
+name RGB
+note_font_size 31
+selected true
+xpos 3040
+ypos 32550
+number 4
+}
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy22
+selected true
+xpos 3040
+ypos 32721
+}
+Dot {
+name Dot271
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3074
+ypos 32898
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Copy22
+}
+set N26c82a20 [stack 0]
+Dot {
+name Dot261
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3404
+ypos 32898
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot271
+}
+set N459c1150 [stack 0]
+Dot {
+name Dot262
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3844
+ypos 32898
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot261
+}
+Blur {
+size 6
+name Blur78
+label "Size: \[value size]"
+selected true
+xpos 3810
+ypos 33002
+}
+Dot {
+name Dot263
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3844
+ypos 33114
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Blur78
+}
+set Na7b8100 [stack 0]
+Dot {
+name Dot264
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3624
+ypos 33114
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot263
+}
+Transform {
+translate {1 0}
+center {1712 1101}
+shutteroffset centred
+name Transform36
+label "x : 1"
+selected true
+xpos 3590
+ypos 33201
+}
+Dot {
+name Dot265
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3624
+ypos 33282
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Transform36
+}
+push $Na7b8100
+Transform {
+translate {-1 0}
+center {1712 1101}
+shutteroffset centred
+name Transform37
+label "x : -1"
+selected true
+xpos 3810
+ypos 33201
+}
+Merge2 {
+inputs 2
+operation from
+bbox B
+also_merge all
+name Merge86
+selected true
+xpos 3810
+ypos 33279
+}
+Dot {
+name Dot269
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3844
+ypos 33450
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Merge86
+}
+push $Na7b8100
+Dot {
+name Dot267
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 4064
+ypos 33114
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot263
+}
+set N9fef79b0 [stack 0]
+Transform {
+translate {0 1}
+center {1712 1101}
+shutteroffset centred
+name Transform38
+label "y : 1"
+selected true
+xpos 4030
+ypos 33201
+}
+Dot {
+name Dot268
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 4064
+ypos 33282
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Transform38
+}
+push $N9fef79b0
+Dot {
+name Dot266
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 4284
+ypos 33114
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot267
+}
+Transform {
+translate {0 -1}
+center {1712 1101}
+shutteroffset centred
+name Transform39
+label "y : -1"
+selected true
+xpos 4250
+ypos 33201
+}
+Merge2 {
+inputs 2
+operation from
+bbox B
+also_merge all
+name Merge87
+selected true
+xpos 4250
+ypos 33279
+}
+ShuffleCopy {
+inputs 2
+green red
+blue black
+alpha black
+name ShuffleCopy1
+label "\[string toupper \[value in]]"
+selected true
+xpos 4250
+ypos 33441
+}
+Dot {
+name Dot270
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 4284
+ypos 33618
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput ShuffleCopy1
+}
+push $N459c1150
+Copy {
+inputs 2
+from0 rgba.red
+to0 forward.u
+from1 rgba.green
+to1 forward.v
+name Copy21
+selected true
+xpos 3370
+ypos 33602
+}
+IDistort {
+uv forward
+uv_scale 100
+name IDistort1
+label "Scale: \[value uv_scale]"
+selected true
+xpos 3370
+ypos 33746
+}
+FilterErode {
+channels alpha
+size 4
+name FilterErode3
+label "Size: \[value size]"
+selected true
+xpos 3370
+ypos 33818
+}
+Invert {
+channels alpha
+name Invert10
+selected true
+xpos 3370
+ypos 33897
+}
+Premult {
+name Premult22
+selected true
+xpos 3370
+ypos 33951
+}
+push $N26c82a20
+Merge2 {
+inputs 2+1
+bbox B
+also_merge all
+name Merge88
+selected true
+xpos 3040
+ypos 33951
+}
+Dot {
+name Dot260
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3074
+ypos 34098
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Merge88
+}
