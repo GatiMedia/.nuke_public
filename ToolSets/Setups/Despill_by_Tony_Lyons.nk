@@ -1,0 +1,204 @@
+BackdropNode {
+inputs 0
+name BackdropNode28
+tile_color 0x5d5d5dff
+label "<center><font color=#AFFF1F>Despill_by_Tony_Lyons"
+note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+note_font_size 42
+selected true
+xpos 21147
+ypos 33804
+bdwidth 1047
+bdheight 887
+z_order -928689
+}
+Input {
+inputs 0
+name BG
+note_font "Bitstream Vera Sans Bold Bold"
+selected true
+xpos 21740
+ypos 33926
+number 6
+}
+Dot {
+name Dot270
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 21774
+ypos 34362
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput BG
+}
+Input {
+inputs 0
+name FG
+note_font "Bitstream Vera Sans Bold Bold Bold"
+selected true
+xpos 21300
+ypos 33926
+number 7
+}
+Dot {
+name Dot271
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 21334
+ypos 34026
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput FG
+}
+set N5ee62b10 [stack 0]
+Dot {
+name Dot273
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 21554
+ypos 34026
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot271
+}
+push $N5ee62b10
+OFXuk.co.thefoundry.keylight.keylight_v201 {
+show "Final Result"
+unPreMultiply false
+screenColour {0.1118108779 0.3131792247 0.09590642899}
+screenGain 1
+screenBalance 0.5
+alphaBias {0.5 0.5 0.5}
+despillBias {0.5 0.5 0.5}
+gangBiases true
+preBlur 0
+"Screen Matte" 0
+screenClipMin 0
+screenClipMax 1
+screenClipRollback 0
+screenGrowShrink 0
+screenSoftness 0
+screenDespotBlack 0
+screenDespotWhite 0
+screenReplaceMethod "Soft Colour"
+screenReplaceColour {0.5 0.5 0.5}
+Tuning 0
+midPoint 0.5
+lowGain 1
+midGain 1
+highGain 1
+"Inside Mask" 0
+sourceAlphaHandling Ignore
+insideReplaceMethod "Soft Colour"
+insideReplaceColour {0.5 0.5 0.5}
+Crops 0
+SourceXMethod Colour
+SourceYMethod Colour
+SourceEdgeColour 0
+SourceCropL 0
+SourceCropR 1
+SourceCropB 0
+SourceCropT 1
+balanceSet false
+insideComponent None
+outsideComponent None
+cacheBreaker true
+name Keylight9
+selected true
+xpos 21300
+ypos 34167
+}
+set N60516ca0 [stack 0]
+Merge2 {
+inputs 2
+operation minus
+bbox B
+also_merge all
+name Merge93
+selected true
+xpos 21520
+ypos 34167
+}
+Saturation {
+saturation 0
+name Saturation2
+label "Value: \[value saturation]"
+selected true
+xpos 21520
+ypos 34209
+}
+Merge2 {
+inputs 2
+operation multiply
+bbox B
+also_merge all
+name Merge94
+selected true
+xpos 21520
+ypos 34359
+}
+Grade {
+name Grade100
+selected true
+xpos 21520
+ypos 34503
+}
+Dot {
+name Dot274
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 21554
+ypos 34554
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Grade100
+}
+push $N60516ca0
+Merge2 {
+inputs 2
+operation plus
+bbox B
+also_merge all
+name Merge95
+selected true
+xpos 21300
+ypos 34551
+}
+StickyNote {
+inputs 0
+name StickyNote27
+label "  Grading is optional  "
+note_font "Bitstream Vera Sans Bold"
+note_font_size 22
+selected true
+xpos 21436
+ypos 34449
+}
+StickyNote {
+inputs 0
+name StickyNote26
+label "  Multiplying with the\n  BG is optional  "
+note_font "Bitstream Vera Sans Bold"
+note_font_size 22
+selected true
+xpos 21436
+ypos 34293
+}
+StickyNote {
+inputs 0
+name StickyNote3
+label "  Select the BG color  "
+note_font "Bitstream Vera Sans Bold"
+note_font_size 22
+selected true
+xpos 21215
+ypos 34089
+}
