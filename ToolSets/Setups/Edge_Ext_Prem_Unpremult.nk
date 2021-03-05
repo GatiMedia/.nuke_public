@@ -1,0 +1,341 @@
+BackdropNode {
+inputs 0
+name BackdropNode25
+tile_color 0x5d5d5dff
+label "<center><font color=#4FFF9F>Edge ext\npremult/unpremult"
+note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+note_font_size 42
+selected true
+xpos 2779
+ypos 30914
+bdwidth 1262
+bdheight 1340
+z_order -1691080
+}
+push $cut_paste_input
+Roto {
+output alpha
+cliptype bbox
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 0}
+    {t x44d60000 x4489a000}
+    {a pt1x 0 pt1y 0 pt2x 0 pt2y 0 pt3x 0 pt3y 0 pt4x 0 pt4y 0 ptex00 0 ptex01 0 ptex02 0 ptex03 0 ptex10 0 ptex11 0 ptex12 0 ptex13 0 ptex20 0 ptex21 0 ptex22 0 ptex23 0 ptex30 0 ptex31 0 ptex32 0 ptex33 0 ptof1x 0 ptof1y 0 ptof2x 0 ptof2y 0 ptof3x 0 ptof3y 0 ptof4x 0 ptof4y 0 pterr 0 ptrefset 0 ptmot x40800000 ptref 0}}}}}
+toolbox {createBezier {
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_brush_hardness 0.200000003
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {1712 1101}
+name Roto72
+selected true
+xpos 3700
+ypos 32049
+}
+Blur {
+size 2
+name Blur80
+label "Size: \[value size]"
+selected true
+xpos 3700
+ypos 32114
+}
+Input {
+inputs 0
+name Alpha
+note_font_size 31
+selected true
+xpos 3810
+ypos 31158
+number 3
+}
+Input {
+inputs 0
+name RGB
+note_font_size 31
+selected true
+xpos 3480
+ypos 31062
+}
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy10
+selected true
+xpos 3480
+ypos 31161
+}
+set N51ad560 [stack 0]
+Dot {
+name Dot79
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3404
+ypos 31170
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Copy10
+}
+set N20336b10 [stack 0]
+Dot {
+name Dot157
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3184
+ypos 31170
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot79
+}
+set N35a49fe0 [stack 0]
+FilterErode {
+channels alpha
+size -9
+name FilterErodeALPHA1
+label "Size: \[value size]"
+selected true
+xpos 3150
+ypos 31298
+}
+push $N35a49fe0
+Dot {
+name Dot77
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 2964
+ypos 31170
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot157
+}
+FilterErode {
+channels alpha
+size 9
+name FilterErodeALPHA
+label "Size: \[value size]"
+selected true
+xpos 2930
+ypos 31298
+}
+Premult {
+name Premult13
+selected true
+xpos 2930
+ypos 31359
+}
+Blur {
+size 7
+name BlurMAIN
+label "Size: \[value size]"
+selected true
+xpos 2930
+ypos 31394
+}
+Unpremult {
+name Unpremult5
+selected true
+xpos 2930
+ypos 31455
+}
+Premult {
+name Premult14
+selected true
+xpos 2930
+ypos 31503
+}
+Blur {
+size {{BlurMAIN.size}}
+name Blur60
+label "Size: \[value size]"
+selected true
+xpos 2930
+ypos 31538
+}
+Unpremult {
+name Unpremult9
+selected true
+xpos 2930
+ypos 31599
+}
+Premult {
+name Premult15
+selected true
+xpos 2930
+ypos 31647
+}
+Blur {
+size {{BlurMAIN.size}}
+name Blur59
+label "Size: \[value size]"
+selected true
+xpos 2930
+ypos 31682
+}
+Unpremult {
+name Unpremult10
+selected true
+xpos 2930
+ypos 31743
+}
+Premult {
+name Premult16
+selected true
+xpos 2930
+ypos 31791
+}
+Blur {
+size {{BlurMAIN.size}}
+name Blur65
+label "Size: \[value size]"
+selected true
+xpos 2930
+ypos 31826
+}
+Unpremult {
+name Unpremult11
+selected true
+xpos 2930
+ypos 31887
+}
+Premult {
+name Premult17
+selected true
+xpos 2930
+ypos 31935
+}
+Blur {
+size {{BlurMAIN.size}}
+name Blur66
+label "Size: \[value size]"
+selected true
+xpos 2930
+ypos 31970
+}
+Unpremult {
+name Unpremult12
+selected true
+xpos 2930
+ypos 32031
+}
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy17
+selected true
+xpos 3150
+ypos 32025
+}
+Premult {
+name Premult18
+selected true
+xpos 3150
+ypos 32127
+}
+push $N20336b10
+FilterErode {
+channels alpha
+size 9
+name FilterErodeRGB
+label "Size: \[value size]"
+selected true
+xpos 3370
+ypos 31298
+}
+Premult {
+name Premult12
+selected true
+xpos 3370
+ypos 31383
+}
+Merge2 {
+inputs 2
+operation under
+bbox B
+also_merge all
+name Merge30
+selected true
+xpos 3370
+ypos 32127
+}
+push $N51ad560
+Merge2 {
+inputs 2+1
+bbox B
+also_merge all
+name Merge32
+selected true
+xpos 3480
+ypos 32127
+}
+Dot {
+name Dot273
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 3514
+ypos 32226
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Merge32
+}
+StickyNote {
+inputs 0
+name StickyNote27
+label " Edge RGB "
+note_font_size 22
+selected true
+xpos 2912
+ypos 31234
+}
+StickyNote {
+inputs 0
+name StickyNote28
+label " Edge mask "
+note_font_size 22
+selected true
+xpos 3129
+ypos 31234
+}
+StickyNote {
+inputs 0
+name StickyNote26
+label " Inner part "
+note_font_size 22
+selected true
+xpos 3352
+ypos 31234
+}
+StickyNote {
+inputs 0
+name StickyNote3
+label " Roto where it is needed "
+note_font_size 22
+selected true
+xpos 3617
+ypos 31978
+}
