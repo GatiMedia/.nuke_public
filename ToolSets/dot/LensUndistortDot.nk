@@ -1,0 +1,19 @@
+set cut_paste_input [stack 0]
+version 11.1 v6
+push $cut_paste_input
+Dot {
+name LensUndistort
+tile_color 0x55ffffff
+label "Lens Undistortion"
+note_font "Open Sans"
+note_font_size 15
+note_font_color 0x55bfffff
+selected true
+xpos 3954
+ypos 66
+hide_input true
+addUserKnob {20 User}
+addUserKnob {1 stMapName l "STMap Name: "}
+stMapName Lens_Undistortion_Map
+addUserKnob {22 Connect2STMap -STARTLINE T "n = nuke.thisNode()\nstMapNameKnob = n\['stMapName'].value()\nprint stMapNameKnob\ntry:\n    nuke.exists (nuke.toNode(stMapNameKnob).name())\n    STMAP = nuke.toNode(stMapNameKnob)\n    n.setInput(0,STMAP)\nexcept:\n    nuke.message(\"%s missing or renamed\\n\\nCheck your STMAP is connected to a node called %s\" % (stMapNameKnob, stMapNameKnob))\n\n\n"}
+}
