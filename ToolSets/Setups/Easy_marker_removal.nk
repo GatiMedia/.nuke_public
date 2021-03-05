@@ -1,0 +1,292 @@
+BackdropNode {
+inputs 0
+name BackdropNode26
+tile_color 0x5d5d5dff
+label "<center><font color=#AFFF1F>Easy_marker_removal"
+note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+note_font_size 42
+selected true
+xpos 22659
+ypos 33102
+bdwidth 1103
+bdheight 1140
+z_order -1257420
+}
+Input {
+inputs 0
+name Plate
+note_font "Bitstream Vera Sans Bold"
+selected true
+xpos 23060
+ypos 33302
+number 8
+}
+Dot {
+name Dot276
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 23094
+ypos 33546
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Plate
+}
+set N64e5c710 [stack 0]
+Dot {
+name Dot277
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 23314
+ypos 33546
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot276
+}
+set N885bb520 [stack 0]
+Shuffle {
+red blue
+green blue
+alpha black
+name Shuffle109
+tile_color 0x3fffff
+label "\[string toupper \[value in]]"
+selected true
+xpos 23390
+ypos 33633
+}
+Text2 {
+font_size_toolbar 100
+font_width_toolbar 100
+font_height_toolbar 100
+message BLUE
+old_message {{66 76 85 69}
+  }
+box {0 0 {width} {height}}
+xjustify center
+yjustify center
+transforms {{0 2}
+  }
+cursor_position 4
+global_font_scale {{input.width/2000}}
+center {1712 1101}
+cursor_initialised true
+autofit_bbox false
+initial_cursor_position {{1712 1101}
+  }
+group_animations {{0} imported: 0 selected: items: "root transform/"}
+animation_layers {{1 11 1712 1101 0 0 1 1 0 0 0 0}
+  }
+color {0.3333333433 1 1 1}
+enable_shadows true
+shadow_opacity 0.5
+shadow_distance 8
+name Text4
+selected true
+xpos 23390
+ypos 33687
+}
+push $N885bb520
+Shuffle {
+red green
+blue green
+alpha black
+name Shuffle108
+tile_color 0x1fff00ff
+label "\[string toupper \[value in]]"
+selected true
+xpos 23280
+ypos 33633
+}
+Text2 {
+font_size_toolbar 100
+font_width_toolbar 100
+font_height_toolbar 100
+message GREEN
+old_message {{71 82 69 69 78}
+  }
+box {0 0 {width} {height}}
+xjustify center
+yjustify center
+transforms {{0 2}
+  }
+cursor_position 5
+global_font_scale {{input.width/2000}}
+center {1712 1101}
+cursor_initialised true
+autofit_bbox false
+initial_cursor_position {{1712 1101}
+  }
+group_animations {{0} imported: 0 selected: items: "root transform/"}
+animation_layers {{1 11 1712 1101 0 0 1 1 0 0 0 0}
+  }
+color {0.6666666865 1 0.3333333433 1}
+enable_shadows true
+shadow_opacity 0.5
+shadow_distance 8
+name Text3
+selected true
+xpos 23280
+ypos 33687
+}
+push $N885bb520
+Shuffle {
+green red
+blue red
+alpha black
+name Shuffle107
+tile_color 0xff0000ff
+label "\[string toupper \[value in]]"
+selected true
+xpos 23170
+ypos 33633
+}
+Text2 {
+font_size_toolbar 100
+font_width_toolbar 100
+font_height_toolbar 100
+message RED
+old_message {{82 69 68}
+  }
+box {0 0 {width} {height}}
+xjustify center
+yjustify center
+transforms {{0 2}
+  }
+cursor_position 3
+global_font_scale {{input.width/2000}}
+center {1712 1101}
+cursor_initialised true
+autofit_bbox false
+initial_cursor_position {{1712 1101}
+  }
+group_animations {{0} imported: 0 selected: items: "root transform/"}
+animation_layers {{1 11 1712 1101 0 0 1 1 0 0 0 0}
+  }
+color {1 0.3333333433 0.3333333433 1}
+enable_shadows true
+shadow_opacity 0.5
+shadow_distance 8
+name Text2
+selected true
+xpos 23170
+ypos 33687
+}
+ContactSheet {
+inputs 3
+width {{input.width*columns}}
+height {{input.height*rows}}
+rows 1
+columns 3
+roworder TopBottom
+name ContactSheet1
+selected true
+xpos 23280
+ypos 33759
+}
+push $N64e5c710
+Dot {
+name Dot269
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 23094
+ypos 33906
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Dot276
+}
+set Nb059ff90 [stack 0]
+Keyer {
+invert true
+operation "luminance key"
+range {0.05113507235 0.1575970304 1 1}
+name Keyer9
+selected true
+xpos 22950
+ypos 33897
+}
+Input {
+inputs 0
+name MARKER_MATTE
+note_font "Bitstream Vera Sans Bold"
+selected true
+xpos 22730
+ypos 33758
+number 5
+}
+Dot {
+name Dot291
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 22764
+ypos 34074
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput MARKER_MATTE
+}
+ChannelMerge {
+inputs 2
+operation stencil
+name ChannelMerge17
+selected true
+xpos 22950
+ypos 34058
+}
+push $Nb059ff90
+Grade {
+multiply 0.34
+name Grade103
+label "Mult:\\n \[value multiply]"
+note_font "Bitstream Vera Sans Bold"
+selected true
+xpos 23280
+ypos 33890
+}
+Dot {
+name Dot275
+tile_color 0x949494ff
+note_font_size 72
+note_font_color 0xffffffff
+selected true
+xpos 23314
+ypos 34074
+addUserKnob {20 tmpTab}
+addUserKnob {1 tmpKeepInput}
+tmpKeepInput Grade103
+}
+push $Nb059ff90
+Copy {
+inputs 2+1
+from0 rgba.green
+to0 rgba.red
+name Copy10
+note_font "Bitstream Vera Sans Bold"
+selected true
+xpos 23060
+ypos 34064
+}
+StickyNote {
+inputs 0
+name StickyNote29
+label "\n  This section helps to view  \n the individual channels\n"
+note_font_size 22
+selected true
+xpos 23187
+ypos 33429
+}
+StickyNote {
+inputs 0
+name StickyNote28
+label "\n <font color=red> !! This technique only works if there is a channel   \nthat shows almost no difference between the \nmarker and the BG color!!</font>\n\n1. Connect a garbage matte for the marker.\n\n2. Copy the channel that has a biggest\ndifference between the marker and the BG color\nto the one that has the smallest.\n\n3. Use a `Multiply` in the Grade node\nto match the BG color.\n\n4. Use the lumakey (or other preferred one)\nto remove the FG if is ovelapping\nthe marker area.\n\n"
+note_font_size 22
+selected true
+xpos 23618
+ypos 33555
+}
