@@ -1,0 +1,806 @@
+Group {
+ name GM_Input_Info
+ tile_color 0xff9455ff
+ addUserKnob {20 User}
+ addUserKnob {41 text_pos l "Text Position" T proxy.text_pos}
+ addUserKnob {26 ""}
+ addUserKnob {6 shotname l "Shot Name" +STARTLINE}
+ shotname true
+ addUserKnob {3 shot_n_number l "Shot Name Parts"}
+ shot_n_number 2
+ addUserKnob {6 framerange l "Frame Range" +STARTLINE}
+ framerange true
+ addUserKnob {6 versio l Version +STARTLINE}
+ versio true
+ addUserKnob {6 filename l "File Name" +STARTLINE}
+ filename true
+ addUserKnob {6 fileextension l "File Extension" +STARTLINE}
+ fileextension true
+ addUserKnob {6 inputtc l "Input TC" +STARTLINE}
+ inputtc true
+ addUserKnob {6 frame l "Frame number" +STARTLINE}
+ frame true
+ addUserKnob {6 format l Format +STARTLINE}
+ format true
+ addUserKnob {6 format_name l "Format Name" +STARTLINE}
+ format_name true
+ addUserKnob {6 colorspace l Colorspace +STARTLINE}
+ colorspace true
+ addUserKnob {26 ""}
+ addUserKnob {22 selectnone l "Select None" T "import nuke\n\nknobs = \['shotname','framerange','versio','filename','fileextension','inputtc','frame','format','format_name','colorspace']\n\nfor knob in knobs:\n    nuke.thisNode()\[knob].setValue(False)\n" +STARTLINE}
+ addUserKnob {22 selectall l "Select All" -STARTLINE T "import nuke\n\nknobs = \['shotname','framerange','versio','filename','fileextension','inputtc','frame','format','format_name','colorspace']\n\nfor knob in knobs:\n    nuke.thisNode()\[knob].setValue(True)\n"}
+ addUserKnob {26 ""}
+ addUserKnob {6 text_only l "Show Only text" +STARTLINE}
+ addUserKnob {6 no_alpha l "No Alpha" +STARTLINE}
+ addUserKnob {7 spacing l "Line Spacing" R -200 200}
+ addUserKnob {26 ""}
+ addUserKnob {20 edit_text l "Edit Text" n 1}
+ addUserKnob {7 fontsize l "Font Size" R 1 200}
+ fontsize 60
+ addUserKnob {41 color l "Text Color" T TextColor.color}
+ addUserKnob {41 translate_1 l translate T Transform_all.translate}
+ addUserKnob {41 rotate T Transform_all.rotate}
+ addUserKnob {41 scale T Transform_all.scale}
+ addUserKnob {41 center T Transform_all.center}
+ addUserKnob {22 setcenter l "Set Center" -STARTLINE T "this_width = nuke.thisGroup().width()\n\nthis_height = nuke.thisGroup().height()\n\nnewWidth = this_width/2\nnewHeight = this_height/2\n\nnuke.thisGroup().knob(\"center\").setValue(\[newWidth, newHeight])"}
+ addUserKnob {26 ""}
+ addUserKnob {41 mix_2 l mix T Merge_text.mix}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 shadow l Shadow n 1}
+ addUserKnob {6 shad l "Enable Shadow" +STARTLINE}
+ shad true
+ addUserKnob {7 angle l Angle R -180 180}
+ angle 45
+ addUserKnob {7 distance l Distance R 0 50}
+ distance 4
+ addUserKnob {41 color_1 l "Shadow color" T ShadowColor.color}
+ addUserKnob {41 size l "Blur size" T Blur_shadow.size}
+ addUserKnob {26 ""}
+ addUserKnob {41 mix_1 l mix T Merge_shadow.mix}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {22 tut l Tutorial T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/input-info')\n" +STARTLINE}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.01 version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Input_Info© by Attila Gasparetz</font>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 180
+  ypos -754
+ }
+ Dot {
+  name Dot8
+  xpos 214
+  ypos -606
+ }
+set N22b3c00 [stack 0]
+ Crop {
+  box {{input.format.x} {input.format.y} {input.format.r} {input.format.t}}
+  name Crop_proxy
+  xpos 1060
+  ypos -610
+ }
+push $N22b3c00
+ Dot {
+  name Dot1
+  xpos 214
+  ypos -486
+ }
+set N22b3500 [stack 0]
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name Shuffle1
+  label "\[value in 1]"
+  xpos 400
+  ypos -496
+ }
+set N22b3180 [stack 0]
+ Dot {
+  name Dot2
+  xpos 874
+  ypos -486
+ }
+set N22b2e00 [stack 0]
+ Dot {
+  name Dot3
+  xpos 1094
+  ypos -486
+ }
+set N22b2a80 [stack 0]
+ Dot {
+  name Dot4
+  xpos 1314
+  ypos -486
+ }
+set N22b2700 [stack 0]
+ Dot {
+  name Dot9
+  xpos 1534
+  ypos -486
+ }
+set N22b2380 [stack 0]
+ Dot {
+  name Dot7
+  xpos 1754
+  ypos -486
+ }
+set N22b2000 [stack 0]
+ Dot {
+  name Dot5
+  xpos 1974
+  ypos -486
+ }
+set N22cfc00 [stack 0]
+ Dot {
+  name Dot6
+  xpos 2194
+  ypos -486
+ }
+set N22cf880 [stack 0]
+ Dot {
+  name Dot14
+  xpos 2414
+  ypos -486
+ }
+set N22cf500 [stack 0]
+ Dot {
+  name Dot15
+  xpos 2634
+  ypos -486
+ }
+set N22cf180 [stack 0]
+ Dot {
+  name Dot16
+  xpos 2854
+  ypos -486
+ }
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "Colorspace:  \[split \[knob \[topnode parent.input0].colorspace] ]"
+  old_message {{67 111 108 111 114 115 112 97 99 101 58 32 32 100 101 102 97 117 108 116 32 40 67 105 110 101 111 110 41}
+    }
+  old_expression_markers {{13 28}
+    }
+  box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
+  xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
+  yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 11 100}
+    }
+  cursor_position 10
+  global_font_scale {{parent.fontsize/100}}
+  center {1920 1080}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{65.60009766 299.2997437}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1920 1080 0 0 1 1 0 0 0 0}
+    }
+  shadow_opacity 0.8
+  shadow_angle 317
+  name colorspace
+  xpos 2820
+  ypos -442
+  disable {{parent.colorspace==0}}
+ }
+ Transform {
+  translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_extension.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(input_timecode.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_1.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(format_1.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(format_name_1.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
+  center {1920 1080}
+  name Transform_colorspace
+  xpos 2820
+  ypos -394
+  disable {{parent.colorspace==0 x1018 1}}
+ }
+push $N22cf180
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "Format name: \[lrange \[split \[knob \[topnode parent.input0].format] ] 7 15]"
+  old_message {{70 111 114 109 97 116 32 110 97 109 101 58 32 123 125}
+    }
+  old_expression_markers {{13 14}
+    }
+  box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
+  xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
+  yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 12 100}
+    }
+  cursor_position 73
+  global_font_scale {{parent.fontsize/100}}
+  center {1920 1080}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{65.60009766 299.2997437}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1920 1080 0 0 1 1 0 0 0 0}
+    }
+  shadow_opacity 0.8
+  shadow_angle 317
+  name format_name_1
+  xpos 2600
+  ypos -442
+  disable {{parent.format_name==0}}
+ }
+ Transform {
+  translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_extension.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(input_timecode.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_1.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(format_1.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
+  center {1920 1080}
+  name Transform_format_name
+  xpos 2600
+  ypos -394
+  disable {{parent.format_name==0}}
+ }
+push $N22cf500
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "Format: \[value Crop_proxy.box.r] * \[value Crop_proxy.box.t]"
+  old_message {{70 111 114 109 97 116 58 32 51 50 48 48 32 42 32 49 56 48 48}
+    }
+  old_expression_markers {{8 11 15 18}
+    }
+  box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
+  xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
+  yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 6 100 7 100}
+    }
+  cursor_position 58
+  global_font_scale {{parent.fontsize/100}}
+  center {1920 1080}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{65.60009766 299.2997437}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1920 1080 0 0 1 1 0 0 0 0}
+    }
+  shadow_opacity 0.8
+  shadow_angle 317
+  name format_1
+  xpos 2380
+  ypos -442
+  disable {{parent.format==0}}
+ }
+ Transform {
+  translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_extension.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(input_timecode.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_1.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
+  center {1920 1080}
+  name Transform_format
+  xpos 2380
+  ypos -394
+ }
+push $N22cf880
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "Frame number: \[value frame]\n"
+  old_message {{70 114 97 109 101 32 110 117 109 98 101 114 58 32 49 48 50 54 10}
+    }
+  old_expression_markers {{14 17}
+    }
+  box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
+  xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
+  yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 1 100 2 100 3 100 4 100 12 100 13 100 18 100}
+    }
+  cursor_position 12
+  global_font_scale {{parent.fontsize/100}}
+  center {1920 1080}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{65.60009766 299.2997437}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1920 1080 0 0 1 1 0 0 0 0}
+    }
+  shadow_opacity 0.8
+  shadow_angle 317
+  name frame_1
+  xpos 2160
+  ypos -442
+  disable {{parent.knob.frame==0}}
+ }
+ Transform {
+  translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_extension.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(input_timecode.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
+  center {1920 1080}
+  name Transform_frame
+  xpos 2160
+  ypos -394
+ }
+push $N22cfc00
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "Input/timecode: \[metadata input/timecode]\n"
+  old_message {{73 110 112 117 116 47 116 105 109 101 99 111 100 101 58 32 48 51 58 50 51 58 53 53 58 49 52 10}
+    }
+  old_expression_markers {{16 26}
+    }
+  box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
+  xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
+  yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 1 100 2 100 3 100 4 100 5 100 6 100 7 100 8 100 9 100 10 100 11 100 12 100 27 100}
+    }
+  cursor_position 41
+  global_font_scale {{parent.fontsize/100}}
+  center {1920 1080}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{65.60009766 299.2997437}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1920 1080 0 0 1 1 0 0 0 0}
+    }
+  shadow_opacity 0.8
+  shadow_angle 317
+  name input_timecode
+  xpos 1940
+  ypos -442
+  disable {{parent.inputtc==0}}
+ }
+ Transform {
+  translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_extension.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
+  center {1920 1080}
+  name Transform_input_timecode
+  xpos 1940
+  ypos -394
+ }
+push $N22b2000
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "File extension: \[file extension \[knob \[topnode parent.input0].file]]"
+  old_message {{70 105 108 101 32 101 120 116 101 110 115 105 111 110 58 32 46 100 112 120}
+    }
+  old_expression_markers {{16 19}
+    }
+  box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
+  xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
+  yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
+  transforms {{0 2}
+    }
+  font_size_values {{0 100}
+    }
+  cursor_position 60
+  global_font_scale {{parent.fontsize/100}}
+  center {1920 1080}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{65.60009766 299.2997437}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1920 1080 0 0 1 1 0 0 0 0}
+    }
+  shadow_opacity 0.8
+  shadow_angle 317
+  name file_extension
+  xpos 1720
+  ypos -442
+  disable {{parent.fileextension==0}}
+ }
+ Transform {
+  translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
+  center {1920 1080}
+  name Transform_file_extension
+  xpos 1720
+  ypos -394
+ }
+push $N22b2380
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "File name: \[file tail \[knob \[topnode parent.input0].file]]\n"
+  old_message {{70 105 108 101 32 110 97 109 101 58 32 65 48 48 53 67 48 48 50 95 49 56 48 54 48 56 95 82 53 66 71 46 35 35 35 35 35 35 35 35 46 100 112 120 10}
+    }
+  old_expression_markers {{11 43}
+    }
+  box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
+  xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
+  yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 44 100}
+    }
+  cursor_position 37
+  global_font_scale {{parent.fontsize/100}}
+  center {1920 1080}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{65.60009766 299.2997437}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1920 1080 0 0 1 1 0 0 0 0}
+    }
+  shadow_opacity 0.8
+  shadow_angle 317
+  name file_name
+  xpos 1500
+  ypos -442
+  disable {{parent.filename==0}}
+ }
+ Transform {
+  translate {0 {"(shot_name.disable==1 ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable==1 ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable==1 ? 0:-(fontsize))\n+\nproxy.gap"}}
+  center {1920 1080}
+  name Transform_file_name
+  xpos 1500
+  ypos -394
+ }
+push $N22b2700
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "Version: \[lindex \[split \[lindex \[split \[lindex \[split \[value \[topnode parent.input0].file] /] end] _] end] .] 0]"
+  old_message {{86 101 114 115 105 111 110 58 32 82 53 66 71}
+    }
+  old_expression_markers {{9 12}
+    }
+  box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
+  xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
+  yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 1 100 2 100 3 100 4 100 5 100 6 100 7 100 8 100 9 100 10 100 11 100}
+    }
+  cursor_position 112
+  global_font_scale {{parent.fontsize/100}}
+  center {1920 1080}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{65.60009766 299.2997437}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1920 1080 0 0 1 1 0 0 0 0}
+    }
+  shadow_opacity 0.8
+  shadow_angle 317
+  name version
+  xpos 1280
+  ypos -442
+  disable {{parent.versio==0}}
+ }
+ Transform {
+  translate {0 {"(shot_name.disable==1 ? 0:-(parent.fontsize))\n+\nproxy.gap\n+\n(frame_range.disable==1 ? 0:-(parent.fontsize))\n+\nproxy.gap\n\n"}}
+  center {1920 1080}
+  name Transform_version
+  xpos 1280
+  ypos -394
+ }
+push 0
+push $N22b2a80
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "Frame Range: \[value \[topnode parent.input0].first] - \[value \[topnode parent.input0].last]"
+  old_message {{70 114 97 109 101 32 82 97 110 103 101 58 32 50 57 51 54 53 52 32 45 32 50 57 51 55 49 50}
+    }
+  old_expression_markers {{13 18 22 27}
+    }
+  box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
+  xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
+  yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
+  transforms {{0 2}
+    }
+  cursor_position 89
+  global_font_scale {{parent.shot_name.global_font_scale}}
+  center {1920 1080}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{65.60009766 299.2997437}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1920 1080 0 0 1 1 0 0 0 0}
+    }
+  background_color 0
+  shadow_opacity 0.8
+  shadow_angle 317
+  name frame_range
+  xpos 1060
+  ypos -442
+  disable {{"parent.framerange ==0"}}
+ }
+ Transform {
+  translate {0 {"shot_name.disable==1 ? 0:-(parent.fontsize)\n+ proxy.gap"}}
+  center {1920 1080}
+  name Transform_frame_range
+  xpos 1060
+  ypos -394
+ }
+push $N22b2e00
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message "Shot name: \[lrange \[split \[file tail \[knob \[topnode parent.input0].file]] _ ] 0 \[value shot_n_number] ]"
+  old_message {{83 104 111 116 32 110 97 109 101 58 32 65 48 48 53 67 48 48 50 32 49 56 48 54 48 56 32 82 53 66 71 46 35 35 35 35 35 35 35 35 46 100 112 120}
+    }
+  old_expression_markers {{11 43}
+    }
+  box {{input.format.x+(input.format.r*.02)} {"input.format.y + (input.format.t*.02)"} {input.format.r-(input.format.r*.02)} {input.format.t-(input.format.t*.02)}}
+  xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
+  yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
+  transforms {{0 2}
+    }
+  font_size_values {{0 100 1 100 2 100 3 100 4 100 5 100 6 100 7 100 8 100 9 100 10 100 0 {curve x1018 114} 1 114 2 110 3 110 4 110 5 110 6 110 7 110 8 110 9 110 10 110}
+    }
+  global_font_scale {{parent.fontsize/100}}
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{65.60009766 299.2997437}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1920 1080 0 0 1 1 0 0 0 0}
+    }
+  shadow_opacity 0.8
+  shadow_angle 317
+  name shot_name
+  xpos 840
+  ypos -442
+  disable {{"parent.shotname == 0"}}
+ }
+ Merge2 {
+  inputs 10+1
+  operation max
+  name Merge_TEXT
+  xpos 840
+  ypos -106
+ }
+ Transform {
+  translate {0 {"proxy.text_pos < 2 ? 0 :(-Transform_colorspace.translate.y)"}}
+  center {960 540}
+  shutteroffset centred
+  name Transform1
+  xpos 840
+  ypos -58
+ }
+ Crop {
+  box {{parent.Crop_proxy.box.x} {parent.Crop_proxy.box.y} {parent.Crop_proxy.box.r} {parent.Crop_proxy.box.t}}
+  name Crop_TEXT
+  xpos 840
+  ypos -10
+ }
+set N23e3c00 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  color 1
+  name TextColor
+  xpos 1060
+  ypos 567
+ }
+ Crop {
+  box {{parent.Crop_proxy.box.x} {parent.Crop_proxy.box.y} {parent.Crop_proxy.box.r} {parent.Crop_proxy.box.t}}
+  reformat true
+  crop false
+  name Crop_text_BG
+  xpos 1060
+  ypos 806
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy_text
+  xpos 840
+  ypos 800
+ }
+ Premult {
+  name Premult_text
+  xpos 840
+  ypos 926
+ }
+push $N23e3c00
+ Dot {
+  name Dot10
+  xpos 764
+  ypos -6
+ }
+ Expression {
+  channel3 alpha
+  expr3 "a==1 ? 1:0"
+  name Expression_alpha_treat
+  xpos 730
+  ypos 254
+ }
+ Blur {
+  size {{1.5-(parent.Merge_text.mix*1.5)}}
+  name Blur_text
+  xpos 730
+  ypos 320
+ }
+push $N23e3c00
+ Dot {
+  name Dot11
+  xpos 1314
+  ypos -6
+ }
+ Transform {
+  translate {{"sin(\[value angle]*3.14159265/180)*\[value distance]"} {"-1*cos(\[value angle]*3.14159265/180)*\[value distance]"}}
+  center {960 540}
+  name Transform_shadow
+  xpos 1280
+  ypos 110
+ }
+ Blur {
+  size 2
+  name Blur_shadow
+  xpos 1280
+  ypos 224
+ }
+ Crop {
+  box {{parent.Crop_proxy.box.x} {parent.Crop_proxy.box.y} {parent.Crop_proxy.box.r} {parent.Crop_proxy.box.t}}
+  name Crop_shadow
+  xpos 1280
+  ypos 302
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name ShadowColor
+  xpos 1500
+  ypos 111
+ }
+ Crop {
+  box {{parent.Crop_proxy.box.x} {parent.Crop_proxy.box.y} {parent.Crop_proxy.box.r} {parent.Crop_proxy.box.t}}
+  reformat true
+  crop false
+  name Crop_shadow_BG
+  xpos 1500
+  ypos 350
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy_shadow
+  xpos 1280
+  ypos 344
+ }
+ Premult {
+  name Premult_shadow
+  xpos 1280
+  ypos 422
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge_text_stencil
+  xpos 730
+  ypos 422
+ }
+push $N22b3180
+ Merge2 {
+  inputs 2
+  name Merge_shadow
+  xpos 400
+  ypos 422
+  disable {{parent.shad==0}}
+ }
+ Merge2 {
+  inputs 2
+  mix 0.8
+  name Merge_text
+  xpos 400
+  ypos 926
+ }
+ Transform {
+  center {960 540}
+  name Transform_all
+  xpos 400
+  ypos 974
+ }
+set N244b500 [stack 0]
+push $N22b3500
+ Dot {
+  name Dot12
+  xpos 214
+  ypos 762
+ }
+set N244b180 [stack 0]
+ Dot {
+  name Dot13
+  xpos -6
+  ypos 762
+ }
+ Merge2 {
+  inputs 2
+  output rgb
+  name Merge_all_no_alpha
+  xpos -40
+  ypos 974
+ }
+push $N244b500
+ Shuffle {
+  alpha black
+  name Shuffle2
+  label "\[value in 1]"
+  xpos 400
+  ypos 1136
+ }
+ Switch {
+  inputs 2
+  which {{parent.show_only_text.which==0}}
+  name Switch_na_alpha1
+  label "\[value which]"
+  xpos 70
+  ypos 1136
+ }
+push $N244b500
+push $N244b500
+push $N244b180
+ Merge2 {
+  inputs 2
+  name Merge_all
+  xpos 180
+  ypos 974
+ }
+ Switch {
+  inputs 2
+  which {{text_only}}
+  name show_only_text
+  label "\[value which]"
+  selected true
+  xpos 180
+  ypos 1064
+ }
+ Switch {
+  inputs 2
+  which {{parent.no_alpha}}
+  name Switch_na_alpha2
+  label "\[value which]"
+  xpos 180
+  ypos 1280
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha black
+  name if_input_exists
+  label "\[value in 1]"
+  xpos 180
+  ypos 1376
+  disable {{"\[exists parent.input0]"}}
+ }
+ Output {
+  name Output1
+  xpos 180
+  ypos 1574
+ }
+ NoOp {
+  inputs 0
+  name proxy
+  xpos 620
+  ypos -394
+  addUserKnob {20 User}
+  addUserKnob {7 gap l Gap R -200 200}
+  gap {{-parent.spacing}}
+  addUserKnob {4 text_pos l "Text Position" M {"Top Left" "Top Right" "Bottom Left" "Bottom Right"}}
+  text_pos "Top Right"
+ }
+end_group
