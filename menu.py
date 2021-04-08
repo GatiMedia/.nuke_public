@@ -84,9 +84,6 @@ nuke.knobDefault('Cylinder.label', "Display: [string toupper [value display]]\nR
 nuke.knobDefault('Sphere.label', "Display: [string toupper [value display]]\nRender: [string toupper [value render_mode]]")
 nuke.knobDefault('Scene.label', "Display: [string toupper [value display]]\nRender: [string toupper [value render_mode]]")
 
-#other
-nuke.knobDefault('nuke_dispatch.label', '''Range: [value framestart] - [value frameend]\nBatch: [value batch]\nLic. Rem.: [if {[value removelicense]==true} {return "On"} {return "Off"}]\n[if { [value framestart] == [getenv FS] && [value frameend] == [getenv FE]} {return [knob tile_color 16711935]} else {return [knob tile_color 4278190335]}]''')
-
 # ------------ OTHER KNOBS ------------
 
 #image
