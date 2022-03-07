@@ -1,0 +1,253 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+ name BlinkPixelSort
+ selected true
+ xpos 1447
+ ypos -331
+ addUserKnob {20 User}
+ addUserKnob {26 info l "" +STARTLINE T "P i x e l S o r t e r v1.1\nby Hagbarth"}
+ addUserKnob {26 ""}
+ addUserKnob {4 OutputMode l "Output Mode" M {Regular "Data (RGBA == Sample, X, Y, Index)" Effect "" ""}}
+ OutputMode Effect
+ addUserKnob {6 UseGPU l "Use GPU" -STARTLINE}
+ UseGPU true
+ addUserKnob {6 OutputAlpha l "Alpha From Source" t "By default it will output a alpha that shows the affected area. If you enable this checkbox the alpha will be the alpha from the source." -STARTLINE}
+ OutputAlpha true
+ addUserKnob {26 Devider_General l General}
+ addUserKnob {4 SampleChan l "Sorting Channal" M {Lum Red Green Blue Alpha}}
+ addUserKnob {4 SortingDir l "Sorting Direction" M {Horizontal Vertical ""}}
+ addUserKnob {6 reversed l Reversed -STARTLINE}
+ reversed true
+ addUserKnob {26 devider_effet_settings l "Effect Settings"}
+ addUserKnob {7 Threshold}
+ Threshold 0.11
+ addUserKnob {3 maxlength l "Max Length"}
+ maxlength 400
+ addUserKnob {6 Below l "Bright to Dark" +STARTLINE}
+ Below true
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 180
+  ypos -273
+ }
+set N83b13200 [stack 0]
+ Dot {
+  name Dot7
+  xpos -116
+  ypos -270
+ }
+ Dot {
+  name Dot10
+  xpos -116
+  ypos 258
+ }
+set N83b12400 [stack 0]
+ Dot {
+  name Dot13
+  xpos -6
+  ypos 258
+ }
+set N83b11d00 [stack 0]
+ Dot {
+  name Dot12
+  xpos 104
+  ypos 258
+ }
+push $N83b13200
+ Dot {
+  name Dot8
+  xpos 214
+  ypos -102
+ }
+set N83b10f00 [stack 0]
+ Dot {
+  name Dot2
+  xpos 324
+  ypos -102
+ }
+push $N83b10f00
+ Saturation {
+  saturation 0
+  name Saturation1
+  xpos 180
+  ypos -81
+  disable {{parent.SampleChan!=0}}
+ }
+set N83b10100 [stack 0]
+ BlinkScript {
+  recompileCount 184
+  ProgramGroup 1
+  KernelDescription "2 \"SaturationKernel\" iterate pixelWise b05dff637f96f2203b57d34a9bbe556cec369ae378ccc075290f7066a596758a 2 \"src\" Read Random \"dst\" Write Random 7 \"horizontal\" Bool 1 AQ== \"inverse\" Bool 1 AQ== \"count\" Int 1 6AMAAA== \"samplechan\" Int 1 AQAAAA== \"threshold\" Float 1 AAAAAA== \"thresh_below\" Bool 1 AA== \"maxlength\" Int 1 CgAAAA== 7 \"horizontal\" 1 1 \"inverse\" 1 1 \"count\" 1 1 \"samplechan\" 1 1 \"threshold\" 1 1 \"thresh_below\" 1 1 \"maxlength\" 1 1 0"
+  kernelSource "kernel SaturationKernel : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessRandom, eEdgeClamped> src; // the input image\n  Image<eWrite,eAccessRandom> dst; // the output image\n\nvoid shellSort(int n, float arr\[n]\[2])\n\{\n  \tfloat temp,tempB;\n    int i, j;\n    // Start with a big gap, then reduce the gap\n    for (int gap = n/2; gap > 0; gap /= 2)\n    \{\n        // Do a gapped insertion sort for this gap size.\n        // The first gap elements a\[0..gap-1] are already in gapped order\n        // keep adding one more element until the entire array is\n        // gap sorted \n        for (int i = gap; i < n; i += 1)\n        \{\n            // add a\[i] to the elements that have been gap sorted\n            // save a\[i] in temp and make a hole at position i\n            temp = arr\[i]\[0];\n            tempB = arr\[i]\[1];\n \n            // shift earlier gap-sorted elements up until the correct \n            // location for a\[i] is found          \n            for (j = i; j >= gap && arr\[j - gap]\[0] > temp; j -= gap)\{\n                arr\[j]\[0] = arr\[j - gap]\[0];\n                arr\[j]\[1] = arr\[j - gap]\[1];\n            \}\n\t            //  put temp (the original a\[i]) in its correct location\n\t        arr\[j]\[0] = temp;\n\t        arr\[j]\[1] = tempB;\n\n        \}\n    \}\n\}\n\n//Alternative algorithm:\n void BubbleSort(int n,float a\[n]\[2])\n \{\n  float temp,tempB;\n   int i, j;\n   for (i = 0; i < (n - 1); ++i)\n   \{\n        for (j = 0; j < n - 1 - i; ++j )\n        \{\n             if (a\[j]\[0] > a\[j+1]\[0])\n             \{\n                  temp = a\[j+1]\[0];\n                  tempB = a\[j+1]\[1];                \n                  a\[j+1]\[0] = a\[j]\[0];\n                  a\[j+1]\[1] = a\[j]\[1];\n                  a\[j]\[0] = temp;\n                  a\[j]\[1] = tempB;                \n             \}\n        \}\n   \}\n \}   \n\n  param:\n    bool horizontal; \n    bool inverse;\n    int count; \n    int samplechan; \n    float threshold;\n    bool thresh_below;\n    int maxlength;\n\n\n  void define() \{\n    defineParam(horizontal, \"horizontal\", true);  //Sort the pixels horizontally or vertically.\n    defineParam(inverse, \"inverse\", true);        //Black-to-white or white-to-black.\n    defineParam(count, \"count\", 1000);            //The number of incomming items to sort\n    defineParam(samplechan, \"samplechan\", 1);          //What chan to sample (R,G,B or A?)\n    defineParam(maxlength, \"maxlength\", 10);          //What chan to sample (R,G,B or A?)\n  \}\n\n\n  void process(int2 pos) \{\n   float valuesx\[8000]\[2]; \n   int cur_count = 0;\n   if (pos.x==1 && horizontal)\{ //Horizontal Sorting, only run this on pixel 1\n      //Sample all values into the container array.\n      for( int x = 0; x < count; x++ ) \{\n        cur_count +=1;\n        valuesx\[cur_count-1]\[0] = src(x,pos.y,samplechan);\n        valuesx\[cur_count-1]\[1] = float(x);  \n        if ((valuesx\[cur_count-1]\[0] < threshold && thresh_below) || (valuesx\[cur_count-1]\[0] > threshold && !thresh_below) || x >= count-1 || maxlength<cur_count)\{\n          //Do the soring \n          cur_count -=1;\n          shellSort(cur_count,valuesx);\n\n          //Write it back into the dst buffer\n          for( int a = 0; a < cur_count; a++ ) \{\n            if (dst.bounds.inside(a+(x-cur_count),pos.y))\{\n              if (inverse) \{\n                dst(a+(x-cur_count),pos.y) = float4(valuesx\[a]\[0],valuesx\[a]\[1],a,pos.y);\n              \}\n              else \{\n                dst(a+(x-cur_count),pos.y) = float4(valuesx\[(cur_count-a)-1]\[0],valuesx\[(cur_count-a)-1]\[1],(cur_count-a)-1,pos.y);\n              \}\n            \}\n          \}\n          cur_count = 0; \n        \}\n      \} \n  \}\n   else if (pos.y==1 && !horizontal)\{ //Horizontal Sorting, only run this on pixel 1\n      //Sample all values into the container array.\n      for( int y = 0; y < count; y++ ) \{\n        cur_count +=1;\n        valuesx\[cur_count-1]\[0] = src(pos.x,y,samplechan);\n        valuesx\[cur_count-1]\[1] = float(y);  \n        if ((valuesx\[cur_count-1]\[0] < threshold && thresh_below) || (valuesx\[cur_count-1]\[0] > threshold && !thresh_below) || y >= count-1 || maxlength<cur_count)\{\n          //Do the soring \n          cur_count -=1;\n          shellSort(cur_count,valuesx);\n\n          //Write it back into the dst buffer\n          for( int a = 0; a < cur_count; a++ ) \{\n            if (dst.bounds.inside(pos.x,a+(y-cur_count)))\{\n              if (inverse) \{\n                dst(pos.x,a+(y-cur_count)) = float4(valuesx\[a]\[0],valuesx\[a]\[1],a,pos.x);\n              \}\n              else \{\n                dst(pos.x,a+(y-cur_count)) = float4(valuesx\[(cur_count-a)-1]\[0],valuesx\[(cur_count-a)-1]\[1],(cur_count-a)-1,pos.x);\n              \}\n            \}\n          \}\n          cur_count = 0; \n        \}\n      \} \n    \}\n\n  \}\n\};\n"
+  useGPUIfAvailable {{parent.UseGPU}}
+  rebuild ""
+  SaturationKernel_horizontal {{!parent.SortingDir}}
+  SaturationKernel_inverse {{!parent.reversed}}
+  SaturationKernel_count {{!parent.SortingDir?input.width:input.height}}
+  SaturationKernel_samplechan {{max(0,parent.SampleChan-1)}}
+  SaturationKernel_threshold {{parent.Threshold}}
+  SaturationKernel_thresh_below {{parent.Below}}
+  SaturationKernel_maxlength {{parent.maxlength}}
+  rebuild_finalise ""
+  name BlinkScript4
+  xpos -40
+  ypos -15
+ }
+push $N83b10100
+ BlinkScript {
+  recompileCount 131
+  ProgramGroup 1
+  KernelDescription "2 \"SaturationKernel\" iterate pixelWise da381d70641891fddfcc53050bed89ac2f2f5f76282667be47fe0e1fc5873a68 2 \"src\" Read Random \"dst\" Write Random 4 \"horizontal\" Bool 1 AQ== \"inverse\" Bool 1 AQ== \"count\" Int 1 6AMAAA== \"samplechan\" Int 1 AQAAAA== 4 \"horizontal\" 1 1 \"inverse\" 1 1 \"count\" 1 1 \"samplechan\" 1 1 0"
+  kernelSource "kernel SaturationKernel : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessRandom, eEdgeClamped> src; // the input image\n  Image<eWrite,eAccessRandom> dst; // the output image\n\nvoid shellSort(int n, float arr\[n]\[2])\n\{\n  \tfloat temp,tempB;\n    int i, j;\n    // Start with a big gap, then reduce the gap\n    for (int gap = n/2; gap > 0; gap /= 2)\n    \{\n        // Do a gapped insertion sort for this gap size.\n        // The first gap elements a\[0..gap-1] are already in gapped order\n        // keep adding one more element until the entire array is\n        // gap sorted \n        for (int i = gap; i < n; i += 1)\n        \{\n            // add a\[i] to the elements that have been gap sorted\n            // save a\[i] in temp and make a hole at position i\n            temp = arr\[i]\[0];\n            tempB = arr\[i]\[1];\n \n            // shift earlier gap-sorted elements up until the correct \n            // location for a\[i] is found          \n            for (j = i; j >= gap && arr\[j - gap]\[0] > temp; j -= gap)\{\n                arr\[j]\[0] = arr\[j - gap]\[0];\n                arr\[j]\[1] = arr\[j - gap]\[1];\n            \}\n\t            //  put temp (the original a\[i]) in its correct location\n\t        arr\[j]\[0] = temp;\n\t        arr\[j]\[1] = tempB;\n\n        \}\n    \}\n\}\n\n//Alternative algorithm:\n void BubbleSort(int n,float a\[n]\[2])\n \{\n  float temp,tempB;\n   int i, j;\n   for (i = 0; i < (n - 1); ++i)\n   \{\n        for (j = 0; j < n - 1 - i; ++j )\n        \{\n             if (a\[j]\[0] > a\[j+1]\[0])\n             \{\n                  temp = a\[j+1]\[0];\n                  tempB = a\[j+1]\[1];                \n                  a\[j+1]\[0] = a\[j]\[0];\n                  a\[j+1]\[1] = a\[j]\[1];\n                  a\[j]\[0] = temp;\n                  a\[j]\[1] = tempB;                \n             \}\n        \}\n   \}\n \}   \n\n  param:\n    bool horizontal; \n    bool inverse;\n    int count; \n    int samplechan; \n\n  void define() \{\n    defineParam(horizontal, \"horizontal\", true);  //Sort the pixels horizontally or vertically.\n    defineParam(inverse, \"inverse\", true);        //Black-to-white or white-to-black.\n    defineParam(count, \"count\", 1000);            //The number of incomming items to sort\n    defineParam(samplechan, \"samplechan\", 1);          //What chan to sample (R,G,B or A?)\n  \}\n\n\n  void process(int2 pos) \{\n   float valuesx\[8000]\[2]; \n   if (pos.x==1 && horizontal)\{ //Horizontal Sorting, only run this on pixel 1\n      //Sample all values into the container array.\n      for( int a = 0; a < count; a++ ) \{\n        valuesx\[a]\[0] = src(a,pos.y,samplechan);\n        valuesx\[a]\[1] = float(a);  \n      \} \n      //Do the soring \n      shellSort(count,valuesx);\n      //Write it back into the dst buffer\n      for( int a = 0; a < count; a++ ) \{\n        if (dst.bounds.inside(a,pos.y))\{\n          if (inverse) \{\n            dst(a,pos.y) = float4(valuesx\[a]\[0],valuesx\[a]\[1],a,pos.y);\n          \}\n          else \{\n            dst(a,pos.y) = float4(valuesx\[count-a]\[0],valuesx\[count-a]\[1],count-a,pos.y);\n          \}\n        \}\n      \}      \n   \}\n   else if  (pos.y==1 && !horizontal)\{  //Vertical Sorting, only run this on pixel 1\n      //Sample all values into the container array.\n      for( int a = 0; a < count; a++ ) \{\n        valuesx\[a]\[0] = src(pos.x,a,samplechan);\n        valuesx\[a]\[1] = float(a);  \n      \} \n      //Do the soring  \n      shellSort(count,valuesx);\n      //Write it back into the dst buffer\n      for( int a = 0; a < count; a++ ) \{\n        if (dst.bounds.inside(pos.x,a))\{\n          if (inverse) \{\n        \t\tdst(pos.x,a) = float4(valuesx\[a]\[0],valuesx\[a]\[1],a,pos.x);\n          \}\n          else \{\n            dst(pos.x,a) = float4(valuesx\[count-a]\[0],valuesx\[count-a]\[1],count-a,pos.x);\n          \}\n        \}\n      \}      \n    \}\n  \}\n\};\n"
+  useGPUIfAvailable {{parent.UseGPU}}
+  rebuild ""
+  SaturationKernel_horizontal {{!parent.SortingDir}}
+  SaturationKernel_inverse {{!parent.reversed}}
+  SaturationKernel_count {{!parent.SortingDir?input.width:input.height}}
+  SaturationKernel_samplechan {{max(0,parent.SampleChan-1)}}
+  rebuild_finalise ""
+  name BlinkScript1
+  xpos 180
+  ypos -15
+ }
+ Switch {
+  inputs 2
+  which {{max(0,parent.OutputMode-1)}}
+  name Switch3
+  xpos 180
+  ypos 87
+ }
+ Shuffle {
+  blue alpha
+  alpha blue
+  name Shuffle1
+  xpos 180
+  ypos 135
+ }
+set N6af71600 [stack 0]
+ MergeExpression {
+  inputs 2
+  expr0 A.r(B.b,B.g)
+  expr1 A.g(B.b,B.g)
+  expr2 A.b(B.b,B.g)
+  name MergeExpression2
+  xpos 290
+  ypos 135
+ }
+ Dot {
+  name Dot3
+  xpos 324
+  ypos 210
+ }
+push $N83b10f00
+ Dot {
+  name Dot1
+  xpos 104
+  ypos -102
+ }
+push $N6af71600
+ MergeExpression {
+  inputs 2
+  expr0 A.r(B.g,B.b)
+  expr1 A.g(B.g,B.b)
+  expr2 A.b(B.g,B.b)
+  name MergeExpression1
+  xpos 70
+  ypos 135
+ }
+ Dot {
+  name Dot4
+  xpos 104
+  ypos 210
+ }
+push $N6af71600
+ Switch {
+  inputs 3
+  which {{!parent.OutputMode*(1+parent.SortingDir)}}
+  name Switch1
+  xpos 180
+  ypos 207
+ }
+ Dot {
+  name Dot5
+  xpos 214
+  ypos 210
+ }
+set Nad3ea400 [stack 0]
+ Dot {
+  name Dot14
+  xpos 104
+  ypos 210
+ }
+set Nad3e9d00 [stack 0]
+ MergeExpression {
+  inputs 2
+  expr3 parent.SortingDir==0?A.a(B.g,B.b):A.a(B.b,B.g)
+  name MergeExpression4
+  xpos 70
+  ypos 279
+ }
+ Dot {
+  name Dot11
+  xpos 104
+  ypos 330
+ }
+push $N83b11d00
+push $Nad3e9d00
+ Dot {
+  name Dot6
+  xpos -6
+  ypos 210
+ }
+ MergeExpression {
+  inputs 2
+  expr0 parent.SortingDir==0?A.r(B.g,B.b):A.r(B.b,B.g)
+  expr1 parent.SortingDir==0?A.g(B.g,B.b):A.g(B.b,B.g)
+  expr2 parent.SortingDir==0?A.b(B.g,B.b):A.b(B.b,B.g)
+  name MergeExpression3
+  xpos -40
+  ypos 279
+ }
+ Premult {
+  name Premult1
+  xpos -40
+  ypos 303
+ }
+push $N83b12400
+ Dot {
+  name Dot9
+  xpos -116
+  ypos 378
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -40
+  ypos 375
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  label "\[python nuke.thisNode().knob('in').value()] >> \[python nuke.thisNode().knob('out').value()]"
+  xpos 70
+  ypos 369
+  disable {{!parent.OutputAlpha}}
+ }
+push $Nad3ea400
+ Switch {
+  inputs 2
+  which {{max(0,parent.OutputMode-1)}}
+  name Switch2
+  xpos 180
+  ypos 375
+ }
+ Output {
+  name Output1
+  xpos 180
+  ypos 447
+ }
+end_group

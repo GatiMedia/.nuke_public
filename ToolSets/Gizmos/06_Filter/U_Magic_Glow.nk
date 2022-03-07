@@ -1,0 +1,386 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+name U_Magic_Glow
+selected true
+xpos 7550
+ypos 45614
+addUserKnob {20 PlasmaGlow l MagicGlow}
+addUserKnob {7 percent l INVISIBLE +INVISIBLE}
+percent 0.37
+addUserKnob {7 spread}
+spread 0.255
+addUserKnob {41 value_1 l brightness T Brightness.value}
+addUserKnob {6 cutoff l threshold +STARTLINE}
+cutoff true
+addUserKnob {41 value_3 l "threshold value" T _SIT_.value}
+addUserKnob {18 tintMe l tint R 0 1.5}
+tintMe {0.65 0.65 0.65}
+addUserKnob {6 tintMe_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 tintMe_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 tintMe_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 tintMe_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {7 wh_ratio l "width/height ratio" R 0.01 2}
+wh_ratio 2
+addUserKnob {6 effectOnly l "effect only" +STARTLINE}
+effectOnly true
+addUserKnob {4 crop l "crop to" M {none format bbox union intersection ""}}
+crop format
+addUserKnob {3 adjustBBox l "adjust bbox" -STARTLINE}
+addUserKnob {6 blackOutside l "black outside" -STARTLINE}
+}
+Input {
+inputs 0
+name Img
+xpos -1924
+ypos -261
+addUserKnob {20 User}
+addUserKnob {7 spread}
+spread {{parent.spread i}}
+addUserKnob {7 percent}
+percent 1
+}
+set N4d47dd00 [stack 0]
+Dot {
+name Dot1
+xpos -1890
+ypos -105
+}
+set N4d47d600 [stack 0]
+Dot {
+name Dot4
+xpos -1890
+ypos 474
+}
+set N4d47cf00 [stack 0]
+Dot {
+name Dot2
+xpos -1890
+ypos 518
+}
+set N4d47c800 [stack 0]
+Dot {
+name Dot3
+xpos -1890
+ypos 563
+}
+set N4d47c100 [stack 0]
+Dot {
+name Dot5
+xpos -1890
+ypos 612
+}
+Crop {
+box {{"max( bbox.x, format.x )"} {"max( bbox.y, format.y )"} {"min( bbox.r, format.r )"} {"min( bbox.t, format.t )"}}
+name CropToIntersection
+xpos -1780
+ypos 608
+}
+AdjBBox {
+numpixels {{parent.adjustBBox}}
+name AdjBBox4
+xpos -1670
+ypos 608
+}
+push $N4d47dd00
+Add {
+channels rgb
+value {{-_SIT_.value i}}
+name _LIFT_
+xpos -1166
+ypos -261
+}
+add_layer {key key.a}
+Keyer {
+output key.a
+operation "luminance key"
+name Keyer1
+xpos -1043
+ypos -268
+}
+Add {
+channels rgb
+value 0.54
+name _SIT_
+xpos -1043
+ypos -226
+}
+Premult {
+alpha key.a
+name Premult1
+xpos -1043
+ypos -156
+}
+push $N4d47d600
+Switch {
+inputs 2
+which {{parent.cutoff i}}
+name cutoff_switch
+xpos -1043
+ypos -110
+}
+Multiply {
+channels rgb
+value {{parent.tintMe i} {parent.tintMe i} {parent.tintMe i} 0}
+name Multiply1
+xpos -1043
+ypos -42
+}
+Multiply {
+channels rgb
+value 0.41
+name Brightness
+xpos -1043
+ypos 9
+}
+set N70d3a400 [stack 0]
+Blur {
+size {{width*percent.w/100} {height*percent.h/100}}
+name __PercentBlur__1
+xpos -1408
+ypos 166
+addUserKnob {20 User}
+addUserKnob {14 percent R 0 100}
+percent {{parent.percent*pow(2,1)} {w/parent.wh_ratio/height*width}}
+}
+Multiply {
+channels rgb
+value {{"pow(parent.spread, 2)"}}
+name __SPREAD__1
+xpos -1408
+ypos 208
+}
+push $N70d3a400
+Blur {
+size {{width*percent.w/100 i} {height*percent.h/100 i}}
+name __PercentBlur__8
+xpos -677
+ypos 171
+addUserKnob {20 User}
+addUserKnob {14 percent R 0 100}
+percent {{parent.percent*pow(2,8) i} {w/parent.wh_ratio/height*width i}}
+}
+Multiply {
+channels rgb
+value {{"pow(parent.spread, 9)" i}}
+name __SPREAD__8
+xpos -677
+ypos 213
+}
+push $N70d3a400
+Blur {
+size {{width*percent.w/100 i} {height*percent.h/100 i}}
+name __PercentBlur__7
+xpos -788
+ypos 173
+addUserKnob {20 User}
+addUserKnob {14 percent R 0 100}
+percent {{parent.percent*pow(2,7) i} {w/parent.wh_ratio/height*width i}}
+}
+Multiply {
+channels rgb
+value {{"pow(parent.spread, 8)" i}}
+name __SPREAD__7
+xpos -788
+ypos 215
+}
+push $N70d3a400
+Blur {
+size {{width*percent.w/100 i} {height*percent.h/100 i}}
+name __PercentBlur__6
+xpos -889
+ypos 175
+addUserKnob {20 User}
+addUserKnob {14 percent R 0 100}
+percent {{parent.percent*pow(2,6) i} {w/parent.wh_ratio/height*width i}}
+}
+Multiply {
+channels rgb
+value {{"pow(parent.spread, 7)" i}}
+name __SPREAD__6
+xpos -889
+ypos 217
+}
+push $N70d3a400
+Blur {
+size {{width*percent.w/100 i} {height*percent.h/100 i}}
+name __PercentBlur__5
+xpos -991
+ypos 174
+addUserKnob {20 User}
+addUserKnob {14 percent R 0 100}
+percent {{parent.percent*pow(2,5) i} {w/parent.wh_ratio/height*width i}}
+}
+Multiply {
+channels rgb
+value {{"pow(parent.spread, 6)" i}}
+name __SPREAD__5
+xpos -991
+ypos 216
+}
+push $N70d3a400
+Blur {
+size {{width*percent.w/100 i} {height*percent.h/100 i}}
+name __PercentBlur__4
+xpos -1090
+ypos 172
+addUserKnob {20 User}
+addUserKnob {14 percent R 0 100}
+percent {{parent.percent*pow(2,4) i} {w/parent.wh_ratio/height*width i}}
+}
+Multiply {
+channels rgb
+value {{"pow(parent.spread, 5)" i}}
+name __SPREAD__4
+xpos -1090
+ypos 214
+}
+push $N70d3a400
+Blur {
+size {{width*percent.w/100 i} {height*percent.h/100 i}}
+name __PercentBlur__3
+xpos -1197
+ypos 168
+addUserKnob {20 User}
+addUserKnob {14 percent R 0 100}
+percent {{parent.percent*pow(2,3) i} {w/parent.wh_ratio/height*width i}}
+}
+Multiply {
+channels rgb
+value {{"pow(parent.spread, 4)" i}}
+name __SPREAD__3
+xpos -1197
+ypos 210
+}
+push $N70d3a400
+Blur {
+size {{width*percent.w/100} {height*percent.h/100}}
+name __PercentBlur__2
+xpos -1304
+ypos 168
+addUserKnob {20 User}
+addUserKnob {14 percent R 0 100}
+percent {{parent.percent*pow(2,2)} {w/parent.wh_ratio/height*width}}
+}
+Multiply {
+channels rgb
+value {{"pow(parent.spread, 3)" i}}
+name __SPREAD__2
+xpos -1304
+ypos 210
+}
+push 0
+push $N70d3a400
+Blur {
+size {{width*percent.w/100} {height*percent.h/100}}
+name __PercentBlur__
+xpos -1504
+ypos 166
+addUserKnob {20 User}
+addUserKnob {14 percent R 0 100}
+percent {{parent.percent} {w/parent.wh_ratio/height*width}}
+}
+Multiply {
+channels rgb
+value {{parent.spread i}}
+name __SPREAD__
+xpos -1504
+ypos 208
+}
+push $N4d47cf00
+Shuffle {
+red black
+green black
+blue black
+alpha black
+name Shuffle1
+label "\[value in 1]"
+xpos -1561
+ypos 470
+disable {{!parent.effectOnly}}
+}
+Merge2 {
+inputs 10+1
+operation plus
+Achannels rgb
+maskChannelMask -rgba.alpha
+name Plus
+xpos -1043
+ypos 470
+}
+set N1ef14f00 [stack 0]
+CopyBBox {
+inputs 2
+name CopyBBox3
+xpos -1560
+ypos 608
+}
+push $N4d47c100
+Crop {
+box {{"min( bbox.x, format.x )"} {"min( bbox.y, format.y )"} {"max( bbox.r, format.r )"} {"max( bbox.t, format.t )"}}
+name CropToUnion
+xpos -1780
+ypos 559
+}
+AdjBBox {
+numpixels {{parent.adjustBBox}}
+name AdjBBox3
+xpos -1670
+ypos 559
+}
+push $N1ef14f00
+CopyBBox {
+inputs 2
+name CopyBBox2
+xpos -1560
+ypos 559
+}
+push $N4d47c800
+AdjBBox {
+numpixels {{parent.adjustBBox}}
+name AdjBBox2
+xpos -1671
+ypos 514
+}
+push $N1ef14f00
+CopyBBox {
+inputs 2
+name CopyBBox1
+xpos -1561
+ypos 514
+}
+push $N1ef14f00
+Crop {
+box {{format.x} {format.y} {format.r} {format.t}}
+crop false
+name CropToFormat
+xpos -1131
+ypos 560
+}
+AdjBBox {
+numpixels {{parent.adjustBBox}}
+name AdjBBox1
+xpos -1131
+ypos 586
+}
+push $N1ef14f00
+Switch {
+inputs 5
+which {{parent.crop}}
+name Switch1
+xpos -1043
+ypos 695
+}
+BlackOutside {
+name BlackOutside1
+xpos -1043
+ypos 721
+disable {{!parent.blackOutside}}
+}
+Output {
+name Output1
+xpos -1043
+ypos 782
+}
+end_group

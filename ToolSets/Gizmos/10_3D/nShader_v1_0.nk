@@ -1,0 +1,100 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+add_layer {normal normal.red normal.green normal.blue normal.alpha}
+Group {
+ name nShader
+ selected true
+ xpos 17670
+ ypos 2342
+ addUserKnob {20 User}
+ addUserKnob {41 normal_vectors l "Normal Vectors" t "define Normal Pass" T Shuffle1.in}
+ addUserKnob {41 equator_angle l "Equator Angle" t "controls the left to right angle of the light" T Constant2.equator_angle}
+ addUserKnob {41 polar_height l "Polar Height" t "controls the top to bottom angle of the light" T Constant2.polar_height}
+ addUserKnob {41 light_color l "Light Color" t "Color of light" T Grade1.multiply}
+ addUserKnob {41 only_light l "Only Light" t "Enable gives you only light impact and disable gives you compose output." T Merge1.disable}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -78
+  ypos -228
+ }
+set N9aff5d00 [stack 0]
+push $N9aff5d00
+ Constant {
+  inputs 0
+  channels rgb
+  color {{cos(radians(polar_height))*cos(radians(equator_angle))} {-sin(radians(polar_height))} {-sin(radians(equator_angle))*cos(radians(polar_height))} {curve}}
+  name Constant2
+  xpos 66
+  ypos -225
+  addUserKnob {20 User}
+  addUserKnob {7 equator_angle l "Equator Angle" R 0 360}
+  equator_angle 90
+  addUserKnob {7 polar_height l "Polar Height" R -90 90}
+  polar_height -90
+  addUserKnob {26 ""}
+  addUserKnob {41 color_1 l color T Constant2.color}
+ }
+ Crop {
+  box {0 0 {Input1.width} {Input1.height}}
+  reformat true
+  crop false
+  name Crop1
+  xpos 66
+  ypos -143
+ }
+push $N9aff5d00
+ Dot {
+  name Dot1
+  xpos -44
+  ypos -190
+ }
+ Shuffle {
+  in normal
+  alpha white
+  name Shuffle1
+  xpos -78
+  ypos -39
+ }
+ Difference {
+  inputs 2
+  name Difference1
+  xpos 66
+  ypos -45
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  alpha black
+  name Shuffle2
+  xpos 66
+  ypos -7
+ }
+ Invert {
+  name Invert1
+  xpos 66
+  ypos 35
+ }
+ Grade {
+  whitepoint 2
+  white_clamp true
+  name Grade1
+  xpos 66
+  ypos 90
+ }
+ Merge2 {
+  inputs 2+1
+  operation plus
+  name Merge1
+  xpos 66
+  ypos 162
+ }
+ Output {
+  name Output1
+  xpos 66
+  ypos 227
+ }
+end_group

@@ -1,0 +1,177 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+ name CamTrackerCard
+ help "This node lets yuo project a texture onto a card to fit the frustum of the connected camera at the reference frame.\n\nThis is useful to either matchmove or stabilise a plate based on a camera rather than 2D tracking data.\n\n"
+ knobChanged "\nn = nuke.thisNode()\nk = nuke.thisKnob()\n\nif k.name() == 'use_input':\n    n\['knob'].setEnabled( not k.value() )\n"
+ tile_color 0x7a0000ff
+ label "Ref frame: \[value ref]"
+ note_font_size 22
+ selected true
+ xpos 53402
+ ypos -4664
+ addUserKnob {20 "" l User}
+ addUserKnob {32 knob l "import chan file" t "when importing a chan file instead of hooking up a camera node, make sure to set the corrcet aperture in the CameraKnobs tab before importing the file!" -STARTLINE +DISABLED T "import_chan_button this.CAM_ANIM\nknob this.use_input 0"}
+ addUserKnob {6 use_input l "use input" t "if checked the camera hooked up to the cam pipe is used\ninstead of the internal one.\nIf unchecked, make sure to set the correct aperture in the CameraKnobs tab before importing the chan file!" -STARTLINE}
+ use_input true
+ addUserKnob {4 output t "stabilize - use this to stabilize a plate using the respective match moved camera\nmatch - track an element into the shot based on the camera input" M {stabilize match}}
+ output match
+ addUserKnob {3 ref l refFrame t "if the output format is the same as the plate you want to match/stabilize,\nthis will be the frame that will not be modified."}
+ ref 1117
+ addUserKnob {22 settocurrent l "set to current frame" -STARTLINE T "n = nuke.thisNode()\nn\[\"ref\"].setValue(nuke.frame())"}
+ addUserKnob {7 distance t "the distance of the card to the camera.\nIf you have a nodal camera this isn't important\notherwise you need to adjust this to get the required parallax." R 1 10000}
+ distance 5000
+ addUserKnob {26 "" l output}
+ addUserKnob {41 format T Card3D1.format}
+ addUserKnob {41 crop_1 l "black outside" +INVISIBLE T Card3D1.crop}
+ addUserKnob {6 crop -STARTLINE}
+ crop true
+ addUserKnob {41 full_format l "output format" +INVISIBLE T Card3D1.full_format}
+ addUserKnob {41 proxy_format l "proxy format" +INVISIBLE T Card3D1.proxy_format}
+ addUserKnob {41 filter T Card3D1.filter}
+ addUserKnob {20 "" l MotionBlur}
+ addUserKnob {41 motionblur T Card3D1.motionblur}
+ addUserKnob {41 shutter T Card3D1.shutter}
+ addUserKnob {41 shutteroffset l "shutter offset" T Card3D1.shutteroffset}
+ addUserKnob {41 shuttercustomoffset l "" -STARTLINE T Card3D1.shuttercustomoffset}
+ addUserKnob {20 "" l CameraKnobs}
+ addUserKnob {41 rot_order l "rotation order" T CAM_ANIM.rot_order}
+ addUserKnob {41 translate T CAM_ANIM.translate}
+ addUserKnob {41 rotate T CAM_ANIM.rotate}
+ addUserKnob {26 ""}
+ addUserKnob {41 focal l "focal length" T CAM_ANIM.focal}
+ addUserKnob {41 haperture l "horiz aperture" T CAM_ANIM.haperture}
+ addUserKnob {41 vaperture l "vert aperture" T CAM_ANIM.vaperture}
+ addUserKnob {41 win_scale l "window scale" T CAM_ANIM.win_scale}
+ addUserKnob {26 ""}
+ addUserKnob {41 label_1 l label T CAM_ANIM.label}
+}
+ Input {
+  inputs 0
+  name CAM
+  xpos -16
+  ypos 113
+  number 1
+ }
+ Camera {
+  inputs 0
+  display off
+  selectable false
+  haperture 9.58
+  vaperture 5.39
+  near 0.001
+  far {{parent.distance*2}}
+  name CAM_ANIM
+  xpos -136
+  ypos 41
+ }
+ Switch {
+  inputs 2
+  which {{parent.use_input}}
+  name Switch4
+  label "internal or connected camera"
+  xpos -16
+  ypos 54
+ }
+set N19eab900 [stack 0]
+ Camera {
+  inputs 0
+  display off
+  selectable false
+  rot_order {{"\[topnode parent.input1].rot_order"}}
+  translate {{"\[topnode parent.input1].translate.x(parent.ref)"} {"\[topnode parent.input1].translate.y(parent.ref)"} {"\[topnode parent.input1].translate.z(parent.ref)"}}
+  rotate {{"\[topnode parent.input1].rotate.x(parent.ref)"} {"\[topnode parent.input1].rotate.y(parent.ref)"} {"\[topnode parent.input1].rotate.z(parent.ref)"}}
+  focal {{"\[topnode input1].focal.0"}}
+  haperture {{"\[topnode input1].haperture.0"}}
+  vaperture {{"\[topnode input1].vaperture.0"}}
+  near 0.0001
+  far {{parent.distance*2}}
+  win_scale {{"\[topnode input1].win_scale.0"} {"\[topnode input1].win_scale.1"}}
+  name CAM_STATIC1
+  tile_color 0x5682e700
+  gl_color 0x4851e400
+  label "connected cam\n"
+  xpos 28
+  ypos -178
+ }
+ Camera {
+  inputs 0
+  display off
+  selectable false
+  rot_order {{CAM_ANIM.rot_order}}
+  translate {{CAM_ANIM.translate.x(parent.ref)} {CAM_ANIM.translate.y(parent.ref)} {CAM_ANIM.translate.z(parent.ref)}}
+  rotate {{CAM_ANIM.rotate.x(parent.ref)} {CAM_ANIM.rotate.y(parent.ref)} {CAM_ANIM.rotate.z(parent.ref)}}
+  focal {{CAM_ANIM.focal.0}}
+  haperture {{CAM_ANIM.haperture.0}}
+  vaperture {{CAM_ANIM.vaperture.0}}
+  near 0.0001
+  far {{parent.distance*2}}
+  name CAM_STATIC
+  tile_color 0x5682e700
+  gl_color 0x4851e400
+  label "internal cam"
+  xpos -112
+  ypos -85
+ }
+ Switch {
+  inputs 2
+  which {{parent.use_input}}
+  name Switch5
+  label "internal or connected cam\n\[input this \[knob parent.use_input]]"
+  xpos 28
+  ypos -72
+ }
+set N19eaa400 [stack 0]
+ Switch {
+  inputs 2
+  which {{!parent.output}}
+  name Switch1
+  label "match or stabilize"
+  xpos 177
+  ypos -72
+ }
+push $N19eaa400
+push $N19eab900
+ Switch {
+  inputs 2
+  which {{!parent.output}}
+  name Switch2
+  label "match or stabilize"
+  xpos 166
+  ypos 54
+ }
+ Input {
+  inputs 0
+  name IMG
+  xpos 409
+  ypos -97
+ }
+ Card3D {
+  inputs 3
+  scaling {{"\[input Switch5 \[value parent.use_input]].win_scale.0"} {"\[input Switch5 \[value parent.use_input]].win_scale.1"} 1}
+  uniform_scale {{parent.distance}}
+  pivot {0 0 1}
+  lens_in_focal {{"\[input Switch5 \[value parent.use_input]].focal"}}
+  lens_in_haperture {{"\[input Switch5 \[value parent.use_input]].haperture"}}
+  motionblur 0.51
+  name Card3D1
+  label internal
+  selected true
+  xpos 409
+  ypos 54
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  intersect true
+  name Crop1
+  xpos 409
+  ypos 241
+  disable {{!parent.crop}}
+ }
+ Output {
+  name Output1
+  xpos 409
+  ypos 324
+ }
+end_group

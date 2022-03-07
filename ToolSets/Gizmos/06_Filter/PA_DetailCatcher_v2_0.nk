@@ -1,0 +1,185 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+ name PA_DetailCatcher
+ tile_color 0xff5f00ff
+ note_font "Verdana Bold"
+ selected true
+ xpos 1692
+ ypos -202
+ addUserKnob {20 User}
+ addUserKnob {26 ""}
+ addUserKnob {26 Instructions l "" +STARTLINE T "Meant to be used as\npart of the BG. \nMerge over the key result after this!"}
+ addUserKnob {26 ""}
+ addUserKnob {41 saturation l Saturation T Saturation2.saturation}
+ addUserKnob {41 value l "Top End" T Multiply6.value}
+ addUserKnob {41 value_1 l "Low End" T Multiply7.value}
+ addUserKnob {41 size l Blur T Blur1.size}
+ addUserKnob {41 mix l Mix T Merge3.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 Author l "" +STARTLINE T "DetailCatcher v2.0\nCreated\nby Pedro Andrade\n-2014-"}
+ addUserKnob {26 ""}
+ addUserKnob {22 Link l "How It Works" T "import os\nimport\nsys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n\n      opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n\n          opener.wait()\n        return opener.pid\nexcept\nImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n\n   opener = popen2.Popen3(cmd)\n        if wait:\n\nopener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n\n  if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n\nelif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n\n elif os.environ.has_key(\"KDE_FULL_SESSION\") or\nos.environ.has_key(\"KDE_MULTIHEAD\") or \\\n\nos.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or\nos.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd =\n\[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not\nsupported.\"\n\n    return _run(cmd, 0,\nwait)\n\n_open('http://youtu.be/Zdi2Inf2n9w')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name FG
+  xpos 226
+  ypos 272
+ }
+ Log2Lin {
+  operation lin2log
+  name Log2Lin1
+  xpos 226
+  ypos 327
+ }
+ set Cd4427900 [stack 0]
+ Dot {
+  name Dot4
+  label "normal plate"
+  xpos 260
+  ypos 389
+ }
+ Input {
+  inputs 0
+  name CleanPlate
+  xpos 404
+  ypos 272
+  number 1
+ }
+clone $Cd4427900 {
+  xpos 404
+  ypos 327
+  selected false
+ }
+ Dot {
+  name Dot5
+  label "clean plate"
+  xpos 438
+  ypos 383
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge1
+  xpos 307
+  ypos 468
+ }
+ Saturation {
+  saturation 0
+  name Saturation2
+  xpos 307
+  ypos 525
+ }
+set Na0b2a400 [stack 0]
+ Clamp {
+  channels rgb
+  maximum 1000
+  name Clamp_l1
+  label "max == 1000\n"
+  xpos 223
+  ypos 595
+ }
+ Multiply {
+  name Multiply6
+  xpos 223
+  ypos 713
+ }
+push $Na0b2a400
+ Clamp {
+  channels rgb
+  minimum -1000
+  maximum 0
+  name Clamp_d1
+  label "min == -1000"
+  xpos 379
+  ypos 597
+ }
+ Multiply {
+  name Multiply7
+  xpos 379
+  ypos 713
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge2
+  xpos 294
+  ypos 866
+ }
+ Blur {
+  crop false
+  name Blur1
+  xpos 468
+  ypos 861
+ }
+ Input {
+  inputs 0
+  name BG
+  xpos 691
+  ypos 471
+  number 2
+ }
+ Dot {
+  name Dot6
+  label BG
+  xpos 725
+  ypos 531
+ }
+ Dot {
+  name Dot1
+  xpos 725
+  ypos 634
+ }
+set Nd716dd00 [stack 0]
+clone $Cd4427900 {
+  xpos 691
+  ypos 796
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge3
+  xpos 691
+  ypos 866
+ }
+ Log2Lin {
+  name Log2Lin2
+  xpos 691
+  ypos 941
+ }
+push $Nd716dd00
+ Dot {
+  name Dot2
+  xpos 845
+  ypos 634
+ }
+ Dot {
+  name Dot3
+  xpos 845
+  ypos 1114
+ }
+ Switch {
+  inputs 2
+  which {{!parent.disable}}
+  name Switch1
+  xpos 691
+  ypos 1110
+ }
+ Output {
+  name Output1
+  xpos 691
+  ypos 1230
+ }
+end_group

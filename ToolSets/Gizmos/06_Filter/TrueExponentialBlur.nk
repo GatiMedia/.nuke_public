@@ -1,0 +1,262 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+ name TrueExponentialBlur
+ tile_color 0xcc804eff
+ selected true
+ xpos 300
+ ypos -114
+ addUserKnob {20 BlankKernel}
+ addUserKnob {41 "Local GPU: " T BlinkScript2.gpuName}
+ addUserKnob {41 "Use GPU if Available" T BlinkScript2.useGPUIfAvailable}
+ addUserKnob {26 ""}
+ addUserKnob {41 method T Switch1.method}
+ addUserKnob {41 cropToFormat l "crop to format" -STARTLINE T CopyBBox1.cropToFormat}
+ addUserKnob {41 enableBlackOutside l "black outside" -STARTLINE T BlackOutside1.enableBlackOutside}
+ addUserKnob {41 size_1 l radius T NoOp1.size}
+ addUserKnob {26 _1 l "'True' tweaks"}
+ addUserKnob {41 trueFalloffEdgeSoften l "radial mask" T BlinkScript2.trueFalloffEdgeSoften}
+ addUserKnob {41 edgeSoftenLimitGamma l "radial gamma" T BlinkScript2.edgeSoftenLimitGamma}
+ addUserKnob {26 _2 l "'Exponent' tweaks"}
+ addUserKnob {41 exponentLinear l exponent T BlinkScript2.exponentLinear}
+ addUserKnob {41 TrueExponentialBlurKernel_exponent l "exponent effect on curve" -STARTLINE T BlinkScript2.TrueExponentialBlurKernel_exponent}
+ addUserKnob {41 quality -STARTLINE T BlinkScript2.quality}
+ addUserKnob {26 ""}
+ addUserKnob {41 maskChannelInput l mask T Merge1.maskChannelInput}
+ addUserKnob {41 inject -STARTLINE T Merge1.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Merge1.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T Merge1.fringe}
+ addUserKnob {41 mix T Merge1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 credit l "" +STARTLINE T "Chris Fryer | 2021\n"}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos 229
+  ypos 108
+  number 1
+ }
+ Dot {
+  name Dot4
+  xpos 272
+  ypos 695
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 93
+  ypos 110
+ }
+ Dot {
+  name Dot2
+  xpos 127
+  ypos 315
+ }
+set N14c58100 [stack 0]
+ BlackOutside {
+  name BlackOutside1
+  xpos 12
+  ypos 312
+  disable {{1-enableBlackOutside}}
+  addUserKnob {20 User}
+  addUserKnob {6 enableBlackOutside l "black outside" +STARTLINE}
+ }
+ Dot {
+  name Dot3
+  xpos -22
+  ypos 315
+ }
+set N8e1af200 [stack 0]
+ Dot {
+  name Dot6
+  xpos -153
+  ypos 315
+ }
+set N8e1aeb00 [stack 0]
+ Dot {
+  name Dot5
+  xpos -153
+  ypos 664
+ }
+ Crop {
+  inputs 0
+  box {0 0 {abs(parent.BlinkScript2.size.w)} {abs(parent.BlinkScript2.size.h)}}
+  reformat true
+  crop false
+  name Crop1
+  xpos -480
+  ypos 283
+ }
+ AdjBBox {
+  numpixels {{parent.Crop1.box.r/2} {parent.Crop1.box.t/2}}
+  name AdjBBox2
+  xpos -480
+  ypos 307
+ }
+ Expression {
+  temp_name0 radius
+  temp_expr0 BlinkScript2.size.w
+  temp_name1 sizeW
+  temp_expr1 BlinkScript2.size.w
+  temp_name2 sizeH
+  temp_expr2 BlinkScript2.size.h
+  temp_name3 exponent
+  temp_expr3 BlinkScript2.TrueExponentialBlurKernel_exponent
+  expr0 "1/(pow(pow( (centre.x - x)**2 + (((centre.y - y)**2)*(sizeW/sizeH)**2), 0.5),2))"
+  expr1 "max((radius - pow( (centre.x - x)**2 + (((centre.y - y)**2)*(sizeW/sizeH)**2), 0.5))/radius,0)"
+  expr3 "pow(max((radius - pow( (centre.x - x)**2 + (((centre.y - y)**2)*(sizeW/sizeH)**2), 0.5))/radius,0),exponent)"
+  name Expression2
+  xpos -480
+  ypos 375
+  addUserKnob {20 User}
+  addUserKnob {12 centre}
+  centre {{width/2} {height/2}}
+ }
+ Expression {
+  expr0 "isinf(r) ? 1 : r*pow((1+(g-1)*BlinkScript2.trueFalloffEdgeSoften),1/BlinkScript2.edgeSoftenLimitGamma)"
+  name Expression1
+  xpos -480
+  ypos 435
+ }
+ Shuffle {
+  alpha red
+  name Shuffle1
+  xpos -480
+  ypos 459
+  disable {{"Switch1.method < 2"}}
+ }
+ Dot {
+  name Dot7
+  xpos -446
+  ypos 511
+ }
+push $N8e1aeb00
+ Dot {
+  name Dot8
+  xpos -288
+  ypos 315
+ }
+ Convolve2 {
+  inputs 2
+  channels rgba
+  useGPUIfAvailable {{parent.BlinkScript2.useGPUIfAvailable}}
+  name Convolve1
+  xpos -322
+  ypos 508
+  disable {{"1-(BlinkScript2.size.w >= 1 || BlinkScript2.size.h >= 1 || BlinkScript2.size.w <= -1 || BlinkScript2.size.h <= -1)"}}
+ }
+ Dot {
+  name Dot9
+  xpos -288
+  ypos 621
+ }
+push $N8e1af200
+ AdjBBox {
+  numpixels {{abs(parent.BlinkScript2.size)} {abs(parent.BlinkScript2.size)}}
+  name AdjBBox1
+  xpos -56
+  ypos 379
+ }
+set N4a941d00 [stack 0]
+ Reformat {
+  type scale
+  scale {{"abs(BlinkScript2.size.w) > BlinkScript2.quality.w ? BlinkScript2.quality.w/abs(BlinkScript2.size.w) : 1"} {"abs(BlinkScript2.size.h) > BlinkScript2.quality.h ? BlinkScript2.quality.h/abs(BlinkScript2.size.h) : 1"}}
+  resize distort
+  filter Lanczos6
+  pbb true
+  name Reformat1
+  xpos -56
+  ypos 424
+  disable {{"abs(BlinkScript2.size.w) > BlinkScript2.quality.w || abs(BlinkScript2.size.h) > BlinkScript2.quality.h ? 0 : 1"}}
+ }
+ BlinkScript {
+  recompileCount 195
+  ProgramGroup 1
+  KernelDescription "2 \"TrueExponentialBlurKernel\" iterate pixelWise 0a90b2dbaa8d28a55bcb8418c6bb411880d3effaa99d3c07e88e7065f3f94fe1 2 \"src\" Read Ranged2D \"dst\" Write Point 2 \"size\" Float 2 AAAAAAAAAAA= \"exponent\" Float 1 AAAAQA== 2 \"size\" 2 1 \"exponent\" 1 1 2 \"srcrangeMin\" Int 2 1 AAAAAAAAAAA= \"srcrangeMax\" Int 2 1 AAAAAAAAAAA="
+  kernelSource "\nkernel TrueExponentialBlurKernel : ImageComputationKernel<ePixelWise>\n\{\n  Image<eRead, eAccessRanged2D, eEdgeClamped> src; // the input image\n  Image<eWrite> dst; // the output image\n\n  param:\n    // This parameter is made available to the user.\n    float2 size;\n    float exponent;\n\n  local:\n    // This local variable is not exposed to the user.\n    \n    \n  // In define(), parameters can be given labels and default values.\n  void define() \{\n    defineParam(exponent, \"exponent\", 2.0f);\n  \}\n\n  // The init() function is run before any calls to process().\n  // Local variables can be initialized here.\n  void init() \{\n    src.setRange(-ceil(size.x), -ceil(size.y), ceil(size.x), ceil(size.y));\n    //dst.setRange(-ceil(size.x), -ceil(size.y), ceil(size.x), ceil(size.y));\n  \}\n\n  void process() \{\n\n    float4 output = 0.0f;    \n    float4 convolver = 0.0f;\n    float4 normaliser = 0.0f;\n      \n    for(int X = -ceil(size.x); X <= ceil(size.x); X++)\{\n      for(int Y = -ceil(size.y); Y <= ceil(size.y); Y++)\{        \n        \n        normaliser +=    pow(max((size.x - pow((pow(X,2)+pow((Y*(size.x/size.y)),2)),0.5f)),0.0f),exponent);      \n\n      \}\n    \}\n    \n\n    for(int X = -ceil(size.x); X <= ceil(size.x); X++)\{\n      for(int Y = -ceil(size.y); Y <= ceil(size.y); Y++)\{        \n\n        \n        convolver = pow(max((size.x - pow((pow(X,2)+pow((Y*(size.x/size.y)),2)),0.5f)),0.0f),exponent);       \n        \n        output += src(X,Y)*(convolver/normaliser);\n        \n      \}\n    \}\n    \n    dst() = output;\n  \}\n\};\n"
+  rebuild ""
+  TrueExponentialBlurKernel_size {{"abs(size.w) > quality.w ? quality.w : abs(size.w)+1"} {"abs(size.h) > quality.h ? quality.h :abs(size.h)+1"}}
+  TrueExponentialBlurKernel_exponent {{exponentLinear**2}}
+  rebuild_finalise ""
+  name BlinkScript2
+  xpos -56
+  ypos 470
+  addUserKnob {20 User}
+  addUserKnob {7 edgeSoftenLimitGamma R 0 3}
+  edgeSoftenLimitGamma 1
+  addUserKnob {7 trueFalloffEdgeSoften}
+  addUserKnob {7 exponentLinear R 0 8}
+  exponentLinear 3
+  addUserKnob {14 quality R 0 100}
+  quality 15
+  addUserKnob {14 size R 0 100}
+  size {{parent.NoOp1.size} {parent.NoOp1.size}}
+ }
+ Reformat {
+  type "to box"
+  box_width {{AdjBBox1.width}}
+  box_height {{AdjBBox1.height}}
+  box_fixed true
+  resize distort
+  filter notch
+  pbb true
+  name Reformat2
+  xpos -56
+  ypos 522
+  disable {{parent.Reformat1.disable}}
+ }
+ Switch {
+  inputs 2
+  which {{method}}
+  name Switch1
+  label "\[value method]"
+  xpos -56
+  ypos 612
+  addUserKnob {20 User}
+  addUserKnob {4 method M {"Exponent (Blinkscript \[experimental])" "Exponent (Convolve)" True "" "" ""}}
+  method True
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos -56
+  ypos 661
+  disable {{1-cropToFormat}}
+  addUserKnob {20 User}
+  addUserKnob {6 cropToFormat l "crop to format" +STARTLINE}
+ }
+ Dot {
+  name Dot1
+  xpos -22
+  ypos 695
+ }
+push $N14c58100
+ Merge2 {
+  inputs 2+1
+  operation copy
+  name Merge1
+  xpos 93
+  ypos 692
+ }
+ Output {
+  name Output1
+  xpos 93
+  ypos 764
+ }
+push $N4a941d00
+ Dot {
+  name Dot10
+  xpos 75
+  ypos 382
+ }
+ NoOp {
+  name NoOp1
+  xpos 41
+  ypos 426
+  addUserKnob {20 User}
+  addUserKnob {14 size R 0 100}
+  size 2
+ }
+end_group

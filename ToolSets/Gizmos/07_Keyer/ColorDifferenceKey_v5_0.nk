@@ -1,0 +1,535 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+ name ColorDifferenceKey
+ autolabel "nuke.thisNode().name() + \"\\n\" + '(' + nuke.thisNode()\['operation'].value() + ')' "
+ tile_color 0xffff00ff
+ note_font "Bitstream Vera Sans Bold"
+ selected true
+ xpos 1417
+ ypos 7
+ addUserKnob {20 parameters l Parameters}
+ addUserKnob {4 operation M {"Red - Green" "Green - Red" "Blue - Red" "Red - Blue" "Blue - Green" "Green - Blue" "(Red + Green) - Blue" "(Red + Blue) - Green" "(Green + Blue) - Red" (Red-Green)+(Red-Blue) (Green-Red)+(Green-Blue) (Blue-Red)+(Blue-Green) Red-Green-Blue Red-Blue-Green Green-Red-Blue Green-Blue-Red Blue-Red-Green Blue-Green-Red "Red Difference Key" "Green Difference Key" "Blue Difference Key" "" "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {4 viewer M {output "red input" "green input" "blue input" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {20 output n 1}
+ addUserKnob {41 blackpoint_3 l blackpoint T Grade1.blackpoint}
+ addUserKnob {41 blackpoint_panelDropped l "panel dropped state" T Grade1.blackpoint_panelDropped}
+ addUserKnob {41 whitepoint_3 l whitepoint T Grade1.whitepoint}
+ addUserKnob {41 whitepoint_panelDropped l "panel dropped state" T Grade1.whitepoint_panelDropped}
+ addUserKnob {41 black_3 l lift T Grade1.black}
+ addUserKnob {41 black_panelDropped l "panel dropped state" T Grade1.black_panelDropped}
+ addUserKnob {41 white_3 l gain T Grade1.white}
+ addUserKnob {41 white_panelDropped l "panel dropped state" T Grade1.white_panelDropped}
+ addUserKnob {41 multiply_3 l multiply T Grade1.multiply}
+ addUserKnob {41 multiply_panelDropped l "panel dropped state" T Grade1.multiply_panelDropped}
+ addUserKnob {41 add_3 l offset T Grade1.add}
+ addUserKnob {41 add_panelDropped l "panel dropped state" T Grade1.add_panelDropped}
+ addUserKnob {41 gamma_3 l gamma T Grade1.gamma}
+ addUserKnob {41 gamma_panelDropped l "panel dropped state" T Grade1.gamma_panelDropped}
+ addUserKnob {26 "" l "  "}
+ addUserKnob {26 message_3 l "" +STARTLINE T "Remember the CLAMP. Some keys can give you negative results"}
+ addUserKnob {41 black_clamp_3 l "black clamp" T Grade1.black_clamp}
+ addUserKnob {41 white_clamp_3 l "white clamp" -STARTLINE T Grade1.white_clamp}
+ addUserKnob {26 ""}
+ addUserKnob {6 invert l "invert output" +STARTLINE}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {20 Red l red t "Adjust red channel in input"}
+ addUserKnob {26 message l "" +STARTLINE T "Modify the red channel in input"}
+ addUserKnob {41 blackpoint T Grade145.blackpoint}
+ addUserKnob {41 whitepoint T Grade145.whitepoint}
+ addUserKnob {41 black l lift T Grade145.black}
+ addUserKnob {41 white l gain T Grade145.white}
+ addUserKnob {41 multiply T Grade145.multiply}
+ addUserKnob {41 add l offset T Grade145.add}
+ addUserKnob {41 gamma T Grade145.gamma}
+ addUserKnob {41 black_clamp_1 l "black clamp" T Grade145.black_clamp}
+ addUserKnob {41 white_clamp_1 l "white clamp" -STARTLINE T Grade145.white_clamp}
+ addUserKnob {20 green t "Adjust green channel in input"}
+ addUserKnob {26 message_1 l "" +STARTLINE T "Modify the green channel in input"}
+ addUserKnob {41 blackpoint_1 l blackpoint T Grade128.blackpoint}
+ addUserKnob {41 whitepoint_1 l whitepoint T Grade128.whitepoint}
+ addUserKnob {41 black_1 l lift T Grade128.black}
+ addUserKnob {41 white_1 l gain T Grade128.white}
+ addUserKnob {41 multiply_1 l multiply T Grade128.multiply}
+ addUserKnob {41 add_1 l offset T Grade128.add}
+ addUserKnob {41 gamma_1 l gamma T Grade128.gamma}
+ addUserKnob {41 black_clamp l "black clamp" T Grade128.black_clamp}
+ addUserKnob {41 white_clamp l "white clamp" -STARTLINE T Grade128.white_clamp}
+ addUserKnob {20 blue t "Adjust blue channel in input"}
+ addUserKnob {26 message_2 l "" +STARTLINE T "Modify the blue channel in input"}
+ addUserKnob {41 blackpoint_2 l blackpoint T Grade146.blackpoint}
+ addUserKnob {41 whitepoint_2 l whitepoint T Grade146.whitepoint}
+ addUserKnob {41 black_2 l lift T Grade146.black}
+ addUserKnob {41 white_2 l gain T Grade146.white}
+ addUserKnob {41 multiply_2 l multiply T Grade146.multiply}
+ addUserKnob {41 add_2 l offset T Grade146.add}
+ addUserKnob {41 gamma_2 l gamma T Grade146.gamma}
+ addUserKnob {41 black_clamp_2 l "black clamp" T Grade146.black_clamp}
+ addUserKnob {41 white_clamp_2 l "white clamp" -STARTLINE T Grade146.white_clamp}
+ addUserKnob {20 email l @}
+ addUserKnob {26 email_1 l "" +STARTLINE T "Color Difference Key v05\nTool created by Andrea Geremia\n\n----------------------------------------------\nandrea.geremia89@gmail.com\nwww.andreageremia.it"}
+}
+ Input {
+  inputs 0
+  name src
+  xpos -586
+  ypos 133
+ }
+ Dot {
+  name Dot498
+  xpos -552
+  ypos 199
+ }
+set Na6d11d00 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle19
+  tile_color 0x3d3f8e00
+  xpos -429
+  ypos 267
+ }
+ Grade {
+  channels rgba
+  name Grade146
+  xpos -429
+  ypos 336
+ }
+set Na6d10f00 [stack 0]
+push $Na6d11d00
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle18
+  tile_color 0x3f633800
+  xpos -586
+  ypos 266
+ }
+ Grade {
+  channels rgba
+  name Grade128
+  xpos -586
+  ypos 334
+ }
+set Nd46f0f00 [stack 0]
+push $Na6d11d00
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle14
+  tile_color 0x93000000
+  xpos -749
+  ypos 262
+ }
+ Grade {
+  channels rgba
+  name Grade145
+  xpos -749
+  ypos 331
+ }
+set Nd460cf00 [stack 0]
+push $Na6d10f00
+push $Nd460cf00
+push $Nd46f0f00
+ ShuffleCopy {
+  inputs 2
+  red red
+  blue black
+  alpha black
+  name ShuffleCopy1
+  xpos 1486
+  ypos 331
+ }
+ ShuffleCopy {
+  inputs 2
+  blue blue
+  alpha black
+  name ShuffleCopy2
+  xpos 1486
+  ypos 376
+ }
+ Dot {
+  name Dot3
+  xpos 1520
+  ypos 528
+ }
+set Nd45fc800 [stack 0]
+ Dot {
+  name Dot4
+  xpos 1604
+  ypos 528
+ }
+set Nd45fc100 [stack 0]
+ Dot {
+  name Dot7
+  xpos 1801
+  ypos 528
+ }
+set N3894b900 [stack 0]
+ Dot {
+  name Dot6
+  xpos 1879
+  ypos 528
+ }
+set N3894b200 [stack 0]
+ Dot {
+  name Dot9
+  xpos 2124
+  ypos 528
+ }
+set N3894ab00 [stack 0]
+ Dot {
+  name Dot10
+  xpos 2202
+  ypos 528
+ }
+ Dot {
+  name Dot8
+  xpos 2202
+  ypos 663
+ }
+push $N3894ab00
+ Expression {
+  temp_name0 f
+  temp_expr0 2
+  expr2 "b > (r+g)/f ? (r+g)/f  : b"
+  name DespillBlue
+  tile_color 0x4fffff
+  xpos 2090
+  ypos 593
+ }
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge3
+  xpos 2090
+  ypos 659
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle3
+  tile_color 0x3d3f8e00
+  xpos 2090
+  ypos 715
+ }
+push $N3894b200
+ Dot {
+  name Dot5
+  xpos 1879
+  ypos 659
+ }
+push $N3894b900
+ Expression {
+  temp_name0 f
+  temp_expr0 2
+  expr1 "g > (r+b)/f ? (b+r)/f  : g"
+  name DespillGreen
+  tile_color 0xff00ff
+  xpos 1767
+  ypos 591
+ }
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge2
+  xpos 1767
+  ypos 655
+ }
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle2
+  tile_color 0x3f633800
+  xpos 1767
+  ypos 697
+ }
+push $Nd45fc100
+ Dot {
+  name Dot2
+  xpos 1604
+  ypos 643
+ }
+push $Nd45fc800
+ Expression {
+  temp_name0 f
+  temp_expr0 2
+  expr0 "r > (b+g)/f ? (b+g)/f  : r"
+  name DespillRed
+  tile_color 0xff0000ff
+  xpos 1486
+  ypos 594
+ }
+ Merge2 {
+  inputs 2
+  operation difference
+  name Merge1
+  xpos 1486
+  ypos 639
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle1
+  tile_color 0x93000000
+  xpos 1486
+  ypos 692
+ }
+push $Na6d10f00
+push $Nd46f0f00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge119
+  label B-G
+  xpos -418
+  ypos 501
+ }
+set N547f4800 [stack 0]
+push $Nd460cf00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge12
+  label B-G-R
+  xpos 883
+  ypos 673
+ }
+push $Na6d10f00
+push $Nd460cf00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge117
+  label B-R
+  xpos -621
+  ypos 500
+ }
+set Na3507900 [stack 0]
+push $Nd46f0f00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge11
+  label B-R-G
+  xpos 769
+  ypos 674
+ }
+push $Nd46f0f00
+push $Na6d10f00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge118
+  label G-B
+  xpos -314
+  ypos 501
+ }
+set Na3506b00 [stack 0]
+push $Nd460cf00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge10
+  label G-B-R
+  xpos 652
+  ypos 674
+ }
+push $Nd46f0f00
+push $Nd460cf00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge115
+  label G-R
+  xpos -726
+  ypos 499
+ }
+set Na3505d00 [stack 0]
+push $Na6d10f00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge9
+  label G-R-B
+  xpos 541
+  ypos 675
+ }
+push $Nd460cf00
+push $Na6d10f00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge80
+  label R-B
+  xpos -521
+  ypos 502
+ }
+set Na3504f00 [stack 0]
+push $Nd46f0f00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge8
+  label R-B-G
+  xpos 432
+  ypos 675
+ }
+push $Nd460cf00
+push $Nd46f0f00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge64
+  label R-G
+  xpos -824
+  ypos 499
+ }
+set Na3504100 [stack 0]
+push $Na6d10f00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge7
+  label R-G-B
+  xpos 325
+  ypos 675
+ }
+push $Na3507900
+push $N547f4800
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus5
+  label (B-R)+(B-G)
+  xpos 204
+  ypos 576
+ }
+push $Na3505d00
+push $Na3506b00
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus4
+  label (G-R)+(G-B)
+  xpos 17
+  ypos 577
+ }
+push $Na3504f00
+push $Na3504100
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus3
+  label (R-G)+(R-B)
+  xpos -151
+  ypos 578
+ }
+push $Na6d10f00
+push $Nd460cf00
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus2
+  label G+B
+  xpos -1212
+  ypos 534
+ }
+push $Nd460cf00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge6
+  label "(G+B) - R"
+  xpos -1160
+  ypos 701
+ }
+push $Na6d10f00
+push $Nd460cf00
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus1
+  label R+B
+  xpos -1365
+  ypos 532
+ }
+push $Nd46f0f00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge5
+  label "(R+B) - G"
+  xpos -1273
+  ypos 699
+ }
+push $Nd460cf00
+push $Nd46f0f00
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus
+  label R+G
+  xpos -1506
+  ypos 531
+ }
+push $Na6d10f00
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge4
+  label "(R+G) - B"
+  xpos -1403
+  ypos 701
+ }
+push $Na3506b00
+push $N547f4800
+push $Na3504f00
+push $Na3507900
+push $Na3505d00
+push $Na3504100
+ Switch {
+  inputs 21
+  which {{parent.operation}}
+  name Switch1
+  label "\[value which]"
+  xpos -564
+  ypos 827
+ }
+ Grade {
+  channels rgba
+  black_clamp false
+  name Grade1
+  xpos -443
+  ypos 955
+ }
+ Invert {
+  channels rgba
+  name Invert18
+  xpos -443
+  ypos 1009
+  disable {{!parent.invert}}
+ }
+ Switch {
+  inputs 4
+  which {{parent.viewer}}
+  name Switch2
+  label "\[value which]"
+  xpos -586
+  ypos 1117
+ }
+ Output {
+  name Output1
+  xpos -586
+  ypos 1304
+ }
+end_group

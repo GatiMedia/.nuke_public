@@ -1,0 +1,264 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+name Fractal_Blur
+selected true
+xpos 6216
+ypos 9387
+addUserKnob {20 User l Fractal_Blur}
+addUserKnob {41 channels T IDistort.channels}
+addUserKnob {41 uv_scale l "distortion size" T IDistort.uv_scale}
+addUserKnob {41 size l "distortion scale" T U.size}
+addUserKnob {41 zoffset l animation/seed T U.zoffset}
+addUserKnob {41 filter T IDistort.filter}
+addUserKnob {41 octaves T U.octaves}
+addUserKnob {41 dilate T NoOp.dilate}
+addUserKnob {41 blur T NoOp.blur}
+addUserKnob {26 ""}
+addUserKnob {41 grade T NoOp.grade}
+addUserKnob {41 multiply l contrast T NoOp.multiply}
+addUserKnob {41 blackpoint T NoOp.blackpoint}
+addUserKnob {41 whitepoint T NoOp.whitepoint}
+addUserKnob {41 gamma T NoOp.gamma}
+addUserKnob {41 blackClamp T NoOp.blackClamp}
+addUserKnob {41 whiteClamp -STARTLINE T NoOp.whiteClamp}
+addUserKnob {20 "" l Transform}
+addUserKnob {41 transform T U.transform}
+addUserKnob {41 translate T U.translate}
+addUserKnob {41 rotate T U.rotate}
+addUserKnob {41 scale T U.scale}
+addUserKnob {41 skew +INVISIBLE T U.skew}
+addUserKnob {41 center T U.center}
+addUserKnob {41 xrotate T U.xrotate}
+addUserKnob {41 yrotate T U.yrotate}
+addUserKnob {20 Info}
+addUserKnob {22 documentation l " Documentation / Feedback " T "import webbrowser\nwebbrowser.open(\"http://opennuke.github.io/fractalBlur_nk/\")" +STARTLINE}
+addUserKnob {26 ""}
+addUserKnob {26 version l version: T "0.1 Stable"}
+addUserKnob {26 created l created: T "01/05/2012 by Richard Frazer"}
+addUserKnob {26 modified l "modified: " T " 1/1/2015 Rafal Kaniewski (rgb distortions  added) "}
+addUserKnob {26 source l source: T "<a href='https://github.com/RichFrazer/fractal-blur'> Github.com</a>"}
+addUserKnob {26 licence l licence: T "<a href=\"https://github.com/openNuke/toolset/blob/master/LICENCE\">READ ME</a>"}
+}
+Input {
+inputs 0
+name Input1
+xpos -144
+ypos -851
+}
+Blur {
+channels {{{IDistort.channels}}}
+size {{"\[value NoOp.dilate]" x101 0}}
+crop false
+name Blur1
+xpos -144
+ypos -792
+}
+FilterErode {
+channels {{{IDistort.channels}}}
+size {{"(-\[value NoOp.dilate])/2" x1 0}}
+name FilterErode7
+xpos -316
+ypos -696
+}
+set N8d5e1600 [stack 0]
+AdjBBox {
+numpixels {{max(0,IDistort.uv_scale) i} {max(0,parent.IDistort.uv_scale) i}}
+name AdjBBox1
+xpos 252
+ypos -422
+}
+Dot {
+name Dot2
+xpos 286
+ypos -309
+}
+push $N8d5e1600
+Dot {
+name Dot1
+xpos 254
+ypos -770
+}
+add_layer {tempDistortion tempDistortion.u tempDistortion.v}
+Noise {
+output {tempDistortion.u -tempDistortion.v}
+cliptype none
+replace true
+size 35
+zoffset {{(random(t)+75)}}
+octaves 4
+gamma 1
+center {960 540}
+name U
+xpos 354
+ypos -515
+}
+Noise {
+output {-tempDistortion.u tempDistortion.v}
+cliptype none
+replace true
+size {{U.size} {U.size}}
+zoffset {{U.zoffset+111}}
+octaves {{U.octaves}}
+gamma 1
+translate {{U.translate} {U.translate}}
+rotate {{U.rotate}}
+scale {{U.scale} {U.scale}}
+skewX {{U.skew}}
+center {{U.center} {U.center}}
+xrotate {{U.xrotate}}
+yrotate {{U.yrotate}}
+name V
+xpos 354
+ypos -483
+}
+Expression {
+channel0 {tempDistortion.u -tempDistortion.v}
+expr0 4*(1-r)*r
+expr1 4*(1-g)*g
+channel2 none
+expr2 4*(1-b)*b
+name X_Fringe2
+xpos 354
+ypos -435
+disable true
+}
+Clamp {
+name Clamp2
+xpos 354
+ypos -369
+}
+CopyBBox {
+inputs 2
+name CopyBBox1
+xpos 354
+ypos -312
+}
+set N36f85d00 [stack 0]
+push $N36f85d00
+Invert {
+channels tempDistortion
+name Invert4
+xpos 65
+ypos -474
+}
+Saturation {
+channels tempDistortion
+saturation 0
+name Saturation1
+xpos 65
+ypos -438
+}
+Shuffle {
+in tempDistortion
+green red
+blue red
+alpha red
+name Shuffle1
+xpos 65
+ypos -402
+}
+Grade {
+channels {{{IDistort.channels}}}
+white {{NoOp.multiply}}
+gamma {{NoOp.multiply}}
+black_clamp false
+name Grade1
+xpos 5
+ypos -364
+}
+push $N8d5e1600
+Dot {
+name Dot10
+xpos -99
+ypos -541
+}
+Merge2 {
+inputs 2
+operation multiply
+Achannels tempDistortion
+Bchannels {-rgba.red -rgba.green -rgba.blue -rgba.alpha}
+output {-rgba.red -rgba.green -rgba.blue -rgba.alpha}
+also_merge {{{IDistort.channels}}}
+name Merge13
+xpos -116
+ypos -312
+disable {{!NoOp.grade}}
+}
+Expression {
+expr0 4*(1-r)*r
+expr1 4*(1-g)*g
+expr2 4*(1-b)*b
+name X_Fringe1
+xpos -95
+ypos -250
+disable true
+}
+Copy {
+inputs 2
+channels tempDistortion
+name Copy1
+xpos -112
+ypos -184
+}
+Grade {
+channels {{{IDistort.channels}}}
+blackpoint {{NoOp.blackpoint}}
+whitepoint {{NoOp.whitepoint}}
+gamma {{NoOp.gamma x101 0.985}}
+black_clamp {{NoOp.blackClamp}}
+white_clamp {{NoOp.whiteClamp}}
+name Grade5
+xpos -130
+ypos 141
+disable {{!NoOp.grade}}
+}
+IDistort {
+channels rgba
+uv tempDistortion
+uv_offset 0.5
+uv_scale 100
+name IDistort
+selected true
+xpos -171
+ypos 293
+}
+Blur {
+channels {{{IDistort.channels}}}
+size {{NoOp.blur}}
+crop false
+name Blur2
+xpos -82
+ypos 340
+}
+Remove {
+channels tempDistortion
+name Remove1
+xpos -82
+ypos 421
+}
+Output {
+name Output1
+xpos -82
+ypos 477
+}
+NoOp {
+inputs 0
+name NoOp
+xpos 865
+ypos -976
+addUserKnob {20 User}
+addUserKnob {7 dilate R -100 100}
+addUserKnob {7 blur R 0 100}
+addUserKnob {6 grade +STARTLINE}
+addUserKnob {7 multiply R 0 2}
+addUserKnob {7 blackpoint}
+addUserKnob {7 whitepoint R 0 2}
+whitepoint 1
+addUserKnob {7 gamma R 0 2}
+gamma 1
+addUserKnob {6 blackClamp +STARTLINE}
+addUserKnob {6 whiteClamp +STARTLINE}
+}
+end_group

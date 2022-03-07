@@ -1,0 +1,586 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+name MagicKey
+label "Mode : \[knob TypeOfScreen]\nOut Rough Alpha : \[knob OutAlpha]"
+selected true
+xpos 26167
+ypos -19000
+addUserKnob {20 User}
+addUserKnob {26 ScreenKind l "Screen Kind"}
+addUserKnob {4 TypeOfScreen l "Green / Blue screen" M {Green Blue}}
+addUserKnob {26 Controls l "Balance / Limits"}
+addUserKnob {41 blackpoint l "Black limit" T GradeControl.blackpoint}
+addUserKnob {41 white l "White Limit" T GradeControl.white}
+addUserKnob {41 gamma l Balance T GradeControl.gamma}
+addUserKnob {26 Rough l "Rough Alpha"}
+addUserKnob {6 OutAlpha l Out +STARTLINE}
+addUserKnob {26 ""}
+addUserKnob {26 who l "" +STARTLINE T "Cyril Conforti 1.0 \nMagic key is based on the IBK philosophy. You can add the desired zones through a merge \"Copy\" node.\nI added a checkbox to get out the Multiply layer as a Rough Alpha channel ^^"}
+}
+Input {
+inputs 0
+name PLATE
+xpos -792
+ypos -409
+}
+Dot {
+name fg
+xpos -758
+ypos -210
+}
+set N4ca52b00 [stack 0]
+Dot {
+name fg1
+xpos 1891
+ypos -210
+}
+set N4ca52400 [stack 0]
+Dot {
+name Dot14
+xpos 1891
+ypos 19
+}
+set N4ca51d00 [stack 0]
+Dot {
+name Dot15
+xpos 1735
+ypos 19
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.blue 0 2 rgba.red 0 0 rgba.blue 0 2 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 rgba.blue 0 2 rgba.alpha 0 3"
+name Shuffle8
+tile_color 0xffff
+label "Blue Only"
+xpos 1701
+ypos 519
+}
+push $N4ca51d00
+Dot {
+name Dot16
+xpos 2125
+ypos 19
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.green 0 1 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.green 0 1 rgba.alpha 0 3"
+name Shuffle7
+tile_color 0xff57ff
+label "GREEN Only"
+xpos 2091
+ypos 113
+}
+Dot {
+name Dot17
+xpos 2125
+ypos 209
+}
+push $N4ca51d00
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.red 0 0 rgba.blue 0 2 rgba.red 0 0 rgba.alpha 0 3"
+name Shuffle9
+tile_color 0xff1000ff
+label "RED Only"
+xpos 1857
+ypos 117
+}
+Merge2 {
+inputs 2
+operation plus
+name Merge9
+xpos 1857
+ypos 205
+}
+Multiply {
+value 0.5
+name Multiply3
+xpos 1857
+ypos 269
+}
+Grade {
+blackpoint 0.0001
+white 0.95
+gamma 0.98
+black_clamp false
+name GradeControl
+xpos 1857
+ypos 383
+}
+set C4cfed600 [stack 0]
+Merge2 {
+inputs 2
+operation minus
+name Merge10
+xpos 1857
+ypos 525
+}
+Clamp {
+maximum 20
+name Clamp3
+xpos 1857
+ypos 601
+}
+set N4cfe1600 [stack 0]
+push $N4ca52b00
+Dot {
+name Dot5
+xpos -758
+ypos 19
+}
+set N4cfd3200 [stack 0]
+Dot {
+name Dot6
+xpos -914
+ypos 19
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.green 0 1 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.green 0 1 rgba.alpha 0 3"
+name Shuffle4
+tile_color 0xff57ff
+label "GREEN Only"
+xpos -948
+ypos 519
+}
+push $N4cfd3200
+Dot {
+name Dot7
+xpos -524
+ypos 19
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.blue 0 2 rgba.red 0 0 rgba.blue 0 2 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 rgba.blue 0 2 rgba.alpha 0 3"
+name Shuffle5
+tile_color 0xffff
+label "Blue Only"
+xpos -558
+ypos 113
+}
+Dot {
+name Dot8
+xpos -524
+ypos 209
+}
+push $N4cfd3200
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.red 0 0 rgba.blue 0 2 rgba.red 0 0 rgba.alpha 0 3"
+name Shuffle6
+tile_color 0xff1000ff
+label "RED Only"
+xpos -792
+ypos 117
+}
+Merge2 {
+inputs 2
+operation plus
+name Merge4
+xpos -792
+ypos 205
+}
+Multiply {
+value 0.5
+name Multiply2
+xpos -792
+ypos 269
+}
+clone $C4cfed600 {
+xpos -792
+ypos 383
+selected false
+}
+Merge2 {
+inputs 2
+operation minus
+name Merge5
+xpos -792
+ypos 525
+}
+Clamp {
+maximum 20
+name Clamp2
+xpos -792
+ypos 601
+}
+set N4cf96b00 [stack 0]
+Switch {
+inputs 2
+which {{TypeOfScreen x1 0}}
+name Switch2
+xpos 317
+ypos 607
+}
+Invert {
+name Invert1
+xpos 317
+ypos 2011
+}
+Clamp {
+name Clamp5
+selected true
+xpos 317
+ypos 2077
+}
+Dot {
+name Dot28
+xpos 351
+ypos 2138
+}
+push $N4cfe1600
+Input {
+inputs 0
+name BG
+xpos -1831
+ypos -409
+number 1
+}
+Dot {
+name fdf
+xpos -1797
+ypos -218
+}
+set N4cf78800 [stack 0]
+Dot {
+name fdf1
+xpos 852
+ypos -250
+}
+Input {
+inputs 0
+name CleanPlate
+xpos -1530
+ypos -421
+number 2
+}
+Dot {
+name fgd
+xpos -1496
+ypos -214
+}
+set N4cf5f200 [stack 0]
+Dot {
+name fgd1
+xpos 1153
+ypos -246
+}
+Dot {
+name Dot18
+xpos 1153
+ypos 19
+}
+set N4cf5e400 [stack 0]
+Dot {
+name Dot19
+xpos 997
+ypos 19
+}
+set N4cf5dd00 [stack 0]
+Merge2 {
+inputs 2
+operation minus
+name Merge11
+xpos 818
+ypos 15
+}
+push $N4cf5dd00
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.blue 0 2 rgba.red 0 0 rgba.blue 0 2 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 rgba.blue 0 2 rgba.alpha 0 3"
+name Shuffle11
+tile_color 0xffff
+label "Blue Only"
+xpos 963
+ypos 519
+}
+push $N4cf5e400
+Dot {
+name Dot20
+xpos 1387
+ypos 19
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.green 0 1 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.green 0 1 rgba.alpha 0 3"
+name Shuffle10
+tile_color 0xff57ff
+label "GREEN Only"
+xpos 1353
+ypos 113
+}
+Dot {
+name Dot21
+xpos 1387
+ypos 209
+}
+push $N4cf5e400
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.red 0 0 rgba.blue 0 2 rgba.red 0 0 rgba.alpha 0 3"
+name Shuffle12
+tile_color 0xff1000ff
+label "RED Only"
+xpos 1119
+ypos 117
+}
+Merge2 {
+inputs 2
+operation plus
+name Merge12
+xpos 1119
+ypos 205
+}
+Multiply {
+value 0.5
+name Multiply4
+xpos 1119
+ypos 269
+}
+clone $C4cfed600 {
+xpos 1119
+ypos 385
+selected false
+}
+Merge2 {
+inputs 2
+operation minus
+name Merge13
+xpos 1119
+ypos 525
+}
+Clamp {
+maximum 20
+name Clamp4
+xpos 1119
+ypos 607
+}
+Dot {
+name Dot22
+xpos 1153
+ypos 716
+}
+Merge2 {
+inputs 2
+operation divide
+name Merge14
+xpos 818
+ypos 712
+}
+Dot {
+name Dot23
+xpos 852
+ypos 967
+}
+Merge2 {
+inputs 2
+operation multiply
+name Merge15
+xpos 1857
+ypos 963
+}
+Dot {
+name Dot24
+xpos 1891
+ypos 1430
+}
+push $N4ca52400
+Dot {
+name Dot25
+xpos 2522
+ypos -210
+}
+Merge2 {
+inputs 2
+operation plus
+name Merge16
+xpos 2488
+ypos 1426
+}
+Dot {
+name Dot26
+xpos 2522
+ypos 1693
+}
+Dot {
+name Dot27
+xpos 2522
+ypos 1926
+}
+push $N4cf96b00
+push $N4cf78800
+push $N4cf5f200
+Dot {
+name Dot1
+xpos -1496
+ypos 19
+}
+set N4ceeb200 [stack 0]
+Dot {
+name Dot4
+xpos -1652
+ypos 19
+}
+set N4ceeab00 [stack 0]
+Merge2 {
+inputs 2
+operation minus
+name Merge1
+xpos -1831
+ypos 15
+}
+push $N4ceeab00
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.green 0 1 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.green 0 1 rgba.alpha 0 3"
+name Shuffle3
+tile_color 0xff57ff
+label "GREEN Only"
+xpos -1686
+ypos 519
+}
+push $N4ceeb200
+Dot {
+name Dot2
+xpos -1262
+ypos 19
+}
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.blue 0 2 rgba.red 0 0 rgba.blue 0 2 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 rgba.blue 0 2 rgba.alpha 0 3"
+name Shuffle1
+tile_color 0xffff
+label "Blue Only"
+xpos -1296
+ypos 113
+}
+Dot {
+name Dot3
+xpos -1262
+ypos 209
+}
+push $N4ceeb200
+Shuffle2 {
+fromInput1 {{0} B}
+fromInput2 {{0} B}
+mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.red 0 0 rgba.blue 0 2 rgba.red 0 0 rgba.alpha 0 3"
+name Shuffle2
+tile_color 0xff1000ff
+label "RED Only"
+xpos -1530
+ypos 117
+}
+Merge2 {
+inputs 2
+operation plus
+name Merge2
+xpos -1530
+ypos 205
+}
+Multiply {
+value 0.5
+name Multiply1
+xpos -1530
+ypos 269
+}
+clone $C4cfed600 {
+xpos -1530
+ypos 385
+selected false
+}
+Merge2 {
+inputs 2
+operation minus
+name Merge3
+xpos -1530
+ypos 525
+}
+Clamp {
+maximum 20
+name Clamp1
+xpos -1530
+ypos 607
+}
+Dot {
+name Dot9
+xpos -1496
+ypos 716
+}
+Merge2 {
+inputs 2
+operation divide
+name Merge6
+xpos -1831
+ypos 712
+}
+Dot {
+name Dot10
+xpos -1797
+ypos 967
+}
+Merge2 {
+inputs 2
+operation multiply
+name Merge7
+xpos -792
+ypos 963
+}
+Dot {
+name Dot12
+xpos -758
+ypos 1430
+}
+push $N4ca52b00
+Dot {
+name Dot11
+xpos -127
+ypos -210
+}
+Merge2 {
+inputs 2
+operation plus
+name Merge8
+xpos -161
+ypos 1426
+}
+Dot {
+name Dot13
+xpos -127
+ypos 1693
+}
+Switch {
+inputs 2
+which {{TypeOfScreen x1 0}}
+name Switch1
+xpos -161
+ypos 1922
+}
+add_layer {RoughAlpha RoughAlpha.alpha}
+Copy {
+inputs 2
+from0 rgba.red
+to0 RoughAlpha.alpha
+name Copy1
+xpos -161
+ypos 2128
+disable {{!parent.OutAlpha}}
+}
+Output {
+name Output1
+xpos -161
+ypos 2311
+}
+end_group

@@ -1,0 +1,254 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+ name aeRelight2D
+ onCreate "n = nuke.thisNode()\nw = n.format().width()/2\nh = n.format().height()/2\ncenter = \[w,h]\n\nif n.knob('create').value()==False:\n    n.knob('light').setValue(center)\n    n.knob('create').setValue(1)"
+ tile_color 0xa0500ff
+ label "\[knob tile_color \[ expr \{ \[value disable]? 4278190335 : 168100095 \}]]\n"
+ note_font "Verdana Bold"
+ selected true
+ xpos 1538
+ ypos -298
+ icon aeFiller_Node.png
+ addUserKnob {20 aeRelight2D}
+ addUserKnob {26 text_6_1_1 l "<b><font color=#ffffff>Light</font><b>"}
+ addUserKnob {12 light l position t "Position of the light."}
+ light {1120 1530}
+ addUserKnob {7 lightsize l height t "Height of the light, you can illuminate the side of the image with values near to 0."}
+ lightsize 0.1
+ addUserKnob {7 intensity t "The power of the light."}
+ intensity 0.3
+ addUserKnob {7 falloff l soft t "Choose the falloff of the light."}
+ falloff 0.5
+ addUserKnob {26 _1_1 l "" +STARTLINE T " "}
+ addUserKnob {26 text_6_1 l "<b><font color=#ffffff>Emboss</font><b>"}
+ addUserKnob {7 emboss l amount t "Control the emboss of the image, choose negative or positive values depends on the directionality of the light from your plate." R -5 5}
+ emboss 5
+ addUserKnob {7 smooth t "Smooth the bump of the image." R 0 100}
+ smooth 10
+ addUserKnob {7 blur t "Blurring the final result." R 0 100}
+ blur 10
+ addUserKnob {26 _1_3 l "" +STARTLINE T " "}
+ addUserKnob {26 ""}
+ addUserKnob {26 _1 l "" +STARTLINE T " "}
+ addUserKnob {26 "" l mask T ""}
+ addUserKnob {41 maskChannelInput l "" -STARTLINE T Merge1.maskChannelInput}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Merge1.invert_mask}
+ addUserKnob {7 mix}
+ mix 1
+ addUserKnob {26 _1_2 l "" +STARTLINE T " "}
+ addUserKnob {6 create +INVISIBLE +STARTLINE}
+ create true
+ addUserKnob {26 ""}
+ addUserKnob {26 about_1 l "" +STARTLINE T "<span style=\"color:#666\"><br/><b>aeRelight2D v1.0</b> - <a  style=\"color:#666;text-decoration: none;\">Aitor Echeveste</a>  © 2021</span>"}
+ addUserKnob {20 About}
+ addUserKnob {26 text_1 l "" +STARTLINE T "   "}
+ addUserKnob {26 text_2 l "" +STARTLINE T "   "}
+ addUserKnob {26 text_4 l "" +STARTLINE T "<font color=#ffffff><font size=\"6\">aeRelight2D</font><font size=6\"> v1.0</font>\n"}
+ addUserKnob {26 about_1_1 l "" +STARTLINE T "by Aitor Echeveste © 2021"}
+ addUserKnob {26 text_1_1 l "" +STARTLINE T "   "}
+ addUserKnob {26 ""}
+ addUserKnob {26 text_3 l "" +STARTLINE T "   "}
+ addUserKnob {26 website l "" +STARTLINE T "<b><a href=\"http://www.aitorecheveste.com\"><span style=\"color:#C8C8C8;\">www.aitorecheveste.com</span></a><b>"}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos 1060
+  ypos 254
+  number 1
+ }
+ Specular {
+  inputs 0
+  white {{lerp(0.5,0.01,falloff)}}
+  min_shininess 2
+  max_shininess 5
+  name Specular2
+  xpos 730
+  ypos -106
+ }
+ Diffuse {
+  white 0
+  name Diffuse1
+  xpos 730
+  ypos 38
+ }
+ Camera2 {
+  inputs 0
+  translate {{Operations.lpos*2/Operations.iformat} {Operations.lpos*2/Operations.iformat} {lerp(-0.99,0.5,lightsize)}}
+  name Camera1
+  xpos 960
+  ypos 18
+ }
+ Light2 {
+  inputs 0
+  light_type directional
+  intensity {{lerp(0,50,parent.intensity)}}
+  cone_angle 56
+  cone_penumbra_angle 60
+  depthmap_slope_bias 0.01
+  name Light2
+  xpos 960
+  ypos -102
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 840
+  ypos -562
+  addUserKnob {20 User}
+ }
+ Saturation {
+  saturation 0
+  name Saturation1
+  xpos 840
+  ypos -490
+  disable {{"!\[exists parent.input]"}}
+ }
+ Multiply {
+  value {{-emboss}}
+  name Multiply3
+  xpos 840
+  ypos -472
+ }
+ NoOp {
+  name Operations
+  xpos 840
+  ypos -442
+  addUserKnob {20 User}
+  addUserKnob {12 iformat}
+  iformat {{input.width} {input.height}}
+  addUserKnob {12 light2 l light}
+  light2 {{parent.light} {parent.light}}
+  addUserKnob {12 lpos}
+  lpos {{light2-(iformat/2)} {light2-(iformat/2)}}
+ }
+ Dot {
+  name Dot1
+  note_font_size 41
+  xpos 874
+  ypos -414
+ }
+set Na9398100 [stack 0]
+ Dot {
+  name Dot3
+  note_font_size 41
+  xpos 984
+  ypos -414
+ }
+ Matrix {
+  matrix {
+      {1 2 1}
+      {0 0 0}
+      {-1 -2 -1}
+    }
+  name Matrix2
+  xpos 950
+  ypos -328
+ }
+ Blur {
+  channels rgba
+  size {{parent.smooth}}
+  name Blur1
+  label "\[value size]"
+  xpos 950
+  ypos -280
+ }
+push $Na9398100
+ Dot {
+  name Dot2
+  note_font_size 41
+  xpos 764
+  ypos -414
+ }
+ Matrix {
+  matrix {
+      {-1 0 1}
+      {-2 0 2}
+      {-1 0 1}
+    }
+  name Matrix1
+  xpos 730
+  ypos -376
+ }
+ Blur {
+  channels rgba
+  size {{parent.smooth}}
+  name Blur4
+  label "\[value size]"
+  xpos 730
+  ypos -328
+ }
+push $Na9398100
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  name Copy1
+  xpos 840
+  ypos -328
+  disable {{"!\[exists parent.input]"}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.green
+  to0 rgba.green
+  name Copy2
+  xpos 840
+  ypos -280
+  disable {{"!\[exists parent.input]" x163 1}}
+ }
+ Expression {
+  temp_name0 magnitude
+  temp_expr0 1-sqrt(r*r+g*g)
+  expr2 magnitude
+  name Expression2
+  xpos 840
+  ypos -178
+ }
+ ReLight {
+  inputs 4
+  normal rgb
+  name ReLight1
+  xpos 840
+  ypos 38
+ }
+ Shuffle {
+  in rgb
+  in2 alpha
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle4
+  xpos 840
+  ypos 110
+ }
+ Blur {
+  channels rgba
+  size {{blur}}
+  name Blur2
+  label "\[value size]"
+  xpos 840
+  ypos 152
+ }
+ Multiply {
+  value {{parent.mix}}
+  name Multiply1
+  xpos 840
+  ypos 200
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge1
+  xpos 840
+  ypos 254
+  disable {{"!\[exists parent.input1]"}}
+ }
+ Output {
+  name Output1
+  xpos 840
+  ypos 350
+ }
+end_group

@@ -1,0 +1,228 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+name PaintColorTexture
+help "Paint color and texture separately. This is helpful especially on images with subtle color gradient variation across large distances, such as skin tones, green or blue screen backings, etc.\n\nToggle output between <i>color map</i> and <i>texture map</i> while you paint each.\n\nBefore rendering, make sure to change output back to <i>result</i>."
+onCreate "LOG_SLIDER = 0x00000004\nnuke.thisNode()\['texture_gamma'].setFlag(LOG_SLIDER)\nnuke.thisNode()\['color_gamma'].setFlag(LOG_SLIDER)"
+knobChanged "__import__(\"dnnuke.init.callbacks.knob_changed.paint_color_texture\", fromlist=\[\"paintColorTextureKC\"]).paintColorTextureKC()"
+tile_color 0x71c671ff
+selected true
+xpos 7330
+ypos 45680
+addUserKnob {20 PaintColorTexture}
+addUserKnob {26 _class l INVISIBLE +INVISIBLE T PaintColorTexture}
+addUserKnob {26 _version l INVISIBLE +INVISIBLE T 1.0}
+addUserKnob {22 documentation l Documentation T "nukescripts.start(\"http://dnet/x/vQEVBg\")" +STARTLINE}
+addUserKnob {26 ""}
+addUserKnob {11 channels t "Paint on this layer/channel set."}
+channels rgba
+addUserKnob {26 sep1 l <b>Texture}
+addUserKnob {22 paint_texture l "Paint Texture" t "Show the texture paint control panel." T nuke.toNode('RotoPaintPaintTexture').showControlPanel(True) +STARTLINE}
+addUserKnob {6 disable_texture l disable t "If checked, disable the effect of the texture paint node. Useful for comparing the effect with the unchanged input." -STARTLINE}
+addUserKnob {26 sep2 l <b>Color}
+addUserKnob {22 paint_color l "Paint Color" t "Show the color paint control panel." T nuke.toNode('RotoPaintPaintColor').showControlPanel(True) +STARTLINE}
+addUserKnob {6 disable_color l disable t "If checked, disable the effect of the color paint node. Useful for comparing the effect with the unchanged input." -STARTLINE}
+addUserKnob {41 size l "blur size" t "The image is divided by a blurred version of itself at this size. Higher numbers create a texture map with less color variation but may introduce ringing artifacts." T Blur3.size}
+addUserKnob {26 ""}
+addUserKnob {4 output t "What to render to the output:\n\n<b>texture map</b>: the image is divided by a blurred version of itself. You can paint this map without affecting the color gradient.\n<b>color map</b>: the blurred image which the image is divded. You can paint this map without affecting texture.\n<b>output</b>: texture multiplied by color" M {"texture map" "color map" result "" "" ""}}
+output result
+addUserKnob {7 texture_gain l "Texture Viewer Gain" t "Multiply the texture map by this amount before display. Does not affect output." +HIDDEN R 0 4}
+texture_gain 0.5
+addUserKnob {7 texture_gamma l "Texture Viewer Gamma" t "Apply a gamma function to the texture map before display. This does not affect output." +HIDDEN R 0.2 5}
+texture_gamma 1
+addUserKnob {7 color_gain l "Color Gain" t "Multiply the color map by this amount before display. Does not affect output." +HIDDEN R 0 4}
+color_gain 0.5
+addUserKnob {7 color_gamma l "Color Gamma" t "Apply a gamma function to the color map before display. This does not affect output." +HIDDEN R 0.2 5}
+color_gamma 1
+addUserKnob {26 sep l "" +STARTLINE}
+addUserKnob {41 maskChannelInput l mask t "Mask the effect by this channel." -STARTLINE T DissolveMix.maskChannelInput}
+addUserKnob {41 invert_mask l invert t "Invert the channel used to mask off the effect of this node." -STARTLINE T DissolveMix.invert_mask}
+addUserKnob {7 mix t "Mix in the effect by this much, where 1.0 is the full effect of the node and 0.0 is none of it."}
+mix 1
+}
+Input {
+inputs 0
+name Input
+xpos -531
+ypos 422
+}
+Dot {
+name Dot10
+xpos -497
+ypos 495
+}
+set N1d28b900 [stack 0]
+Dot {
+name Dot1
+xpos -497
+ypos 906
+}
+set N1d28b200 [stack 0]
+push $N1d28b900
+push $N1d28b900
+Blur {
+channels {{{parent.channels}}}
+size 30
+name Blur3
+xpos -127
+ypos 599
+}
+set N1d28ab00 [stack 0]
+Merge2 {
+inputs 2
+operation divide
+name MergeDiv
+xpos -276
+ypos 686
+}
+RotoPaint {
+output {{{parent.channels}}}
+cliptype none
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 576}
+    {t x44700000 x44070000}
+    {a}}}}}
+toolbox {clone {
+  { selectAll bs 240 h 1 src 1 str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone bs 240 h 1 src 1 stx 325.5 sty -279 str 1 ssx 1 ssy 1 sf 1 sb 1 ltt 0 tt 19 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+toolbar_show_clone_settings true
+toolbar_brush_size 240
+toolbar_brush_hardness 1
+toolbar_paint_source fg
+toolbar_source_transform_translate {325.5 -279}
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {1024 576}
+colorOverlay {0 0 0 0}
+paint_source foreground
+lifetime_type "all frames"
+view {}
+motionblur_on true
+brush_size 240
+brush_spacing 0.05000000075
+brush_hardness 1
+source_black_outside true
+name RotoPaintPaintTexture
+label texture
+xpos -276
+ypos 738
+disable {{parent.disable_texture}}
+}
+set N1d289d00 [stack 0]
+push $N1d28ab00
+RotoPaint {
+output {{{parent.channels}}}
+cliptype none
+curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 512}
+    {t x44700000 x44070000}
+    {a}}}}}
+toolbox {clone {
+  { selectAll opc 0.1 h 0.1 src 1 str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone opc 0.1 h 0.1 src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 ltt 0 tt 19 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 ltt 0 ep1 35 tt 20 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 ltt 0 ep1 5 tt 22 }
+} }
+toolbar_opacity 0.1000000015
+toolbar_brush_hardness 0.1000000015
+toolbar_paint_source fg
+toolbar_source_transform_scale {1 1}
+toolbar_source_transform_center {2048 1152}
+view {}
+motionblur_on true
+name RotoPaintPaintColor
+label color
+xpos -127
+ypos 728
+disable {{parent.disable_color}}
+}
+set N1d288100 [stack 0]
+Merge2 {
+inputs 2
+operation multiply
+name MergeMult
+xpos -204
+ypos 886
+}
+push $N1d28b200
+Dissolve {
+inputs 2
+channels {{{parent.channels}}}
+which {{parent.mix}}
+maskChannelMask rgba.red
+name DissolveMix
+xpos -204
+ypos 1132
+disable {{"!parent.mix || parent.disable"}}
+}
+Switch {
+inputs 2
+which {{"parent.disable_color && parent.disable_texture"}}
+name Switch2
+xpos -204
+ypos 1233
+}
+push $N1d288100
+Grade {
+channels {{{parent.channels}}}
+white {{parent.color_gain i}}
+gamma {{parent.color_gamma i}}
+name GradeColor
+xpos -55
+ypos 830
+}
+push $N1d289d00
+Grade {
+channels {{{parent.channels}}}
+white {{parent.texture_gain}}
+gamma {{parent.texture_gamma}}
+name GradeTexture
+xpos -342
+ypos 830
+}
+Switch {
+inputs 3
+which {{parent.output i}}
+name Switch1
+xpos -55
+ypos 1233
+}
+Output {
+name Output1
+xpos -55
+ypos 1399
+}
+end_group

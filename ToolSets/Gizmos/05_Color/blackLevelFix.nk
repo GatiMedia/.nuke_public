@@ -1,0 +1,129 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+name blackLevelFix
+selected true
+xpos 10740
+ypos 50174
+addUserKnob {20 User}
+addUserKnob {41 channels T Grade2.channels}
+addUserKnob {7 pinBlack l "Pin Blacks"}
+pinBlack 0.1
+addUserKnob {18 FromColor l "Source Color"}
+FromColor {0 0 0}
+addUserKnob {6 FromColor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {18 ToColor l "Target Color"}
+ToColor {0 0 0}
+addUserKnob {6 ToColor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 clamp l "clamp to target" t "Clamp the lower end of the range to the Target Color" +STARTLINE}
+clamp true
+addUserKnob {26 ""}
+addUserKnob {41 unpremult l "(un)premult by" T Grade2.unpremult}
+addUserKnob {41 invert_unpremult l invert -STARTLINE T Grade2.invert_unpremult}
+addUserKnob {7 mix}
+mix 1
+addUserKnob {6 invertMask -STARTLINE}
+}
+Input {
+inputs 0
+name Mask
+xpos 620
+ypos 158
+number 1
+}
+Invert {
+name Invert1
+xpos 620
+ypos 224
+}
+AddChannels {
+channels alpha
+name AddChannels1
+xpos 620
+ypos 320
+}
+Invert {
+name Invert2
+xpos 620
+ypos 416
+}
+Input {
+inputs 0
+name Input
+xpos 400
+ypos 134
+}
+set N10564800 [stack 0]
+Clamp {
+channels rgb
+minimum_enable false
+maximum {{pinBlack} {pinBlack} {pinBlack} {curve}}
+MaxClampTo {{pinBlack} {pinBlack} {pinBlack} {curve}}
+MaxClampTo_enable true
+unpremult -rgba.alpha
+name Clamp4
+selected true
+xpos 180
+ypos 134
+}
+Grade {
+blackpoint {{min(pinBlack,FromColor)} {min(pinBlack,FromColor)} {min(pinBlack,FromColor)} {curve}}
+whitepoint {{"max(pinBlack, FromColor)"}}
+black {{parent.ToColor} {parent.ToColor} {parent.ToColor} 0}
+white {{max(pinBlack,FromColor)}}
+black_clamp false
+unpremult -rgba.alpha
+name Grade2
+knobChanged "\n\nn = nuke.thisNode()\nk = nuke.thisKnob()\nif k.name() == \"channels\":\n    nuke.toNode('Clamp3')\['channels'].fromScript(k.toScript())\n    nuke.toNode('Clamp4')\['channels'].fromScript(k.toScript())\n    nuke.toNode('Clamp5')\['channels'].fromScript(k.toScript())\n    nuke.toNode('Merge2')\['Achannels'].fromScript(k.toScript())\n    nuke.toNode('Merge2')\['Bchannels'].fromScript(k.toScript())\n    nuke.toNode('Merge2')\['output'].fromScript(k.toScript())\n    nuke.toNode('Keymix1')\['channels'].fromScript(k.toScript())\n\nif k.name() == \"unpremult\":\n    nuke.toNode('Clamp3')\['unpremult'].fromScript(k.toScript())\n    nuke.toNode('Clamp4')\['unpremult'].fromScript(k.toScript())\n    nuke.toNode('Clamp5')\['unpremult'].fromScript(k.toScript())\n\nif k.name() == \"invert_unpremult\":\n    nuke.toNode('Clamp3')\['invert_unpremult'].fromScript(k.toScript())\n    nuke.toNode('Clamp4')\['invert_unpremult'].fromScript(k.toScript())\n    nuke.toNode('Clamp5')\['invert_unpremult'].fromScript(k.toScript())\n"
+xpos 180
+ypos 230
+}
+Clamp {
+channels rgb
+minimum {{min(pinBlack,ToColor)} {min(pinBlack,ToColor)} {min(pinBlack,ToColor)} 0}
+minimum_enable {{parent.clamp}}
+maximum {{max(pinBlack,ToColor)} {max(pinBlack,ToColor)} {max(pinBlack,ToColor)} {curve}}
+maximum_enable {{parent.clamp}}
+unpremult -rgba.alpha
+name Clamp5
+xpos 180
+ypos 326
+}
+push $N10564800
+Clamp {
+channels rgb
+minimum {{pinBlack} {pinBlack} {pinBlack} {curve}}
+maximum_enable false
+MinClampTo_enable true
+unpremult -rgba.alpha
+name Clamp3
+xpos 290
+ypos 278
+}
+Merge2 {
+inputs 2
+operation max
+Achannels rgb
+Bchannels rgb
+output rgb
+name Merge2
+xpos 180
+ypos 422
+}
+push $N10564800
+Keymix {
+inputs 3
+channels rgb
+invertMask {{"\[exists parent.input1] && parent.invertMask"}}
+mix {{parent.mix}}
+name Keymix1
+xpos 400
+ypos 422
+}
+Output {
+name Output1
+xpos 400
+ypos 518
+}
+end_group

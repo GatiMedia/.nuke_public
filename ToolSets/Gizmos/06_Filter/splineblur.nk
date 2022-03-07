@@ -1,0 +1,180 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+ name splineblur
+ tile_color 0xcc804eff
+ selected true
+ xpos 9860
+ ypos -9976
+ addUserKnob {20 User}
+ addUserKnob {26 _1 l Spline}
+ addUserKnob {22 grabSpline l "Spline Control" T "nuke.thisNode().begin()\nnuke.show(nuke.toNode('RotoPaint9'))\nnuke.thisNode().end()" +STARTLINE}
+ addUserKnob {41 go l Recenter -STARTLINE T CurveTool2.go}
+ addUserKnob {41 output T Switch1.output}
+ addUserKnob {26 transform l Transform}
+ addUserKnob {41 divisions T TimeBlur2.divisions}
+ addUserKnob {41 softness l timeblur T TimeBlur2.shutter}
+ addUserKnob {41 translate T Transform1.translate}
+ addUserKnob {41 rotate T Transform1.rotate}
+ addUserKnob {41 scale T Transform1.scale}
+ addUserKnob {41 reformat l "reformat (needed for timeblur)" T Crop1.reformat}
+ addUserKnob {41 curves l "" +STARTLINE T RotoPaint9.curves}
+ addUserKnob {41 mix T Convolve1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 credit l "" +STARTLINE T "Chris Fryer | 2020\n"}
+}
+ Input {
+  inputs 0
+  name img
+  xpos 179
+  ypos 219
+ }
+set N8fd30100 [stack 0]
+ NoTimeBlur {
+  name NoTimeBlur1
+  xpos 336
+  ypos 278
+ }
+ RotoPaint {
+  replace true
+  curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 2097664}
+    {t x4514c800 x4462c000 0 0 0 0 0 0 0
+     {{x4483e000 1}}}
+    {a pt1x 0 pt1y 0 pt2x 0 pt2y 0 pt3x 0 pt3y 0 pt4x 0 pt4y 0 ptex00 0 ptex01 0 ptex02 0 ptex03 0 ptex10 0 ptex11 0 ptex12 0 ptex13 0 ptex20 0 ptex21 0 ptex22 0 ptex23 0 ptex30 0 ptex31 0 ptex32 0 ptex33 0 ptof1x 0 ptof1y 0 ptof2x 0 ptof2y 0 ptof3x 0 ptof3y 0 ptof4x 0 ptof4y 0 pterr 0 ptrefset 0 ptmot x40800000 ptref 0}
+    {cubiccurve blur_guide 512 catmullrom
+     {cc
+      {f 2080}
+      {p
+       {x436d5b32 x43682180 x3e9cc000}
+       {x43bbe6cd x43682180 x3f09ec11}
+       {x43faeba5 x43682180 x3eadc753}
+       {x442684ce x43682180}}}
+     {tx x4483e000 x45370148 x4487c148}
+     {a ro 0 go 0 bo 0 ao 0 bs 1 str 1 spx x4514c800 spy x4462c000 sb 1 ltn x4483c000 ltm x4483c000 ws
+      {=frame%1 0}     we
+      {=1-frame%1 1}     tt x41880000 dt 0}}}}}}
+  toolbox {selectAll {
+  { selectAll bm 6 src 1 str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush bs 28.5 str 1 ssx 1 ssy 1 sf 1 sb 1 ltn 1055 ltm 1055 tt 17 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 tt 21 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 tt 22 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+  toolbar_label_points true
+  toolbar_blending_mode color-dodge
+  toolbar_show_paint_selection true
+  toolbar_brush_hardness 0.200000003
+  toolbar_lifetime_type single
+  toolbar_paint_source fg
+  toolbar_source_transform_scale {1 1}
+  toolbar_source_transform_center {2470 1109.5}
+  colorOverlay {0 0 0 0}
+  lifetime_type "all frames"
+  lifetime_start 1054
+  lifetime_end 1054
+  motionblur_on true
+  motionblur_shutter_offset_type centred
+  brush_size 1
+  brush_spacing 0.05000000075
+  brush_hardness 0.200000003
+  dynamic_transparency false
+  buildup false
+  writeon_start {{frame%1 0}}
+  writeon_end {{1-frame%1 1}}
+  source_black_outside true
+  name RotoPaint9
+  xpos 336
+  ypos 302
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle2
+  label "\[value in]-->\[value out]"
+  xpos 336
+  ypos 352
+ }
+ CurveTool {
+  operation "Auto Crop"
+  channels rgba
+  ROI {0 0 {input.width} {input.height}}
+  autocropdata {{curve x1050 236} {curve x1050 231} {curve x1050 667} {curve x1050 233}}
+  name CurveTool2
+  label "Processing Crop..."
+  xpos 336
+  ypos 409
+ }
+ Transform {
+  center {{"(CurveTool2.autocropdata.x + CurveTool2.autocropdata.r)/2"} {"(CurveTool2.autocropdata.y + CurveTool2.autocropdata.t)/2"}}
+  shutteroffset centred
+  name Transform1
+  xpos 336
+  ypos 445
+ }
+ Crop {
+  box {{parent.CurveTool2.autocropdata-50} {parent.CurveTool2.autocropdata-50} {parent.CurveTool2.autocropdata+50} {parent.CurveTool2.autocropdata+50}}
+  name Crop1
+  xpos 336
+  ypos 469
+ }
+ TimeBlur {
+  divisions 1
+  shutter 0
+  shutteroffset start
+  shuttercustomoffset -0.5
+  name TimeBlur2
+  xpos 336
+  ypos 492
+  disable {{"shutter == 0 ? 1 : 0" x1041 1}}
+ }
+set N8fed1d00 [stack 0]
+push $N8fed1d00
+push $N8fd30100
+ Convolve2 {
+  inputs 2
+  channels rgba
+  name Convolve1
+  xpos 179
+  ypos 521
+ }
+ Switch {
+  inputs 2
+  which {{output}}
+  name Switch1
+  xpos 179
+  ypos 572
+  addUserKnob {20 User}
+  addUserKnob {4 output M {"blurred image" "blur filter"}}
+ }
+ Output {
+  name Output1
+  xpos 179
+  ypos 621
+ }
+push $N8fed1d00
+ Viewer {
+  frame 1050
+  frame_range 1017-1060
+  center_fstop 0
+  name Viewer1
+  xpos 446
+  ypos 445
+ }
+end_group

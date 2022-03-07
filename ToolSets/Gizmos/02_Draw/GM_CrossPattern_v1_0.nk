@@ -1,0 +1,559 @@
+Group {
+ name GM_CrossPattern
+ tile_color 0xd5ff1dff
+ xpos 3150
+ ypos -298
+ addUserKnob {20 User}
+ addUserKnob {4 output l Output M {"Pattern Only" "Pattern Over Image" "Distorted Image" STMap "" ""}}
+ addUserKnob {6 keep_alpha l "Keep Original Alpha" -STARTLINE}
+ keep_alpha true
+ addUserKnob {26 ""}
+ addUserKnob {41 operation1 l Operation T Merge_Proxy.operation1}
+ addUserKnob {26 ""}
+ addUserKnob {41 type l Type T CP_Expression.type}
+ addUserKnob {41 type2 l Type2 T CP_Expression.type2}
+ addUserKnob {41 direction l Direction T CP_Expression.direction}
+ addUserKnob {41 direction2 l Direction2 T CP_Expression.direction2}
+ addUserKnob {41 size l Size T CP_Expression.size}
+ addUserKnob {41 size2 l Size2 T CP_Expression.size2}
+ addUserKnob {41 offset l Offset T CP_Expression.offset}
+ addUserKnob {41 offset2 l Offset2 T CP_Expression.offset2}
+ addUserKnob {41 speed l Speed T CP_Expression.speed}
+ addUserKnob {41 speed2 l Speed2 T CP_Expression.speed2}
+ addUserKnob {41 multiply l Color T CP_Grade2.multiply}
+ addUserKnob {6 invert l Invert +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {7 roundness l Roundness R 0 100}
+ roundness 30
+ addUserKnob {7 contr l Contrast}
+ addUserKnob {7 blur l Blur R 0 100}
+ addUserKnob {26 ""}
+ addUserKnob {41 mix l Mix T Merge1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.01 version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_CrossPattern© by Attila Gasparetz</font>"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 70
+  ypos -634
+ }
+ Dot {
+  name Dot1
+  xpos 104
+  ypos -534
+ }
+set Ncb78f500 [stack 0]
+ Remove {
+  name CP_Remove1
+  xpos 70
+  ypos -328
+ }
+set Ncb78f180 [stack 0]
+ Expression {
+  expr0 "ceil((\[value type](y/size\[if \{\[numvalue direction] == 0\} \{return \"-\"\} else \{return \"+\"\}]((frame+offset)*(speed/100)))) + (\[value type](x/size\[if \{\[numvalue direction] == 0\} \{return \"-\"\} else \{return \"+\"\}]((frame+offset)*(speed/100)))))"
+  expr1 "ceil((\[value type2](y/size2\[if \{\[numvalue direction2] == 0\} \{return \"-\"\} else \{return \"+\"\}]((frame+offset2)*(speed2/100)))) / (\[value type2](x/size2\[if \{\[numvalue direction2] == 0\} \{return \"-\"\} else \{return \"+\"\}]((frame+offset2)*(speed2/100)))))"
+  name CP_Expression
+  xpos 70
+  ypos -274
+  addUserKnob {20 User}
+  addUserKnob {4 type l Type M {sin cos tan}}
+  addUserKnob {4 type2 l Type2 M {sin cos tan}}
+  addUserKnob {4 direction l Direction M {Up Down ""}}
+  addUserKnob {4 direction2 l Direction2 M {Up Down}}
+  direction2 Down
+  addUserKnob {7 size l Size R 0 100}
+  size 30
+  addUserKnob {7 size2 l Size2 R 0 100}
+  size2 60
+  addUserKnob {7 offset l Offset R 0 100}
+  addUserKnob {7 offset2 l Offset2 R 0 100}
+  addUserKnob {7 speed l Speed R 0 100}
+  speed 5
+  addUserKnob {7 speed2 l Speed2 R 0 100}
+  speed2 5
+ }
+set Ncb78ee00 [stack 0]
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name CP_ShuffleR
+  xpos -40
+  ypos -154
+ }
+ Clamp {
+  name CP_Clamp1
+  xpos -40
+  ypos -88
+ }
+push $Ncb78ee00
+ Shuffle {
+  red green
+  green black
+  blue black
+  alpha black
+  name CP_ShuffleG
+  xpos 180
+  ypos -154
+ }
+ Clamp {
+  name CP_Clamp2
+  xpos 180
+  ypos -88
+ }
+ Merge2 {
+  inputs 2
+  operation {{Merge_Proxy.operation1}}
+  Achannels {rgba.red -rgba.green -rgba.blue rgba.alpha}
+  Bchannels {rgba.red rgba.green -rgba.blue rgba.alpha}
+  output rgb
+  name CP_Merge
+  xpos 70
+  ypos 14
+ }
+ Clamp {
+  name CP_Clamp3
+  xpos 70
+  ypos 56
+ }
+ Shuffle {
+  red black
+  green black
+  blue black
+  alpha red
+  name Shuffle4
+  xpos 70
+  ypos 134
+ }
+ Invert {
+  name CP_Invert
+  xpos 70
+  ypos 176
+  disable {{!invert}}
+ }
+ Group {
+  name key_chew
+  help "======== KeyChew beta ========\n=============================\n\nThis is a port of the KeyChew macro for Shake to Nuke.\n\nThere might be tiny differences on the results given in both apps. Some of them are caused by the internal algorithms of each app, and others by the way I faked the JSplineV\nexpression of Shake in Nuke. If you know a better way to solve this, let\nme know!!\n\n=============================\n             2009 Cuco Bures\n============================="
+  xpos 70
+  ypos 230
+  addUserKnob {20 Controls}
+  addUserKnob {7 chew t "\t\t" R -200 200}
+  chew {{-parent.roundness}}
+  addUserKnob {7 soften R 0 200}
+  addUserKnob {6 matteMult +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos 0
+  }
+set Neb74a80 [stack 0]
+  Dot {
+   name Dot1
+   xpos 366
+   ypos 5
+  }
+set Neb74700 [stack 0]
+push $Neb74700
+  Invert {
+   name Invert1
+   xpos 177
+   ypos 34
+  }
+push $Neb74700
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch1
+   xpos 177
+   ypos 87
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.chew]))/4)+(floor(abs(\[value parent.chew]))/8)" i}}
+   name FgEdgeBlur
+   xpos 177
+   ypos 111
+  }
+  Grade {
+   channels alpha
+   multiply {1 1 1 {max(FgEdgeBlur.size*1.5,1) i}}
+   black_clamp false
+   name FgEdgeMult
+   xpos 177
+   ypos 165
+  }
+  Grade {
+   channels alpha
+   gamma {1 1 1 {JSplineVFake(floor(abs(parent.chew))) i}}
+   name FgEdgeGamma1
+   xpos 177
+   ypos 213
+   addUserKnob {20 User}
+   addUserKnob {7 JSplineVFake}
+   JSplineVFake {{curve i l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
+  }
+set Nebb5500 [stack 0]
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge1
+   xpos 332
+   ypos 218
+  }
+push $Nebb5500
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch2
+   xpos 177
+   ypos 284
+  }
+  Clamp {
+   name Clamp2
+   xpos 177
+   ypos 323
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.soften]))/4)+(floor(abs(\[value parent.soften]))/8)"}}
+   name BlurResult
+   xpos 177
+   ypos 446
+  }
+push $Neb74a80
+  ShuffleCopy {
+   inputs 2
+   name ShuffleCopy1
+   xpos 0
+   ypos 451
+  }
+  Premult {
+   name Premult1
+   xpos 0
+   ypos 486
+   disable {{"1-\[value parent.matteMult]" i}}
+  }
+  Output {
+   name Output1
+   xpos 0
+   ypos 556
+  }
+ end_group
+ Group {
+  name key_chew1
+  help "======== KeyChew beta ========\n=============================\n\nThis is a port of the KeyChew macro for Shake to Nuke.\n\nThere might be tiny differences on the results given in both apps. Some of them are caused by the internal algorithms of each app, and others by the way I faked the JSplineV\nexpression of Shake in Nuke. If you know a better way to solve this, let\nme know!!\n\n=============================\n             2009 Cuco Bures\n============================="
+  xpos 70
+  ypos 302
+  addUserKnob {20 Controls}
+  addUserKnob {7 chew t "\t\t" R -200 200}
+  chew {{-parent.key_chew.chew}}
+  addUserKnob {7 soften R 0 200}
+  addUserKnob {6 matteMult +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos 0
+  }
+set Ncabbf880 [stack 0]
+  Dot {
+   name Dot1
+   xpos 366
+   ypos 5
+  }
+set Ncabbf500 [stack 0]
+push $Ncabbf500
+  Invert {
+   name Invert1
+   xpos 177
+   ypos 34
+  }
+push $Ncabbf500
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch1
+   xpos 177
+   ypos 87
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.chew]))/4)+(floor(abs(\[value parent.chew]))/8)" i}}
+   name FgEdgeBlur
+   xpos 177
+   ypos 111
+  }
+  Grade {
+   channels alpha
+   multiply {1 1 1 {max(FgEdgeBlur.size*1.5,1) i}}
+   black_clamp false
+   name FgEdgeMult
+   xpos 177
+   ypos 165
+  }
+  Grade {
+   channels alpha
+   gamma {1 1 1 {JSplineVFake(floor(abs(parent.chew))) i}}
+   name FgEdgeGamma1
+   xpos 177
+   ypos 213
+   addUserKnob {20 User}
+   addUserKnob {7 JSplineVFake}
+   JSplineVFake {{curve i l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
+  }
+set Ncabbe380 [stack 0]
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge1
+   xpos 332
+   ypos 218
+  }
+push $Ncabbe380
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch2
+   xpos 177
+   ypos 284
+  }
+  Clamp {
+   name Clamp2
+   xpos 177
+   ypos 323
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.soften]))/4)+(floor(abs(\[value parent.soften]))/8)"}}
+   name BlurResult
+   xpos 177
+   ypos 446
+  }
+push $Ncabbf880
+  ShuffleCopy {
+   inputs 2
+   name ShuffleCopy1
+   xpos 0
+   ypos 451
+  }
+  Premult {
+   name Premult1
+   xpos 0
+   ypos 486
+   disable {{"1-\[value parent.matteMult]" i}}
+  }
+  Output {
+   name Output1
+   xpos 0
+   ypos 556
+  }
+ end_group
+ Clamp {
+  name CP_Clamp4
+  xpos 70
+  ypos 368
+ }
+ Grade {
+  channels all
+  blackpoint {{"parent.contr * .45"}}
+  whitepoint {{"1 - ( blackpoint * 1.1) "}}
+  white_clamp true
+  name CP_Grade
+  xpos 70
+  ypos 440
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name Shuffle5
+  xpos 70
+  ypos 494
+ }
+ Dot {
+  name Dot3
+  xpos 104
+  ypos 570
+ }
+set Ncac31c00 [stack 0]
+ Dot {
+  name Dot4
+  xpos 104
+  ypos 642
+ }
+set Ncac31880 [stack 0]
+push $Ncac31c00
+push $Ncb78f180
+ Dot {
+  name Dot8
+  tile_color 0x949494ff
+  note_font_size 22
+  note_font_color 0xffffffff
+  xpos 434
+  ypos -318
+ }
+set Ncac31500 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.red
+  name CP_CopyR
+  tile_color 0xff0000ff
+  xpos 400
+  ypos 560
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.green
+  name CP_CopyG
+  tile_color 0x1fff00ff
+  xpos 400
+  ypos 632
+ }
+set Ncac30e00 [stack 0]
+ Blur {
+  size {{blur}}
+  name Blur1
+  label "Size: \[value size]"
+  xpos 730
+  ypos 625
+ }
+push $Ncac31500
+ Dot {
+  name Dot2
+  tile_color 0x949494ff
+  note_font_size 22
+  note_font_color 0xffffffff
+  xpos 1204
+  ypos -318
+ }
+ Expression {
+  expr0 (x+0.5)/width
+  expr1 (y+0.5)/height
+  name Expression1
+  xpos 1170
+  ypos -58
+ }
+ Merge2 {
+  inputs 2
+  mix {{Merge1.mix/5}}
+  name Merge2
+  xpos 1170
+  ypos 638
+ }
+set Ncac5bc00 [stack 0]
+push $Ncac5bc00
+push $Ncb78f500
+ Dot {
+  name Dot7
+  xpos 984
+  ypos -534
+ }
+ Shuffle {
+  alpha black
+  name Shuffle1
+  label "\[value in]"
+  xpos 950
+  ypos 776
+  disable {{keep_alpha}}
+ }
+ Dot {
+  name Dot9
+  tile_color 0x949494ff
+  note_font_size 22
+  note_font_color 0xffffffff
+  xpos 984
+  ypos 978
+ }
+set Ncac5b180 [stack 0]
+ STMap {
+  inputs 2
+  uv rgb
+  name STMap1
+  label "UV: \[value uv]"
+  xpos 1170
+  ypos 961
+ }
+push $Ncac31880
+ Dot {
+  name Dot5
+  xpos 104
+  ypos 714
+ }
+set Ncac5aa80 [stack 0]
+ Dot {
+  name Dot6
+  xpos 104
+  ypos 834
+ }
+push $Ncac5aa80
+push $Ncac30e00
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.blue
+  name CP_CopyB
+  tile_color 0x3fffff
+  xpos 400
+  ypos 704
+ }
+ Grade {
+  name CP_Grade2
+  xpos 400
+  ypos 758
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name CP_CopyA
+  tile_color 0x999999ff
+  xpos 400
+  ypos 824
+ }
+ Blur {
+  size {{Blur1.size}}
+  name Blur2
+  label "Size: \[value size]"
+  xpos 400
+  ypos 913
+ }
+ Premult {
+  name Premult1
+  xpos 400
+  ypos 1070
+ }
+set Ncac8b500 [stack 0]
+push $Ncac5b180
+ Merge2 {
+  inputs 2
+  also_merge all
+  name Merge1
+  xpos 950
+  ypos 1070
+ }
+push $Ncac8b500
+ Switch {
+  inputs 4
+  which {{output}}
+  name Switch1
+  label "Which: \[value which]"
+  selected true
+  xpos 950
+  ypos 1232
+ }
+ Output {
+  name Output1
+  xpos 950
+  ypos 1454
+ }
+ NoOp {
+  inputs 0
+  name Merge_Proxy
+  xpos 180
+  ypos 14
+  addUserKnob {20 User}
+  addUserKnob {4 operation1 M {atop average color-burn color-dodge conjoint-over copy difference disjoint-over divide exclusion from geometric hard-light hypot in mask matte max min minus multiply out over overlay plus screen soft-light stencil under xor ""}}
+  operation1 multiply
+ }
+end_group
