@@ -1,0 +1,322 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+name Lens_Edge_Extend
+tile_color 0xff5592ff
+selected true
+xpos 8650
+ypos 43478
+addUserKnob {20 User}
+addUserKnob {4 lensChoice l Lens M {Alpha Luma}}
+addUserKnob {6 matte l "Use Lens as Matte" t "Mattes distortion to only where the lens is." +STARTLINE}
+addUserKnob {41 size l "Blur Lens" T Blur2.size}
+addUserKnob {7 strength l "Lens Size" R 0 100}
+strength 5.4
+addUserKnob {7 dispMult l "Lens Multiplier" R 1 100}
+dispMult 1
+addUserKnob {7 amt l "Distortion Amount" R -100 100}
+amt -11
+addUserKnob {6 barf l "Distort Alpha" +STARTLINE}
+addUserKnob {26 ""}
+addUserKnob {6 distChrma l "Distort Chroma" +STARTLINE}
+addUserKnob {7 ChrmSep l "Chroma Separation" R -10 10}
+}
+Input {
+inputs 0
+name Mask
+label Mask
+xpos -794
+ypos -353
+number 2
+}
+Invert {
+channels rgba
+name Invert1
+xpos -794
+ypos -288
+}
+Blur {
+channels rgba
+name Blur1
+xpos -794
+ypos -257
+}
+Constant {
+inputs 0
+channels motion
+color {0.5 0.5 0.5 0.5}
+name Constant1
+xpos -40
+ypos -375
+}
+set Ne5957200 [stack 0]
+Input {
+inputs 0
+name Alpha
+label Matte
+xpos -370
+ypos -799
+number 1
+}
+set Ne5956400 [stack 0]
+Keyer {
+operation "luminance key"
+name Keyer1
+xpos -370
+ypos -757
+disable {{1-lensChoice}}
+}
+Shuffle {
+red alpha
+green alpha
+blue alpha
+name Shuffle1
+label "\[value in 1]"
+xpos -370
+ypos -701
+}
+Blur {
+channels rgba
+size 9.4
+crop false
+name Blur2
+xpos -370
+ypos -658
+}
+set Ne5954f00 [stack 0]
+Dot {
+name Dot1
+xpos -672
+ypos -660
+}
+Dot {
+name Dot2
+xpos -672
+ypos -348
+}
+push $Ne5957200
+push $Ne5954f00
+Transform {
+translate {{-strength/2 i} 0}
+center {960 540}
+black_outside false
+name Transform4
+xpos -607
+ypos -512
+}
+push $Ne5954f00
+Transform {
+translate {{strength/2} 0}
+center {960 540}
+black_outside false
+name Transform1
+xpos -480
+ypos -561
+}
+push $Ne5954f00
+Dot {
+name Dot3
+xpos -342
+ypos -588
+}
+Expression {
+expr0 .5
+expr1 .5
+expr2 .5
+name Expression1
+xpos -370
+ypos -514
+}
+set Ne592e400 [stack 0]
+Add {
+inputs 1+1
+value 0.5
+name Add3
+xpos -480
+ypos -520
+}
+Add {
+inputs 1+1
+value -0.5
+name Add4
+xpos -480
+ypos -448
+}
+push $Ne5954f00
+Transform {
+translate {0 {-strength/2 i}}
+center {960 540}
+black_outside false
+name Transform6
+xpos -147
+ypos -514
+}
+push $Ne5954f00
+Transform {
+translate {0 {strength/2}}
+center {960 540}
+black_outside false
+name Transform5
+xpos -260
+ypos -561
+}
+push $Ne592e400
+Add {
+inputs 1+1
+value 0.5
+name Add1
+xpos -260
+ypos -520
+}
+Add {
+inputs 1+1
+value -0.5
+name Add2
+xpos -260
+ypos -448
+}
+ShuffleCopy {
+inputs 2
+red red
+blue red
+alpha green2
+black red
+white green
+red2 blue
+green2 white
+out motion
+name ShuffleCopy1
+xpos -370
+ypos -418
+}
+Keymix {
+inputs 3
+invertMask true
+name Keymix1
+xpos -370
+ypos -352
+disable {{1-matte i x1 1}}
+}
+Keymix {
+inputs 3
+name Keymix2
+selected true
+xpos -370
+ypos -263
+}
+Add {
+value -0.5
+name Add5
+xpos -370
+ypos -179
+}
+Multiply {
+channels motion
+value {{dispMult}}
+name Multiply1
+xpos -370
+ypos -136
+}
+Input {
+inputs 0
+name Src
+xpos -40
+ypos -80
+}
+Copy {
+inputs 2
+from0 -rgba.alpha
+to0 -rgba.alpha
+channels motion
+name Copy3
+xpos -370
+ypos -92
+}
+set Ne5ad5d00 [stack 0]
+IDistort {
+channels {rgba.red -rgba.green -rgba.blue none}
+uv motion
+uv_scale {{"amt + (amt*(ChrmSep/10))"}}
+name IDistort2
+xpos -472
+ypos 55
+addUserKnob {20 User}
+}
+IDistort {
+channels {-rgba.red rgba.green -rgba.blue none}
+uv motion
+uv_scale {{amt i}}
+name IDistort3
+xpos -472
+ypos 93
+addUserKnob {20 User}
+}
+IDistort {
+channels {-rgba.red -rgba.green rgba.blue none}
+uv motion
+uv_scale {{"amt + (amt*(-ChrmSep/10))" i}}
+name IDistort4
+xpos -472
+ypos 131
+addUserKnob {20 User}
+}
+push $Ne5ad5d00
+IDistort {
+channels rgba
+uv motion
+uv_scale {{amt i}}
+name IDistort5
+label alpha
+xpos -133
+ypos 85
+addUserKnob {20 User}
+}
+push $Ne5ad5d00
+IDistort {
+channels rgb
+uv motion
+uv_scale {{amt i}}
+name IDistort1
+xpos -252
+ypos 84
+addUserKnob {20 User}
+}
+Switch {
+inputs 2
+which {{barf i}}
+name Switch2
+xpos -252
+ypos 147
+}
+Switch {
+inputs 2
+which {{distChrma}}
+name Switch1
+xpos -362
+ypos 244
+}
+Output {
+name Output1
+xpos -362
+ypos 435
+}
+push $Ne5956400
+Merge2 {
+name Merge1
+xpos -260
+ypos -803
+}
+Transform {
+center {1024 576}
+name Transform2
+xpos -260
+ypos -772
+}
+Transform {
+center {1024 576}
+name Transform3
+xpos -260
+ypos -741
+}
+end_group

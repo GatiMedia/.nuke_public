@@ -1,0 +1,111 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+name key_chew2
+help "======== KeyChew beta ========\n=============================\n\nThis is a port of the KeyChew macro for Shake to Nuke.\n\nThere might be tiny differences on the results given in both apps. Some of them are caused by the internal algorithms of each app, and others by the way I faked the JSplineV\nexpression of Shake in Nuke. If you know a better way to solve this, let\nme know!!\n\n=============================\n             2009 Cuco Bures\n============================="
+selected true
+xpos 8760
+ypos 43814
+addUserKnob {20 Controls}
+addUserKnob {7 chew t "\t\t" R -200 200}
+addUserKnob {7 soften R 0 200}
+addUserKnob {6 matteMult +STARTLINE}
+}
+Input {
+inputs 0
+name Input
+xpos -40
+ypos -9
+}
+set Nda26b200 [stack 0]
+Dot {
+name Dot1
+xpos 324
+ypos -6
+}
+set Nda26ab00 [stack 0]
+push $Nda26ab00
+Invert {
+name Invert1
+xpos 176
+ypos 33
+}
+push $Nda26ab00
+Switch {
+inputs 2
+which {{"\[value chew]>=0?0:1"}}
+name Switch1
+xpos 180
+ypos 87
+}
+Blur {
+size {{"(floor(abs(\[value chew]))/4)+(floor(abs(\[value chew]))/8)"}}
+name FgEdgeBlur
+xpos 180
+ypos 129
+}
+Grade {
+channels alpha
+multiply {1 1 1 {max(FgEdgeBlur.size*1.5,1)}}
+black_clamp false
+name FgEdgeMult
+xpos 180
+ypos 177
+}
+Grade {
+channels alpha
+gamma {1 1 1 {JSplineVFake(floor(abs(chew)))}}
+name FgEdgeGamma1
+xpos 180
+ypos 225
+addUserKnob {20 User}
+addUserKnob {7 JSplineVFake}
+JSplineVFake {{curve l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
+}
+set Nda249600 [stack 0]
+Merge2 {
+inputs 2
+operation minus
+name Merge1
+xpos 290
+ypos 231
+}
+push $Nda249600
+Switch {
+inputs 2
+which {{"\[value chew]>=0?0:1"}}
+name Switch2
+xpos 180
+ypos 279
+}
+Clamp {
+name Clamp2
+xpos 180
+ypos 321
+}
+Blur {
+size {{"(floor(abs(\[value soften]))/4)+(floor(abs(\[value soften]))/8)"}}
+name BlurResult
+xpos 180
+ypos 441
+}
+push $Nda26b200
+ShuffleCopy {
+inputs 2
+name ShuffleCopy1
+xpos -40
+ypos 447
+}
+Premult {
+name Premult1
+xpos -40
+ypos 495
+disable {{"1-\[value matteMult]"}}
+}
+Output {
+name Output1
+xpos -40
+ypos 567
+}
+end_group

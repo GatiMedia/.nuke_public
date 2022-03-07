@@ -1,0 +1,141 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+name RoughenEdges
+note_font Verdana
+selected true
+xpos 7110
+ypos 45710
+mapsize {0.15 0.15}
+addUserKnob {20 User}
+addUserKnob {16 Border}
+Border 0.5
+addUserKnob {7 EdgeSharpness}
+EdgeSharpness 0.35
+addUserKnob {7 Scale}
+Scale 0.075
+addUserKnob {12 Offset}
+addUserKnob {12 Center}
+addUserKnob {16 Size}
+Size 1
+addUserKnob {7 Evolution}
+Evolution 0.5
+}
+Input {
+inputs 0
+name Input
+xpos -466
+ypos -363
+}
+Unpremult {
+name Unpremult1
+xpos -466
+ypos -305
+}
+set N1af83900 [stack 0]
+Blur {
+channels alpha
+name Blur9
+xpos -466
+ypos -258
+}
+set N1af83200 [stack 0]
+Dilate {
+channels alpha
+size {{-parent.Border*30 i}}
+name Dilate1
+xpos -466
+ypos -164
+}
+set N1af82b00 [stack 0]
+push $N1af82b00
+push $N1af83200
+Merge2 {
+inputs 2
+operation stencil
+name Merge6
+xpos -356
+ypos -158
+}
+push $N1af83200
+Shuffle {
+alpha black
+name Shuffle1
+xpos -363
+ypos -252
+}
+Noise {
+size {{parent.Scale*10 i}}
+zoffset {{parent.Evolution i}}
+lacunarity 1
+gain 1
+gamma 0
+translate {{parent.Offset i} {parent.Offset i}}
+scale {{parent.Size*6 i}}
+center {{parent.Center i} {parent.Center i}}
+name Noise6
+xpos -246
+ypos -252
+}
+Merge2 {
+inputs 2
+operation mask
+name Merge7
+xpos -246
+ypos -158
+}
+Merge2 {
+inputs 2
+name Merge9
+xpos -466
+ypos -80
+}
+Blur {
+channels alpha
+size {{parent.EdgeSharpness*40 i}}
+name Blur4
+xpos -466
+ypos -36
+}
+ColorCorrect {
+channels alpha
+contrast 4
+gamma 0.2
+name ColorCorrect5
+xpos -466
+ypos 13
+}
+Clamp {
+name Clamp2
+xpos -466
+ypos 68
+}
+push $N1af83900
+Dot {
+name Dot2
+xpos -506
+ypos -302
+}
+Dot {
+name Dot1
+xpos -506
+ypos 129
+}
+ShuffleCopy {
+inputs 2
+name ShuffleCopy1
+xpos -466
+ypos 126
+}
+Premult {
+name Premult1
+xpos -466
+ypos 150
+}
+Output {
+name Output1
+xpos -466
+ypos 243
+}
+end_group

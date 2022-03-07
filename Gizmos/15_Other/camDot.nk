@@ -1,0 +1,21 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Dot {
+ name camDot
+ help "This is the Camera_Dot node.  Enter the name of your shot camera into the Camera Name field then click Connect2Camera.  A hidden connection will be instantly made to that shot camera.  Or you can rename your Camera node to MAIN_CAMERA and click the button to make the link.  Use these anywhere instead of using a Camera node."
+ tile_color 0xff0000ff
+ gl_color 0xff
+ label "Camera: \[value camName]"
+ note_font "DejaVu Sans Bold"
+ note_font_size 12
+ note_font_color 0xa10000ff
+ selected true
+ xpos 434
+ ypos -414
+ hide_input true
+ addUserKnob {20 User}
+ addUserKnob {1 camName l "Camera Name : "}
+ camName MAIN_CAMERA
+ addUserKnob {22 Connect2Camera -STARTLINE T "n = nuke.thisNode()\ncamNameKnob = n\['camName'].value()\nprint camNameKnob\ntry:\n    nuke.exists (nuke.toNode(camNameKnob).name())\n    CAM = nuke.toNode(camNameKnob)\n    n.setInput(0,CAM)\nexcept:\n    nuke.message(\"%s missing or renamed\\n\\n check your main camera is connected to a node called %s\" % (camNameKnob, camNameKnob))\n\n\n"}
+}

@@ -1,0 +1,218 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+name SliceTool
+selected true
+xpos 7110
+ypos 45656
+addUserKnob {20 User}
+addUserKnob {4 output M {Over Right Left Top Bottom}}
+addUserKnob {7 thickness}
+thickness 0.5
+addUserKnob {12 pos1}
+addUserKnob {12 pos2}
+pos2 {2048 0}
+}
+Input {
+inputs 0
+name Input
+xpos -535
+ypos -256
+}
+set N1e92c100 [stack 0]
+Transform {
+translate {{-parent.pos1 i} {-parent.pos1 i}}
+black_outside false
+name Transform4
+label T
+xpos -535
+ypos -231
+}
+Transform {
+rotate {{"-degrees( atan2(parent.pos2.y-parent.pos1.y, parent.pos2.x-parent.pos1.x) )" i}}
+black_outside false
+name Transform5
+label "R\n"
+xpos -535
+ypos -197
+}
+Transform {
+scale {{"width / sqrt(pow(parent.pos2.x-parent.pos1.x,2) + pow(parent.pos2.y-parent.pos1.y,2))" i}}
+black_outside false
+name Transform6
+label S
+xpos -535
+ypos -160
+}
+Crop {
+box {0 0 {Input.width i} 1}
+reformat true
+crop false
+name Crop1
+xpos -536
+ypos -121
+}
+Reformat {
+type "to box"
+box_width {{Input.width i}}
+box_height {{Input.height i}}
+box_fixed true
+resize distort
+filter impulse
+name Reformat1
+xpos -536
+ypos -92
+}
+Expression {
+expr0 "fabs((y/height)-r)<=tolerance ? 1 : 0"
+expr1 "fabs((y/height)-g)<=tolerance ? 1 : 0"
+expr2 "fabs((y/height)-b)<=tolerance ? 1 : 0"
+name Expression3
+xpos -536
+ypos -47
+addUserKnob {20 User}
+addUserKnob {7 tolerance}
+tolerance {{parent.thickness/100}}
+}
+set N41a65600 [stack 0]
+Dot {
+name Dot3
+xpos -293
+ypos -44
+}
+set N41a64f00 [stack 0]
+Dot {
+name Dot4
+xpos -192
+ypos -44
+}
+set N41a64800 [stack 0]
+Dot {
+name Dot6
+xpos -93
+ypos -44
+}
+set N41a64100 [stack 0]
+Dot {
+name Dot9
+xpos 29
+ypos -44
+}
+push $N1e92c100
+Dot {
+name Dot2
+xpos -367
+ypos -252
+}
+set N5105b200 [stack 0]
+Dot {
+name Dot1
+xpos -249
+ypos -252
+}
+set N5105ab00 [stack 0]
+Dot {
+name Dot5
+xpos -136
+ypos -252
+}
+set N5105a400 [stack 0]
+Dot {
+name Dot8
+xpos -26
+ypos -252
+}
+set N51059d00 [stack 0]
+Dot {
+name Dot7
+xpos 90
+ypos -252
+}
+ContactSheet {
+inputs 2
+width {{Input.width i}}
+height {{Input.height*2 i}}
+rows 2
+columns 1
+roworder TopBottom
+name ContactSheet2
+xpos 56
+ypos -23
+}
+push $N41a64100
+push $N51059d00
+ContactSheet {
+inputs 2
+width {{Input.width i}}
+height {{Input.height*2 i}}
+rows 2
+columns 1
+name ContactSheet3
+xpos -56
+ypos -21
+}
+push $N41a64800
+push $N5105a400
+ContactSheet {
+inputs 2
+width {{Input.width*2 i}}
+height {{Input.height i}}
+rows 1
+columns 2
+colorder RightLeft
+name ContactSheet4
+xpos -170
+ypos -16
+}
+push $N41a64f00
+push $N5105ab00
+ContactSheet {
+inputs 2
+width {{Input.width*2}}
+height {{Input.height}}
+rows 1
+columns 2
+name ContactSheet1
+xpos -283
+ypos -17
+}
+push $N41a65600
+push $N41a65600
+ChannelMerge {
+inputs 2
+A rgba.red
+B rgba.green
+name ChannelMerge1
+xpos -536
+ypos -9
+}
+set N43a7b200 [stack 0]
+push $N43a7b200
+ChannelMerge {
+inputs 2
+B rgba.blue
+name ChannelMerge2
+xpos -536
+ypos 37
+}
+push $N5105b200
+Merge2 {
+inputs 2
+name Merge1
+xpos -401
+ypos 48
+}
+Switch {
+inputs 5
+which {{parent.output i}}
+name Switch1
+xpos -283
+ypos 48
+}
+Output {
+name Output1
+xpos -283
+ypos 170
+}
+end_group

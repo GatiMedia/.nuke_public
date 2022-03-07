@@ -1,0 +1,237 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+name U_Halation
+selected true
+xpos 7894
+ypos 45547
+addUserKnob {20 User l Halation t "This Gizmo re-produces the red fringing you \nget on film around bright source. \nEspecially noticable on a contrasty edge.\n\n"}
+addUserKnob {41 size l "red wide glow size" T red_wide_glow.size}
+addUserKnob {41 size_1 l "green wide glow size" T green_wide_glow.size}
+addUserKnob {26 ""}
+addUserKnob {41 size_2 l "red core glow size" T red_core_glow.size}
+addUserKnob {41 size_3 l "green core glow size" T green_core_glow.size}
+addUserKnob {26 ""}
+addUserKnob {41 size_5 l "Soften wide size" T Soften_wide.size}
+addUserKnob {41 size_4 l "Soften core size" T Soften_core.size}
+addUserKnob {26 ""}
+addUserKnob {41 value l "Wide glow gain" T Multiply_wide.value}
+addUserKnob {41 value_1 l "Core glow gain" T Multiply_core.value}
+addUserKnob {26 ""}
+addUserKnob {41 which l "Wide glow percent" T add_wide_percent1.which}
+addUserKnob {41 which_1 l "Core glow percent" T add_core_percent.which}
+addUserKnob {26 ""}
+addUserKnob {41 gamma l Sensitivity T Log2Lin1.gamma}
+addUserKnob {41 selector l Operation T Switch1.selector}
+addUserKnob {26 "" -STARTLINE T "Written by Marian Mavrovic (C) 2009"}
+}
+Input {
+inputs 0
+name Input
+xpos -480
+ypos -394
+}
+Log2Lin {
+operation lin2log
+black 0
+white 665
+name Log2Lin2
+xpos -480
+ypos -322
+}
+set Ndfc32400 [stack 0]
+push $Ndfc32400
+Log2Lin {
+black 0
+white 400
+gamma 0.2
+name Log2Lin1
+xpos -700
+ypos -250
+}
+set Ndfc30800 [stack 0]
+Blur {
+channels {rgba.red -rgba.green -rgba.blue none}
+size 28
+name red_wide_glow
+selected true
+xpos -700
+ypos -154
+}
+Blur {
+channels {-rgba.red rgba.green -rgba.blue none}
+size 1.1
+name green_wide_glow
+xpos -700
+ypos -82
+}
+Log2Lin {
+operation lin2log
+black 0
+white {{parent.Log2Lin1.white i} {parent.Log2Lin1.white i} {parent.Log2Lin1.white i}}
+gamma {{parent.Log2Lin1.gamma i}}
+name Log2Lin4
+xpos -700
+ypos -10
+}
+Clamp {
+name Clamp1
+xpos -700
+ypos 104
+}
+push $Ndfc32400
+Merge2 {
+inputs 2
+operation minus
+name Merge1
+xpos -590
+ypos 158
+}
+Blur {
+name Soften_wide
+xpos -590
+ypos 200
+}
+Multiply {
+name Multiply_wide
+xpos -590
+ypos 248
+}
+set N6b5ccf00 [stack 0]
+Merge2 {
+inputs 2
+operation minus
+name Merge3
+xpos -590
+ypos 302
+}
+push $Ndfc32400
+Dissolve {
+inputs 2
+which 0.3
+name add_wide_percent1
+xpos -590
+ypos 368
+}
+set C883cf900 [stack 0]
+set N883cf900 [stack 0]
+push $Ndfc30800
+Blur {
+channels {rgba.red -rgba.green -rgba.blue none}
+size 0.6
+name red_core_glow
+xpos -150
+ypos -154
+}
+Blur {
+channels {-rgba.red rgba.green -rgba.blue none}
+size 0.04
+name green_core_glow
+xpos -150
+ypos -82
+}
+Log2Lin {
+operation lin2log
+black 0
+white {{parent.Log2Lin1.white i}}
+gamma {{parent.Log2Lin1.gamma i}}
+name Log2Lin3
+xpos -150
+ypos -34
+}
+Clamp {
+name Clamp2
+xpos -150
+ypos 8
+}
+push $Ndfc32400
+Merge2 {
+inputs 2
+operation minus
+name Merge2
+xpos -150
+ypos 110
+}
+Blur {
+name Soften_core
+xpos -150
+ypos 152
+}
+Multiply {
+value 2
+name Multiply_core
+xpos -150
+ypos 200
+}
+set N6b1d9600 [stack 0]
+Merge2 {
+inputs 2
+operation minus
+name Merge4
+xpos -590
+ypos 446
+}
+push $N883cf900
+Dissolve {
+inputs 2
+which 1
+name add_core_percent
+xpos -590
+ypos 536
+}
+set C6b1d8100 [stack 0]
+push $N6b1d9600
+push $Ndfc32400
+Merge2 {
+inputs 2
+operation plus
+name Merge5
+xpos -260
+ypos 278
+}
+push $Ndfc32400
+clone $C6b1d8100 {
+inputs 2
+xpos -150
+ypos 296
+selected false
+}
+set N1bde3200 [stack 0]
+push $N6b5ccf00
+Merge2 {
+inputs 2
+operation plus
+name Merge6
+xpos -150
+ypos 422
+}
+push $N1bde3200
+clone $C883cf900 {
+inputs 2
+xpos -150
+ypos 560
+selected false
+}
+Switch {
+inputs 2
+which {{selector}}
+name Switch1
+xpos -370
+ypos 734
+addUserKnob {20 User}
+addUserKnob {4 selector l Operation M {Apply Remove}}
+}
+Log2Lin {
+black 0
+white 665
+name Log2Lin5
+xpos -370
+ypos 782
+}
+Output {
+name Output1
+xpos -370
+ypos 854
+}
+end_group

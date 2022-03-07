@@ -1,0 +1,155 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+ name FineEdgeDetect
+ help "Brings a Finer Edge for any Alpha input than the usual Edge Detect.\nOmnidireccional, Inside and Outside modes\nFeather and Offset options \n\nDaniel Gonzalez Solozabal\nwww.retinaut.com"
+ selected true
+ xpos 1755
+ ypos -356
+ addUserKnob {20 User}
+ addUserKnob {26 TitleFED l "Fine Edge Detect" -STARTLINE T v1.5}
+ addUserKnob {26 ""}
+ addUserKnob {4 TypeFED l Type -STARTLINE M {Omni Inside Outside "" ""}}
+ addUserKnob {6 FeatherFED l Feather t Feather? -STARTLINE}
+ FeatherFED true
+ addUserKnob {7 sizeFED l size R 0 10}
+ sizeFED 1
+ addUserKnob {7 MultiplyFED l "Feather Mult" R 1 10}
+ MultiplyFED 1
+ addUserKnob {41 size l offset T FilterErodeFEDoffset.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 Tag l "Daniel Gonzalez Solozabal" T www.retinaut.com}
+}
+ Input {
+  inputs 0
+  name Alpha
+  label "\n"
+  xpos 460
+  ypos 395
+ }
+ Clamp {
+  name CLAMPFEDi
+  xpos 460
+  ypos 434
+ }
+ FilterErode {
+  size 0
+  name FilterErodeFEDoffset
+  xpos 460
+  ypos 491
+ }
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name ShuffleFED1
+  label "\[value in 1]"
+  xpos 460
+  ypos 546
+ }
+ Dot {
+  name Dot20
+  xpos 494
+  ypos 600
+ }
+set N8562eb00 [stack 0]
+ Blur {
+  size {{parent.sizeFED i}}
+  name BlurFED
+  xpos 331
+  ypos 588
+  addUserKnob {20 User}
+  addUserKnob {41 size_1 l size T BlurFED.size}
+ }
+set N8562e400 [stack 0]
+ Invert {
+  name InvertFED
+  xpos 221
+  ypos 662
+ }
+push $N8562e400
+ Merge2 {
+  inputs 2
+  operation in
+  name InFED
+  xpos 331
+  ypos 669
+ }
+set N8562d600 [stack 0]
+ Dot {
+  name Dot21
+  xpos 365
+  ypos 726
+ }
+set N8562cf00 [stack 0]
+push $N8562eb00
+ Dot {
+  name Dot24
+  xpos 619
+  ypos 600
+ }
+ Merge2 {
+  inputs 2
+  operation out
+  name OutFED
+  xpos 585
+  ypos 721
+ }
+push $N8562d600
+push $N8562eb00
+ Merge2 {
+  inputs 2
+  operation in
+  name InFED2
+  xpos 460
+  ypos 669
+ }
+push $N8562cf00
+ Switch {
+  inputs 3
+  which {{parent.TypeFED i}}
+  name TypeFED
+  xpos 460
+  ypos 769
+ }
+ Multiply {
+  value 4.1
+  name MULTFED
+  xpos 460
+  ypos 815
+ }
+set N1195ab00 [stack 0]
+ Multiply {
+  value {{parent.MultiplyFED i}}
+  name MULTFETHERFED
+  xpos 529
+  ypos 881
+ }
+push $N1195ab00
+ Grade {
+  channels all
+  blackpoint 0.4
+  whitepoint 0.6
+  name ROUGHFED
+  xpos 386
+  ypos 884
+ }
+ Switch {
+  inputs 2
+  which {{parent.FeatherFED i}}
+  name FeatherCHECK
+  xpos 460
+  ypos 952
+ }
+ Clamp {
+  name CLAMPFED
+  xpos 460
+  ypos 995
+ }
+ Output {
+  name Output1
+  xpos 460
+  ypos 1098
+ }
+end_group

@@ -1,0 +1,568 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+ name L_Fuse
+ help "<b><u>L_Fuse_v05</b></u>\t\nFuse is a replacement for the merge(over) node.  \n\n<b>\"Light Flare” - </b> wraps a luma keyed background over the foreground.  Only the brighter parts of the image are wrapped.  \n\n<b>\"Wrap All” - </b>wraps all of the background values over the foreground. \n\n<b>\"Bleed Color” -  </b>wraps hue values from the background over the foreground.  It replaces foreground hue values with background values.  \n\n<b>\"Edge Blur” - </b>blurs the edge areas of the composite.  This edge is determined by alpha transparency. So any parts of the alpha that are semi-transparent will be blurred. \n\n<b>\"Apply operations in Log” -  </b>will layer the foreground over the background in a Log colorspace resulting sometimes in a preferable result. \n\n<i>(For any questions, comments or suggestions please email gizmos@luma-pictures.com)</i>"
+ selected true
+ xpos 217
+ ypos -106
+ addUserKnob {20 Fuse}
+ addUserKnob {26 "" l "<b><u>Light Flare</u></b>"}
+ addUserKnob {7 WrapFlare_amount l Amount}
+ WrapFlare_amount 0.3
+ addUserKnob {14 WrapFlare_size l Size R 0 100}
+ WrapFlare_size 2
+ addUserKnob {7 WrapFlare_keyHighThresh l High}
+ WrapFlare_keyHighThresh 0.6
+ addUserKnob {7 WrapFlare_keyLowThresh l Low}
+ WrapFlare_keyLowThresh 0.1
+ addUserKnob {18 Mult_Flare l Mult R 0 2}
+ Mult_Flare 1
+ addUserKnob {6 Mult_Flare_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 "" l "<b><u>Wrap All</u></b>"}
+ addUserKnob {7 WrapAll_amount l Amount}
+ WrapAll_amount 0.1
+ addUserKnob {14 WrapAll_size l Size R 0 20}
+ WrapAll_size 5
+ addUserKnob {18 WrapAllMult l Mult R 0 2}
+ WrapAllMult 1
+ addUserKnob {6 WrapAllMult_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 "" l "<b><u>Bleed Color</u></b>"}
+ addUserKnob {7 iColor_amount l Amount}
+ iColor_amount 0.3
+ addUserKnob {14 iColor_size l Size R 0 10}
+ iColor_size 5
+ addUserKnob {18 ColorBleedMult l Mult R 0 2}
+ ColorBleedMult 1
+ addUserKnob {6 ColorBleedMult_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 "" l "<b><u>Edge Blur</u></b>"}
+ addUserKnob {7 EdgeBlur_amount l Amount R 0 10}
+ EdgeBlur_amount 2
+ addUserKnob {26 ""}
+ addUserKnob {41 bbox_1 l "set bbox to " T Merge7.bbox}
+ addUserKnob {6 operationsInLog l "Apply operations in Log" +STARTLINE}
+ addUserKnob {7 overallMix l mix}
+ overallMix 1
+ addUserKnob {6 regularOver l "Regular Over" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {22 Button l "     Luma Pictures     " T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://www.luma-pictures.com/tools/nuke/')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name FG
+  label "\n"
+  xpos -150
+  ypos -10
+  number 1
+ }
+ Log2Lin {
+  operation lin2log
+  unpremult rgba.alpha
+  name Log2Lin1
+  xpos -150
+  ypos 56
+  disable {{1-operationsInLog i x1 0}}
+ }
+ Dot {
+  name Dot1
+  xpos -116
+  ypos 378
+ }
+set N245f9d00 [stack 0]
+ Dot {
+  name Dot15
+  xpos -446
+  ypos 378
+ }
+ Dot {
+  name Dot21
+  xpos -446
+  ypos 2706
+ }
+ Input {
+  inputs 0
+  name BG
+  xpos 2490
+  ypos 14
+ }
+ Log2Lin {
+  operation lin2log
+  name Log2Lin2
+  xpos 2490
+  ypos 62
+  disable {{1-operationsInLog i x1 0}}
+ }
+ Dot {
+  name Dot2
+  xpos 2524
+  ypos 234
+ }
+set Ncee400 [stack 0]
+ Dot {
+  name Dot17
+  xpos 2524
+  ypos 2178
+ }
+set Ncedd00 [stack 0]
+ Dot {
+  name Dot23
+  xpos 1974
+  ypos 2178
+ }
+ Merge2 {
+  inputs 2
+  name Merge15
+  xpos 1940
+  ypos 2678
+ }
+push $N245f9d00
+ Unpremult {
+  name Unpremult1
+  xpos -150
+  ypos 998
+ }
+set Ncec800 [stack 0]
+ Dot {
+  name Dot13
+  xpos -336
+  ypos 1002
+ }
+ Dot {
+  name Dot14
+  xpos -336
+  ypos 2082
+ }
+push $N245f9d00
+push $Ncee400
+ Dot {
+  name Dot3
+  xpos 1754
+  ypos 234
+ }
+set Ncd7200 [stack 0]
+ Dot {
+  name Dot20
+  xpos 1094
+  ypos 234
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos 1060
+  ypos 374
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos 1060
+  ypos 416
+ }
+ Premult {
+  name Premult2
+  xpos 1060
+  ypos 470
+ }
+ Dot {
+  name Dot9
+  xpos 1094
+  ypos 690
+ }
+set Ncd4f00 [stack 0]
+push $Ncd7200
+ Keyer {
+  operation "luminance key"
+  range {{WrapFlare_keyLowThresh i x1 0} {WrapFlare_keyHighThresh i x1 0.5} {1 i x1 0} {1 i x1 0.02088665026}}
+  name KeyerFlare
+  xpos 1720
+  ypos 536
+ }
+ Premult {
+  name Premult1
+  xpos 1720
+  ypos 614
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  name Merge3
+  xpos 1720
+  ypos 686
+ }
+ Dot {
+  name Dot11
+  xpos 1754
+  ypos 786
+ }
+set Ncaf200 [stack 0]
+ Blur {
+  size {{WrapFlare_size i} {WrapFlare_size i}}
+  name BlurFlare
+  label "\[value size]"
+  xpos 1610
+  ypos 866
+ }
+push $Ncaf200
+ Blur {
+  size {{BlurFlare.size*2 i} {BlurFlare.size*2 i}}
+  name Blur6
+  label "\[value size]"
+  xpos 1720
+  ypos 866
+ }
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos 1610
+  ypos 998
+ }
+push $Ncaf200
+ Blur {
+  size {{Blur6.size*2 i} {Blur6.size*2 i}}
+  name Blur7
+  label "\[value size]"
+  xpos 1830
+  ypos 866
+ }
+ Merge2 {
+  inputs 2
+  name Merge12
+  xpos 1720
+  ypos 1046
+ }
+push $Ncaf200
+ Blur {
+  size {{Blur7.size*2 i} {Blur7.size*2 i}}
+  name Blur8
+  label "\[value size]"
+  xpos 1940
+  ypos 866
+ }
+ Merge2 {
+  inputs 2
+  name Merge14
+  xpos 1720
+  ypos 1094
+ }
+ Multiply {
+  value {{Mult_Flare.r i} {Mult_Flare.g i} {Mult_Flare.b i} 1}
+  name Multiply1
+  xpos 1610
+  ypos 1136
+ }
+ Grade {
+  channels all
+  white {{WrapFlare_amount i}}
+  name FlareAmount
+  xpos 1610
+  ypos 1184
+ }
+ Dot {
+  name Dot8
+  xpos 1644
+  ypos 1962
+ }
+push $Ncd4f00
+ Dot {
+  name Dot5
+  xpos 1094
+  ypos 786
+ }
+set Nc6ab00 [stack 0]
+ Blur {
+  size {{WrapAll_size i} {WrapAll_size i}}
+  name BlurBgWrapSize
+  label "\[value size]"
+  xpos 950
+  ypos 866
+ }
+push $Nc6ab00
+ Blur {
+  size {{BlurBgWrapSize.size*2 i} {BlurBgWrapSize.size*2 i}}
+  name Blur2
+  label "\[value size]"
+  xpos 1060
+  ypos 866
+ }
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 950
+  ypos 998
+ }
+push $Nc6ab00
+ Blur {
+  size {{Blur2.size*2 i} {Blur2.size*2 i}}
+  name Blur3
+  label "\[value size]"
+  xpos 1170
+  ypos 866
+ }
+ Merge2 {
+  inputs 2
+  name Merge10
+  xpos 1060
+  ypos 1046
+ }
+push $Nc6ab00
+ Blur {
+  size {{Blur3.size*2 i} {Blur3.size*2 i}}
+  name Blur4
+  label "\[value size]"
+  xpos 1390
+  ypos 866
+ }
+ Merge2 {
+  inputs 2
+  name Merge11
+  xpos 1170
+  ypos 1094
+ }
+ Multiply {
+  value {{WrapAllMult.r i} {WrapAllMult.g i} {WrapAllMult.b i} 1}
+  name Multiply2
+  xpos 950
+  ypos 1136
+ }
+ Grade {
+  channels all
+  white {{WrapAll_amount i}}
+  name GradeBgWrapAmount
+  xpos 950
+  ypos 1184
+ }
+ Dot {
+  name Dot6
+  xpos 984
+  ypos 1698
+ }
+push $Ncd4f00
+ Dot {
+  name Dot10
+  xpos 434
+  ypos 690
+ }
+ Dot {
+  name Dot4
+  xpos 434
+  ypos 786
+ }
+set N84d21d00 [stack 0]
+ Blur {
+  size {{iColor_size i} {iColor_size i}}
+  name iColor
+  label "\[value size]"
+  xpos 290
+  ypos 890
+ }
+push $N84d21d00
+ Blur {
+  size {{iColor.size*2 i} {iColor.size*2 i}}
+  name Blur1
+  label "\[value size]"
+  xpos 510
+  ypos 890
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 290
+  ypos 998
+ }
+push $N84d21d00
+ Blur {
+  size {{Blur1.size*2 i} {Blur1.size*2 i}}
+  name Blur5
+  label "\[value size]"
+  xpos 620
+  ypos 890
+ }
+ Merge2 {
+  inputs 2
+  name Merge8
+  xpos 400
+  ypos 1046
+ }
+push $N84d21d00
+ Blur {
+  size {{Blur5.size*2 i} {Blur5.size*2 i}}
+  name Blur9
+  label "\[value size]"
+  xpos 730
+  ypos 890
+ }
+ Merge2 {
+  inputs 2
+  name Merge9
+  selected true
+  xpos 510
+  ypos 1094
+ }
+ Clamp {
+  minimum 0.001
+  maximum 100
+  name Clamp1
+  xpos 290
+  ypos 1136
+ }
+set N84cf2400 [stack 0]
+push $N84cf2400
+ Expression {
+  expr0 (1/(r*.3+g*.59+b*.11))*r
+  expr1 (1/(r*.3+g*.59+b*.11))*g
+  expr2 (1/(r*.3+g*.59+b*.11))*b
+  name Expression1
+  xpos 70
+  ypos 1142
+ }
+push $Ncec800
+ Dot {
+  name Dot12
+  xpos -6
+  ypos 1002
+ }
+ Saturation {
+  saturation {{-iColor_amount+1 i}}
+  name Saturation1
+  xpos -40
+  ypos 1070
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix {{iColor_amount i}}
+  name Multiply4
+  xpos -40
+  ypos 1142
+ }
+ Multiply {
+  value {{ColorBleedMult.r i} {ColorBleedMult.g i} {ColorBleedMult.b i} 1}
+  name Multiply3
+  xpos -40
+  ypos 1184
+ }
+push $Ncec800
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos -150
+  ypos 1520
+ }
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos -150
+  ypos 1694
+ }
+ Merge2 {
+  inputs 2
+  name Merge6
+  xpos -150
+  ypos 1934
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -150
+  ypos 2072
+ }
+ Premult {
+  name Premult3
+  xpos -150
+  ypos 2102
+ }
+ Dot {
+  name Dot22
+  xpos -116
+  ypos 2274
+ }
+push $Ncedd00
+ Merge2 {
+  inputs 2
+  name Merge7
+  xpos 2490
+  ypos 2246
+ }
+ Dot {
+  name Dot16
+  xpos 2524
+  ypos 2418
+ }
+set N84c92400 [stack 0]
+ Blur {
+  size 3
+  name Blur11
+  label "\[value size]"
+  xpos 2270
+  ypos 2378
+ }
+set N84c91d00 [stack 0]
+push $N84c91d00
+ Merge2 {
+  inputs 2
+  operation xor
+  name Merge13
+  xpos 2270
+  ypos 2438
+ }
+ Grade {
+  channels rgba
+  whitepoint 0.9
+  white_clamp true
+  name Grade1
+  xpos 2270
+  ypos 2486
+ }
+ Dot {
+  name Dot7
+  xpos 2304
+  ypos 2538
+ }
+push $N84c92400
+ Blur {
+  inputs 1+1
+  size {{EdgeBlur_amount i}}
+  name EdgeBlur
+  label "\[value size]"
+  xpos 2490
+  ypos 2498
+ }
+ Switch {
+  inputs 2
+  which {{regularOver i}}
+  name Switch1
+  xpos 2490
+  ypos 2678
+ }
+push $Ncedd00
+ Dot {
+  name Dot18
+  xpos 2634
+  ypos 2178
+ }
+ Dot {
+  name Dot19
+  xpos 2634
+  ypos 2778
+ }
+ Dissolve {
+  inputs 2
+  which {{overallMix i}}
+  name overallMix
+  xpos 2490
+  ypos 2744
+ }
+ Log2Lin {
+  name Log2Lin3
+  xpos 2490
+  ypos 2918
+  disable {{1-operationsInLog i x1 0}}
+ }
+ Output {
+  name Output1
+  xpos 2490
+  ypos 2966
+ }
+end_group

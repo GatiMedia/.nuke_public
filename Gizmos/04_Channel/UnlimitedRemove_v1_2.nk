@@ -1,0 +1,68 @@
+set cut_paste_input [stack 0]
+version 12.2 v3
+push $cut_paste_input
+Group {
+ name UnlimitedRemove
+ tile_color 0x9e3a61ff
+ selected true
+ xpos 1629
+ ypos -214
+ lock_connections true
+ addUserKnob {20 user l UnlimitedRemove}
+ addUserKnob {20 info l Info n 1}
+ info 0
+ addUserKnob {26 text_info l "" +STARTLINE T "<font color=#e1f2a2>UnlimitedRemove v1.2</font> | author: Guillermo Algora\n<br>\nThe functionality of the native Remove node with the possibility of unlimited channel slots.\n<br>"}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {4 operation t "Remove: the named channels are deleted\nKeep: all but the named channels are deleted" M {remove keep "" "" "" "" "" "" "" "" "" ""}}
+ addUserKnob {26 description l "" -STARTLINE T "                   Channel slots:"}
+ addUserKnob {22 add l "Add (+4)" t "Add four additional channel slots" -STARTLINE T "def add_remove_node(switch_node):\n\n    last_remove_node = switch_node.input(0)\n\n    nukescripts.clear_selection_recursive()\n    last_remove_node.setSelected(True)\n    new_remove_node = nuke.createNode(\"Remove\", inpanel=False)\n    nukescripts.clear_selection_recursive()\n\n    new_remove_node\['operation'].setValue(\"remove\")\n    for knob_name in (\"channels\", \"channels2\", \"channels3\", \"channels4\"):\n        new_remove_node\[knob_name].setValue(\"none\")\n\n    new_remove_node\['xpos'].setExpression('\{\}'.format(last_remove_node\['xpos'].value()))\n    new_remove_node\['ypos'].setExpression('\{\}'.format(last_remove_node\['ypos'].value()+50))\n\n    return new_remove_node\n\ndef add_keep_node(switch_node, new_remove_node):\n\n    last_keep_node = switch_node.input(1)\n\n    nukescripts.clear_selection_recursive()\n    last_keep_node.setSelected(True)\n    new_keep_node = nuke.createNode(\"Remove\", inpanel=False)\n\n    new_keep_node\['operation'].setValue(\"keep\")\n    for knob_name in (\"channels\", \"channels2\", \"channels3\", \"channels4\"):\n        new_keep_node\[knob_name].setValue(\"none\")\n\n    new_keep_node\['xpos'].setExpression('\{\}'.format(last_keep_node\['xpos'].value()-100))\n    new_keep_node\['ypos'].setExpression('\{\}'.format(last_keep_node\['ypos'].value()+50))\n\n    new_keep_node.setSelected(True)\n    copy_node = nuke.createNode(\"Copy\", inpanel=False)\n    nukescripts.clear_selection_recursive()\n\n    for knob_name in (\"from0\", \"from1\", \"from2\", \"from3\"):\n        copy_node\[knob_name].setValue(\"none\")\n    for knob_name in (\"to0\", \"to1\", \"to2\", \"to3\"):\n        copy_node\[knob_name].setValue(\"none\")\n   \n    copy_node\['channels'].setValue(\"all\")\n    copy_node\['metainput'].setValue(\"All\")\n    copy_node\['rangeinput'].setValue(\"All\")\n    copy_node\['bbox'].setValue(\"union\")\n     \n    copy_node\['xpos'].setExpression('\{\}'.format(new_keep_node\['xpos'].value()+100))\n    copy_node\['ypos'].setExpression('\{\}'.format(new_keep_node\['ypos'].value()))\n\n    copy_node.setInput(0, last_keep_node)\n    new_keep_node.setInput(0, nuke.toNode(\"Dot1\"))\n\n    for knob_name in (\"channels\", \"channels2\", \"channels3\", \"channels4\"):\n        new_keep_node\[knob_name].setExpression(new_remove_node.name() + '.\{\}'.format(knob_name))\n\ndef add_channels(this_node, new_remove_node):\n\n    highest = \[]\n    for knob in this_node.allKnobs():\n        if \"channel\" in knob.name():\n            number = knob.name().split(\"channels\")\[1]\n            if number.isdigit():\n                highest.append(int(number))\n    highest = max(highest)\n\n    for knob_name in (\"channels\", \"channels2\", \"channels3\", \"channels4\"):\n        highest += 1\n        knob = nuke.Link_Knob(\"channels\" + '\{\}'.format(highest))\n        knob.setLink(new_remove_node.name() +'.\{\}'.format(knob_name))\n        this_node.addKnob(knob)\n\nundo = nuke.Undo()\nundo.disable()\n\ntry:\n    this_node = nuke.thisNode()\n\n    group = this_node\n    group.begin()\n\n    switch_node = nuke.toNode(\"Switch1\")\n    switch_node\['xpos'].setExpression('\{\}'.format(switch_node\['xpos'].value()))\n    switch_node\['ypos'].setExpression('\{\}'.format(switch_node\['ypos'].value()+50))\n\n    output_node = nuke.toNode(\"Output1\")\n    output_node\['xpos'].setExpression('\{\}'.format(output_node\['xpos'].value()))\n    output_node\['ypos'].setExpression('\{\}'.format(output_node\['ypos'].value()+50))\n\n    new_remove_node = add_remove_node(switch_node)\n    add_keep_node(switch_node, new_remove_node)\n\n    group.end()\n\n    add_channels(this_node, new_remove_node)\n\nfinally:\n    undo.enable()"}
+ addUserKnob {22 remove l "Remove (last 4)" t "Remove the last four additional channel slots" -STARTLINE T "def get_highest(this_node):\n\n    highest = \[]\n    for knob in this_node.allKnobs():\n        if \"channel\" in knob.name():\n            number = knob.name().split(\"channels\")\[1]\n            if number.isdigit():\n                highest.append(int(number))\n    highest = max(highest) + 1\n    return highest\n\ndef remove_channels(this_node, highest):\n\n        for i in range (0,4):\n            highest -= 1\n            this_node.removeKnob(this_node.knobs()\[(\"channels\" + '\{\}'.format(highest))])\n\ndef remove_nodes(switch_node):\n    copy_node = switch_node.input(1)\n    keep_node = copy_node.input(1)\n    remove_node = switch_node.input(0)\n\n    nuke.delete(copy_node)\n    nuke.delete(keep_node)\n    nuke.delete(remove_node)\n\nundo = nuke.Undo()\nundo.disable()\n\ntry:\n    this_node = nuke.thisNode()\n    highest = get_highest(this_node)\n\n    if highest > 5:\n        \n        remove_channels(this_node, highest)\n\n        group = this_node\n        group.begin()\n\n        switch_node = nuke.toNode(\"Switch1\")\n        switch_node\['xpos'].setExpression('\{\}'.format(switch_node\['xpos'].value()))\n        switch_node\['ypos'].setExpression('\{\}'.format(switch_node\['ypos'].value()-50))\n\n        output_node = nuke.toNode(\"Output1\")\n        output_node\['xpos'].setExpression('\{\}'.format(output_node\['xpos'].value()))\n        output_node\['ypos'].setExpression('\{\}'.format(output_node\['ypos'].value()-50))\n\n        remove_nodes(switch_node)\n\n        group.end()\n\nfinally:\n    undo.enable()"}
+ addUserKnob {41 channels T Remove1.channels}
+ addUserKnob {41 channels2 T Remove1.channels2}
+ addUserKnob {41 channels3 T Remove1.channels3}
+ addUserKnob {41 channels4 T Remove1.channels4}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos {{0.0 x1001 0}}
+  ypos {{0.0 x1001 -1}}
+ }
+ Dot {
+  name Dot1
+  tile_color 0x949494ff
+  note_font_size 22
+  note_font_color 0xffffffff
+  xpos {{34.0 x1001 26}}
+  ypos {{125.0 x1001 125}}
+ }
+set Naceeb200 [stack 0]
+ Remove {
+  operation keep
+  channels {{{Remove1.channels}}}
+  channels2 {{{Remove1.channels2}}}
+  channels3 {{{Remove1.channels3}}}
+  channels4 {{{Remove1.channels4}}}
+  name Remove2
+  xpos {{189.0 x1001 188}}
+  ypos {{115.0 x1001 115}}
+ }
+push $Naceeb200
+ Remove {
+  name Remove1
+  xpos {{-185.0 x1001 -183}}
+  ypos {{115.0 x1001 115}}
+ }
+ Switch {
+  inputs 2
+  which {{UnlimitedRemove.operation}}
+  name Switch1
+  xpos {{0.0 x1001 0}}
+  ypos {{232.0 x1001 233}}
+ }
+ Output {
+  name Output1
+  xpos {{0.0 x1001 -7}}
+  ypos {{342.0 x1001 342}}
+ }
+end_group

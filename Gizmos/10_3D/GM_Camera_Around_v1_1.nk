@@ -1,0 +1,98 @@
+Group {
+inputs 0
+name GM_Camera_Around
+tile_color 0xea6827ff
+xpos 17198
+ypos 6830
+addUserKnob {20 User l Settings}
+addUserKnob {41 translate l Center t "Allows you to adjust the center point." T ca1.translate}
+addUserKnob {7 dis_cam l Distance t "Allows you to adjust the camera`s distance from the center point." R 0 100}
+dis_cam 6
+addUserKnob {7 hei_cam l Height t "Allows you to adjust the camera`s height on the Y-axis." R -50 50}
+hei_cam 2
+addUserKnob {7 spe_cam l Speed t "Allows you to adjust the velocity of the rotation." R -50 50}
+spe_cam 2
+addUserKnob {7 cam_tilt l Tilt t "Allows you to tilt the camera." R -90 90}
+addUserKnob {7 offset l Offset t "Allows you to offset the camera. " R 0 360}
+addUserKnob {26 ""}
+addUserKnob {7 ang_cam l Angle t "Allows you to adjust the camera`s angle." R -90 90}
+addUserKnob {26 ang_info l "" +STARTLINE T "You can adjust the camera here when the `Disable Look` is on."}
+addUserKnob {26 ""}
+addUserKnob {41 translate_1 l Look t "Allows you to define where the camera is facing. " T ca_look.translate}
+addUserKnob {41 disable_1 l "Disable Look" t "Allows you to disable the use of `Look` and change where the camera`s facing with the `Angle`. " T ca_look.disable}
+addUserKnob {26 ""}
+addUserKnob {26 info l "" +STARTLINE T "Connect the Camera`s Axis input to the node\nto get your Camera rotate around the Center point."}
+addUserKnob {26 ""}
+addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/camera-around')\n"}
+addUserKnob {26 ""}
+addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.01 beta version</font>"}
+addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Camera Around© by Attila Gasparetz</font>"}
+}
+Axis2 {
+inputs 0
+name ca_look
+xpos 300
+ypos 546
+}
+Axis2 {
+inputs 0
+rotate {0 {parent.offset} 0}
+name ca1
+xpos 410
+ypos 258
+}
+Axis2 {
+translate {{parent.dis_cam} 0 0}
+rotate {0 {frame*ca0.slid01} 0}
+pivot {{-(translate.x)} 0 0}
+name ca2
+xpos 410
+ypos 354
+}
+set N18995f80 [stack 0]
+push $N18995f80
+Axis2 {
+inputs 2
+translate {0 {hei_cam} 0}
+rotate {{ang_cam} 90 0}
+look_rotate_x false
+look_rotate_y false
+name ca3
+xpos 410
+ypos 450
+}
+Axis2 {
+inputs 2
+name ca5
+xpos 410
+ypos 546
+disable {{ca_look.disable}}
+}
+Axis2 {
+rotate {0 180 0}
+name ca6
+xpos 410
+ypos 642
+disable {{ca_look.disable}}
+}
+Axis2 {
+rotate {0 0 {parent.cam_tilt}}
+name ca7
+xpos 410
+ypos 738
+}
+Output {
+name ca4
+xpos 400
+ypos 902
+}
+NoOp {
+inputs 0
+name ca0
+xpos 620
+ypos 374
+addUserKnob {20 User}
+addUserKnob {7 slid01 l slider01 R 0 50}
+slid01 {{spe_cam}}
+}
+end_group
