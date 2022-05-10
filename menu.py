@@ -191,6 +191,25 @@ def disconnectViewers():
 
 nuke.addOnScriptLoad(disconnectViewers)
 
+# Change Channels between 'all' and 'rgba'
+
+def changeChannels():
+    if len(nuke.selectedNodes()) > 0:
+        sel_nodes = nuke.selectedNodes()
+        for sel_node in sel_nodes:
+            try:
+                if sel_node['channels'].value() == 'all':
+                    sel_node['channels'].setValue('rgba')
+                else:
+                    sel_node['channels'].setValue('all')
+            except:
+                pass
+    else:
+        nuke.message('Select a node/nodes first.')
+
+utilitiesMenu.addCommand('Change Channels', 'changeChannels()' , 'shift+a')
+
+
 # based on Ben`s Foundry webinar: https://app.livestorm.co/foundry/foundry-session-how-to-improve-your-nuke-workflow-with-python-scripting
 
 def RotoBlur_Shortcut():
