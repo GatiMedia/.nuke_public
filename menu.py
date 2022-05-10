@@ -99,14 +99,12 @@ nuke.knobDefault('Text2.yjustify', "center")
 #color
 
 #filter
-nuke.knobDefault('Blur.size', "2")
 nuke.knobDefault('DirBlurWrapper.BlurTye', "linear")
 nuke.knobDefault('DirBlurWrapper.BlurLayer', "rgba")
 
 #keyer
 
 #merge
-# nuke.knobDefault('Merge.bbox', 'B')
 nuke.knobDefault('Merge.also_merge', 'all')
 nuke.knobDefault('ContactSheet.roworder', 'TopBottom')
 nuke.knobDefault('ContactSheet.width', 'input.width*columns')
