@@ -192,18 +192,31 @@ nuke.addOnScriptLoad(disconnectViewers)
 # Change Channels between 'all' and 'rgba'
 
 def changeChannels():
-    if len(nuke.selectedNodes()) > 0:
-        sel_nodes = nuke.selectedNodes()
+    sel_nodes = nuke.selectedNodes()
+    if len(sel_nodes) > 0:
+        ok_channels = ['all', 'none', 'rgba', 'rgb', 'alpha']
         for sel_node in sel_nodes:
-            try:
-                if sel_node['channels'].value() == 'all':
-                    sel_node['channels'].setValue('rgba')
+            if sel_node.knob('channels'):
+                if not sel_node['channels'].value() == "alpha":
+                    channel_index = ok_channels.index(sel_node['channels'].value())
+                    sel_node['channels'].setValue(ok_channels[channel_index + 1])
                 else:
                     sel_node['channels'].setValue('all')
-            except:
-                pass
+            if sel_node.knob('output'):
+                if sel_node.knob('output').value() in ok_channels:
+                    if not sel_node['output'].value() == "alpha":
+                        channel_index = ok_channels.index(sel_node['output'].value())
+                        sel_node['output'].setValue(ok_channels[channel_index + 1])
+                    else:
+                        sel_node['output'].setValue('all')
+            if sel_node.knob('retimedChannels'):
+                if not sel_node['retimedChannels'].value() == "alpha":
+                    channel_index = ok_channels.index(sel_node['retimedChannels'].value())
+                    sel_node['retimedChannels'].setValue(ok_channels[channel_index + 1])
+                else:
+                    sel_node['retimedChannels'].setValue('all')
     else:
-        nuke.message('Select a node/nodes first.')
+        nuke.message('<center><b>Select a node/nodes first.\nThis shortcut iterates through the following channels:</b>\n<i>all, none, rgba, rgb, alpha</i></center>')
 
 utilitiesMenu.addCommand('Change Channels', 'changeChannels()' , 'shift+a')
 
