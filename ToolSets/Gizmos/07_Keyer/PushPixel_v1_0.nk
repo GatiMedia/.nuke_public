@@ -1,0 +1,258 @@
+Group {
+ name PushPixel
+ help "Push or Pull RGB pixels using the Alpha channel as mask.\n\nFor a best result you can combine several PushPixels.\n\n(beta version)"
+ tile_color 0x94960fff
+ label "\n"
+ note_font "Bitstream Vera Sans"
+ note_font_size 15
+ selected true
+ xpos 1500
+ ypos 468
+ mapsize {0.15 0.15}
+ addUserKnob {20 menu l Push-Pull}
+ addUserKnob {4 push_pull l mode M {Push Pull}}
+ addUserKnob {41 uv_scale l size T IDistort1.uv_scale}
+ addUserKnob {16 edge_size l "Edge size" R 0 3}
+ edge_size 5
+ addUserKnob {41 size l "Soft select" T Blur1.size}
+ addUserKnob {20 info l Info}
+ addUserKnob {26 trib l "" +STARTLINE T "Tribute to DuranDuboi\nv 1.0"}
+ addUserKnob {26 french l "" +STARTLINE T "<p style=\"font-size:50px\">&#129360;</p>"}
+}
+ Input {
+  inputs 0
+  name InputAlpha
+  xpos -480
+  ypos 254
+  number 1
+ }
+set N6340a590 [stack 0]
+ Dot {
+  name Dot4
+  xpos -226
+  ypos 258
+ }
+ Dot {
+  name Dot6
+  xpos -226
+  ypos 1290
+ }
+push $N6340a590
+ Shuffle {
+  red alpha
+  green alpha
+  blue alpha
+  name a_to_rgb
+  xpos -480
+  ypos 374
+ }
+ Dot {
+  name Dot3
+  xpos -446
+  ypos 426
+ }
+set N6340ad50 [stack 0]
+ Dot {
+  name Dot1
+  xpos -446
+  ypos 618
+ }
+set N63408690 [stack 0]
+ ColorCorrect {
+  gain 0.5
+  name ColorCorrect1
+  xpos -370
+  ypos 926
+ }
+push $N63408690
+ Transform {
+  translate {{(parent.Trans_value1.translate.x)*(-1) i} 0}
+  center {960 540}
+  name Transform1
+  xpos -370
+  ypos 758
+ }
+ ColorCorrect {
+  gain 0
+  name ColorCorrect6
+  xpos -370
+  ypos 830
+ }
+push $N63408690
+ Transform {
+  translate {{parent.Trans_value1.translate.x i} 0}
+  center {960 540}
+  name Transform6
+  xpos -370
+  ypos 710
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color 0.5
+  name Constant1
+  label "Root Format:\n\[value format]"
+  xpos -700
+  ypos 479
+ }
+set N634099f0 [stack 0]
+ Dot {
+  name Dot2
+  xpos -666
+  ypos 618
+ }
+set N63406f50 [stack 0]
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -480
+  ypos 710
+ }
+ Merge2 {
+  inputs 2
+  name Merge8
+  xpos -480
+  ypos 830
+ }
+ Merge2 {
+  inputs 2
+  name Merge9
+  xpos -480
+  ypos 926
+ }
+push $N63408690
+ ColorCorrect {
+  gain 0.5
+  name ColorCorrect7
+  xpos -590
+  ypos 926
+ }
+push $N63408690
+ Transform {
+  translate {0 {parent.Trans_value1.translate.y*-1 i}}
+  center {960 540}
+  name Transform7
+  xpos -590
+  ypos 758
+ }
+ ColorCorrect {
+  gain 0
+  name ColorCorrect8
+  xpos -590
+  ypos 830
+ }
+push $N63408690
+ Transform {
+  translate {0 {parent.Trans_value1.translate.y i}}
+  center {960 540}
+  name Transform8
+  xpos -590
+  ypos 710
+ }
+push $N63406f50
+ Merge2 {
+  inputs 2
+  name Merge10
+  xpos -700
+  ypos 710
+ }
+ Merge2 {
+  inputs 2
+  name Merge11
+  xpos -700
+  ypos 830
+ }
+ Merge2 {
+  inputs 2
+  name Merge12
+  xpos -700
+  ypos 926
+ }
+ ShuffleCopy {
+  inputs 2
+  red red
+  blue black
+  alpha white
+  name ShuffleCopy1
+  xpos -590
+  ypos 998
+ }
+ Blur {
+  size 5
+  name Blur1
+  xpos -590
+  ypos 1038
+ }
+set N63410670 [stack 0]
+push $N63410670
+ Invert {
+  name Invert2
+  xpos -480
+  ypos 1110
+ }
+ Switch {
+  inputs 2
+  which {{push_pull i}}
+  name Switch2
+  label "0=Push\n1=Pull"
+  xpos -590
+  ypos 1103
+ }
+push $N6340ad50
+ Input {
+  inputs 0
+  name InputRGB
+  xpos -920
+  ypos 254
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos -920
+  ypos 414
+ }
+add_layer {push push.x push.y}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 push.x
+  from1 rgba.green
+  to1 push.y
+  name Copy1
+  xpos -920
+  ypos 1103
+ }
+ IDistort {
+  uv push
+  uv_offset 0.5
+  uv_scale 5
+  blur_scale 0
+  name IDistort1
+  xpos -920
+  ypos 1206
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos -920
+  ypos 1278
+  disable {{"\[exists parent.input1]"}}
+ }
+ Output {
+  name Output1
+  xpos -920
+  ypos 1358
+ }
+push $N634099f0
+ Transform {
+  translate {{parent.edge_size i} {parent.edge_size i}}
+  center {960 540}
+  name Trans_value1
+  xpos -590
+  ypos 518
+ }
+end_group
