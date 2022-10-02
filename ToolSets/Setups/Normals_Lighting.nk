@@ -1,0 +1,93 @@
+BackdropNode {
+ inputs 0
+ name BackdropNode2
+ tile_color 0xaaaaaa00
+ label "<center>Normals Lighting"
+ note_font_size 42
+ selected true
+ xpos 1910
+ ypos 164
+ bdwidth 580
+ bdheight 440
+ z_order -255200
+}
+push $cut_paste_input
+add_layer {normal normal.red normal.green normal.blue normal.alpha}
+Shuffle2 {
+ fromInput1 {{0} B}
+ in1 normal
+ fromInput2 {{0} B}
+ mappings "4 normal.red 0 0 rgba.red 0 0 normal.green 0 1 rgba.green 0 1 normal.blue 0 2 rgba.blue 0 2 normal.alpha 0 3 rgba.alpha 0 3"
+ name Shuffle34
+ label "\[value in1]"
+ selected true
+ xpos 2160
+ ypos 272
+}
+Dot {
+ name Dot96
+ selected true
+ xpos 2194
+ ypos 330
+ addUserKnob {20 tmpTab}
+ addUserKnob {1 tmpKeepInput}
+ tmpKeepInput Shuffle34
+}
+set Nfe131600 [stack 0]
+Shuffle2 {
+ fromInput1 {{0} B}
+ fromInput2 {{0} B}
+ mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.red 0 0 rgba.blue 0 2 rgba.red 0 0 rgba.alpha 0 3"
+ name Shuffle29
+ tile_color 0xff0000ff
+ label "\[value in1]"
+ selected true
+ xpos 2380
+ ypos 440
+}
+push $Nfe131600
+Shuffle2 {
+ fromInput1 {{0} B}
+ fromInput2 {{0} B}
+ mappings "4 rgba.blue 0 2 rgba.red 0 0 rgba.blue 0 2 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2 rgba.blue 0 2 rgba.alpha 0 3"
+ name Shuffle31
+ tile_color 0x9fffff
+ label "\[value in1]"
+ selected true
+ xpos 2270
+ ypos 440
+}
+push 0
+push $Nfe131600
+Shuffle2 {
+ fromInput1 {{0} B}
+ fromInput2 {{0} B}
+ mappings "4 rgba.green 0 1 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1 rgba.green 0 1 rgba.blue 0 2 rgba.green 0 1 rgba.alpha 0 3"
+ name Shuffle32
+ tile_color 0x1fff00ff
+ label "\[value in1]"
+ selected true
+ xpos 2160
+ ypos 440
+}
+push $Nfe131600
+Shuffle2 {
+ fromInput1 {{0} B}
+ fromInput2 {{0} B}
+ mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.red 0 0 rgba.blue 0 2 rgba.red 0 0 rgba.alpha 0 3"
+ name Shuffle33
+ tile_color 0xff0000ff
+ label "\[value in1]"
+ selected true
+ xpos 2050
+ ypos 440
+}
+Dissolve {
+ inputs 4+1
+ which 0.6
+ name Dissolve5
+ label "Which: \[value which]"
+ selected true
+ xpos 2160
+ ypos 530
+}
