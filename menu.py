@@ -1,7 +1,7 @@
 # --------------------------------------------------------------
 #  menu.py
 #  Version: 1.0.10
-#  Last Updated: March 4th, 2020
+#  Last Updated: Oct 10th, 2022
 # --------------------------------------------------------------
 
 # --------------------------------------------------------------
@@ -64,6 +64,7 @@ nuke.knobDefault('Soften.label', "Size: [value size]")
 #keyer
 
 #merge
+nuke.knobDefault('Merge.label', '[knob tile_color [ expr {[value disable]? 4278190335:0}]]')
 nuke.knobDefault('Switch.label', "Which: [value which]")
 nuke.knobDefault('Dissolve.label', "Which: [value which]")
 
@@ -105,7 +106,6 @@ nuke.knobDefault('DirBlurWrapper.BlurLayer', "rgba")
 #keyer
 
 #merge
-nuke.knobDefault('Merge.also_merge', 'all')
 nuke.knobDefault('ContactSheet.roworder', 'TopBottom')
 nuke.knobDefault('ContactSheet.width', 'input.width*columns')
 nuke.knobDefault('ContactSheet.height', 'input.height*rows')
@@ -119,13 +119,18 @@ nuke.knobDefault('Project3D.crop', "false")
 
 #other
 
-nuke.knobDefault('Dot.note_font_size', "72")
-nuke.knobDefault('BackdropNode.note_font_size', "72")
+nuke.knobDefault('Dot.note_font_size', "22")
+nuke.knobDefault('BackdropNode.note_font_size', "22")
 nuke.knobDefault('StickyNote.note_font_size', "22")
 
+# --------------------------------------------------------------
+#  SHORTCUTS ::::::::::::::::::::::::::::::::::::::::::::::::::
+# --------------------------------------------------------------
+
+nuke.toolbar('Nodes').addCommand('Channel/ChannelMerge', 'nuke.createNode("ChannelMerge")', 'shift+c', shortcutContext=dagContext)
 
 # --------------------------------------------------------------
-#  CUSTOM MENUS :::::::::::::::::::::::::::::::::::::::::::::::
+#  CUSTOM MENUS ::::::::::::::::::::::::::::::::::::::::::::::::
 # --------------------------------------------------------------
 
 ## https://learn.foundry.com/nuke/developers/113/pythondevguide/custom_ui.html
@@ -160,69 +165,25 @@ utilitiesMenu.addCommand( 'message', "nuke.message('yay, it works too')", index=
 
 
 # --------------------------------------------------------------
-#  USEFUL SNIPPETS :::::::::::::::::::::::::::::::::::::::::::::::
+#  USEFUL SNIPPETS :::::::::::::::::::::::::::::::::::::::::::::
 # --------------------------------------------------------------
 
-# From https://www.ftrack.com/en/2019/09/8-ways-to-increase-your-efficiency-with-foundrys-nuke.html
-
-def close():
-    for node in nuke.allNodes():
-        node.hideControlPanel()
-
-utilitiesMenu.addCommand('close', 'close()' , 'shift+d', index=1 )
-
-# Tracker ref frame on current frame
-
-nuke.addOnUserCreate( lambda :nuke.thisNode()[ 'reference_frame' ].setValue(nuke.frame()), nodeClass= 'Tracker4' )
-
 # From http://www.lookinvfx.com/nuke-python-snippets/
-
 def disconnectViewers():
     nuke.selectAll()
     nuke.invertSelection()
-
     for n in nuke.allNodes():
         if n.Class() == "Viewer":
             n['selected'].setValue(True)
-
     nuke.extractSelected()
-
 nuke.addOnScriptLoad(disconnectViewers)
 
-# Change Channels between 'all' and 'rgba'
 
-def changeChannels():
-    sel_nodes = nuke.selectedNodes()
-    if len(sel_nodes) > 0:
-        ok_channels = ['all', 'none', 'rgba', 'rgb', 'alpha']
-        for sel_node in sel_nodes:
-            if sel_node.knob('channels'):
-                if not sel_node['channels'].value() == "alpha":
-                    channel_index = ok_channels.index(sel_node['channels'].value())
-                    sel_node['channels'].setValue(ok_channels[channel_index + 1])
-                else:
-                    sel_node['channels'].setValue('all')
-            if sel_node.knob('output'):
-                if sel_node.knob('output').value() in ok_channels:
-                    if not sel_node['output'].value() == "alpha":
-                        channel_index = ok_channels.index(sel_node['output'].value())
-                        sel_node['output'].setValue(ok_channels[channel_index + 1])
-                    else:
-                        sel_node['output'].setValue('all')
-            if sel_node.knob('retimedChannels'):
-                if not sel_node['retimedChannels'].value() == "alpha":
-                    channel_index = ok_channels.index(sel_node['retimedChannels'].value())
-                    sel_node['retimedChannels'].setValue(ok_channels[channel_index + 1])
-                else:
-                    sel_node['retimedChannels'].setValue('all')
-    else:
-        nuke.message('<center><b>Select a node/nodes first.\nThis shortcut iterates through the following channels:</b>\n<i>all, none, rgba, rgb, alpha</i></center>')
-
-utilitiesMenu.addCommand('Change Channels', 'changeChannels()' , 'shift+a')
+# Tracker ref frame on current frame
+nuke.addOnUserCreate( lambda :nuke.thisNode()[ 'reference_frame' ].setValue(nuke.frame()), nodeClass= 'Tracker4' )
 
 
 # based on Ben`s Foundry webinar: https://app.livestorm.co/foundry/foundry-session-how-to-improve-your-nuke-workflow-with-python-scripting
-
 def RotoBlur_Shortcut():
     y_offset = 60
     r = nuke.createNode('Roto', 'output alpha')
@@ -238,7 +199,6 @@ def RotoBlur_Shortcut():
 nuke.menu('Nodes').addMenu('Draw').addCommand('Create Roto and Blur node.', 'RotoBlur_Shortcut()', shortcut='o', icon='Roto.png')
 
 # based on Ben`s NodeSandwhich: https://github.com/BenMcEwan/nuke_public/blob/master/python/bm_NodeSandwich.py
-
 def SharpenSandwhich():
     y_offset = 60
     Lo1 = nuke.createNode('Log2Lin')
@@ -264,31 +224,72 @@ def SharpenSandwhich():
 nuke.menu('Nodes').addMenu('Filter').addCommand('SharpenSandwhich', 'SharpenSandwhich()', shortcut='ctrl+l', icon='Sharpen.png', index=26)
 
 
+# --------------------------------------------------------------
+#  USEFUL MANU ITEMS :::::::::::::::::::::::::::::::::::::::::::
+# --------------------------------------------------------------
+
+
+# From https://www.ftrack.com/en/2019/09/8-ways-to-increase-your-efficiency-with-foundrys-nuke.html
+
+def close():
+    for node in nuke.allNodes():
+        node.hideControlPanel()
+
+utilitiesMenu.addCommand('close', 'close()' , 'shift+d', index=0 )
+
+# Change Channels between 'all' and 'rgba'
+
+def changeChannels():
+    sel_nodes = nuke.selectedNodes()
+    if len(sel_nodes) > 0:
+        ok_channels = ['all', 'none', 'rgba', 'rgb', 'alpha']
+        for sel_node in sel_nodes:
+            # setting up for channels knob
+            if sel_node.knob('channels'):
+                if not sel_node['channels'].value() == "alpha" and sel_node.knob('channels').value() in ok_channels:
+                    channel_index = ok_channels.index(sel_node['channels'].value())
+                    sel_node['channels'].setValue(ok_channels[channel_index + 1])
+                else:
+                    sel_node['channels'].setValue('all')
+            # setting up for output knob
+            if sel_node.knob('output'):
+                try:
+                    if not sel_node['output'].value() == "alpha" and sel_node.knob('output').value() in ok_channels:
+                        channel_index = ok_channels.index(sel_node['output'].value())
+                        sel_node['output'].setValue(ok_channels[channel_index + 1])
+                    else:
+                        sel_node['output'].setValue('all')
+                except:
+                    pass
+            # setting up for retimedChannels knob
+            if sel_node.knob('retimedChannels'):
+                if not sel_node['retimedChannels'].value() == "alpha" and sel_node.knob('retimedChannels').value() in ok_channels:
+                    channel_index = ok_channels.index(sel_node['retimedChannels'].value())
+                    sel_node['retimedChannels'].setValue(ok_channels[channel_index + 1])
+                else:
+                    sel_node['retimedChannels'].setValue('all')
+    else:
+        nuke.message('<center><b>Select a node/nodes first.\nThis shortcut iterates through the following channels:</b>\n<i>all, none, rgba, rgb, alpha</i></center>')
+
+utilitiesMenu.addCommand('Change Channels', 'changeChannels()' , 'shift+a', index=1 )
+
 
 # Written by Attila Gasparetz based on https://community.foundry.com/discuss/topic/154100/how-to-open-folder-from-write-node
 
 def openFolder():
     import platform
     import subprocess
-    import os
-
     multipleNodes = nuke.selectedNodes()
-
     if len(multipleNodes) == 0 or len(multipleNodes) > 1:
         nuke.message("""<center><font color=orange>Select a single node with a <font color=yellow><u><a href="https://learn.foundry.com/nuke/developers/63/ndkdevguide/knobs-and-handles/knobtypes.html#knobs-knobtypes-file-knob"><font color=yellow>File</a></u><font color=orange> knob!""")
-
     else:
         fileNode = nuke.selectedNode()
-
         if fileNode.knob('file'):
             # get path to directory
             dirname = fileNode.knob('file').evaluate()
             dirname = os.path.dirname(dirname)
-
             operatingSystem = platform.system()
-
             if os.path.isdir(dirname):
-
                 # windows
                 if operatingSystem == 'Windows':
                     os.startfile(dirname)
@@ -298,92 +299,83 @@ def openFolder():
                 # linux
                 else:
                     subprocess.Popen(['xdg-open', dirname])
-
             else:
                 nuke.message("<center><font color=orange>The folder wasn't created yet to open!")
-
         else:
             nuke.message(
                 """<center><font color=orange>Select a single node with a <font color=yellow><u><a href="https://learn.foundry.com/nuke/developers/63/ndkdevguide/knobs-and-handles/knobtypes.html#knobs-knobtypes-file-knob"><font color=yellow>File</a></u><font color=orange> knob!""")
 
-utilitiesMenu.addCommand('Open Folder in file browser', 'openFolder()', shortcut='ctrl+f', index=4)
+utilitiesMenu.addCommand('Open Folder in file browser', 'openFolder()', shortcut='ctrl+f', index=2 )
+
+def shuffleRGB():
+    for node in nuke.selectedNodes():
+        try:
+            dot = nuke.nodes.Dot()
+            dot['xpos'].setValue(node['xpos'].value() + 35)
+            dot['ypos'].setValue(node['ypos'].value() + 150)
+            dot.setInput(0, node)
+            
+            shuffleR = nuke.createNode('Shuffle2')
+            shuffleR['xpos'].setValue(dot['xpos'].value() - 144)
+            shuffleR['ypos'].setValue(dot['ypos'].value() + 120)
+            shuffleR['mappings'].setValue([(0, 'rgba.red', 'rgba.red'), (0, 'rgba.red', 'rgba.green'), (0, 'rgba.red', 'rgba.blue'), (0, 'rgba.red', 'rgba.alpha')])
+            shuffleR['tile_color'].setValue(4278190335)
+            shuffleR['label'].setValue('[value in1]')
+            shuffleR.hideControlPanel()
+
+            shuffleG = nuke.createNode('Shuffle2')
+            shuffleG['xpos'].setValue(dot['xpos'].value() - 34)
+            shuffleG['ypos'].setValue(dot['ypos'].value() + 120)
+            shuffleG['mappings'].setValue([(0, 'rgba.green', 'rgba.red'), (0, 'rgba.green', 'rgba.green'), (0, 'rgba.green', 'rgba.blue'), (0, 'rgba.green', 'rgba.alpha')])
+            shuffleG['tile_color'].setValue(536805631)
+            shuffleG['label'].setValue('[value in1]')
+            shuffleG.hideControlPanel()
+
+            shuffleB = nuke.createNode('Shuffle2')
+            shuffleB['xpos'].setValue(dot['xpos'].value() + 76)
+            shuffleB['ypos'].setValue(dot['ypos'].value() + 120)
+            shuffleB['mappings'].setValue([(0, 'rgba.blue', 'rgba.red'), (0, 'rgba.blue', 'rgba.green'), (0, 'rgba.blue', 'rgba.blue'), (0, 'rgba.blue', 'rgba.alpha')])
+            shuffleB['tile_color'].setValue(10485759)
+            shuffleB['label'].setValue('[value in1]')
+            shuffleB.hideControlPanel()
+
+            dot.setInput(0, node)
+            shuffleR.setInput(0, dot)
+            shuffleR.setInput(1, None)
+            shuffleG.setInput(0, dot)
+            shuffleG.setInput(1, None)
+            shuffleB.setInput(0, dot)
+            shuffleB.setInput(1, None)
+        except Exception:
+            pass
+
+utilitiesMenu.addCommand('Shuffle RGB', 'shuffleRGB()', shortcut='ctrl+h', index=3 )
 
 
+def addRetime():
+    for node in nuke.selectedNodes():
+        try:
+            retime = nuke.createNode('Retime')
+            retime['output.first_lock'].setValue(1)
+            retime['output.first'].setValue(1001)
+            retime['xpos'].setValue(node['xpos'].value())
+            retime['ypos'].setValue(node['ypos'].value() + 100)
+            retime.setInput(0, node)
+        except Exception:
+            pass
 
-# Create Backdrop_Adjust by Attila Gasparetz
+utilitiesMenu.addCommand('Add Retime', 'addRetime()', index=4)
 
-def create_BD_Adj():
-    z_List = []
-    if nuke.selectedNodes():
-
-        if nuke.selectedNodes('BackdropNode'):
-            sel_bd = nuke.selectedNodes('BackdropNode')
-            for s in sel_bd:
-                z_List.append(s['z_order'].value())
-            else:
-                pass
-
-        if not z_List:
-            z_List.append(1)
-        z_Min = min(z_List)
-
-
-        nodes = nuke.selectedNodes()
-
-        # Calculate bounds for the backdrop node.
-        bdX = min([node.xpos() for node in nodes])
-        bdY = min([node.ypos() for node in nodes])
-        bdW = max([node.xpos() + node.screenWidth() for node in nodes]) - bdX
-        bdH = max([node.ypos() + node.screenHeight() for node in nodes]) - bdY
-
-        # Expand the bounds to leave a little border. Elements are offsets for left, top, right and bottom edges respectively
-        left, top, right, bottom = (-100, -200, 100, 100)
-        bdX += left
-        bdY += top
-        bdW += (right - left)
-        bdH += (bottom - top)
-
-        # Creating the node
-        bd_this = nuke.nodes.Backdrop_Adjust()
-        bd_this["xpos"].setValue(bdX)
-        bd_this["bdwidth"].setValue(bdW)
-        bd_this["ypos"].setValue(bdY)
-        bd_this["bdheight"].setValue(bdH)
-        bd_this['z_order'].setValue(z_Min - 1)
-
-        # Handle tile_color by Borsari Nicola
-        ok_colors = [3149642751, 2863311615, 2576980479, 2290649343, 2004318207, 1717987071, 1431655935, 1145324799,
-                     572662527, 286331391, 255]
-
-        if nuke.selectedNodes('BackdropNode'):
-            existing_indexes = [0]
-            for bd in nuke.selectedNodes('BackdropNode'):
-                color = int(bd['tile_color'].getValue())
+def cleanDroppedKnobs():
+    for node in nuke.allNodes(recurseGroups=True):
+        for knob in node.knobs():
+            if 'panelDropped' in knob:
                 try:
-                    curr_index = ok_colors.index(color)
-                    existing_indexes.append(curr_index)
-                except ValueError:
-                    continue
+                    node.removeKnob(node[knob])
+                except:
+                    pass
 
-            new_index = sorted(existing_indexes)[-1] + 1
-
-            try:
-                bd_this['tile_color'].setValue(ok_colors[new_index])
-            except IndexError:
-                bd_this['tile_color'].setValue(ok_colors[-1])
-        else:
-            bd_this['tile_color'].setValue(3149642751)
-
-        bd_this.hideControlPanel()
-    else:
-        bd_that = nuke.createNode('Backdrop_Adjust')
-        bd_that['tile_color'].setValue(3149642751)
-        bd_that['z_order'].setValue(0)
-        bd_that.hideControlPanel()
-
-nuke.menu('Nodes').addMenu('Other').addCommand('BackdropAdjust.', 'create_BD_Adj()', shortcut='ctrl+b', icon='Backdrop.png', index=3)
-
-
+utilitiesMenu.addCommand('Clean Dropped Knobs', 'cleanDroppedKnobs()', index=5)
 
 ####-----------####
 #### TextFixer ####
@@ -708,9 +700,7 @@ def OldText2NewText():
         nuke.message(
             """<center><b><font color=orange>Select some Text nodes first!\n\n<a href="https://www.gatimedia.co.uk/oldtext2newtext"><font color=yellow><u>Learn about Old vs. New Text\n""")
 
-
 TextFixer.addCommand('Old Text 2 New Text', 'OldText2NewText()')
-
 
 def newTextFinder():
     newText = []
@@ -1043,10 +1033,3 @@ def OpenPage():
 
 
 TextFixer.addCommand('Open Page', 'OpenPage()')
-
-
-# --------------------------------------------------------------
-#  SHORTCUTS ::::::::::::::::::::::::::::::::::::::::::::::::::
-# --------------------------------------------------------------
-
-nuke.toolbar('Nodes').addCommand('Channel/ChannelMerge', 'nuke.createNode("ChannelMerge")', 'shift+c', shortcutContext=dagContext)
