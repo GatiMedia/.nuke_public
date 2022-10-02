@@ -1,0 +1,63 @@
+BackdropNode {
+ inputs 0
+ name BackdropNode1
+ tile_color 0xaaaaaa00
+ label "<center>Normals Pivot Change"
+ note_font_size 42
+ selected true
+ xpos 590
+ ypos 188
+ bdwidth 580
+ bdheight 440
+ z_order -255200
+}
+push $cut_paste_input
+add_layer {normal normal.red normal.green normal.blue normal.alpha}
+Shuffle2 {
+ fromInput1 {{0} B}
+ in1 normal
+ fromInput2 {{0} B}
+ mappings "4 normal.red 0 0 rgba.red 0 0 normal.green 0 1 rgba.green 0 1 normal.blue 0 2 rgba.blue 0 2 normal.alpha 0 3 rgba.alpha 0 3"
+ name Shuffle35
+ label "\[value in1]"
+ selected true
+ xpos 950
+ ypos 320
+}
+ColorMatrix {
+ matrix {
+     {{parent.Axis2.world_matrix.0} {parent.Axis2.world_matrix.1} {parent.Axis2.world_matrix.2}}
+     {{parent.Axis2.world_matrix.4} {parent.Axis2.world_matrix.5} {parent.Axis2.world_matrix.6}}
+     {{parent.Axis2.world_matrix.8} {parent.Axis2.world_matrix.9} {parent.Axis2.world_matrix.10}}
+   }
+ name ColorMatrix2
+ selected true
+ xpos 950
+ ypos 422
+}
+Add {
+ value {{parent.Axis2.world_matrix.3} {parent.Axis2.world_matrix.7} {parent.Axis2.world_matrix.11} 0}
+ name Add2
+ selected true
+ xpos 950
+ ypos 512
+}
+Axis2 {
+ inputs 0
+ name Axis2
+ selected true
+ xpos 740
+ ypos 450
+ addUserKnob {20 ftracktab l ftrack}
+ addUserKnob {1 fcompname l "Component Name:"}
+ fcompname alembic
+}
+StickyNote {
+ inputs 0
+ name StickyNote15
+ label "Can use translate and rotate on Axis"
+ note_font_size 22
+ selected true
+ xpos 694
+ ypos 369
+}
