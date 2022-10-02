@@ -1,0 +1,45 @@
+Group {
+ name GM_Crop
+ tile_color 0xbe7effff
+ selected true
+ xpos 120
+ ypos 220
+ addUserKnob {20 User}
+ addUserKnob {7 CropInc l "All Direction" R 0 10000}
+ CropInc 1550
+ addUserKnob {26 ""}
+ addUserKnob {7 vertical l Vertical R 0 10000}
+ addUserKnob {7 horizontal l Horizontal R 0 10000}
+ addUserKnob {26 ""}
+ addUserKnob {7 left l Left R 0 10000}
+ addUserKnob {7 right l Right R 0 10000}
+ addUserKnob {7 top l Top R 0 10000}
+ addUserKnob {7 bottom l Bottom R 0 10000}
+ addUserKnob {26 ""}
+ addUserKnob {41 reformat T Crop.reformat}
+ addUserKnob {41 intersect -STARTLINE T Crop.intersect}
+ addUserKnob {41 crop l "black outside" -STARTLINE T Crop.crop}
+ addUserKnob {20 info l Info}
+ addUserKnob {26 info1 l "" +STARTLINE T "<h1><font color=#888888>1.01 version</h1>GM_Crop<font color=#777777> by Attil Gasparetz\n\n2020"}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos 510
+  ypos 230
+ }
+ Crop {
+  box {{"-(((input.format.r + CropInc) + horizontal + left) - input.format.r )"} {"-(((input.format.t + CropInc) + vertical + bottom) - input.format.t )"} {"(input.format.r + CropInc) + horizontal + right"} {"(input.format.t + CropInc) + vertical + top"}}
+  reformat true
+  crop false
+  name Crop
+  label "Box: x:\[value box.x]  y:\[value box.y] r:\[value box.r] t:\[value box.t]"
+  xpos 510
+  ypos 320
+ }
+ Output {
+  name Output1
+  xpos 510
+  ypos 398
+ }
+end_group
