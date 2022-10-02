@@ -1,0 +1,25 @@
+NoOp {
+ name GM_LabelMaker
+ tile_color 0xb2683bff
+ note_font "DejaVu Sans"
+ selected true
+ xpos 122
+ ypos 79
+ addUserKnob {20 User}
+ addUserKnob {26 ass l "<h3><font color=#b57735>Assign Label"}
+ addUserKnob {1 new_label l "New Label Val"}
+ new_label MAIN_PIPE
+ addUserKnob {22 add_new_label l "Add new label to selected" T "### Add new label value on selected ###\n\nnodes = nuke.selectedNodes()\nnew_label_val = nuke.thisNode()\['new_label'].value()\nfor node in nodes:\n    try:\n        node\[\"label\"].setValue(new_label_val)\n    except Exception:\n        pass" +STARTLINE}
+ addUserKnob {22 remove_label l "Remove Label from selected" T "### Remove label value on selected ###\n\nnodes = nuke.selectedNodes()\nfor node in nodes:\n    try:\n        node\[\"label\"].setValue(\"\")\n    except Exception:\n        pass" +STARTLINE}
+ addUserKnob {26 dis l "<h3><font color=#b57735>Dis/Enable by label"}
+ addUserKnob {1 label_val l "Label Val"}
+ label_val MAIN_PIPE
+ addUserKnob {22 disable_sel l "Disable Selected" T "### Disable label match on selected ###\n\nnodes = nuke.selectedNodes()\ncurrVal = nuke.thisNode()\['label_val'].value()\n\nfor node in nodes:\n    try:\n        if node\[\"label\"].value() == currVal:\n            node\[\"disable\"].setValue(1)\n    except Exception:\n        pass\n" +STARTLINE}
+ addUserKnob {22 enable_sel l "Enable Selected" -STARTLINE T "### Disable label match on sleected ###\n\nnodes = nuke.selectedNodes()\ncurrVal = nuke.thisNode()\['label_val'].value()\n\nfor node in nodes:\n    try:\n        if node\[\"label\"].value() == currVal:\n            node\[\"disable\"].setValue(0)\n    except Exception:\n        pass\n"}
+ addUserKnob {22 disable_all l "Disable All" T "### Disable label match on all ###\n\nnodes = nuke.allNodes()\ncurrVal = nuke.thisNode()\['label_val'].value()\n\nfor node in nodes:\n    try:\n        if node\[\"label\"].value() == currVal:\n            node\[\"disable\"].setValue(1)\n    except Exception:\n        pass\n" +STARTLINE}
+ addUserKnob {22 enable_all l "Enable All" -STARTLINE T "### Enable label match on all ###\n\nnodes = nuke.allNodes()\ncurrVal = nuke.thisNode()\['label_val'].value()\n\nfor node in nodes:\n    try:\n        if node\[\"label\"].value() == currVal:\n            node\[\"disable\"].setValue(0)\n    except Exception:\n        pass\n"}
+ addUserKnob {20 info l Info}
+ addUserKnob {26 info1 l "" +STARTLINE T "<h1><font color=#888888>1.1 version</h1>GM_LabelMaker<font color=#777777> by Attil Gasparetz\n\n2020"}
+ addUserKnob {20 tmpTab}
+ addUserKnob {1 tmpKeepInput}
+}
