@@ -2,8 +2,8 @@ Group {
  name GM_Channel_Puli
  tile_color 0xffae53ff
  selected true
- xpos 400
- ypos 902
+ xpos 26360
+ ypos 1622
  addUserKnob {20 tab1 l Settings}
  addUserKnob {26 info_title l Information}
  addUserKnob {26 info l "" +STARTLINE T "The node automacially sends the alpha\nvalue to the channel that is the input`s\nname and keeps the incoming alpha\nvalue on the alpha channel combined."}
@@ -31,7 +31,7 @@ Group {
  addUserKnob {6 app_ref l "Apply Reformat" t "Allows you to reformat the output. " +STARTLINE}
  addUserKnob {41 format l "Output Format" T Reformat_c_p.format}
  addUserKnob {26 ""}
- addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/channel-puli')\n"}
+ addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import webbrowser\nwebbrowser.open('https://www.gatimedia.co.uk/channel-puli', new=2)\n"}
  addUserKnob {26 ""}
  addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.1 version</font>"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Channel Puli© by Attila Gasparetz</font>"}
@@ -63,19 +63,19 @@ Group {
   ypos -538
   disable {{crop_inpu==0}}
  }
- set Cca284a80 [stack 0]
+ set C8a057100 [stack 0]
  Dot {
   name Dot3
   xpos 434
   ypos -294
  }
-set Nca284700 [stack 0]
+set N8a0574e0 [stack 0]
  Dot {
   name Dot6
   xpos 434
   ypos -78
  }
-set Nca284380 [stack 0]
+set N8a0578c0 [stack 0]
  Shuffle {
   red black
   green black
@@ -86,7 +86,7 @@ set Nca284380 [stack 0]
   xpos 400
   ypos 224
  }
-set Nca284000 [stack 0]
+set N8a057ca0 [stack 0]
  Remove {
   channels alpha
   name Remove_a_b
@@ -104,7 +104,7 @@ push 0
   ypos -658
   number 1
  }
-clone $Cca284a80 {
+clone $C8a057100 {
   xpos 290
   ypos -538
   selected false
@@ -114,13 +114,13 @@ clone $Cca284a80 {
   xpos 324
   ypos -342
  }
-set Nd47f9180 [stack 0]
+set N8a058c20 [stack 0]
  Dot {
   name Dot5
   xpos 324
   ypos -126
  }
-set Nd47f8e00 [stack 0]
+set N8a059000 [stack 0]
  Shuffle {
   red black
   green alpha
@@ -131,7 +131,7 @@ set Nd47f8e00 [stack 0]
   xpos 290
   ypos 152
  }
-set Nd47f8a80 [stack 0]
+set N8a0597c0 [stack 0]
  Remove {
   channels alpha
   name Remove_a_g
@@ -148,7 +148,7 @@ set Nd47f8a80 [stack 0]
   ypos -658
   number 2
  }
-clone $Cca284a80 {
+clone $C8a057100 {
   xpos 180
   ypos -538
   selected false
@@ -158,13 +158,13 @@ clone $Cca284a80 {
   xpos 214
   ypos -390
  }
-set Nd4821c00 [stack 0]
+set N8a05ab20 [stack 0]
  Dot {
   name Dot4
   xpos 214
   ypos -174
  }
-set Nd4821880 [stack 0]
+set N8a05a740 [stack 0]
  Shuffle {
   red alpha
   green black
@@ -175,7 +175,7 @@ set Nd4821880 [stack 0]
   xpos 180
   ypos 80
  }
-set Nd4821500 [stack 0]
+set N8a0593e0 [stack 0]
  Remove {
   channels alpha
   name Remove_a_r
@@ -190,37 +190,37 @@ set Nd4821500 [stack 0]
   name Merge_channel
   tile_color 0x777777ff
   label "\[value operation]"
-  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font "Verdana Bold"
   xpos 290
   ypos 440
  }
-push $Nca284000
-push $Nd47f8a80
-push $Nd4821500
-push $Nca284380
+push $N8a057ca0
+push $N8a0597c0
+push $N8a0593e0
+push $N8a0578c0
  Invert {
   name Invert_b
   tile_color 0x777777ff
   xpos 620
   ypos -88
  }
-push $Nd47f8e00
+push $N8a059000
  Invert {
   name Invert_g
   tile_color 0x777777ff
   xpos 620
   ypos -136
  }
-push $Nd4821880
+push $N8a05a740
  Invert {
   name Invert_r
   tile_color 0x777777ff
   xpos 620
   ypos -184
  }
-push $Nca284700
-push $Nd47f9180
-push $Nd4821c00
+push $N8a0574e0
+push $N8a058c20
+push $N8a05ab20
  Constant {
   inputs 0
   channels rgb
