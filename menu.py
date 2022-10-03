@@ -155,15 +155,6 @@ GM_Menu.addCommand('GM_Input_Info', 'nuke.createNode("GM_Input_Info")', icon="")
 GM_Menu.addCommand('GM_Render_Switch', 'nuke.createNode("GM_Render_Switch")', icon="")
 GM_Menu.addCommand('GM_Switch_Highlight', 'nuke.createNode("GM_Switch_Highlight")', icon="")
 
-
-
-# ----- CREATE UTILITIES MENU & ASSIGN ITEMS -------------------
-
-utilitiesMenu = nuke.menu('Nuke').addMenu('My Menu')
-
-utilitiesMenu.addCommand( 'message', "nuke.message('yay, it works too')", index=0 )
-
-
 # --------------------------------------------------------------
 #  USEFUL SNIPPETS :::::::::::::::::::::::::::::::::::::::::::::
 # --------------------------------------------------------------
@@ -220,12 +211,16 @@ def SharpenSandwhich():
     Lo2.hideControlPanel()
     Sh.showControlPanel()
 
-
 nuke.menu('Nodes').addMenu('Filter').addCommand('SharpenSandwhich', 'SharpenSandwhich()', shortcut='ctrl+l', icon='Sharpen.png', index=26)
 
+# --------------------------------------------------------------
+# CREATE UTILITIES MENU & ASSIGN ITEMS :::::::::::::::::::::::::
+# --------------------------------------------------------------
+
+utilitiesMenu = nuke.menu('Nuke').addMenu('GM Menu')
 
 # --------------------------------------------------------------
-#  USEFUL MANU ITEMS :::::::::::::::::::::::::::::::::::::::::::
+#  USEFUL MENU ITEMS :::::::::::::::::::::::::::::::::::::::::::
 # --------------------------------------------------------------
 
 
@@ -1024,9 +1019,7 @@ def NewText2OldText():
         nuke.message(
             """<center><b><font color=orange>Select some Text2 nodes first!\n\n<a href="https://www.gatimedia.co.uk/oldtext2newtext"><font color=yellow><u>Learn about Old vs. New Text\n""")
 
-
 TextFixer.addCommand('New Text 2 Old Text', 'NewText2OldText()')
-
 
 def OpenPage():
     webbrowser.open('https://www.gatimedia.co.uk/oldtext2newtext')
