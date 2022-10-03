@@ -2,8 +2,8 @@ Group {
  name GM_Render_Switch
  tile_color 0xbbbbbbff
  selected true
- xpos 400
- ypos 230
+ xpos 26360
+ ypos 2006
  addUserKnob {20 User}
  addUserKnob {26 info1 l "<font size=5><b>Switch this node"}
  addUserKnob {6 r_s_tick l "Show 1" +STARTLINE}
@@ -13,7 +13,7 @@ Group {
  addUserKnob {26 ""}
  addUserKnob {26 info3 l "" +STARTLINE T "Recommended use:\n0 - Lighter nodes\n1 - Heavy nodes\n-------------------------\nThe nodes on 1 will be\n used in rendering."}
  addUserKnob {26 ""}
- addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/render-switch')\n"}
+ addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import webbrowser\nwebbrowser.open('https://www.gatimedia.co.uk/render-switch', new=2)"}
  addUserKnob {26 ""}
  addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.1 version</font>"}
  addUserKnob {26 credit l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Render Switch© by Attila Gasparetz and Nicholas Zissimos - 2019</font>"}
@@ -25,7 +25,7 @@ Group {
   ypos 494
   number 1
  }
-set N8fd94380 [stack 0]
+set N96c36e70 [stack 0]
  Input {
   inputs 0
   name Input0
@@ -40,9 +40,9 @@ set N8fd94380 [stack 0]
   xpos 620
   ypos 632
  }
-set N8fd94000 [stack 0]
-push $N8fd94380
-push $N8fd94000
+set N485d5900 [stack 0]
+push $N96c36e70
+push $N485d5900
  Switch {
   inputs 2
   which {{parent.r_s_tick}}
