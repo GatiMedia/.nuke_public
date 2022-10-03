@@ -2,8 +2,11 @@ Group {
  name GM_Switch_Highlight
  tile_color 0xffff00ff
  label "\[if \{\[numvalue this.which_highlight] == 0\} \{return \[value this.zero_is]\} else \{return \[value this.one_is]\}]\nGroup: \[value group_n]\n\[knob tile_color \[ expr \{ \[value which_highlight]? 16711935 : 4294902015 \}]]\n"
- note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ note_font "Bitstream Vera Sans Bold"
  note_font_size 13
+ selected true
+ xpos 26360
+ ypos 2328
  addUserKnob {20 User}
  addUserKnob {41 which_highlight l which T Switch1.which}
  addUserKnob {26 ""}
@@ -21,9 +24,9 @@ Group {
  addUserKnob {22 setgroup0 l "Set same group 0" T "m = nuke.thisGroup()\nk = m.knob('group_n').getValue()\n\nnodes_classes = \[\"Group\"]\n\nfor node in nuke.allNodes(group=nuke.root()):\n    if node.Class() in nodes_classes:\n        try:\n            if node\[\"group_n\"].getValue() == k:\n                node\[\"which_highlight\"].setValue(False)\n            else:\n                pass        \n        except Exception:\n            pass\n" +STARTLINE}
  addUserKnob {22 setgroup1 l "Set same group 1" -STARTLINE T "m = nuke.thisGroup()\nk = m.knob('group_n').getValue()\n\nnodes_classes = \[\"Group\"]\n\nfor node in nuke.allNodes(group=nuke.root()):\n    if node.Class() in nodes_classes:\n        try:\n            if node\[\"group_n\"].getValue() == k:\n                node\[\"which_highlight\"].setValue(True)\n            else:\n                pass        \n        except Exception:\n            pass\n"}
  addUserKnob {26 ""}
- addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/switch-highlight')\n" +STARTLINE}
+ addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " T "import webbrowser\nwebbrowser.open('https://www.gatimedia.co.uk/switch-highlight', new=2)\n" +STARTLINE}
  addUserKnob {26 ""}
- addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.02 version</font>"}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.2 version</font>"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Switch_Highlight© by Attila Gasparetz</font>"}
 }
  Input {
