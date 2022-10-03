@@ -2,21 +2,23 @@ Group {
  name GM_Moving_Lines
  tile_color 0xe8f57dff
  note_font "DejaVu Sans"
- xpos 2930
- ypos -303
+ selected true
+ xpos 26360
+ ypos 1929
  addUserKnob {20 User}
  addUserKnob {4 output l Output M {"Pattern Only" "Pattern Over Image" "Distorted Image" STMap ""}}
+ output "Pattern Over Image"
  addUserKnob {6 keep_a l "Keep Original Alpha" -STARTLINE}
  keep_a true
  addUserKnob {26 ""}
- addUserKnob {41 type_1 l typ T proxy.type}
- addUserKnob {41 axis_1 l axis T proxy.axis}
- addUserKnob {41 direction_1 l direction T proxy.direction}
- addUserKnob {41 thickness_1 l thickness T proxy.thickness}
- addUserKnob {41 chew l gap T key_chew_ML.chew}
- addUserKnob {41 speed_1 l speed T proxy.speed}
- addUserKnob {41 value_1 l value T proxy.value}
- addUserKnob {41 offset_1 l offset T proxy.offset}
+ addUserKnob {41 type_1 l Type T proxy.type}
+ addUserKnob {41 axis_1 l Axis T proxy.axis}
+ addUserKnob {41 direction_1 l Direction T proxy.direction}
+ addUserKnob {41 thickness_1 l Thickness T proxy.thickness}
+ addUserKnob {41 chew l Gap T key_chew_ML.chew}
+ addUserKnob {41 speed_1 l Speed T proxy.speed}
+ addUserKnob {41 value_1 l Value +INVISIBLE T proxy.value}
+ addUserKnob {41 offset_1 l Offset T proxy.offset}
  addUserKnob {7 blur l Blur R 0 100}
  addUserKnob {41 multiply l Color T Grade_ML.multiply}
  addUserKnob {6 invert +STARTLINE}
@@ -24,9 +26,11 @@ Group {
  addUserKnob {26 ""}
  addUserKnob {6 cross l "Enable Cross" +STARTLINE}
  cross true
- addUserKnob {41 operation1 T Merge_Proxy.operation1}
+ addUserKnob {41 operation1 l Operation T Merge_Proxy.operation1}
  addUserKnob {26 ""}
  addUserKnob {41 mix l Mix T Merge2.mix}
+ addUserKnob {26 ""}
+ addUserKnob {22 tut l Tutorial T "import webbrowser\nwebbrowser.open('https://www.gatimedia.co.uk/moving-lines', new=2)\n" +STARTLINE}
  addUserKnob {26 ""}
  addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.1 version</font>"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Moving_Lines© by Attila Gasparetz</font>"}
@@ -42,7 +46,7 @@ Group {
   xpos 214
   ypos -750
  }
-set N8bfed500 [stack 0]
+set N96c29570 [stack 0]
  Remove {
   name Remove_ML
   tile_color 0x555555ff
@@ -57,7 +61,7 @@ set N8bfed500 [stack 0]
   xpos 214
   ypos -534
  }
-set N8bfece00 [stack 0]
+set N96c29950 [stack 0]
  Dot {
   name Dot7
   tile_color 0x949494ff
@@ -71,6 +75,7 @@ set N8bfece00 [stack 0]
   expr3 "( \[value proxy.type](\[if \{\[numvalue proxy.axis] == 0\} \{return \"y\"\} else \{return \"x\"\}]/proxy.thickness \[if \{\[numvalue proxy.direction] == 0\} \{return \"-\"\} else \{return \"+\"\}]  (frame+proxy.offset)*proxy.speed )  )*proxy.value"
   name Moving_Lines_Exp1
   tile_color 0x555555ff
+  selected true
   xpos -40
   ypos -490
   addUserKnob {20 User}
@@ -111,20 +116,20 @@ set N8bfece00 [stack 0]
    name Input
    xpos 0
   }
-set Nabea1c00 [stack 0]
+set N96c2a8d0 [stack 0]
   Dot {
    name Dot1
    xpos 366
    ypos 5
   }
-set Nabea1880 [stack 0]
-push $Nabea1880
+set N96c26eb0 [stack 0]
+push $N96c26eb0
   Invert {
    name Invert1
    xpos 177
    ypos 34
   }
-push $Nabea1880
+push $N96c26eb0
   Switch {
    inputs 2
    which {{"\[value parent.chew]>=0?0:1"}}
@@ -156,7 +161,7 @@ push $Nabea1880
    addUserKnob {7 JSplineVFake}
    JSplineVFake {{curve i l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
   }
-set Nabea0700 [stack 0]
+set N96c27e30 [stack 0]
   Merge2 {
    inputs 2
    operation minus
@@ -164,7 +169,7 @@ set Nabea0700 [stack 0]
    xpos 332
    ypos 218
   }
-push $Nabea0700
+push $N96c27e30
   Switch {
    inputs 2
    which {{"\[value parent.chew]>=0?0:1"}}
@@ -183,7 +188,7 @@ push $Nabea0700
    xpos 177
    ypos 446
   }
-push $Nabea1c00
+push $N96c2a8d0
   ShuffleCopy {
    inputs 2
    name ShuffleCopy1
@@ -210,7 +215,7 @@ push $Nabea1c00
   xpos -6
   ypos -270
  }
-push $N8bfece00
+push $N96c29950
  Expression {
   channel3 alpha
   expr3 "( \[value proxy.type](\[if \{\[numvalue proxy.axis] == 0\} \{return \"x\"\} else \{return \"y\"\}]/proxy.thickness \[if \{\[numvalue proxy.direction] == 0\} \{return \"-\"\} else \{return \"+\"\}]  (frame+proxy.offset)*proxy.speed )  )*proxy.value"
@@ -248,7 +253,6 @@ push $N8bfece00
   ypos -346
   addUserKnob {20 Controls}
   addUserKnob {7 chew t "\t\t" R -200 200}
-  chew 40
   addUserKnob {7 soften R 0 200}
   addUserKnob {6 matteMult +STARTLINE}
  }
@@ -257,20 +261,20 @@ push $N8bfece00
    name Input
    xpos 0
   }
-set Nabf0dc00 [stack 0]
+set N96c301f0 [stack 0]
   Dot {
    name Dot1
    xpos 366
    ypos 5
   }
-set Nabf0d880 [stack 0]
-push $Nabf0d880
+set N96c2d370 [stack 0]
+push $N96c2d370
   Invert {
    name Invert1
    xpos 177
    ypos 34
   }
-push $Nabf0d880
+push $N96c2d370
   Switch {
    inputs 2
    which {{"\[value parent.chew]>=0?0:1"}}
@@ -302,7 +306,7 @@ push $Nabf0d880
    addUserKnob {7 JSplineVFake}
    JSplineVFake {{curve i l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
   }
-set Nabf0c700 [stack 0]
+set N96c2c3f0 [stack 0]
   Merge2 {
    inputs 2
    operation minus
@@ -310,7 +314,7 @@ set Nabf0c700 [stack 0]
    xpos 332
    ypos 218
   }
-push $Nabf0c700
+push $N96c2c3f0
   Switch {
    inputs 2
    which {{"\[value parent.chew]>=0?0:1"}}
@@ -329,7 +333,7 @@ push $Nabf0c700
    xpos 177
    ypos 446
   }
-push $Nabf0dc00
+push $N96c301f0
   ShuffleCopy {
    inputs 2
    name ShuffleCopy1
@@ -372,21 +376,21 @@ push $Nabf0dc00
   xpos 214
   ypos -78
  }
-set Nabf46380 [stack 0]
+set N96c2cf90 [stack 0]
  Dot {
   name Dot2
   xpos 214
   ypos 18
  }
-set Nabf46000 [stack 0]
-push $Nabf46380
-push $N8bfece00
+set N96c2db30 [stack 0]
+push $N96c2cf90
+push $N96c29950
  Dot {
   name Dot1
   xpos 544
   ypos -534
  }
-set Nabf75c00 [stack 0]
+set N96c2f650 [stack 0]
  ShuffleCopy {
   inputs 2
   red alpha
@@ -413,7 +417,7 @@ set Nabf75c00 [stack 0]
   xpos 544
   ypos 66
  }
-set Nabf75180 [stack 0]
+set N96c2e2f0 [stack 0]
  Blur {
   size {{blur}}
   name Blur1
@@ -421,7 +425,7 @@ set Nabf75180 [stack 0]
   xpos 730
   ypos 49
  }
-push $Nabf75c00
+push $N96c2f650
  Dot {
   name Dot10
   xpos 1204
@@ -441,9 +445,9 @@ push $Nabf75c00
   xpos 1170
   ypos 62
  }
-set Nabf74000 [stack 0]
-push $Nabf74000
-push $N8bfed500
+set N96c39530 [stack 0]
+push $N96c39530
+push $N96c29570
  Dot {
   name Dot11
   xpos 984
@@ -455,14 +459,14 @@ push $N8bfed500
   label "\[value in]"
   xpos 950
   ypos -184
-  disable {{!keep_a}}
+  disable {{keep_a}}
  }
  Dot {
   name Dot13
   xpos 984
   ypos 258
  }
-set Nabf9f500 [stack 0]
+set N96c34b90 [stack 0]
  STMap {
   inputs 2
   uv rgb
@@ -471,20 +475,20 @@ set Nabf9f500 [stack 0]
   xpos 1170
   ypos 241
  }
-push $Nabf46000
+push $N96c2db30
  Dot {
   name Dot3
   xpos 214
   ypos 114
  }
-set Nabf9ee00 [stack 0]
+set N96c35ef0 [stack 0]
  Dot {
   name Dot4
   xpos 214
   ypos 210
  }
-push $Nabf9ee00
-push $Nabf75180
+push $N96c35ef0
+push $N96c2e2f0
  ShuffleCopy {
   inputs 2
   blue alpha
@@ -519,15 +523,15 @@ push $Nabf75180
   xpos 510
   ypos 374
  }
-set Nabfc9880 [stack 0]
-push $Nabf9f500
+set N96c39910 [stack 0]
+push $N96c34b90
  Merge2 {
   inputs 2
   name Merge2
   xpos 950
   ypos 374
  }
-push $Nabfc9880
+push $N96c39910
  Switch {
   inputs 4
   which {{output}}
@@ -543,6 +547,15 @@ push $Nabfc9880
  }
  NoOp {
   inputs 0
+  name Merge_Proxy
+  xpos 290
+  ypos -274
+  addUserKnob {20 User}
+  addUserKnob {4 operation1 M {atop average color-burn color-dodge conjoint-over copy difference disjoint-over divide exclusion from geometric hard-light hypot in mask matte max min minus multiply out over overlay plus screen soft-light stencil under xor ""}}
+  operation1 over
+ }
+ NoOp {
+  inputs 0
   name proxy
   tile_color 0x555555ff
   xpos -150
@@ -551,23 +564,12 @@ push $Nabfc9880
   addUserKnob {4 type l typ M {sin cos tan}}
   addUserKnob {4 axis M {x y}}
   addUserKnob {4 direction M {up down}}
-  direction down
   addUserKnob {7 thickness R 1 100}
-  thickness 10
+  thickness 30
   addUserKnob {7 speed R 0 2}
-  speed 0.5
+  speed 1
   addUserKnob {7 value R 0 10}
   value 10
   addUserKnob {7 offset R 0 100}
- }
- NoOp {
-  inputs 0
-  name Merge_Proxy
-  selected true
-  xpos 290
-  ypos -274
-  addUserKnob {20 User}
-  addUserKnob {4 operation1 M {atop average color-burn color-dodge conjoint-over copy difference disjoint-over divide exclusion from geometric hard-light hypot in mask matte max min minus multiply out over overlay plus screen soft-light stencil under xor ""}}
-  operation1 over
  }
 end_group
