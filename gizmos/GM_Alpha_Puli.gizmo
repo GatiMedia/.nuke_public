@@ -1,4 +1,4 @@
-Gizmo {
+Group {
  name GM_Alpha_Puli
  tile_color 0xffae53ff
  selected true
