@@ -2,8 +2,8 @@ Group {
  name GM_Alpha_Puli
  tile_color 0xffae53ff
  selected true
- xpos -58
- ypos -264
+ xpos 26375
+ ypos 1508
  addUserKnob {20 checker l Checker}
  addUserKnob {4 over l Mode t "Choose between the preferred visibility modes to test your matte. For `Overlay` you can choose between colors. " M {Overlay Grey Black White Checkerboard "" "" "" "" "" "" "" "" ""}}
  addUserKnob {4 overlay l Overlay t "Choose between the colors to see the edges better when the Mode is on `Overlay`." M {Pink Blue Yellow Green Red "" "" "" "" "" "" ""}}
@@ -23,7 +23,7 @@ Group {
  addUserKnob {41 format l "output format" T Reformat_MAIN.format}
  addUserKnob {41 disable_1 l disable T Reformat_MAIN.disable}
  addUserKnob {26 ""}
- addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/alpha-puli')\n"}
+ addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import webbrowser\nwebbrowser.open('https://www.gatimedia.co.uk/alpha-puli', new=2)"}
  addUserKnob {26 ""}
  addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.2 version</font>"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Alpha Puli© by Attila Gasparetz</font>"}
@@ -166,62 +166,62 @@ Group {
   xpos 764
   ypos -534
  }
-set N3cc93500 [stack 0]
+set N274efb30 [stack 0]
  Crop {
   box {0 0 {width} {height}}
   name Crop1
   xpos 2600
   ypos -538
  }
- set C3cc93180 [stack 0]
+ set C274f29b0 [stack 0]
  Dot {
   name Dot16
   xpos 3074
   ypos -534
  }
-set N3cc92e00 [stack 0]
+set N274f1a30 [stack 0]
  Dot {
   name Dot20
   xpos 3734
   ypos -534
  }
-set N3cc92a80 [stack 0]
+set N274eff10 [stack 0]
  Dot {
   name Dot23
   xpos 4394
   ypos -534
  }
-set N3cc92700 [stack 0]
+set N274f02f0 [stack 0]
  Dot {
   name Dot29
   xpos 4944
   ypos -534
  }
-set N3cc92380 [stack 0]
+set N274f0e90 [stack 0]
  Dot {
   name Dot34
   xpos 5604
   ypos -534
  }
-set N3cc92000 [stack 0]
+set N274f06d0 [stack 0]
  Dot {
   name Dot43
   xpos 6264
   ypos -534
  }
-set N3ccadc00 [stack 0]
+set N274f3d10 [stack 0]
  Dot {
   name Dot35
   xpos 7034
   ypos -534
  }
-set N3ccad880 [stack 0]
+set N274f1650 [stack 0]
  Dot {
   name Dot51
   xpos 7694
   ypos -534
  }
-set N3ccad500 [stack 0]
+set N274f1270 [stack 0]
  Dot {
   name Dot41
   xpos 8354
@@ -275,8 +275,8 @@ set N3ccad500 [stack 0]
   ypos 944
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-set N3ccac700 [stack 0]
-push $N3ccac700
+set N274f3930 [stack 0]
+push $N274f3930
  Dilate {
   channels mask
   size 8
@@ -293,7 +293,7 @@ push $N3ccac700
   xpos 8210
   ypos 1040
  }
-push $N3ccac700
+push $N274f3930
  Multiply {
   inputs 1+1
   value 0
@@ -309,13 +309,13 @@ push $N3ccac700
   xpos 8320
   ypos 1214
  }
- set C3cce5500 [stack 0]
+ set C274f40f0 [stack 0]
  Dot {
   name Dot42
   xpos 8354
   ypos 1458
  }
-push $N3ccad500
+push $N274f1270
  Grade {
   channels alpha
   gamma 1e-06
@@ -364,8 +364,8 @@ push $N3ccad500
   ypos 944
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-set N3cce4700 [stack 0]
-push $N3cce4700
+set N8a02afc0 [stack 0]
+push $N8a02afc0
  Dilate {
   channels mask
   size 8
@@ -382,7 +382,7 @@ push $N3cce4700
   xpos 7550
   ypos 1040
  }
-push $N3cce4700
+push $N8a02afc0
  Multiply {
   inputs 1+1
   value 0
@@ -392,7 +392,7 @@ push $N3cce4700
   ypos 1040
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-clone $C3cce5500 {
+clone $C274f40f0 {
   xpos 7660
   ypos 1214
   selected false
@@ -402,7 +402,7 @@ clone $C3cce5500 {
   xpos 7694
   ypos 1458
  }
-push $N3ccad880
+push $N274f1650
  Shuffle {
   red alpha
   green alpha
@@ -444,8 +444,8 @@ push $N3ccad880
   ypos 944
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-set N3cd20a80 [stack 0]
-push $N3cd20a80
+set N8a02f580 [stack 0]
+push $N8a02f580
  Dilate {
   channels mask
   size 8
@@ -462,7 +462,7 @@ push $N3cd20a80
   xpos 6890
   ypos 1040
  }
-push $N3cd20a80
+push $N8a02f580
  Multiply {
   inputs 1+1
   value 0
@@ -472,7 +472,7 @@ push $N3cd20a80
   ypos 1040
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-clone $C3cce5500 {
+clone $C274f40f0 {
   xpos 7000
   ypos 1214
   selected false
@@ -482,7 +482,7 @@ clone $C3cce5500 {
   xpos 7034
   ypos 1458
  }
-push $N3ccadc00
+push $N274f3d10
  Grade {
   channels alpha
   blackpoint 0.1
@@ -496,7 +496,7 @@ push $N3ccadc00
   xpos 6264
   ypos 66
  }
-set N3cd5ee00 [stack 0]
+set N8a02abe0 [stack 0]
  Dot {
   name Dot49
   xpos 6154
@@ -507,7 +507,7 @@ set N3cd5ee00 [stack 0]
   name FilterErode6
   tile_color 0x6aff55ff
   label IN
-  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font "Bitstream Vera Sans Bold"
   note_font_size 12
   xpos 6120
   ypos 96
@@ -525,7 +525,7 @@ set N3cd5ee00 [stack 0]
   xpos 6154
   ypos 234
  }
-push $N3cd5ee00
+push $N8a02abe0
  Dot {
   name Dot53
   xpos 6374
@@ -536,7 +536,7 @@ push $N3cd5ee00
   name FilterErode7
   tile_color 0xff5594ff
   label OUT
-  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font "Bitstream Vera Sans Bold"
   note_font_size 12
   xpos 6340
   ypos 96
@@ -561,13 +561,13 @@ push $N3cd5ee00
   xpos 6230
   ypos 217
  }
-set N3cd8ee00 [stack 0]
+set N8a031480 [stack 0]
  Dot {
   name Dot64
   xpos 6264
   ypos 282
  }
-set N3cd8ea80 [stack 0]
+set N8a029c60 [stack 0]
  Dot {
   name Dot65
   xpos 6044
@@ -578,7 +578,7 @@ set N3cd8ea80 [stack 0]
   xpos 6044
   ypos 522
  }
-push $N3cd8ea80
+push $N8a029c60
  Constant {
   inputs 0
   channels rgb
@@ -629,7 +629,7 @@ push $N3cd8ea80
   xpos 4800
   ypos -897
  }
-set N3cdb5180 [stack 0]
+set N8a031c40 [stack 0]
  Switch {
   inputs 5
   which {{parent.over_color}}
@@ -637,7 +637,7 @@ set N3cdb5180 [stack 0]
   xpos 5020
   ypos -682
  }
-set N3cdb4e00 [stack 0]
+set N21026840 [stack 0]
  Dot {
   name Dot55
   label " RED"
@@ -646,14 +646,14 @@ set N3cdb4e00 [stack 0]
   ypos 330
   hide_input true
  }
-set N3cdb4a80 [stack 0]
-push $N3cd8ee00
+set N8a032020 [stack 0]
+push $N8a031480
  Invert {
   name Invert7
   xpos 6340
   ypos 272
  }
-push $N3cdb4a80
+push $N8a032020
  Invert {
   name Invert6
   xpos 6340
@@ -670,8 +670,8 @@ push $N3cdb4a80
   xpos 434
   ypos -342
  }
-set N3cde3c00 [stack 0]
-clone $C3cc93180 {
+set N8a032fa0 [stack 0]
+clone $C274f29b0 {
   xpos 2600
   ypos -346
   selected false
@@ -681,31 +681,31 @@ clone $C3cc93180 {
   xpos 2854
   ypos -342
  }
-set N3cde3500 [stack 0]
+set N8a034ea0 [stack 0]
  Dot {
   name Dot21
   xpos 3624
   ypos -342
  }
-set N3cde3180 [stack 0]
+set N8a033f20 [stack 0]
  Dot {
   name Dot24
   xpos 4284
   ypos -342
  }
-set N3cde2e00 [stack 0]
+set N8a033380 [stack 0]
  Dot {
   name Dot31
   xpos 4834
   ypos -342
  }
-set N3cde2a80 [stack 0]
+set N8a033760 [stack 0]
  Dot {
   name Dot36
   xpos 5714
   ypos -342
  }
-set N3cde2700 [stack 0]
+set N8a033b40 [stack 0]
  Dot {
   name Dot44
   xpos 6484
@@ -730,7 +730,7 @@ set N3cde2700 [stack 0]
   xpos 6230
   ypos 416
  }
- set C3ce01880 [stack 0]
+ set C8a035660 [stack 0]
  Copy {
   inputs 2
   from0 rgba.alpha
@@ -771,8 +771,8 @@ set N3cde2700 [stack 0]
   ypos 944
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-set N3ce01180 [stack 0]
-push $N3ce01180
+set N8a035e20 [stack 0]
+push $N8a035e20
  Dilate {
   channels mask
   size 8
@@ -789,7 +789,7 @@ push $N3ce01180
   xpos 6120
   ypos 1040
  }
-push $N3ce01180
+push $N8a035e20
  Multiply {
   inputs 1+1
   value 0
@@ -799,7 +799,7 @@ push $N3ce01180
   ypos 1040
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-clone $C3cce5500 {
+clone $C274f40f0 {
   xpos 6230
   ypos 1214
   selected false
@@ -809,22 +809,22 @@ clone $C3cce5500 {
   xpos 6264
   ypos 1434
  }
-push $N3cc92380
-push $N3cc92380
-push $N3cdb4e00
+push $N274f0e90
+push $N274f0e90
+push $N21026840
  Dot {
   name Dot30
   xpos 5054
   ypos 426
  }
-set N3ce39880 [stack 0]
-push $N3cde2a80
+set N8a037940 [stack 0]
+push $N8a033760
  Dot {
   name Dot32
   xpos 4834
   ypos 426
  }
-clone $C3ce01880 {
+clone $C8a035660 {
   inputs 3
   xpos 4910
   ypos 416
@@ -869,8 +869,8 @@ clone $C3ce01880 {
   ypos 944
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-set N3ce38a80 [stack 0]
-push $N3ce38a80
+set N8a0384e0 [stack 0]
+push $N8a0384e0
  Dilate {
   channels mask
   size 8
@@ -887,7 +887,7 @@ push $N3ce38a80
   xpos 4800
   ypos 1040
  }
-push $N3ce38a80
+push $N8a0384e0
  Multiply {
   inputs 1+1
   value 0
@@ -897,7 +897,7 @@ push $N3ce38a80
   ypos 1040
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-clone $C3cce5500 {
+clone $C274f40f0 {
   xpos 4910
   ypos 1214
   selected false
@@ -907,22 +907,22 @@ clone $C3cce5500 {
   xpos 4944
   ypos 1434
  }
-push $N3cc92000
+push $N274f06d0
  Invert {
   name Invert5
   xpos 5570
   ypos 248
  }
-set N3d04f180 [stack 0]
-push $N3d04f180
-push $N3ce39880
-push $N3cde2700
+set N8a03da20 [stack 0]
+push $N8a03da20
+push $N8a037940
+push $N8a033b40
  Dot {
   name Dot37
   xpos 5714
   ypos 426
  }
-clone $C3ce01880 {
+clone $C8a035660 {
   inputs 3
   xpos 5570
   ypos 416
@@ -968,8 +968,8 @@ clone $C3ce01880 {
   ypos 944
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-set N3d04e380 [stack 0]
-push $N3d04e380
+set N8a0404c0 [stack 0]
+push $N8a0404c0
  Dilate {
   channels mask
   size 8
@@ -986,7 +986,7 @@ push $N3d04e380
   xpos 5460
   ypos 1040
  }
-push $N3d04e380
+push $N8a0404c0
  Multiply {
   inputs 1+1
   value 0
@@ -996,7 +996,7 @@ push $N3d04e380
   ypos 1040
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-clone $C3cce5500 {
+clone $C274f40f0 {
   xpos 5570
   ypos 1214
   selected false
@@ -1006,7 +1006,7 @@ clone $C3cce5500 {
   xpos 5604
   ypos 1434
  }
-push $N3cc92700
+push $N274f02f0
  Grade {
   channels alpha
   gamma 10
@@ -1014,7 +1014,7 @@ push $N3cc92700
   xpos 4360
   ypos 200
  }
-push $N3cde2e00
+push $N8a033380
  Copy {
   inputs 2
   from0 rgba.alpha
@@ -1077,7 +1077,7 @@ push $N3cde2e00
   xpos 3514
   ypos 378
  }
-set N3d0c8e00 [stack 0]
+set N8a041440 [stack 0]
  Dot {
   name Dot25
   xpos 4174
@@ -1121,8 +1121,8 @@ set N3d0c8e00 [stack 0]
   ypos 944
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-set N3d0c8380 [stack 0]
-push $N3d0c8380
+set N8a03d640 [stack 0]
+push $N8a03d640
  Dilate {
   channels mask
   size 8
@@ -1139,7 +1139,7 @@ push $N3d0c8380
   xpos 4030
   ypos 1040
  }
-push $N3d0c8380
+push $N8a03d640
  Multiply {
   inputs 1+1
   value 0
@@ -1149,7 +1149,7 @@ push $N3d0c8380
   ypos 1040
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-clone $C3cce5500 {
+clone $C274f40f0 {
   xpos 4140
   ypos 1214
   selected false
@@ -1159,7 +1159,7 @@ clone $C3cce5500 {
   xpos 4174
   ypos 1410
  }
-push $N3cc92a80
+push $N274eff10
  Grade {
   channels alpha
   gamma 1e-06
@@ -1167,7 +1167,7 @@ push $N3cc92a80
   xpos 3700
   ypos 224
  }
-push $N3cde3180
+push $N8a033f20
  Copy {
   inputs 2
   from0 rgba.alpha
@@ -1181,7 +1181,7 @@ push $N3cde3180
   xpos 3590
   ypos 446
  }
-push $N3d0c8e00
+push $N8a041440
  Merge2 {
   inputs 2
   name Merge10
@@ -1220,8 +1220,8 @@ push $N3d0c8e00
   ypos 944
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-set N3d135c00 [stack 0]
-push $N3d135c00
+set N8a041fe0 [stack 0]
+push $N8a041fe0
  Dilate {
   channels mask
   size 8
@@ -1238,7 +1238,7 @@ push $N3d135c00
   xpos 3370
   ypos 1040
  }
-push $N3d135c00
+push $N8a041fe0
  Multiply {
   inputs 1+1
   value 0
@@ -1248,7 +1248,7 @@ push $N3d135c00
   ypos 1040
   disable {{"parent.contact_labels== 0 ? 1 : 0"}}
  }
-clone $C3cce5500 {
+clone $C274f40f0 {
   xpos 3480
   ypos 1214
   selected false
@@ -1258,20 +1258,20 @@ clone $C3cce5500 {
   xpos 3514
   ypos 1410
  }
-push $N3cc92e00
+push $N274f1a30
  Dot {
   name Dot18
   xpos 3074
   ypos 450
  }
-set N3d134380 [stack 0]
+set N8a03c2e0 [stack 0]
  Clamp {
   channels alpha
   name Clamp4
   xpos 3150
   ypos 440
  }
-push $N3d134380
+push $N8a03c2e0
  Merge2 {
   inputs 2
   operation difference
@@ -1291,7 +1291,7 @@ push $N3d134380
   xpos 3040
   ypos 710
  }
-push $N3cdb5180
+push $N8a031c40
  Dot {
   name Dot19
   label " RED"
@@ -1300,7 +1300,7 @@ push $N3cdb5180
   ypos 354
   hide_input true
  }
-set N3d16ee00 [stack 0]
+set N8a043b00 [stack 0]
  Copy {
   inputs 2
   from0 rgba.alpha
@@ -1314,13 +1314,13 @@ set N3d16ee00 [stack 0]
   xpos 2930
   ypos 782
  }
-push $N3d16ee00
+push $N8a043b00
  Invert {
   name Invert4
   xpos 2930
   ypos 488
  }
-push $N3cde3500
+push $N8a034ea0
  Merge2 {
   inputs 2
   name Merge8
@@ -1372,8 +1372,8 @@ push $N3cde3500
   ypos 944
   disable {{"parent.contact_labels== 0 ? 1 : 0" x1018 1}}
  }
-set N3d1a7500 [stack 0]
-push $N3d1a7500
+set N8a047900 [stack 0]
+push $N8a047900
  Dilate {
   channels mask
   size 8
@@ -1390,7 +1390,7 @@ push $N3d1a7500
   xpos 2710
   ypos 1040
  }
-push $N3d1a7500
+push $N8a047900
  Multiply {
   inputs 1+1
   value 0
@@ -1400,7 +1400,7 @@ push $N3d1a7500
   ypos 1040
   disable {{"parent.contact_labels== 0 ? 1 : 0" x1001 0}}
  }
-clone $C3cce5500 {
+clone $C274f40f0 {
   xpos 2820
   ypos 1214
   selected false
@@ -1437,25 +1437,25 @@ clone $C3cce5500 {
   xpos 4470
   ypos 2318
  }
-push $N3cc93500
+push $N274efb30
  Dot {
   name Dot1
   xpos 764
   ypos 162
  }
-set N3d1e5180 [stack 0]
+set N8a047140 [stack 0]
  Dot {
   name Dot2
   xpos 874
   ypos 162
  }
-set N3d1e4e00 [stack 0]
+set N8a047520 [stack 0]
  Dot {
   name Dot3
   xpos 984
   ypos 162
  }
-set N3d1e4a80 [stack 0]
+set N8a0480c0 [stack 0]
  Grade {
   channels alpha
   gamma 10
@@ -1463,7 +1463,7 @@ set N3d1e4a80 [stack 0]
   xpos 950
   ypos 200
  }
-push $N3d1e4e00
+push $N8a047520
  Grade {
   channels alpha
   gamma 1e-06
@@ -1471,7 +1471,7 @@ push $N3d1e4e00
   xpos 840
   ypos 200
  }
-push $N3d1e5180
+push $N8a047140
  Switch {
   inputs 3
   which {{parent.checker_1}}
@@ -1496,13 +1496,13 @@ push $N3d1e5180
   xpos 510
   ypos 632
  }
-push $N3cde3c00
+push $N8a032fa0
  Dot {
   name Dot11
   xpos 434
   ypos 498
  }
-set N3d21b180 [stack 0]
+set N8a04c680 [stack 0]
  ColorCorrect {
   shadows 0
   midtones 0
@@ -1521,7 +1521,7 @@ set N3d21b180 [stack 0]
  }
  Reformat {
   name Reformat_MAIN
-  note_font "Verdana Bold Bold"
+  note_font "Verdana Bold"
   note_font_size 21
   xpos 400
   ypos 950
@@ -1531,7 +1531,7 @@ set N3d21b180 [stack 0]
   xpos 434
   ypos 1050
  }
-set N3d21a380 [stack 0]
+set N8a04ddc0 [stack 0]
  Dot {
   name Dot4
   xpos 434
@@ -1547,32 +1547,32 @@ set N3d21a380 [stack 0]
   xpos 510
   ypos 1520
  }
-set N3d251c00 [stack 0]
-push $N3d21a380
+set N8a04ab60 [stack 0]
+push $N8a04ddc0
  Dot {
   name Dot39
   xpos 544
   ypos 1050
  }
-set N3d251880 [stack 0]
+set N8a04e1a0 [stack 0]
  Premult {
   name Premult2
   xpos 620
   ypos 1046
  }
-set N3d251500 [stack 0]
+set N8a04c2a0 [stack 0]
  Dot {
   name Dot7
   xpos 654
   ypos 1098
  }
-set N3d251180 [stack 0]
+set N8a0500a0 [stack 0]
  Dot {
   name Dot13
   xpos 654
   ypos 1146
  }
-set N3d250e00 [stack 0]
+set N8a049040 [stack 0]
  Dot {
   name Dot12
   xpos 654
@@ -1592,7 +1592,7 @@ set N3d250e00 [stack 0]
   xpos 1060
   ypos 1190
  }
-push $N3d250e00
+push $N8a049040
  Constant {
   inputs 0
   channels rgb
@@ -1609,7 +1609,7 @@ push $N3d250e00
   xpos 950
   ypos 1142
  }
-push $N3d251180
+push $N8a0500a0
  Constant {
   inputs 0
   channels rgb
@@ -1626,7 +1626,7 @@ push $N3d251180
   xpos 840
   ypos 1094
  }
-push $N3d251500
+push $N8a04c2a0
  Constant {
   inputs 0
   channels rgb
@@ -1642,7 +1642,7 @@ push $N3d251500
   xpos 730
   ypos 1046
  }
-push $N3d21a380
+push $N8a04ddc0
  Constant {
   inputs 0
   channels rgb
@@ -1700,7 +1700,7 @@ push $N3d21a380
   xpos -40
   ypos 1406
  }
-push $N3d251880
+push $N8a04e1a0
  Keymix {
   inputs 3
   mix 0.2
@@ -1715,7 +1715,7 @@ push $N3d251880
   xpos 730
   ypos 1406
  }
-set N3d2ad180 [stack 0]
+set N2102f670 [stack 0]
  Dot {
   name Dot10
   xpos 874
@@ -1726,8 +1726,8 @@ set N3d2ad180 [stack 0]
   xpos 874
   ypos 1626
  }
-push $N3d251c00
-push $N3d1e4a80
+push $N8a04ab60
+push $N8a0480c0
  Dot {
   name Dot6
   xpos 1864
@@ -1738,14 +1738,14 @@ push $N3d1e4a80
   xpos 1864
   ypos 930
  }
-set N3d2ac380 [stack 0]
+set N8a050c40 [stack 0]
  Clamp {
   channels alpha
   name Clamp1
   xpos 1940
   ypos 920
  }
-push $N3d2ac380
+push $N8a050c40
  Merge2 {
   inputs 2
   operation difference
@@ -1779,7 +1779,7 @@ push $N3d2ac380
   xpos 1754
   ypos 978
  }
-set N3d2d6a80 [stack 0]
+set N8a051bc0 [stack 0]
  Copy {
   inputs 2
   from0 rgba.alpha
@@ -1793,13 +1793,13 @@ set N3d2d6a80 [stack 0]
   xpos 1720
   ypos 1550
  }
-push $N3d2d6a80
+push $N8a051bc0
  Invert {
   name Invert3
   xpos 1610
   ypos 968
  }
-push $N3d21b180
+push $N8a04c680
  Dot {
   name Dot8
   xpos 1424
@@ -1817,7 +1817,7 @@ push $N3d21b180
   xpos 1390
   ypos 1550
  }
-push $N3d2ad180
+push $N2102f670
  Keymix {
   inputs 3
   name Keymix1
