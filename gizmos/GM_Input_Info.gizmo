@@ -1,6 +1,9 @@
 Group {
  name GM_Input_Info
  tile_color 0xff9455ff
+ selected true
+ xpos 26360
+ ypos 1766
  addUserKnob {20 User}
  addUserKnob {41 text_pos l "Text Position" T proxy.text_pos}
  addUserKnob {26 ""}
@@ -35,6 +38,7 @@ Group {
  addUserKnob {7 spacing l "Line Spacing" R -200 200}
  addUserKnob {26 ""}
  addUserKnob {20 edit_text l "Edit Text" n 1}
+ edit_text 0
  addUserKnob {7 fontsize l "Font Size" R 1 200}
  fontsize 60
  addUserKnob {41 color l "Text Color" T TextColor.color}
@@ -48,6 +52,7 @@ Group {
  addUserKnob {20 endGroup_1 l endGroup n -1}
  addUserKnob {26 ""}
  addUserKnob {20 shadow l Shadow n 1}
+ shadow 0
  addUserKnob {6 shad l "Enable Shadow" +STARTLINE}
  shad true
  addUserKnob {7 angle l Angle R -180 180}
@@ -60,8 +65,8 @@ Group {
  addUserKnob {41 mix_1 l mix T Merge_shadow.mix}
  addUserKnob {20 endGroup n -1}
  addUserKnob {26 ""}
- addUserKnob {22 tut l Tutorial T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/input-info')\n" +STARTLINE}
- addUserKnob {26 "" +STARTLINE}
+ addUserKnob {22 tut l Tutorial T "import webbrowser\nwebbrowser.open('https://www.gatimedia.co.uk/input-info', new=2)" +STARTLINE}
+ addUserKnob {26 ""}
  addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.1 version</font>"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Input_Info© by Attila Gasparetz</font>"}
 }
@@ -76,20 +81,20 @@ Group {
   xpos 214
   ypos -606
  }
-set N22b3c00 [stack 0]
+set N8bc6c230 [stack 0]
  Crop {
   box {{input.format.x} {input.format.y} {input.format.r} {input.format.t}}
   name Crop_proxy
   xpos 1060
   ypos -610
  }
-push $N22b3c00
+push $N8bc6c230
  Dot {
   name Dot1
   xpos 214
   ypos -486
  }
-set N22b3500 [stack 0]
+set N8bc6f490 [stack 0]
  Shuffle {
   red black
   green black
@@ -100,61 +105,61 @@ set N22b3500 [stack 0]
   xpos 400
   ypos -496
  }
-set N22b3180 [stack 0]
+set N8bc6be50 [stack 0]
  Dot {
   name Dot2
   xpos 874
   ypos -486
  }
-set N22b2e00 [stack 0]
+set N8bc67c70 [stack 0]
  Dot {
   name Dot3
   xpos 1094
   ypos -486
  }
-set N22b2a80 [stack 0]
+set N8bc6e510 [stack 0]
  Dot {
   name Dot4
   xpos 1314
   ypos -486
  }
-set N22b2700 [stack 0]
+set N8bc6f870 [stack 0]
  Dot {
   name Dot9
   xpos 1534
   ypos -486
  }
-set N22b2380 [stack 0]
+set N8bc6b690 [stack 0]
  Dot {
   name Dot7
   xpos 1754
   ypos -486
  }
-set N22b2000 [stack 0]
+set N8bc6c610 [stack 0]
  Dot {
   name Dot5
   xpos 1974
   ypos -486
  }
-set N22cfc00 [stack 0]
+set N8bc68050 [stack 0]
  Dot {
   name Dot6
   xpos 2194
   ypos -486
  }
-set N22cf880 [stack 0]
+set N8bc6fc50 [stack 0]
  Dot {
   name Dot14
   xpos 2414
   ypos -486
  }
-set N22cf500 [stack 0]
+set N8bc68430 [stack 0]
  Dot {
   name Dot15
   xpos 2634
   ypos -486
  }
-set N22cf180 [stack 0]
+set N8bc70030 [stack 0]
  Dot {
   name Dot16
   xpos 2854
@@ -165,9 +170,7 @@ set N22cf180 [stack 0]
   font_width_toolbar 100
   font_height_toolbar 100
   message "Colorspace:  \[split \[knob \[topnode parent.input0].colorspace] ]"
-  old_message {{67 111 108 111 114 115 112 97 99 101 58 32 32 100 101 102 97 117 108 116 32 40 67 105 110 101 111 110 41}
-    }
-  old_expression_markers {{13 28}
+  old_message {{67 111 108 111 114 115 112 97 99 101 58 32 32 91 115 112 108 105 116 32 91 107 110 111 98 32 91 116 111 112 110 111 100 101 32 112 97 114 101 110 116 46 105 110 112 117 116 48 93 46 99 111 108 111 114 115 112 97 99 101 93 32 93}
     }
   box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
   xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
@@ -201,15 +204,13 @@ set N22cf180 [stack 0]
   ypos -394
   disable {{parent.colorspace==0 x1018 1}}
  }
-push $N22cf180
+push $N8bc70030
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
   message "Format name: \[lrange \[split \[knob \[topnode parent.input0].format] ] 7 15]"
-  old_message {{70 111 114 109 97 116 32 110 97 109 101 58 32 123 125}
-    }
-  old_expression_markers {{13 14}
+  old_message {{70 111 114 109 97 116 32 110 97 109 101 58 32 91 108 114 97 110 103 101 32 91 115 112 108 105 116 32 91 107 110 111 98 32 91 116 111 112 110 111 100 101 32 112 97 114 101 110 116 46 105 110 112 117 116 48 93 46 102 111 114 109 97 116 93 32 93 32 55 32 49 53 93}
     }
   box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
   xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
@@ -243,13 +244,13 @@ push $N22cf180
   ypos -394
   disable {{parent.format_name==0}}
  }
-push $N22cf500
+push $N8bc68430
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
   message "Format: \[value Crop_proxy.box.r] * \[value Crop_proxy.box.t]"
-  old_message {{70 111 114 109 97 116 58 32 51 50 48 48 32 42 32 49 56 48 48}
+  old_message {{70 111 114 109 97 116 58 32 49 57 50 48 32 42 32 49 48 56 48}
     }
   old_expression_markers {{8 11 15 18}
     }
@@ -284,13 +285,13 @@ push $N22cf500
   xpos 2380
   ypos -394
  }
-push $N22cf880
+push $N8bc6fc50
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
   message "Frame number: \[value frame]\n"
-  old_message {{70 114 97 109 101 32 110 117 109 98 101 114 58 32 49 48 50 54 10}
+  old_message {{70 114 97 109 101 32 110 117 109 98 101 114 58 32 49 48 48 49 10}
     }
   old_expression_markers {{14 17}
     }
@@ -325,22 +326,22 @@ push $N22cf880
   xpos 2160
   ypos -394
  }
-push $N22cfc00
+push $N8bc68050
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
   message "Input/timecode: \[metadata input/timecode]\n"
-  old_message {{73 110 112 117 116 47 116 105 109 101 99 111 100 101 58 32 48 51 58 50 51 58 53 53 58 49 52 10}
+  old_message {{73 110 112 117 116 47 116 105 109 101 99 111 100 101 58 32 10}
     }
-  old_expression_markers {{16 26}
+  old_expression_markers {{16 15}
     }
   box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
   xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
   yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
   transforms {{0 2}
     }
-  font_size_values {{0 100 1 100 2 100 3 100 4 100 5 100 6 100 7 100 8 100 9 100 10 100 11 100 12 100 27 100}
+  font_size_values {{0 100 1 100 2 100 3 100 4 100 5 100 6 100 7 100 8 100 9 100 10 100 11 100 12 100 16 100}
     }
   cursor_position 41
   global_font_scale {{parent.fontsize/100}}
@@ -366,15 +367,13 @@ push $N22cfc00
   xpos 1940
   ypos -394
  }
-push $N22b2000
+push $N8bc6c610
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
   message "File extension: \[file extension \[knob \[topnode parent.input0].file]]"
-  old_message {{70 105 108 101 32 101 120 116 101 110 115 105 111 110 58 32 46 100 112 120}
-    }
-  old_expression_markers {{16 19}
+  old_message {{70 105 108 101 32 101 120 116 101 110 115 105 111 110 58 32 91 102 105 108 101 32 101 120 116 101 110 115 105 111 110 32 91 107 110 111 98 32 91 116 111 112 110 111 100 101 32 112 97 114 101 110 116 46 105 110 112 117 116 48 93 46 102 105 108 101 93 93}
     }
   box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
   xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
@@ -407,22 +406,20 @@ push $N22b2000
   xpos 1720
   ypos -394
  }
-push $N22b2380
+push $N8bc6b690
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
   message "File name: \[file tail \[knob \[topnode parent.input0].file]]\n"
-  old_message {{70 105 108 101 32 110 97 109 101 58 32 65 48 48 53 67 48 48 50 95 49 56 48 54 48 56 95 82 53 66 71 46 35 35 35 35 35 35 35 35 46 100 112 120 10}
-    }
-  old_expression_markers {{11 43}
+  old_message {{70 105 108 101 32 110 97 109 101 58 32 91 102 105 108 101 32 116 97 105 108 32 91 107 110 111 98 32 91 116 111 112 110 111 100 101 32 112 97 114 101 110 116 46 105 110 112 117 116 48 93 46 102 105 108 101 93 93 10}
     }
   box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
   xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
   yjustify {{"proxy.text_pos == 2 || proxy.text_pos == 3 ? 2 :0"}}
   transforms {{0 2}
     }
-  font_size_values {{0 100 44 100}
+  font_size_values {{0 100 58 100}
     }
   cursor_position 37
   global_font_scale {{parent.fontsize/100}}
@@ -448,15 +445,13 @@ push $N22b2380
   xpos 1500
   ypos -394
  }
-push $N22b2700
+push $N8bc6f870
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
   message "Version: \[lindex \[split \[lindex \[split \[lindex \[split \[value \[topnode parent.input0].file] /] end] _] end] .] 0]"
-  old_message {{86 101 114 115 105 111 110 58 32 82 53 66 71}
-    }
-  old_expression_markers {{9 12}
+  old_message {{86 101 114 115 105 111 110 58 32 91 108 105 110 100 101 120 32 91 115 112 108 105 116 32 91 108 105 110 100 101 120 32 91 115 112 108 105 116 32 91 108 105 110 100 101 120 32 91 115 112 108 105 116 32 91 118 97 108 117 101 32 91 116 111 112 110 111 100 101 32 112 97 114 101 110 116 46 105 110 112 117 116 48 93 46 102 105 108 101 93 32 47 93 32 101 110 100 93 32 95 93 32 101 110 100 93 32 46 93 32 48 93}
     }
   box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
   xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
@@ -490,15 +485,13 @@ push $N22b2700
   ypos -394
  }
 push 0
-push $N22b2a80
+push $N8bc6e510
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
   message "Frame Range: \[value \[topnode parent.input0].first] - \[value \[topnode parent.input0].last]"
-  old_message {{70 114 97 109 101 32 82 97 110 103 101 58 32 50 57 51 54 53 52 32 45 32 50 57 51 55 49 50}
-    }
-  old_expression_markers {{13 18 22 27}
+  old_message {{70 114 97 109 101 32 82 97 110 103 101 58 32 91 118 97 108 117 101 32 91 116 111 112 110 111 100 101 32 112 97 114 101 110 116 46 105 110 112 117 116 48 93 46 102 105 114 115 116 93 32 45 32 91 118 97 108 117 101 32 91 116 111 112 110 111 100 101 32 112 97 114 101 110 116 46 105 110 112 117 116 48 93 46 108 97 115 116 93}
     }
   box {{parent.shot_name.box.x} {parent.shot_name.box.y} {parent.shot_name.box.r} {parent.shot_name.box.t}}
   xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
@@ -530,15 +523,15 @@ push $N22b2a80
   xpos 1060
   ypos -394
  }
-push $N22b2e00
+push $N8bc67c70
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
   message "Shot name: \[lrange \[split \[file tail \[knob \[topnode parent.input0].file]] _ ] 0 \[value shot_n_number] ]"
-  old_message {{83 104 111 116 32 110 97 109 101 58 32 65 48 48 53 67 48 48 50 32 49 56 48 54 48 56 32 82 53 66 71 46 35 35 35 35 35 35 35 35 46 100 112 120}
+  old_message {{83 104 111 116 32 110 97 109 101 58 32 91 108 114 97 110 103 101 32 91 115 112 108 105 116 32 91 102 105 108 101 32 116 97 105 108 32 91 107 110 111 98 32 91 116 111 112 110 111 100 101 32 112 97 114 101 110 116 46 105 110 112 117 116 48 93 46 102 105 108 101 93 93 32 95 32 93 32 48 32 50 32 93}
     }
-  old_expression_markers {{11 43}
+  old_expression_markers {{80 80}
     }
   box {{input.format.x+(input.format.r*.02)} {"input.format.y + (input.format.t*.02)"} {input.format.r-(input.format.r*.02)} {input.format.t-(input.format.t*.02)}}
   xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
@@ -584,7 +577,7 @@ push $N22b2e00
   xpos 840
   ypos -10
  }
-set N23e3c00 [stack 0]
+set N8bc71b50 [stack 0]
  Constant {
   inputs 0
   channels rgb
@@ -614,7 +607,7 @@ set N23e3c00 [stack 0]
   xpos 840
   ypos 926
  }
-push $N23e3c00
+push $N8bc71b50
  Dot {
   name Dot10
   xpos 764
@@ -633,7 +626,7 @@ push $N23e3c00
   xpos 730
   ypos 320
  }
-push $N23e3c00
+push $N8bc71b50
  Dot {
   name Dot11
   xpos 1314
@@ -693,7 +686,7 @@ push $N23e3c00
   xpos 730
   ypos 422
  }
-push $N22b3180
+push $N8bc6be50
  Merge2 {
   inputs 2
   name Merge_shadow
@@ -714,14 +707,14 @@ push $N22b3180
   xpos 400
   ypos 974
  }
-set N244b500 [stack 0]
-push $N22b3500
+set N8bc77090 [stack 0]
+push $N8bc6f490
  Dot {
   name Dot12
   xpos 214
   ypos 762
  }
-set N244b180 [stack 0]
+set N8bc7b270 [stack 0]
  Dot {
   name Dot13
   xpos -6
@@ -734,7 +727,7 @@ set N244b180 [stack 0]
   xpos -40
   ypos 974
  }
-push $N244b500
+push $N8bc77090
  Shuffle {
   alpha black
   name Shuffle2
@@ -750,9 +743,9 @@ push $N244b500
   xpos 70
   ypos 1136
  }
-push $N244b500
-push $N244b500
-push $N244b180
+push $N8bc77090
+push $N8bc77090
+push $N8bc7b270
  Merge2 {
   inputs 2
   name Merge_all
