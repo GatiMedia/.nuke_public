@@ -16,7 +16,7 @@ Group {
  addUserKnob {7 mix l Mix}
  mix 0.1
  addUserKnob {26 ""}
- addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.01 version</font>"}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.1 version</font>"}
  addUserKnob {26 credit l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Liquid Distortion© by Attila Gasparetz</font>"}
 }
  Input {
