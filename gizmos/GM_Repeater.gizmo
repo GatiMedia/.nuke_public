@@ -2,8 +2,8 @@ Group {
  name GM_Repeater
  tile_color 0xdf7100ff
  selected true
- xpos 400
- ypos -826
+ xpos 26360
+ ypos 2078
  addUserKnob {20 User}
  addUserKnob {26 shape l "<b>I N P U T"}
  addUserKnob {41 translate2 l translate T Trans_COPY1_proxy_2.translate2}
@@ -41,7 +41,7 @@ Group {
  addUserKnob {6 crop l Crop +STARTLINE}
  crop true
  addUserKnob {26 ""}
- addUserKnob {22 tut l Tutorial T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/repeater')\n" +STARTLINE}
+ addUserKnob {22 tut l Tutorial T "import webbrowser\nwebbrowser.open('https://www.gatimedia.co.uk/repeater', new=2)\n" +STARTLINE}
  addUserKnob {26 ""}
  addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.1 version</font>"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Repeater© by Attila Gasparetz</font>"}
@@ -51,7 +51,7 @@ Group {
   name BackdropNode1
   tile_color 0xff
   label "<center><font color=red>DON`T TOUCH\nstatic"
-  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font "Verdana Bold"
   note_font_size 42
   xpos 738
   ypos 63
@@ -81,8 +81,8 @@ Group {
   xpos 510
   ypos 464
  }
-set N1319d180 [stack 0]
-push $N1319d180
+set N96c347b0 [stack 0]
+push $N96c347b0
  Transform {
   translate {{Trans_COPY1_proxy.translate1} {Trans_COPY1_proxy.translate1}}
   rotate {{Trans_COPY1_proxy.rotate1}}
@@ -109,7 +109,7 @@ push $N1319d180
   xpos 510
   ypos 632
  }
-set N1319ca80 [stack 0]
+set N24ae9630 [stack 0]
  Dot {
   name Dot1
  }
@@ -128,7 +128,7 @@ set N1319ca80 [stack 0]
   shutteroffset centred
   name t0
  }
-set N6122b180 [stack 0]
+set N96c385b0 [stack 0]
  Transform {
   translate {{Trans_COPY1.translate} {Trans_COPY1.translate}}
   rotate {{Trans_COPY1.rotate}}
@@ -144,7 +144,7 @@ set N6122b180 [stack 0]
   shutteroffset centred
   name t1
  }
-set N6122a380 [stack 0]
+set N96c37250 [stack 0]
  Transform {
   translate {{Trans_COPY1.translate} {Trans_COPY1.translate}}
   rotate {{Trans_COPY1.rotate}}
@@ -160,7 +160,7 @@ set N6122a380 [stack 0]
   shutteroffset centred
   name t2
  }
-set N8fd57500 [stack 0]
+set N96c343d0 [stack 0]
  Transform {
   translate {{Trans_COPY1.translate} {Trans_COPY1.translate}}
   rotate {{Trans_COPY1.rotate}}
@@ -194,7 +194,7 @@ set N8fd57500 [stack 0]
   addUserKnob {3 ReNum}
   ReNum 4
  }
-push $N8fd57500
+push $N96c343d0
  Multiply {
   value {{"((1/(ReMax-1))*(ReMax-ReNum)) + ( ( 1- ((1/(ReMax-1))*(ReMax-ReNum)) ) * Trans_COPY1_proxy.fadeout )"}}
   name mu1_2
@@ -213,7 +213,7 @@ push $N8fd57500
   addUserKnob {3 ReNum}
   ReNum 3
  }
-push $N6122a380
+push $N96c37250
  Multiply {
   value {{"((1/(ReMax-1))*(ReMax-ReNum)) + ( ( 1- ((1/(ReMax-1))*(ReMax-ReNum)) ) * Trans_COPY1_proxy.fadeout )"}}
   name mu1_1
@@ -232,7 +232,7 @@ push $N6122a380
   addUserKnob {3 ReNum}
   ReNum 2
  }
-push $N6122b180
+push $N96c385b0
  Multiply {
   value {{"((1/(ReMax-1))*(ReMax-ReNum)) + ( ( 1- ((1/(ReMax-1))*(ReMax-ReNum)) ) * Trans_COPY1_proxy.fadeout )"}}
   name mu1_0
@@ -251,7 +251,7 @@ push $N6122b180
   addUserKnob {3 ReNum}
   ReNum 1
  }
-push $N1319ca80
+push $N24ae9630
  Multiply {
   value {{"((1/(ReMax-1))*(ReMax-(ReMax-ReNum))) + ( ( 1- ((1/(ReMax-1))*(ReMax-(ReMax-ReNum))) ) * Trans_COPY1_proxy.fadein )"}}
   name mu1t2_1
