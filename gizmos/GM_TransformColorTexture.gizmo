@@ -1,6 +1,10 @@
 Group {
- name GM_TransformColorTexture
+ inputs 2
+ name GM_TransformColorTexture1
  tile_color 0xaa55ffff
+ selected true
+ xpos 26360
+ ypos 2430
  addUserKnob {20 User}
  addUserKnob {4 output l Options M {Texture Color Both "" "" "" "" "" "" "" ""}}
  output Both
@@ -36,9 +40,9 @@ Group {
  addUserKnob {26 inf l "" +STARTLINE T "When the node`s A input is not in use the node will \nuse the information comes on the B input."}
  addUserKnob {20 endGroup n -1}
  addUserKnob {26 ""}
- addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('https://www.gatimedia.co.uk/transformcolortexture')\n"}
+ addUserKnob {22 tut l Tutorial t "Opens the relevant tutorial from my site in your browser. " -STARTLINE T "import webbrowser\nwebbrowser.open('https://www.gatimedia.co.uk/transformcolortexture', new=2)"}
  addUserKnob {26 ""}
- addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.02 version</font>"}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.2 version</font>"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_TransformColorTexture© by Attila Gasparetz</font>"}
 }
  Input {
@@ -47,7 +51,7 @@ Group {
   xpos -1360
   ypos 375
  }
-set N2086d2b0 [stack 0]
+set N9896bd80 [stack 0]
  Input {
   inputs 0
   name A
@@ -64,13 +68,13 @@ set N2086d2b0 [stack 0]
   xpos -480
   ypos 369
  }
-set N208761d0 [stack 0]
+set N9780cd10 [stack 0]
  Dot {
   name Dot1
   xpos -446
   ypos 522
  }
-set N2087de40 [stack 0]
+set N9896b1e0 [stack 0]
  Dot {
   name Dot3
   tile_color 0x949494ff
@@ -107,25 +111,25 @@ set N2087de40 [stack 0]
   ypos 1215
   number 2
  }
-push $N2086d2b0
+push $N9896bd80
  Dot {
   name Dot2
   xpos -1326
   ypos 522
  }
-set N2089b690 [stack 0]
+set N98965ca0 [stack 0]
  Dot {
   name Dot11
   xpos -1106
   ypos 522
  }
-set N2089ff10 [stack 0]
+set N98967ba0 [stack 0]
  Dot {
   name Dot5
   xpos -886
   ypos 522
  }
-set N208a4850 [stack 0]
+set N98967000 [stack 0]
  Dot {
   name Dot12
   xpos -666
@@ -140,7 +144,7 @@ set N208a4850 [stack 0]
   xpos -700
   ypos 609
  }
-set N208ad960 [stack 0]
+set N989692e0 [stack 0]
  ChannelMerge {
   inputs 2
   operation multiply
@@ -151,13 +155,13 @@ set N208ad960 [stack 0]
   ypos 1196
   disable {{"!\[exists parent.input2]"}}
  }
-push $N2087de40
+push $N9896b1e0
  Dot {
   name Dot7
   xpos -226
   ypos 522
  }
-set N208c78d0 [stack 0]
+set N9896aa20 [stack 0]
  Dot {
   name Dot14
   xpos -6
@@ -190,8 +194,8 @@ set N208c78d0 [stack 0]
   xpos -6
   ypos 1026
  }
-push $N208ad960
-push $N208c78d0
+push $N989692e0
+push $N9896aa20
  Blur {
   size 30
   name Blur_TCT2
@@ -200,7 +204,7 @@ push $N208c78d0
   xpos -260
   ypos 603
  }
-set N208e5240 [stack 0]
+set N9896c920 [stack 0]
  Transform {
   translate {{parent.Transform1_TCT.translate} {parent.Transform1_TCT.translate}}
   rotate {{parent.Transform1_TCT.rotate}}
@@ -222,7 +226,7 @@ set N208e5240 [stack 0]
   xpos -260
   ypos 740
  }
-push $N208a4850
+push $N98967000
  Blur {
   size 30
   name Blur_TCT1
@@ -230,7 +234,7 @@ push $N208a4850
   xpos -920
   ypos 609
  }
-set N20902060 [stack 0]
+set N989654e0 [stack 0]
  Keymix {
   inputs 3
   name Keymix2_TCT
@@ -244,9 +248,9 @@ set N20902060 [stack 0]
   xpos -886
   ypos 882
  }
-push $N208ad960
-push $N2087de40
-push $N208e5240
+push $N989692e0
+push $N9896b1e0
+push $N9896c920
  Merge2 {
   inputs 2
   operation divide
@@ -256,7 +260,6 @@ push $N208e5240
   ypos 615
  }
  Transform {
-  translate {0 0}
   scale {{Scale_Proxy.scale1} {Scale_Proxy.scale1}}
   center {960 540}
   shutteroffset centred
@@ -266,8 +269,8 @@ push $N208e5240
   xpos -480
   ypos 740
  }
-push $N2089ff10
-push $N20902060
+push $N98967ba0
+push $N989654e0
  Merge2 {
   inputs 2
   operation divide
@@ -316,7 +319,7 @@ push $N20902060
   xpos -1140
   ypos 1335
  }
-set N20977ea0 [stack 0]
+set N9896e820 [stack 0]
  ChannelMerge {
   inputs 2
   operation multiply
@@ -325,7 +328,7 @@ set N20977ea0 [stack 0]
   xpos -1140
   ypos 1419
  }
-push $N2089b690
+push $N98965ca0
  Dot {
   name Dot6
   tile_color 0x949494ff
@@ -334,7 +337,7 @@ push $N2089b690
   xpos -1326
   ypos 1218
  }
-set N2098c1b0 [stack 0]
+set N9896ff60 [stack 0]
  Dot {
   name Dot8
   tile_color 0x949494ff
@@ -358,8 +361,8 @@ set N2098c1b0 [stack 0]
   xpos -1546
   ypos 1530
  }
-push $N20977ea0
-push $N2098c1b0
+push $N9896e820
+push $N9896ff60
  Merge2 {
   inputs 2
   also_merge all
@@ -390,7 +393,7 @@ push $N2098c1b0
   xpos -1360
   ypos 1743
  }
-push $N208761d0
+push $N9780cd10
  Crop {
   box {{input.format.x} {input.format.y} {input.width} {input.height}}
   name Crop_proxy_TCT
