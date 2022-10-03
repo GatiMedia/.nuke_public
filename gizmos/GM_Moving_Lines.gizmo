@@ -28,7 +28,7 @@ Group {
  addUserKnob {26 ""}
  addUserKnob {41 mix l Mix T Merge2.mix}
  addUserKnob {26 ""}
- addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.01 version</font>"}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.1 version</font>"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Moving_Lines© by Attila Gasparetz</font>"}
 }
  Input {
