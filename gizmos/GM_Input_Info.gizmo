@@ -1,16 +1,17 @@
 Group {
- name GM_Input_Info
+ name GM_Input_Info1
  tile_color 0xff9455ff
  selected true
- xpos 26360
+ xpos 26470
  ypos 1766
  addUserKnob {20 User}
  addUserKnob {41 text_pos l "Text Position" T proxy.text_pos}
  addUserKnob {26 ""}
  addUserKnob {6 shotname l "Shot Name" +STARTLINE}
  shotname true
- addUserKnob {3 shot_n_number l "Shot Name Parts"}
- shot_n_number 2
+ addUserKnob {3 shot_number_1 l "Shot Name Parts"}
+ addUserKnob {3 shot_number_2 l "" -STARTLINE}
+ shot_number_2 4
  addUserKnob {6 framerange l "Frame Range" +STARTLINE}
  framerange true
  addUserKnob {6 versio l Version +STARTLINE}
@@ -36,6 +37,7 @@ Group {
  addUserKnob {6 text_only l "Show Only text" +STARTLINE}
  addUserKnob {6 no_alpha l "No Alpha" +STARTLINE}
  addUserKnob {7 spacing l "Line Spacing" R -200 200}
+ spacing 10
  addUserKnob {26 ""}
  addUserKnob {20 edit_text l "Edit Text" n 1}
  edit_text 0
@@ -67,7 +69,7 @@ Group {
  addUserKnob {26 ""}
  addUserKnob {22 tut l Tutorial T "import webbrowser\nwebbrowser.open('https://www.gatimedia.co.uk/input-info', new=2)" +STARTLINE}
  addUserKnob {26 ""}
- addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.1 version</font>"}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.2 version</font>"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Input_Info© by Attila Gasparetz</font>"}
 }
  Input {
@@ -81,20 +83,13 @@ Group {
   xpos 214
   ypos -606
  }
-set N8bc6c230 [stack 0]
- Crop {
-  box {{input.format.x} {input.format.y} {input.format.r} {input.format.t}}
-  name Crop_proxy
-  xpos 1060
-  ypos -610
- }
-push $N8bc6c230
+set N80aa8d60 [stack 0]
  Dot {
   name Dot1
   xpos 214
   ypos -486
  }
-set N8bc6f490 [stack 0]
+set N80aa5720 [stack 0]
  Shuffle {
   red black
   green black
@@ -105,61 +100,61 @@ set N8bc6f490 [stack 0]
   xpos 400
   ypos -496
  }
-set N8bc6be50 [stack 0]
+set N80aaac60 [stack 0]
  Dot {
   name Dot2
   xpos 874
   ypos -486
  }
-set N8bc67c70 [stack 0]
+set N80aa9140 [stack 0]
  Dot {
   name Dot3
   xpos 1094
   ypos -486
  }
-set N8bc6e510 [stack 0]
+set N80aa9520 [stack 0]
  Dot {
   name Dot4
   xpos 1314
   ypos -486
  }
-set N8bc6f870 [stack 0]
+set N80aa3440 [stack 0]
  Dot {
   name Dot9
   xpos 1534
   ypos -486
  }
-set N8bc6b690 [stack 0]
+set N80aa5b00 [stack 0]
  Dot {
   name Dot7
   xpos 1754
   ypos -486
  }
-set N8bc6c610 [stack 0]
+set N80aab040 [stack 0]
  Dot {
   name Dot5
   xpos 1974
   ypos -486
  }
-set N8bc68050 [stack 0]
+set N80aa6e60 [stack 0]
  Dot {
   name Dot6
   xpos 2194
   ypos -486
  }
-set N8bc6fc50 [stack 0]
+set N80aab420 [stack 0]
  Dot {
   name Dot14
   xpos 2414
   ypos -486
  }
-set N8bc68430 [stack 0]
+set N80aa3c00 [stack 0]
  Dot {
   name Dot15
   xpos 2634
   ypos -486
  }
-set N8bc70030 [stack 0]
+set N80aac3a0 [stack 0]
  Dot {
   name Dot16
   xpos 2854
@@ -198,13 +193,13 @@ set N8bc70030 [stack 0]
  }
  Transform {
   translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_extension.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(input_timecode.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_1.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(format_1.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(format_name_1.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
-  center {1920 1080}
+  center {{parent.input.format.w/2} {"parent.input.format.h/2 - translate.y"}}
   name Transform_colorspace
   xpos 2820
   ypos -394
   disable {{parent.colorspace==0 x1018 1}}
  }
-push $N8bc70030
+push $N80aac3a0
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
@@ -238,13 +233,13 @@ push $N8bc70030
  }
  Transform {
   translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_extension.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(input_timecode.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_1.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(format_1.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
-  center {1920 1080}
+  center {{parent.input.format.w/2} {"parent.input.format.h/2 - translate.y"}}
   name Transform_format_name
   xpos 2600
   ypos -394
   disable {{parent.format_name==0}}
  }
-push $N8bc68430
+push $N80aa3c00
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
@@ -280,12 +275,12 @@ push $N8bc68430
  }
  Transform {
   translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_extension.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(input_timecode.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_1.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
-  center {1920 1080}
+  center {{parent.input.format.w/2} {"parent.input.format.h/2 - translate.y"}}
   name Transform_format
   xpos 2380
   ypos -394
  }
-push $N8bc6fc50
+push $N80aab420
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
@@ -321,12 +316,12 @@ push $N8bc6fc50
  }
  Transform {
   translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_extension.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(input_timecode.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
-  center {1920 1080}
+  center {{parent.input.format.w/2} {"parent.input.format.h/2 - translate.y"}}
   name Transform_frame
   xpos 2160
   ypos -394
  }
-push $N8bc68050
+push $N80aa6e60
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
@@ -362,12 +357,12 @@ push $N8bc68050
  }
  Transform {
   translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_extension.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
-  center {1920 1080}
+  center {{parent.input.format.w/2} {"parent.input.format.h/2 - translate.y"}}
   name Transform_input_timecode
   xpos 1940
   ypos -394
  }
-push $N8bc6c610
+push $N80aab040
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
@@ -401,12 +396,12 @@ push $N8bc6c610
  }
  Transform {
   translate {0 {"(shot_name.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable ? 0:-(fontsize))\n+\nproxy.gap\n+\n(file_name.disable ? 0:-(fontsize))\n+\nproxy.gap"}}
-  center {1920 1080}
+  center {{parent.input.format.w/2} {"parent.input.format.h/2 - translate.y"}}
   name Transform_file_extension
   xpos 1720
   ypos -394
  }
-push $N8bc6b690
+push $N80aa5b00
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
@@ -440,12 +435,12 @@ push $N8bc6b690
  }
  Transform {
   translate {0 {"(shot_name.disable==1 ? 0:-(fontsize))\n+\nproxy.gap\n+\n(frame_range.disable==1 ? 0:-(fontsize))\n+\nproxy.gap\n+\n(version.disable==1 ? 0:-(fontsize))\n+\nproxy.gap"}}
-  center {1920 1080}
+  center {{parent.input.format.w/2} {"parent.input.format.h/2 - translate.y"}}
   name Transform_file_name
   xpos 1500
   ypos -394
  }
-push $N8bc6f870
+push $N80aa3440
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
@@ -479,13 +474,13 @@ push $N8bc6f870
  }
  Transform {
   translate {0 {"(shot_name.disable==1 ? 0:-(parent.fontsize))\n+\nproxy.gap\n+\n(frame_range.disable==1 ? 0:-(parent.fontsize))\n+\nproxy.gap\n\n"}}
-  center {1920 1080}
+  center {{parent.input.format.w/2} {"parent.input.format.h/2 - translate.y"}}
   name Transform_version
   xpos 1280
   ypos -394
  }
 push 0
-push $N8bc6e510
+push $N80aa9520
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
@@ -518,20 +513,20 @@ push $N8bc6e510
  }
  Transform {
   translate {0 {"shot_name.disable==1 ? 0:-(parent.fontsize)\n+ proxy.gap"}}
-  center {1920 1080}
+  center {{parent.input.format.w/2} {"parent.input.format.h/2 - translate.y"}}
   name Transform_frame_range
   xpos 1060
   ypos -394
  }
-push $N8bc67c70
+push $N80aa9140
  Text2 {
   font_size_toolbar 100
   font_width_toolbar 100
   font_height_toolbar 100
-  message "Shot name: \[lrange \[split \[file tail \[knob \[topnode parent.input0].file]] _ ] 0 \[value shot_n_number] ]"
-  old_message {{83 104 111 116 32 110 97 109 101 58 32 91 108 114 97 110 103 101 32 91 115 112 108 105 116 32 91 102 105 108 101 32 116 97 105 108 32 91 107 110 111 98 32 91 116 111 112 110 111 100 101 32 112 97 114 101 110 116 46 105 110 112 117 116 48 93 46 102 105 108 101 93 93 32 95 32 93 32 48 32 50 32 93}
+  message "Shot name: \[join \[lrange \[split \[file tail \[knob \[topnode parent.input0].file]] _ ] \[value shot_number_1] \[value shot_number_2] ] \"_\"]"
+  old_message {{83 104 111 116 32 110 97 109 101 58 32 91 106 111 105 110 32 91 108 114 97 110 103 101 32 91 115 112 108 105 116 32 91 102 105 108 101 32 116 97 105 108 32 91 107 110 111 98 32 91 116 111 112 110 111 100 101 32 112 97 114 101 110 116 46 105 110 112 117 116 48 93 46 102 105 108 101 93 93 32 95 32 93 32 48 32 52 32 93 32 34 95 34 93}
     }
-  old_expression_markers {{80 80}
+  old_expression_markers {{84 84 86 86}
     }
   box {{input.format.x+(input.format.r*.02)} {"input.format.y + (input.format.t*.02)"} {input.format.r-(input.format.r*.02)} {input.format.t-(input.format.t*.02)}}
   xjustify {{"proxy.text_pos == 0 || proxy.text_pos == 2 ? 0 :2"}}
@@ -540,6 +535,7 @@ push $N8bc67c70
     }
   font_size_values {{0 100 1 100 2 100 3 100 4 100 5 100 6 100 7 100 8 100 9 100 10 100 0 {curve x1018 114} 1 114 2 110 3 110 4 110 5 110 6 110 7 110 8 110 9 110 10 110}
     }
+  cursor_position 134
   global_font_scale {{parent.fontsize/100}}
   scale {1 1}
   cursor_initialised true
@@ -565,7 +561,7 @@ push $N8bc67c70
  }
  Transform {
   translate {0 {"proxy.text_pos < 2 ? 0 :(-Transform_colorspace.translate.y)"}}
-  center {960 540}
+  center {{parent.input.format.w/2} {parent.input.format.w/2}}
   shutteroffset centred
   name Transform1
   xpos 840
@@ -577,7 +573,7 @@ push $N8bc67c70
   xpos 840
   ypos -10
  }
-set N8bc71b50 [stack 0]
+set N80aafdc0 [stack 0]
  Constant {
   inputs 0
   channels rgb
@@ -607,7 +603,7 @@ set N8bc71b50 [stack 0]
   xpos 840
   ypos 926
  }
-push $N8bc71b50
+push $N80aafdc0
  Dot {
   name Dot10
   xpos 764
@@ -626,7 +622,7 @@ push $N8bc71b50
   xpos 730
   ypos 320
  }
-push $N8bc71b50
+push $N80aafdc0
  Dot {
   name Dot11
   xpos 1314
@@ -686,7 +682,7 @@ push $N8bc71b50
   xpos 730
   ypos 422
  }
-push $N8bc6be50
+push $N80aaac60
  Merge2 {
   inputs 2
   name Merge_shadow
@@ -696,25 +692,24 @@ push $N8bc6be50
  }
  Merge2 {
   inputs 2
-  mix 0.8
   name Merge_text
   xpos 400
   ypos 926
  }
  Transform {
-  center {960 540}
+  center {1600 900}
   name Transform_all
   xpos 400
   ypos 974
  }
-set N8bc77090 [stack 0]
-push $N8bc6f490
+set N80ab20a0 [stack 0]
+push $N80aa5720
  Dot {
   name Dot12
   xpos 214
   ypos 762
  }
-set N8bc7b270 [stack 0]
+set N80a795e0 [stack 0]
  Dot {
   name Dot13
   xpos -6
@@ -727,7 +722,7 @@ set N8bc7b270 [stack 0]
   xpos -40
   ypos 974
  }
-push $N8bc77090
+push $N80ab20a0
  Shuffle {
   alpha black
   name Shuffle2
@@ -743,9 +738,9 @@ push $N8bc77090
   xpos 70
   ypos 1136
  }
-push $N8bc77090
-push $N8bc77090
-push $N8bc7b270
+push $N80ab20a0
+push $N80ab20a0
+push $N80a795e0
  Merge2 {
   inputs 2
   name Merge_all
@@ -757,7 +752,6 @@ push $N8bc7b270
   which {{text_only}}
   name show_only_text
   label "\[value which]"
-  selected true
   xpos 180
   ypos 1064
  }
@@ -766,6 +760,7 @@ push $N8bc7b270
   which {{parent.no_alpha}}
   name Switch_na_alpha2
   label "\[value which]"
+  selected true
   xpos 180
   ypos 1280
  }
@@ -784,6 +779,13 @@ push $N8bc7b270
   name Output1
   xpos 180
   ypos 1574
+ }
+push $N80aa8d60
+ Crop {
+  box {{input.format.x} {input.format.y} {input.format.r} {input.format.t}}
+  name Crop_proxy
+  xpos 1060
+  ypos -610
  }
  NoOp {
   inputs 0
