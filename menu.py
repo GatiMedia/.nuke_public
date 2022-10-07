@@ -22,6 +22,8 @@ import glob, os
 # Ctrl + 'D' - duplicate line
 # TAB - indent selected line(s)
 # TAB + SHIFT - unindent selected line(s)
+# Alt + Shift + Up Arrow - move line(s) up
+# Alt + Shift + Down Arrow - move line(s) down
 
 # --------------------------------------------------------------
 #  KNOB DEFAULTS  ::::::::::::::::::::::::::::::::::::::::::::::
