@@ -1,12 +1,12 @@
 set cut_paste_input [stack 0]
-version 12.2 v3
+version 12.2 v10
 push $cut_paste_input
 Group {
- name splineblur
+ name splineblur1
  tile_color 0xcc804eff
  selected true
- xpos 9860
- ypos -9976
+ xpos 2072
+ ypos -5476
  addUserKnob {20 User}
  addUserKnob {26 _1 l Spline}
  addUserKnob {22 grabSpline l "Spline Control" T "nuke.thisNode().begin()\nnuke.show(nuke.toNode('RotoPaint9'))\nnuke.thisNode().end()" +STARTLINE}
@@ -30,7 +30,7 @@ Group {
   xpos 179
   ypos 219
  }
-set N8fd30100 [stack 0]
+set Ncf872400 [stack 0]
  NoTimeBlur {
   name NoTimeBlur1
   xpos 336
@@ -140,13 +140,14 @@ set N8fd30100 [stack 0]
   shutteroffset start
   shuttercustomoffset -0.5
   name TimeBlur2
+  selected true
   xpos 336
   ypos 492
   disable {{"shutter == 0 ? 1 : 0" x1041 1}}
  }
-set N8fed1d00 [stack 0]
-push $N8fed1d00
-push $N8fd30100
+set N2c7f4100 [stack 0]
+push $N2c7f4100
+push $Ncf872400
  Convolve2 {
   inputs 2
   channels rgba
@@ -168,13 +169,5 @@ push $N8fd30100
   xpos 179
   ypos 621
  }
-push $N8fed1d00
- Viewer {
-  frame 1050
-  frame_range 1017-1060
-  center_fstop 0
-  name Viewer1
-  xpos 446
-  ypos 445
- }
 end_group
+=
