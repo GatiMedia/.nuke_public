@@ -1,10 +1,10 @@
 NoOp {
- name GM_LabelMaker
+ name GM_LabelMaker1
  tile_color 0xb2683bff
  note_font "DejaVu Sans"
  selected true
- xpos 122
- ypos 79
+ xpos -7300
+ ypos -19738
  addUserKnob {20 User}
  addUserKnob {26 ass l "<h3><font color=#b57735>Assign Label"}
  addUserKnob {1 new_label l "New Label Val"}
@@ -18,8 +18,7 @@ NoOp {
  addUserKnob {22 enable_sel l "Enable Selected" -STARTLINE T "### Disable label match on sleected ###\n\nnodes = nuke.selectedNodes()\ncurrVal = nuke.thisNode()\['label_val'].value()\n\nfor node in nodes:\n    try:\n        if node\[\"label\"].value() == currVal:\n            node\[\"disable\"].setValue(0)\n    except Exception:\n        pass\n"}
  addUserKnob {22 disable_all l "Disable All" T "### Disable label match on all ###\n\nnodes = nuke.allNodes()\ncurrVal = nuke.thisNode()\['label_val'].value()\n\nfor node in nodes:\n    try:\n        if node\[\"label\"].value() == currVal:\n            node\[\"disable\"].setValue(1)\n    except Exception:\n        pass\n" +STARTLINE}
  addUserKnob {22 enable_all l "Enable All" -STARTLINE T "### Enable label match on all ###\n\nnodes = nuke.allNodes()\ncurrVal = nuke.thisNode()\['label_val'].value()\n\nfor node in nodes:\n    try:\n        if node\[\"label\"].value() == currVal:\n            node\[\"disable\"].setValue(0)\n    except Exception:\n        pass\n"}
- addUserKnob {20 info l Info}
- addUserKnob {26 info1 l "" +STARTLINE T "<h1><font color=#888888>1.1 version</h1>GM_LabelMaker<font color=#777777> by Attil Gasparetz\n\n2020"}
- addUserKnob {20 tmpTab}
- addUserKnob {1 tmpKeepInput}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_LabelMaker© by Attila Gasparetz</font>"}
 }
