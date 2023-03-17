@@ -1,285 +1,285 @@
 Group {
-name GM_Heat_Distort1
-tile_color 0xc47155ff
-selected true
-xpos 53830
-ypos 42652
-addUserKnob {20 User}
-addUserKnob {7 velocity l Speed R 0 200}
-velocity 1
-addUserKnob {7 size l Size R 0 200}
-size 220
-addUserKnob {41 seed l Seed T proxy.seed}
-addUserKnob {7 move_up l "Moving Up" R 0 100}
-move_up 8
-addUserKnob {41 size_1 l Blur T Blur_HW.size}
-addUserKnob {7 mix l Mix}
-mix 0.4
-addUserKnob {26 ""}
-addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.01 BETA version</font>"}
-addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Heat_Distort© by Attila Gasparetz</font>"}
+ name GM_Heat_Distort1
+ tile_color 0xff5555ff
+ selected true
+ xpos -7300
+ ypos -19810
+ addUserKnob {20 User}
+ addUserKnob {7 velocity l Speed R 0 200}
+ velocity 1
+ addUserKnob {7 size l Size R 0 200}
+ size 220
+ addUserKnob {41 seed l Seed T proxy.seed}
+ addUserKnob {7 move_up l "Moving Up" R 0 100}
+ move_up 8
+ addUserKnob {41 size_1 l Blur T Blur_HW.size}
+ addUserKnob {7 mix l Mix}
+ mix 0.4
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Heat_Distort© by Attila Gasparetz</font>"}
 }
-Input {
-inputs 0
-name mask
-tile_color 0x444444ff
-xpos 510
-ypos 686
-number 1
-}
-Input {
-inputs 0
-name img
-tile_color 0x444444ff
-xpos 620
-ypos 230
-}
-Dot {
-name Dot5
-xpos 654
-ypos 330
-}
-set N58780cd0 [stack 0]
-Dot {
-name Dot10
-xpos 874
-ypos 330
-}
-set N4c0e91b0 [stack 0]
-Expression {
-channel3 alpha
-expr3 1
-name Expression_a_HW
-tile_color 0x444444ff
-xpos 840
-ypos 614
-}
-ChannelMerge {
-inputs 2
-operation multiply
-name ChannelMerge_HW
-tile_color 0x444444ff
-xpos 840
-ypos 674
-disable {{"!\[exists parent.input1]"}}
-}
-set N58671e60 [stack 0]
-Dot {
-name Dot13
-xpos 874
-ypos 882
-}
-push $N58671e60
-push $N4c0e91b0
-Dot {
-name Dot12
-xpos 984
-ypos 330
-}
-set N589fb650 [stack 0]
-Remove {
-name Remove_HW
-tile_color 0x444444ff
-xpos 1060
-ypos 320
-}
-Dot {
-name Dot8
-xpos 1204
-ypos 330
-}
-set Nc19bf0f0 [stack 0]
-Noise {
-size {{parent.size}}
-zoffset {{(frame+proxy.seed)/proxy.speed}}
-lacunarity 1.76
-gain 0.56
-translate {0 {t*proxy.up_move}}
-scale {1 1}
-center {1152 648}
-name Noise_HW
-tile_color 0x444444ff
-xpos 1170
-ypos 398
-}
-push $Nc19bf0f0
-Dot {
-name Dot1
-xpos 1314
-ypos 330
-}
-set Ne86642c0 [stack 0]
-Noise {
-size {{parent.Noise_HW.size/3}}
-zoffset {{(frame+proxy.seed)/proxy.speed}}
-lacunarity 1.76
-gain 0.56
-translate {0 {t*proxy.up_move}}
-scale {1 0.8}
-center {1152 648}
-name Noise_HW1
-tile_color 0x444444ff
-xpos 1280
-ypos 398
-}
-push $Ne86642c0
-Dot {
-name Dot2
-xpos 1424
-ypos 330
-}
-set Ne85f55b0 [stack 0]
-Noise {
-size {{parent.Noise_HW.size/6}}
-zoffset {{(frame+proxy.seed)/proxy.speed}}
-lacunarity 1.76
-gain 0.56
-translate {0 {t*proxy.up_move}}
-scale {1 0.8}
-center {1152 648}
-name Noise_HW2
-tile_color 0x444444ff
-xpos 1390
-ypos 398
-}
-Dot {
-name Dot3
-xpos 1424
-ypos 498
-}
-Merge2 {
-inputs 2
-operation average
-mix 0.3
-name Merge_N2_HW
-tile_color 0x444444ff
-xpos 1280
-ypos 494
-}
-Merge2 {
-inputs 2
-operation average
-mix 0.3
-name Merge_N_HW
-tile_color 0x444444ff
-xpos 1170
-ypos 494
-}
-Blur {
-size 8.4
-name Blur_HW
-tile_color 0x444444ff
-xpos 1170
-ypos 608
-}
-set Ne877c6e0 [stack 0]
-TimeOffset {
-time_offset 1
-time ""
-name TimeOffset_HW
-tile_color 0x444444ff
-xpos 1060
-ypos 614
-}
-Shuffle {
-red black
-blue black
-alpha black
-name Shuffle_G_HW
-tile_color 0x444444ff
-label "\[value in 1]"
-xpos 1060
-ypos 728
-}
-push $Ne877c6e0
-Shuffle {
-green black
-blue black
-alpha black
-name Shuffle_R_HW
-tile_color 0x444444ff
-label "\[value in 1]"
-xpos 1170
-ypos 680
-}
-Merge2 {
-inputs 2
-name Merge_RG_HW
-tile_color 0x444444ff
-xpos 1170
-ypos 734
-}
-push $Ne85f55b0
-Dot {
-name Dot6
-xpos 1534
-ypos 330
-}
-Expression {
-expr0 x/width
-expr1 y/height
-name Expression_UV_HW
-tile_color 0x444444ff
-xpos 1500
-ypos 806
-}
-Merge2 {
-inputs 2+1
-mix {{parent.mix/100}}
-name Merge_HW
-tile_color 0x444444ff
-xpos 1170
-ypos 806
-}
-push $N589fb650
-STMap {
-inputs 2
-uv rgb
-name STMap_HW
-tile_color 0x444444ff
-xpos 950
-ypos 800
-}
-Copy {
-inputs 2
-from0 rgba.alpha
-to0 rgba.alpha
-name Copy_HW
-tile_color 0x444444ff
-xpos 950
-ypos 872
-}
-Premult {
-name Premult_HW
-tile_color 0x444444ff
-xpos 950
-ypos 974
-}
-push $N58780cd0
-Merge2 {
-inputs 2
-name Merge1_HW
-tile_color 0x444444ff
-xpos 620
-ypos 974
-}
-Output {
-name Output_HW
-tile_color 0x444444ff
-xpos 620
-ypos 1094
-}
-NoOp {
-inputs 0
-name proxy
-tile_color 0x444444ff
-xpos 1170
-ypos 230
-addUserKnob {20 User}
-addUserKnob {7 speed R 0 200}
-speed {{"(200-(parent.velocity)) + 0.1"}}
-addUserKnob {7 seed R 0 1000}
-addUserKnob {7 up_move R 0 100}
-up_move {{parent.move_up}}
-}
+ Input {
+  inputs 0
+  name mask
+  tile_color 0x444444ff
+  xpos 510
+  ypos 686
+  number 1
+ }
+ Input {
+  inputs 0
+  name img
+  tile_color 0x444444ff
+  xpos 620
+  ypos 230
+ }
+ Dot {
+  name Dot5
+  xpos 654
+  ypos 330
+ }
+set N320b0e90 [stack 0]
+ Dot {
+  name Dot10
+  xpos 874
+  ypos 330
+ }
+set N320b5da0 [stack 0]
+ Expression {
+  channel3 alpha
+  expr3 1
+  name Expression_a_HW
+  tile_color 0x444444ff
+  xpos 840
+  ypos 614
+ }
+ ChannelMerge {
+  inputs 2
+  operation multiply
+  name ChannelMerge_HW
+  tile_color 0x444444ff
+  xpos 840
+  ypos 674
+  disable {{"!\[exists parent.input1]"}}
+ }
+set N320c8df0 [stack 0]
+ Dot {
+  name Dot13
+  xpos 874
+  ypos 882
+ }
+push $N320c8df0
+push $N320b5da0
+ Dot {
+  name Dot12
+  xpos 984
+  ypos 330
+ }
+set N320da670 [stack 0]
+ Remove {
+  name Remove_HW
+  tile_color 0x444444ff
+  xpos 1060
+  ypos 320
+ }
+ Dot {
+  name Dot8
+  xpos 1204
+  ypos 330
+ }
+set N320e7d10 [stack 0]
+ Noise {
+  size {{parent.size}}
+  zoffset {{(frame+proxy.seed)/proxy.speed}}
+  lacunarity 1.76
+  gain 0.56
+  translate {0 {t*proxy.up_move}}
+  scale {1 1}
+  center {1152 648}
+  name Noise_HW
+  tile_color 0x444444ff
+  xpos 1170
+  ypos 398
+ }
+push $N320e7d10
+ Dot {
+  name Dot1
+  xpos 1314
+  ypos 330
+ }
+set N32101ef0 [stack 0]
+ Noise {
+  size {{parent.Noise_HW.size/3}}
+  zoffset {{(frame+proxy.seed)/proxy.speed}}
+  lacunarity 1.76
+  gain 0.56
+  translate {0 {t*proxy.up_move}}
+  scale {1 0.8}
+  center {1152 648}
+  name Noise_HW1
+  tile_color 0x444444ff
+  xpos 1280
+  ypos 398
+ }
+push $N32101ef0
+ Dot {
+  name Dot2
+  xpos 1424
+  ypos 330
+ }
+set N3211be10 [stack 0]
+ Noise {
+  size {{parent.Noise_HW.size/6}}
+  zoffset {{(frame+proxy.seed)/proxy.speed}}
+  lacunarity 1.76
+  gain 0.56
+  translate {0 {t*proxy.up_move}}
+  scale {1 0.8}
+  center {1152 648}
+  name Noise_HW2
+  tile_color 0x444444ff
+  xpos 1390
+  ypos 398
+ }
+ Dot {
+  name Dot3
+  xpos 1424
+  ypos 498
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  mix 0.3
+  name Merge_N2_HW
+  tile_color 0x444444ff
+  xpos 1280
+  ypos 494
+ }
+ Merge2 {
+  inputs 2
+  operation average
+  mix 0.3
+  name Merge_N_HW
+  tile_color 0x444444ff
+  xpos 1170
+  ypos 494
+ }
+ Blur {
+  size 8.4
+  name Blur_HW
+  tile_color 0x444444ff
+  xpos 1170
+  ypos 608
+ }
+set N3215bdd0 [stack 0]
+ TimeOffset {
+  time_offset 1
+  time ""
+  name TimeOffset_HW
+  tile_color 0x444444ff
+  xpos 1060
+  ypos 614
+ }
+ Shuffle {
+  red black
+  blue black
+  alpha black
+  name Shuffle_G_HW
+  tile_color 0x444444ff
+  label "\[value in 1]"
+  xpos 1060
+  ypos 728
+ }
+push $N3215bdd0
+ Shuffle {
+  green black
+  blue black
+  alpha black
+  name Shuffle_R_HW
+  tile_color 0x444444ff
+  label "\[value in 1]"
+  xpos 1170
+  ypos 680
+ }
+ Merge2 {
+  inputs 2
+  name Merge_RG_HW
+  tile_color 0x444444ff
+  xpos 1170
+  ypos 734
+ }
+push $N3211be10
+ Dot {
+  name Dot6
+  xpos 1534
+  ypos 330
+ }
+ Expression {
+  expr0 x/width
+  expr1 y/height
+  name Expression_UV_HW
+  tile_color 0x444444ff
+  xpos 1500
+  ypos 806
+ }
+ Merge2 {
+  inputs 2+1
+  mix {{parent.mix/100}}
+  name Merge_HW
+  tile_color 0x444444ff
+  xpos 1170
+  ypos 806
+ }
+push $N320da670
+ STMap {
+  inputs 2
+  uv rgb
+  name STMap_HW
+  tile_color 0x444444ff
+  xpos 950
+  ypos 800
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy_HW
+  tile_color 0x444444ff
+  xpos 950
+  ypos 872
+ }
+ Premult {
+  name Premult_HW
+  tile_color 0x444444ff
+  xpos 950
+  ypos 974
+ }
+push $N320b0e90
+ Merge2 {
+  inputs 2
+  name Merge1_HW
+  tile_color 0x444444ff
+  xpos 620
+  ypos 974
+ }
+ Output {
+  name Output_HW
+  tile_color 0x444444ff
+  xpos 620
+  ypos 1094
+ }
+ NoOp {
+  inputs 0
+  name proxy
+  tile_color 0x444444ff
+  xpos 1170
+  ypos 230
+  addUserKnob {20 User}
+  addUserKnob {7 speed R 0 200}
+  speed {{"(200-(parent.velocity)) + 0.1"}}
+  addUserKnob {7 seed R 0 1000}
+  addUserKnob {7 up_move R 0 100}
+  up_move {{parent.move_up}}
+ }
 end_group
