@@ -1,8 +1,9 @@
 Group {
- name GM_DirBlur
+ name GM_DirBlur1
+ tile_color 0xff9455ff
  selected true
- xpos 128
- ypos 290
+ xpos -7300
+ ypos -19906
  addUserKnob {20 User}
  addUserKnob {41 rotate l Rotate T Transform_MAIN.rotate}
  addUserKnob {41 size l Size T proxy.size}
@@ -10,15 +11,19 @@ Group {
  blurCrop true
  addUserKnob {6 BlurMask +STARTLINE}
  BlurMask true
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM DirBlur© by Attila Gasparetz</font>"}
 }
  Input {
   inputs 0
   name mask
+  selected true
   xpos -260
   ypos -249
   number 1
  }
-set Nfe8100 [stack 0]
+set N31877060 [stack 0]
  Transform {
   rotate -31
   center {2048 1425}
@@ -43,7 +48,7 @@ set Nfe8100 [stack 0]
   xpos -150
   ypos -9
  }
-push $Nfe8100
+push $N31877060
  Switch {
   inputs 2
   which {{BlurMask}}
@@ -66,7 +71,7 @@ push $Nfe8100
   xpos -556
   ypos -246
  }
-set Nfc9600 [stack 0]
+set N318b3050 [stack 0]
  Dot {
   name Dot2
   tile_color 0x949494ff
@@ -75,7 +80,7 @@ set Nfc9600 [stack 0]
   xpos -446
   ypos -246
  }
-set Nfc8f00 [stack 0]
+set N318b7f50 [stack 0]
  Shuffle {
   red black
   green black
@@ -94,7 +99,7 @@ set Nfc8f00 [stack 0]
   ypos -22
   disable {{"!\[exists parent.input1]"}}
  }
-push $Nfc9600
+push $N318b3050
  Transform {
   center {2048 1425}
   shutteroffset centred
@@ -117,7 +122,7 @@ push $Nfc9600
   xpos -590
   ypos -9
  }
-push $Nfc8f00
+push $N318b7f50
  Keymix {
   inputs 3
   name Keymix1
