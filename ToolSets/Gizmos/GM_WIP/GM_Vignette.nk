@@ -1,0 +1,173 @@
+Group {
+ name GM_Vignette1
+ tile_color 0xaa55ffff
+ selected true
+ xpos -7306
+ ypos -19570
+ addUserKnob {20 User}
+ addUserKnob {41 ringsize l "Ring Size" T AdjustVignette.ringsize}
+ addUserKnob {41 ringwide l "Ring Wide" T AdjustVignette.ringwide}
+ addUserKnob {41 softness l Softness T RadialVignette.softness}
+ addUserKnob {26 ""}
+ addUserKnob {41 black l lift T GradeVignette.black}
+ addUserKnob {41 white l gain T GradeVignette.white}
+ addUserKnob {41 multiply T GradeVignette.multiply}
+ addUserKnob {41 add l offset T GradeVignette.add}
+ addUserKnob {41 gamma T GradeVignette.gamma}
+ addUserKnob {41 saturation T SaturationVignette.saturation}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Vignette© by Attila Gasparetz</font>"}
+}
+ NoOp {
+  inputs 0
+  name AdjustVignette
+  xpos 950
+  ypos 446
+  addUserKnob {20 User}
+  addUserKnob {7 ringsize l "Ring Size" R -500 500}
+  ringsize 200
+  addUserKnob {7 ringwide l "Ring Wide" R -500 500}
+  addUserKnob {26 ""}
+ }
+ Input {
+  inputs 0
+  name Input
+  xpos 400
+  ypos 182
+ }
+ Dot {
+  name Dot168
+  note_font_size 22
+  xpos 434
+  ypos 258
+ }
+set N32233820 [stack 0]
+ Dot {
+  name Dot4
+  note_font_size 22
+  xpos 324
+  ypos 258
+ }
+set N32238750 [stack 0]
+ Dot {
+  name Dot2
+  note_font_size 22
+  xpos 104
+  ypos 258
+ }
+ Dot {
+  name Dot1
+  note_font_size 22
+  xpos 104
+  ypos 786
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos -40
+  ypos 686
+  number 1
+ }
+push $N32238750
+ Expression {
+  channel3 alpha
+  expr3 1
+  name Expression1
+  xpos 290
+  ypos 422
+ }
+ ChannelMerge {
+  inputs 2
+  operation multiply
+  name ChannelMerge1
+  xpos 290
+  ypos 674
+  disable {{"!\[exists parent.input1]"}}
+ }
+push $N32233820
+ Remove {
+  name RemoveVignette
+  xpos 840
+  ypos 248
+ }
+ Crop {
+  box {{input.width-input.width} {input.height-input.height} {input.width} {input.height}}
+  name CropVignette1
+  label "Box: x:\[value box.x]  y:\[value box.y] r:\[value box.r] t:\[value box.t]"
+  xpos 840
+  ypos 320
+ }
+ Radial {
+  area {{input.box.x+(-AdjustVignette.ringsize)+(-AdjustVignette.ringwide)} {input.box.y+(-AdjustVignette.ringsize)} {input.box.r+AdjustVignette.ringsize+AdjustVignette.ringwide} {input.box.t+AdjustVignette.ringsize}}
+  softness 0.7
+  name RadialVignette
+  selected true
+  xpos 840
+  ypos 446
+ }
+ Shuffle2 {
+  fromInput1 {{0} B}
+  fromInput2 {{0} B}
+  mappings "4 black -1 -1 rgba.red 0 0 black -1 -1 rgba.green 0 1 black -1 -1 rgba.blue 0 2 rgba.red 0 0 rgba.alpha 0 3"
+  name ShuffleVignette
+  label "\[string toupper \[value in1]]"
+  xpos 840
+  ypos 512
+ }
+ Invert {
+  channels alpha
+  name InvertVignette
+  xpos 840
+  ypos 608
+ }
+ Crop {
+  box {{input.width-input.width} {input.height-input.height} {input.width} {input.height}}
+  name CropVignette2
+  label "Box: x:\[value box.x]  y:\[value box.y] r:\[value box.r] t:\[value box.t]"
+  xpos 730
+  ypos 608
+ }
+set N3229e370 [stack 0]
+push $N3229e370
+push $N32233820
+ Dot {
+  name Dot3
+  note_font_size 22
+  xpos 434
+  ypos 522
+ }
+set N322a9230 [stack 0]
+ Grade {
+  inputs 1+1
+  gamma 0.8
+  black_clamp false
+  name GradeVignette
+  xpos 620
+  ypos 614
+ }
+ Saturation {
+  inputs 1+1
+  name SaturationVignette
+  xpos 620
+  ypos 686
+ }
+push $N322a9230
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos 400
+  ypos 680
+ }
+ CopyBBox {
+  inputs 2
+  name CopyBBox1
+  xpos 400
+  ypos 782
+ }
+ Output {
+  name Output1
+  xpos 400
+  ypos 854
+ }
+end_group
