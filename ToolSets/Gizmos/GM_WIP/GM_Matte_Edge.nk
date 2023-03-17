@@ -1,0 +1,1019 @@
+Group {
+ name GM_Matte_Edge1
+ tile_color 0xcc9800ff
+ selected true
+ xpos -7300
+ ypos -19666
+ addUserKnob {20 User}
+ addUserKnob {4 method l Method M {"Merge In/Out" "Separate In/Out"}}
+ addUserKnob {26 out l "<b><font color=orange>Outside"}
+ addUserKnob {41 in_1 l Size T proxy.in}
+ addUserKnob {41 size_1 l Blur T Blur_IN.size}
+ addUserKnob {41 which l Mix T Dissolve1.which}
+ addUserKnob {26 in l "<b><font color=orange>Inside"}
+ addUserKnob {41 out_1 l Size T proxy.out}
+ addUserKnob {41 size_3 l Blur T Blur_OUT.size}
+ addUserKnob {41 which_1 l Mix T Dissolve2.which}
+ addUserKnob {26 ""}
+ addUserKnob {6 prem l Premult +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {7 mix_all l Mix}
+ mix_all 1
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Matte Edge© by Attila Gasparetz</font>"}
+}
+ Input {
+  inputs 0
+  name Input
+  tile_color 0x666666ff
+  xpos -480
+  ypos 38
+ }
+ Dot {
+  name Dot14
+  xpos -446
+  ypos 378
+ }
+set N31139750 [stack 0]
+ Dot {
+  name Dot15
+  xpos -556
+  ypos 378
+ }
+set N3113e380 [stack 0]
+ Group {
+  name key_chew
+  help "======== KeyChew beta ========\n=============================\n\nThis is a port of the KeyChew macro for Shake to Nuke.\n\nThere might be tiny differences on the results given in both apps. Some of them are caused by the internal algorithms of each app, and others by the way I faked the JSplineV\nexpression of Shake in Nuke. If you know a better way to solve this, let\nme know!!\n\n=============================\n             2009 Cuco Bures\n============================="
+  tile_color 0x555555ff
+  xpos -700
+  ypos 518
+  addUserKnob {20 Controls}
+  addUserKnob {7 chew t "\t\t" R -200 200}
+  chew {{parent.proxy.in}}
+  addUserKnob {7 soften R 0 200}
+  addUserKnob {6 matteMult +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos -40
+   ypos -10
+  }
+set N3114d1b0 [stack 0]
+  Dot {
+   name Dot1
+   xpos 324
+   ypos -6
+  }
+set N31151f50 [stack 0]
+push $N31151f50
+  Invert {
+   name Invert1
+   xpos 180
+   ypos 32
+  }
+push $N31151f50
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch1
+   xpos 180
+   ypos 86
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.chew]))/4)+(floor(abs(\[value parent.chew]))/8)"}}
+   name FgEdgeBlur
+   xpos 180
+   ypos 128
+  }
+  Grade {
+   channels alpha
+   multiply {1 1 1 {max(FgEdgeBlur.size*1.5,1)}}
+   black_clamp false
+   name FgEdgeMult
+   xpos 180
+   ypos 176
+  }
+  Grade {
+   channels alpha
+   gamma {1 1 1 {JSplineVFake(floor(abs(parent.chew)))}}
+   name FgEdgeGamma1
+   selected true
+   xpos 180
+   ypos 224
+   addUserKnob {20 User}
+   addUserKnob {7 JSplineVFake}
+   JSplineVFake {{curve l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
+  }
+set N311898e0 [stack 0]
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge1
+   xpos 290
+   ypos 230
+  }
+push $N311898e0
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch2
+   xpos 180
+   ypos 278
+  }
+  Clamp {
+   name Clamp2
+   xpos 180
+   ypos 320
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.soften]))/4)+(floor(abs(\[value parent.soften]))/8)"}}
+   name BlurResult
+   xpos 180
+   ypos 440
+  }
+push $N3114d1b0
+  ShuffleCopy {
+   inputs 2
+   name ShuffleCopy1
+   xpos -40
+   ypos 446
+  }
+  Premult {
+   name Premult1
+   xpos -40
+   ypos 494
+   disable {{"1-\[value parent.matteMult]" i}}
+  }
+  Output {
+   name Output1
+   xpos -40
+   ypos 566
+  }
+ end_group
+push $N3113e380
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolve2
+  tile_color 0x555555ff
+  xpos -590
+  ypos 584
+ }
+ Blur {
+  channels alpha
+  size 5
+  name Blur_IN
+  tile_color 0x666666ff
+  xpos -590
+  ypos 656
+ }
+ Dot {
+  name Dot16
+  xpos -556
+  ypos 762
+ }
+push $N31139750
+ Dot {
+  name Dot8
+  xpos -336
+  ypos 378
+ }
+set N3120cf30 [stack 0]
+ Group {
+  name key_chew1
+  help "======== KeyChew beta ========\n=============================\n\nThis is a port of the KeyChew macro for Shake to Nuke.\n\nThere might be tiny differences on the results given in both apps. Some of them are caused by the internal algorithms of each app, and others by the way I faked the JSplineV\nexpression of Shake in Nuke. If you know a better way to solve this, let\nme know!!\n\n=============================\n             2009 Cuco Bures\n============================="
+  tile_color 0x555555ff
+  xpos -260
+  ypos 518
+  addUserKnob {20 Controls}
+  addUserKnob {7 chew t "\t\t" R -200 200}
+  chew {{-proxy.out}}
+  addUserKnob {7 soften R 0 200}
+  addUserKnob {6 matteMult +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos 0
+  }
+set N3121be20 [stack 0]
+  Dot {
+   name Dot1
+   xpos 366
+   ypos 5
+  }
+set N31220bc0 [stack 0]
+push $N31220bc0
+  Invert {
+   name Invert1
+   xpos 177
+   ypos 34
+  }
+push $N31220bc0
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch1
+   xpos 177
+   ypos 87
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.chew]))/4)+(floor(abs(\[value parent.chew]))/8)" i}}
+   name FgEdgeBlur
+   xpos 177
+   ypos 111
+  }
+  Grade {
+   channels alpha
+   multiply {1 1 1 {max(FgEdgeBlur.size*1.5,1) i}}
+   black_clamp false
+   name FgEdgeMult
+   xpos 177
+   ypos 165
+  }
+  Grade {
+   channels alpha
+   gamma {1 1 1 {JSplineVFake(floor(abs(parent.chew))) i}}
+   name FgEdgeGamma1
+   xpos 177
+   ypos 213
+   addUserKnob {20 User}
+   addUserKnob {7 JSplineVFake}
+   JSplineVFake {{curve i l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
+  }
+set N312584c0 [stack 0]
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge1
+   xpos 332
+   ypos 218
+  }
+push $N312584c0
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch2
+   xpos 177
+   ypos 284
+  }
+  Clamp {
+   name Clamp2
+   xpos 177
+   ypos 323
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.soften]))/4)+(floor(abs(\[value parent.soften]))/8)"}}
+   name BlurResult
+   xpos 177
+   ypos 446
+  }
+push $N3121be20
+  ShuffleCopy {
+   inputs 2
+   name ShuffleCopy1
+   xpos 0
+   ypos 451
+  }
+  Premult {
+   name Premult1
+   xpos 0
+   ypos 486
+   disable {{"1-\[value parent.matteMult]" i}}
+  }
+  Output {
+   name Output1
+   xpos 0
+   ypos 556
+  }
+ end_group
+push $N3120cf30
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolve1
+  tile_color 0x555555ff
+  xpos -370
+  ypos 584
+ }
+set N312bdd30 [stack 0]
+ Dot {
+  name Dot18
+  xpos -336
+  ypos 762
+ }
+ ChannelMerge {
+  inputs 2
+  operation xor
+  name ChannelMerge
+  tile_color 0x666666ff
+  xpos -480
+  ypos 746
+ }
+push $N3120cf30
+ Dot {
+  name Dot3
+  xpos -116
+  ypos 378
+ }
+set N312daef0 [stack 0]
+ Dot {
+  name Dot4
+  xpos -116
+  ypos 930
+ }
+set N312dfc90 [stack 0]
+ Invert {
+  name Invert1
+  tile_color 0x555555ff
+  xpos -260
+  ypos 920
+ }
+ ChannelMerge {
+  inputs 2
+  operation multiply
+  name ChannelMerge4
+  tile_color 0x555555ff
+  label "\[value operation]"
+  xpos -480
+  ypos 908
+ }
+push $N312daef0
+ Dot {
+  name Dot11
+  xpos 214
+  ypos 378
+ }
+set N312fd760 [stack 0]
+ Dot {
+  name Dot5
+  xpos 214
+  ypos 426
+ }
+set N31302500 [stack 0]
+ Dot {
+  name Dot6
+  xpos 104
+  ypos 426
+ }
+set N313073e0 [stack 0]
+ Group {
+  name key_chew2
+  help "======== KeyChew beta ========\n=============================\n\nThis is a port of the KeyChew macro for Shake to Nuke.\n\nThere might be tiny differences on the results given in both apps. Some of them are caused by the internal algorithms of each app, and others by the way I faked the JSplineV\nexpression of Shake in Nuke. If you know a better way to solve this, let\nme know!!\n\n=============================\n             2009 Cuco Bures\n============================="
+  tile_color 0x555555ff
+  xpos -40
+  ypos 566
+  addUserKnob {20 Controls}
+  addUserKnob {7 chew t "\t\t" R -200 200}
+  chew {{parent.proxy.in}}
+  addUserKnob {7 soften R 0 200}
+  addUserKnob {6 matteMult +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos -40
+   ypos -10
+  }
+set N31316350 [stack 0]
+  Dot {
+   name Dot1
+   xpos 324
+   ypos -6
+  }
+set N3131b0f0 [stack 0]
+push $N3131b0f0
+  Invert {
+   name Invert1
+   xpos 180
+   ypos 32
+  }
+push $N3131b0f0
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch1
+   xpos 180
+   ypos 86
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.chew]))/4)+(floor(abs(\[value parent.chew]))/8)"}}
+   name FgEdgeBlur
+   xpos 180
+   ypos 128
+  }
+  Grade {
+   channels alpha
+   multiply {1 1 1 {max(FgEdgeBlur.size*1.5,1)}}
+   black_clamp false
+   name FgEdgeMult
+   xpos 180
+   ypos 176
+  }
+  Grade {
+   channels alpha
+   gamma {1 1 1 {JSplineVFake(floor(abs(parent.chew)))}}
+   name FgEdgeGamma1
+   selected true
+   xpos 180
+   ypos 224
+   addUserKnob {20 User}
+   addUserKnob {7 JSplineVFake}
+   JSplineVFake {{curve l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
+  }
+set N313529f0 [stack 0]
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge1
+   xpos 290
+   ypos 230
+  }
+push $N313529f0
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch2
+   xpos 180
+   ypos 278
+  }
+  Clamp {
+   name Clamp2
+   xpos 180
+   ypos 320
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.soften]))/4)+(floor(abs(\[value parent.soften]))/8)"}}
+   name BlurResult
+   xpos 180
+   ypos 440
+  }
+push $N31316350
+  ShuffleCopy {
+   inputs 2
+   name ShuffleCopy1
+   xpos -40
+   ypos 446
+  }
+  Premult {
+   name Premult1
+   xpos -40
+   ypos 494
+   disable {{"1-\[value parent.matteMult]" i}}
+  }
+  Output {
+   name Output1
+   xpos -40
+   ypos 566
+  }
+ end_group
+push $N313073e0
+ Dissolve {
+  inputs 2
+  which {{parent.Dissolve2.which}}
+  name Dissolve4
+  tile_color 0x555555ff
+  xpos 70
+  ypos 632
+ }
+ Dot {
+  name Dot7
+  xpos 104
+  ypos 810
+ }
+push $N31302500
+ Dot {
+  name Dot9
+  xpos 324
+  ypos 426
+ }
+set N313c8a80 [stack 0]
+ Group {
+  name key_chew3
+  help "======== KeyChew beta ========\n=============================\n\nThis is a port of the KeyChew macro for Shake to Nuke.\n\nThere might be tiny differences on the results given in both apps. Some of them are caused by the internal algorithms of each app, and others by the way I faked the JSplineV\nexpression of Shake in Nuke. If you know a better way to solve this, let\nme know!!\n\n=============================\n             2009 Cuco Bures\n============================="
+  tile_color 0x555555ff
+  xpos 400
+  ypos 566
+  addUserKnob {20 Controls}
+  addUserKnob {7 chew t "\t\t" R -200 200}
+  chew {{-proxy.out}}
+  addUserKnob {7 soften R 0 200}
+  addUserKnob {6 matteMult +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos 0
+  }
+set N313d7930 [stack 0]
+  Dot {
+   name Dot1
+   xpos 366
+   ypos 5
+  }
+set N313dc6d0 [stack 0]
+push $N313dc6d0
+  Invert {
+   name Invert1
+   xpos 177
+   ypos 34
+  }
+push $N313dc6d0
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch1
+   xpos 177
+   ypos 87
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.chew]))/4)+(floor(abs(\[value parent.chew]))/8)" i}}
+   name FgEdgeBlur
+   xpos 177
+   ypos 111
+  }
+  Grade {
+   channels alpha
+   multiply {1 1 1 {max(FgEdgeBlur.size*1.5,1) i}}
+   black_clamp false
+   name FgEdgeMult
+   xpos 177
+   ypos 165
+  }
+  Grade {
+   channels alpha
+   gamma {1 1 1 {JSplineVFake(floor(abs(parent.chew))) i}}
+   name FgEdgeGamma1
+   xpos 177
+   ypos 213
+   addUserKnob {20 User}
+   addUserKnob {7 JSplineVFake}
+   JSplineVFake {{curve i l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
+  }
+set N31413fd0 [stack 0]
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge1
+   xpos 332
+   ypos 218
+  }
+push $N31413fd0
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch2
+   xpos 177
+   ypos 284
+  }
+  Clamp {
+   name Clamp2
+   xpos 177
+   ypos 323
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.soften]))/4)+(floor(abs(\[value parent.soften]))/8)"}}
+   name BlurResult
+   xpos 177
+   ypos 446
+  }
+push $N313d7930
+  ShuffleCopy {
+   inputs 2
+   name ShuffleCopy1
+   xpos 0
+   ypos 451
+  }
+  Premult {
+   name Premult1
+   xpos 0
+   ypos 486
+   disable {{"1-\[value parent.matteMult]" i}}
+  }
+  Output {
+   name Output1
+   xpos 0
+   ypos 556
+  }
+ end_group
+push $N313c8a80
+ Dissolve {
+  inputs 2
+  which {{parent.Dissolve1.which}}
+  name Dissolve5
+  tile_color 0x555555ff
+  xpos 290
+  ypos 632
+ }
+ Blur {
+  channels alpha
+  size {{parent.Blur_OUT.size}}
+  name Blur_OUT1
+  tile_color 0x666666ff
+  xpos 290
+  ypos 704
+ }
+ Dot {
+  name Dot10
+  xpos 324
+  ypos 810
+ }
+ ChannelMerge {
+  inputs 2
+  operation xor
+  name ChannelMerge1
+  tile_color 0x666666ff
+  xpos 180
+  ypos 794
+ }
+push $N312dfc90
+ ChannelMerge {
+  inputs 2
+  operation multiply
+  name ChannelMerge3
+  tile_color 0x555555ff
+  label "\[value operation]"
+  xpos 180
+  ypos 908
+ }
+ ChannelMerge {
+  inputs 2
+  operation plus
+  name ChannelMerge2
+  tile_color 0x555555ff
+  label "\[value operation]"
+  xpos -150
+  ypos 1004
+ }
+push $N3113e380
+ Dot {
+  name Dot21
+  xpos -996
+  ypos 378
+ }
+ Dot {
+  name Dot12
+  xpos -996
+  ypos 618
+ }
+set N314c3830 [stack 0]
+ Dot {
+  name Dot13
+  xpos -1106
+  ypos 618
+ }
+set N314c8690 [stack 0]
+ Group {
+  name key_chew4
+  help "======== KeyChew beta ========\n=============================\n\nThis is a port of the KeyChew macro for Shake to Nuke.\n\nThere might be tiny differences on the results given in both apps. Some of them are caused by the internal algorithms of each app, and others by the way I faked the JSplineV\nexpression of Shake in Nuke. If you know a better way to solve this, let\nme know!!\n\n=============================\n             2009 Cuco Bures\n============================="
+  tile_color 0x555555ff
+  selected true
+  xpos -1250
+  ypos 758
+  addUserKnob {20 Controls}
+  addUserKnob {7 chew t "\t\t" R -200 200}
+  chew {{parent.proxy.in}}
+  addUserKnob {7 soften R 0 200}
+  addUserKnob {6 matteMult +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos -40
+   ypos -10
+  }
+set N314d7830 [stack 0]
+  Dot {
+   name Dot1
+   xpos 324
+   ypos -6
+  }
+set N314dc5d0 [stack 0]
+push $N314dc5d0
+  Invert {
+   name Invert1
+   xpos 180
+   ypos 32
+  }
+push $N314dc5d0
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch1
+   xpos 180
+   ypos 86
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.chew]))/4)+(floor(abs(\[value parent.chew]))/8)"}}
+   name FgEdgeBlur
+   xpos 180
+   ypos 128
+  }
+  Grade {
+   channels alpha
+   multiply {1 1 1 {max(FgEdgeBlur.size*1.5,1)}}
+   black_clamp false
+   name FgEdgeMult
+   xpos 180
+   ypos 176
+  }
+  Grade {
+   channels alpha
+   gamma {1 1 1 {JSplineVFake(floor(abs(parent.chew)))}}
+   name FgEdgeGamma1
+   selected true
+   xpos 180
+   ypos 224
+   addUserKnob {20 User}
+   addUserKnob {7 JSplineVFake}
+   JSplineVFake {{curve l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
+  }
+set N31513dc0 [stack 0]
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge1
+   xpos 290
+   ypos 230
+  }
+push $N31513dc0
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch2
+   xpos 180
+   ypos 278
+  }
+  Clamp {
+   name Clamp2
+   xpos 180
+   ypos 320
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.soften]))/4)+(floor(abs(\[value parent.soften]))/8)"}}
+   name BlurResult
+   xpos 180
+   ypos 440
+  }
+push $N314d7830
+  ShuffleCopy {
+   inputs 2
+   name ShuffleCopy1
+   xpos -40
+   ypos 446
+  }
+  Premult {
+   name Premult1
+   xpos -40
+   ypos 494
+   disable {{"1-\[value parent.matteMult]" i}}
+  }
+  Output {
+   name Output1
+   xpos -40
+   ypos 566
+  }
+ end_group
+push $N314c8690
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolve6
+  tile_color 0x555555ff
+  xpos -1140
+  ypos 824
+ }
+ Blur {
+  channels alpha
+  size {{parent.Blur_IN.size}}
+  name Blur_IN1
+  tile_color 0x666666ff
+  xpos -1140
+  ypos 896
+ }
+ Dot {
+  name Dot17
+  xpos -1106
+  ypos 1002
+ }
+push $N314c3830
+ Dot {
+  name Dot19
+  xpos -886
+  ypos 618
+ }
+set N315979c0 [stack 0]
+ Group {
+  name key_chew5
+  help "======== KeyChew beta ========\n=============================\n\nThis is a port of the KeyChew macro for Shake to Nuke.\n\nThere might be tiny differences on the results given in both apps. Some of them are caused by the internal algorithms of each app, and others by the way I faked the JSplineV\nexpression of Shake in Nuke. If you know a better way to solve this, let\nme know!!\n\n=============================\n             2009 Cuco Bures\n============================="
+  tile_color 0x555555ff
+  xpos -810
+  ypos 758
+  addUserKnob {20 Controls}
+  addUserKnob {7 chew t "\t\t" R -200 200}
+  chew {{-proxy.out}}
+  addUserKnob {7 soften R 0 200}
+  addUserKnob {6 matteMult +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name Input
+   xpos 0
+  }
+set N315a6870 [stack 0]
+  Dot {
+   name Dot1
+   xpos 366
+   ypos 5
+  }
+set N315ab610 [stack 0]
+push $N315ab610
+  Invert {
+   name Invert1
+   xpos 177
+   ypos 34
+  }
+push $N315ab610
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch1
+   xpos 177
+   ypos 87
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.chew]))/4)+(floor(abs(\[value parent.chew]))/8)" i}}
+   name FgEdgeBlur
+   xpos 177
+   ypos 111
+  }
+  Grade {
+   channels alpha
+   multiply {1 1 1 {max(FgEdgeBlur.size*1.5,1) i}}
+   black_clamp false
+   name FgEdgeMult
+   xpos 177
+   ypos 165
+  }
+  Grade {
+   channels alpha
+   gamma {1 1 1 {JSplineVFake(floor(abs(parent.chew))) i}}
+   name FgEdgeGamma1
+   xpos 177
+   ypos 213
+   addUserKnob {20 User}
+   addUserKnob {7 JSplineVFake}
+   JSplineVFake {{curve i l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
+  }
+set N315e2f10 [stack 0]
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge1
+   xpos 332
+   ypos 218
+  }
+push $N315e2f10
+  Switch {
+   inputs 2
+   which {{"\[value parent.chew]>=0?0:1"}}
+   name Switch2
+   xpos 177
+   ypos 284
+  }
+  Clamp {
+   name Clamp2
+   xpos 177
+   ypos 323
+  }
+  Blur {
+   size {{"(floor(abs(\[value parent.soften]))/4)+(floor(abs(\[value parent.soften]))/8)"}}
+   name BlurResult
+   xpos 177
+   ypos 446
+  }
+push $N315a6870
+  ShuffleCopy {
+   inputs 2
+   name ShuffleCopy1
+   xpos 0
+   ypos 451
+  }
+  Premult {
+   name Premult1
+   xpos 0
+   ypos 486
+   disable {{"1-\[value parent.matteMult]" i}}
+  }
+  Output {
+   name Output1
+   xpos 0
+   ypos 556
+  }
+ end_group
+push $N315979c0
+ Dissolve {
+  inputs 2
+  which 1
+  name Dissolve7
+  tile_color 0x555555ff
+  xpos -920
+  ypos 824
+ }
+ Blur {
+  channels alpha
+  size {{parent.Blur_OUT.size}}
+  name Blur_OUT2
+  tile_color 0x666666ff
+  xpos -920
+  ypos 896
+ }
+ Dot {
+  name Dot20
+  xpos -886
+  ypos 1002
+ }
+ ChannelMerge {
+  inputs 2
+  operation xor
+  name ChannelMerge5
+  tile_color 0x666666ff
+  xpos -1030
+  ypos 986
+ }
+ Dot {
+  name Dot22
+  xpos -996
+  ypos 1146
+ }
+ Switch {
+  inputs 2
+  which {{parent.method}}
+  name Switch1
+  tile_color 0x555555ff
+  xpos -150
+  ypos 1142
+ }
+ Clamp {
+  name Clamp
+  tile_color 0x555555ff
+  xpos -150
+  ypos 1304
+ }
+ Dot {
+  name Dot2
+  xpos -116
+  ypos 1434
+ }
+push $N312fd760
+ Dot {
+  name Dot1
+  xpos 874
+  ypos 378
+ }
+ Dissolve {
+  inputs 2
+  channels alpha
+  which {{parent.mix_all}}
+  name Dissolve3
+  tile_color 0x555555ff
+  xpos 840
+  ypos 1424
+ }
+ Premult {
+  name Premult1
+  tile_color 0x555555ff
+  xpos 840
+  ypos 1550
+  disable {{"parent.prem == 0"}}
+ }
+ Output {
+  name Output
+  tile_color 0x666666ff
+  xpos 840
+  ypos 1598
+ }
+ NoOp {
+  inputs 0
+  name proxy
+  tile_color 0x666666ff
+  xpos -480
+  ypos 518
+  addUserKnob {20 User}
+  addUserKnob {7 in l Size R 0 100}
+  in 10
+  addUserKnob {7 out l Size R 0 100}
+  out 10
+ }
+push $N312bdd30
+ Blur {
+  channels alpha
+  size 5
+  name Blur_OUT
+  tile_color 0x666666ff
+  xpos -260
+  ypos 656
+ }
+end_group
