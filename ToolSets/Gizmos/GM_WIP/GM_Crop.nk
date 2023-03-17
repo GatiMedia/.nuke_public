@@ -1,9 +1,9 @@
 Group {
- name GM_Crop
- tile_color 0xbe7effff
+ name GM_Crop1
+ tile_color 0xaa55ffff
  selected true
- xpos 26800
- ypos 2054
+ xpos -7300
+ ypos -19978
  addUserKnob {20 User}
  addUserKnob {7 CropInc l "All Direction" R 0 10000}
  addUserKnob {26 ""}
@@ -18,8 +18,9 @@ Group {
  addUserKnob {41 reformat T Crop.reformat}
  addUserKnob {41 intersect -STARTLINE T Crop.intersect}
  addUserKnob {41 crop l "black outside" -STARTLINE T Crop.crop}
- addUserKnob {20 info l Info}
- addUserKnob {26 info1 l "" +STARTLINE T "<h1><font color=#888888>1.1 version</h1>GM_Crop<font color=#777777> by Attil Gasparetz\n\n2020"}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Crop© by Attila Gasparetz</font>"}
 }
  Input {
   inputs 0
