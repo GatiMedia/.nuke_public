@@ -1,18 +1,21 @@
 Group {
- name CG_Distortion
+ name GM_CG_Distortion1
  selected true
- xpos 24380
- ypos 1262
+ xpos -7293
+ ypos -20050
  addUserKnob {20 User}
  addUserKnob {41 colorDist l "Color Dist" T Copy_COLOR.mix}
  addUserKnob {41 smallDist l "Small Dist" T Copy_SMALL.mix}
  addUserKnob {41 largeDist l "Large Dist" T Copy_LARGE.mix}
- addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 ""}
  addUserKnob {41 mix T Dissolve1.which}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_CG_Distortion© by Attila Gasparetz</font>"}
 }
  Input {
   inputs 0
   name mask
+  selected true
   xpos 950
   ypos 1454
   number 1
@@ -28,52 +31,53 @@ Group {
   xpos 544
   ypos 594
  }
-set Nd068ebb0 [stack 0]
+set N319374e0 [stack 0]
  Dot {
   name Dot2
   xpos 324
   ypos 594
  }
-set Nd068ef90 [stack 0]
+set N3193c3f0 [stack 0]
  Dot {
   name Dot5
   xpos 324
   ypos 1074
  }
-set Nd5f0fc00 [stack 0]
+set N319412f0 [stack 0]
  Shuffle {
   alpha white
   name Shuffle1
   label "\[string toupper \[value in]]"
   xpos 730
-  ypos 1062
+  ypos 1064
  }
  ChannelMerge {
   inputs 2
   name ChannelMerge1
+  selected true
   xpos 730
-  ypos 1439
+  ypos 1442
   disable {{"!\[exists parent.input1]"}}
  }
-push $Nd068ef90
+push $N3193c3f0
  Dot {
   name Dot3
   xpos 104
   ypos 594
  }
-set Nd069c0d0 [stack 0]
+set N31963fa0 [stack 0]
  Dot {
   name Dot4
   xpos -116
   ypos 594
  }
-set Nd069d050 [stack 0]
+set N31968ec0 [stack 0]
  Remove {
   name Remove1
   xpos -370
-  ypos 582
+  ypos 584
  }
-set Nd06967b0 [stack 0]
+set N3196ddc0 [stack 0]
  Noise {
   size 3
   zoffset {{t/3+1500}}
@@ -85,7 +89,7 @@ set Nd06967b0 [stack 0]
   xpos -370
   ypos 1454
  }
-push $Nd069d050
+push $N31968ec0
  Group {
   inputs 2
   name X_Distort6
@@ -116,7 +120,7 @@ push $Nd069d050
   addUserKnob {7 noise_z l z t "Use this to animate the noise pattern.\nFor instance you could try with the expression \"frame/100\".\n\nRight click --> Add expression" -STARTLINE +HIDDEN}
   noise_z 4.815162342
   addUserKnob {7 blur_map l "blur map" t "Filter the map to make it smoother and get rid of the high frequency distortions. Increase this value to make a smoother distortion." R 0 100}
-  blur_map {{X_Distort_PARENT.blur_map x1001 0.35}}
+  blur_map {{X_Distort_PARENT.blur_map x1001 0.35 x1009 0.35}}
   addUserKnob {6 fast_blur_map l fast t "Uses a multipass blur that, altough not as accurate as a bruteforce blur, gets rid of the artifacts at a reduced cost. It is recommended to keep this on." -STARTLINE}
   fast_blur_map true
   addUserKnob {26 ""}
@@ -153,19 +157,19 @@ push $Nd069d050
    xpos -106
    ypos -406
   }
-set Nd5f24940 [stack 0]
+set N319ae710 [stack 0]
   Dot {
    name Dot2
    xpos 94
    ypos -406
   }
-set Nd5f24d20 [stack 0]
+set N319b35f0 [stack 0]
   Dot {
    name Dot1
    xpos 94
    ypos -356
   }
-set Nd5f25100 [stack 0]
+set N319b8500 [stack 0]
   Noise {
    cliptype bbox
    replace true
@@ -191,10 +195,10 @@ set Nd5f25100 [stack 0]
    ypos -408
    disable {{"\[exists parent.input1.disable]==0"}}
   }
-set Nd5f25ca0 [stack 0]
-push $Nd5f25100
-push $Nd5f25ca0
-push $Nd5f24d20
+set N319d6e30 [stack 0]
+push $N319b8500
+push $N319d6e30
+push $N319b35f0
   Switch {
    inputs 2
    which {{"\[exists parent.input1.disable]==1"}}
@@ -232,7 +236,7 @@ push $Nd5f24d20
    ypos -160
    disable {{use_all_channels}}
   }
-set Nd5f2c160 [stack 0]
+set N31a044d0 [stack 0]
   Dot {
    name Dot6
    xpos 194
@@ -255,7 +259,7 @@ set Nd5f2c160 [stack 0]
    xpos 494
    ypos 94
   }
-push $Nd5f2c160
+push $N31a044d0
   Blur {
    size {{blur_map}}
    quality {{parent.fast_blur_map?15:blur_map+1}}
@@ -310,7 +314,7 @@ push $Nd5f2c160
    xpos 294
    ypos 194
   }
-set Nd5f2b5c0 [stack 0]
+set N31a6fa00 [stack 0]
   BlinkScript {
    ProgramGroup 1
    KernelDescription "2 \"X_Distort\" iterate pixelWise c808228749d48a9f044958c8efc9a2b21aa668de9616076bf59cb1bcfcd28dcc 2 \"map\" Read Ranged2D \"dst\" Write Point 4 \"distortion\" Float 4 AAAAAAAAAAAAAAAAAAAAAA== \"direction\" Float 1 AAAAAA== \"stmap\" Int 1 AAAAAA== \"format\" Int 2 AAAAAAAAAAA= 4 \"distortion\" 4 1 \"direction\" 1 1 \"stmap\" 1 1 \"format\" 2 1 4 \"maprangeMin\" Int 2 1 AAAAAAAAAAA= \"maprangeMax\" Int 2 1 AAAAAAAAAAA= \"mapconstEdgeColor\" Float 4 1 AAAAAAAAAAAAAAAAAAAAAA== \"rotate\" Float 2 1 AAAAAAAAAAA="
@@ -331,8 +335,8 @@ set Nd5f2b5c0 [stack 0]
    xpos 294
    ypos 344
   }
-push $Nd5f2b5c0
-push $Nd5f24940
+push $N31a6fa00
+push $N319ae710
   AdjBBox {
    numpixels 1
    name AdjBBox1
@@ -361,7 +365,7 @@ push $Nd5f24940
    xpos -140
    ypos 184
   }
-push $Nd5f24940
+push $N319ae710
   Dot {
    name Dot5
    xpos -206
@@ -393,7 +397,7 @@ push $Nd5f24940
    ypos 440
   }
  end_group
-push $Nd06967b0
+push $N3196ddc0
  Noise {
   size 1.5
   zoffset {{t/2+1500}}
@@ -405,7 +409,7 @@ push $Nd06967b0
   xpos -370
   ypos 1238
  }
-push $Nd069d050
+push $N31968ec0
  Group {
   inputs 2
   name X_Distort3
@@ -436,7 +440,7 @@ push $Nd069d050
   addUserKnob {7 noise_z l z t "Use this to animate the noise pattern.\nFor instance you could try with the expression \"frame/100\".\n\nRight click --> Add expression" -STARTLINE +HIDDEN}
   noise_z 4.815162342
   addUserKnob {7 blur_map l "blur map" t "Filter the map to make it smoother and get rid of the high frequency distortions. Increase this value to make a smoother distortion." R 0 100}
-  blur_map {{X_Distort_PARENT.blur_map x1001 0.35}}
+  blur_map {{X_Distort_PARENT.blur_map x1001 0.35 x1009 0.35}}
   addUserKnob {6 fast_blur_map l fast t "Uses a multipass blur that, altough not as accurate as a bruteforce blur, gets rid of the artifacts at a reduced cost. It is recommended to keep this on." -STARTLINE}
   fast_blur_map true
   addUserKnob {26 ""}
@@ -473,19 +477,19 @@ push $Nd069d050
    xpos -106
    ypos -406
   }
-set Nd5f1ec40 [stack 0]
+set N31b071c0 [stack 0]
   Dot {
    name Dot2
    xpos 94
    ypos -406
   }
-set Nd5f1f020 [stack 0]
+set N31b0c0a0 [stack 0]
   Dot {
    name Dot1
    xpos 94
    ypos -356
   }
-set Nd5f183a0 [stack 0]
+set N31b10fb0 [stack 0]
   Noise {
    cliptype bbox
    replace true
@@ -511,10 +515,10 @@ set Nd5f183a0 [stack 0]
    ypos -408
    disable {{"\[exists parent.input1.disable]==0"}}
   }
-set Nd5f1f7e0 [stack 0]
-push $Nd5f183a0
-push $Nd5f1f7e0
-push $Nd5f1f020
+set N31b2f8e0 [stack 0]
+push $N31b10fb0
+push $N31b2f8e0
+push $N31b0c0a0
   Switch {
    inputs 2
    which {{"\[exists parent.input1.disable]==1"}}
@@ -552,7 +556,7 @@ push $Nd5f1f020
    ypos -160
    disable {{use_all_channels}}
   }
-set Nd5f20380 [stack 0]
+set N31b5d210 [stack 0]
   Dot {
    name Dot6
    xpos 194
@@ -575,7 +579,7 @@ set Nd5f20380 [stack 0]
    xpos 494
    ypos 94
   }
-push $Nd5f20380
+push $N31b5d210
   Blur {
    size {{blur_map}}
    quality {{parent.fast_blur_map?15:blur_map+1}}
@@ -630,7 +634,7 @@ push $Nd5f20380
    xpos 294
    ypos 194
   }
-set Nd5f21ea0 [stack 0]
+set N31bc8650 [stack 0]
   BlinkScript {
    ProgramGroup 1
    KernelDescription "2 \"X_Distort\" iterate pixelWise c808228749d48a9f044958c8efc9a2b21aa668de9616076bf59cb1bcfcd28dcc 2 \"map\" Read Ranged2D \"dst\" Write Point 4 \"distortion\" Float 4 AAAAAAAAAAAAAAAAAAAAAA== \"direction\" Float 1 AAAAAA== \"stmap\" Int 1 AAAAAA== \"format\" Int 2 AAAAAAAAAAA= 4 \"distortion\" 4 1 \"direction\" 1 1 \"stmap\" 1 1 \"format\" 2 1 4 \"maprangeMin\" Int 2 1 AAAAAAAAAAA= \"maprangeMax\" Int 2 1 AAAAAAAAAAA= \"mapconstEdgeColor\" Float 4 1 AAAAAAAAAAAAAAAAAAAAAA== \"rotate\" Float 2 1 AAAAAAAAAAA="
@@ -651,8 +655,8 @@ set Nd5f21ea0 [stack 0]
    xpos 294
    ypos 344
   }
-push $Nd5f21ea0
-push $Nd5f1ec40
+push $N31bc8650
+push $N31b071c0
   AdjBBox {
    numpixels 1
    name AdjBBox1
@@ -681,7 +685,7 @@ push $Nd5f1ec40
    xpos -140
    ypos 184
   }
-push $Nd5f1ec40
+push $N31b071c0
   Dot {
    name Dot5
    xpos -206
@@ -713,7 +717,7 @@ push $Nd5f1ec40
    ypos 440
   }
  end_group
-push $Nd06967b0
+push $N3196ddc0
  Noise {
   size 1.5
   zoffset {{t/2+1000}}
@@ -725,7 +729,7 @@ push $Nd06967b0
   xpos -370
   ypos 1022
  }
-push $Nd069d050
+push $N31968ec0
  Group {
   inputs 2
   name X_Distort1
@@ -756,7 +760,7 @@ push $Nd069d050
   addUserKnob {7 noise_z l z t "Use this to animate the noise pattern.\nFor instance you could try with the expression \"frame/100\".\n\nRight click --> Add expression" -STARTLINE +HIDDEN}
   noise_z 4.815162342
   addUserKnob {7 blur_map l "blur map" t "Filter the map to make it smoother and get rid of the high frequency distortions. Increase this value to make a smoother distortion." R 0 100}
-  blur_map {{X_Distort_PARENT.blur_map x1001 0.35}}
+  blur_map {{X_Distort_PARENT.blur_map x1001 0.35 x1009 0.35}}
   addUserKnob {6 fast_blur_map l fast t "Uses a multipass blur that, altough not as accurate as a bruteforce blur, gets rid of the artifacts at a reduced cost. It is recommended to keep this on." -STARTLINE}
   fast_blur_map true
   addUserKnob {26 ""}
@@ -793,19 +797,19 @@ push $Nd069d050
    xpos -106
    ypos -406
   }
-set Nd5f15900 [stack 0]
+set N31c5f620 [stack 0]
   Dot {
    name Dot2
    xpos 94
    ypos -406
   }
-set Nd5f164a0 [stack 0]
+set N31c64500 [stack 0]
   Dot {
    name Dot1
    xpos 94
    ypos -356
   }
-set Nd5f19700 [stack 0]
+set N31c69410 [stack 0]
   Noise {
    cliptype bbox
    replace true
@@ -831,10 +835,10 @@ set Nd5f19700 [stack 0]
    ypos -408
    disable {{"\[exists parent.input1.disable]==0"}}
   }
-set Nd5f1ae40 [stack 0]
-push $Nd5f19700
-push $Nd5f1ae40
-push $Nd5f164a0
+set N31c87d40 [stack 0]
+push $N31c69410
+push $N31c87d40
+push $N31c64500
   Switch {
    inputs 2
    which {{"\[exists parent.input1.disable]==1"}}
@@ -872,7 +876,7 @@ push $Nd5f164a0
    ypos -160
    disable {{use_all_channels}}
   }
-set Nd5f17be0 [stack 0]
+set N31cb5670 [stack 0]
   Dot {
    name Dot6
    xpos 194
@@ -895,7 +899,7 @@ set Nd5f17be0 [stack 0]
    xpos 494
    ypos 94
   }
-push $Nd5f17be0
+push $N31cb5670
   Blur {
    size {{blur_map}}
    quality {{parent.fast_blur_map?15:blur_map+1}}
@@ -950,7 +954,7 @@ push $Nd5f17be0
    xpos 294
    ypos 194
   }
-set Nd5f1b220 [stack 0]
+set N31d20ab0 [stack 0]
   BlinkScript {
    ProgramGroup 1
    KernelDescription "2 \"X_Distort\" iterate pixelWise c808228749d48a9f044958c8efc9a2b21aa668de9616076bf59cb1bcfcd28dcc 2 \"map\" Read Ranged2D \"dst\" Write Point 4 \"distortion\" Float 4 AAAAAAAAAAAAAAAAAAAAAA== \"direction\" Float 1 AAAAAA== \"stmap\" Int 1 AAAAAA== \"format\" Int 2 AAAAAAAAAAA= 4 \"distortion\" 4 1 \"direction\" 1 1 \"stmap\" 1 1 \"format\" 2 1 4 \"maprangeMin\" Int 2 1 AAAAAAAAAAA= \"maprangeMax\" Int 2 1 AAAAAAAAAAA= \"mapconstEdgeColor\" Float 4 1 AAAAAAAAAAAAAAAAAAAAAA== \"rotate\" Float 2 1 AAAAAAAAAAA="
@@ -971,8 +975,8 @@ set Nd5f1b220 [stack 0]
    xpos 294
    ypos 344
   }
-push $Nd5f1b220
-push $Nd5f15900
+push $N31d20ab0
+push $N31c5f620
   AdjBBox {
    numpixels 1
    name AdjBBox1
@@ -1001,7 +1005,7 @@ push $Nd5f15900
    xpos -140
    ypos 184
   }
-push $Nd5f15900
+push $N31c5f620
   Dot {
    name Dot5
    xpos -206
@@ -1033,7 +1037,7 @@ push $Nd5f15900
    ypos 440
   }
  end_group
-push $Nd06967b0
+push $N3196ddc0
  Noise {
   size 1.5
   zoffset {{t/2+500}}
@@ -1045,7 +1049,7 @@ push $Nd06967b0
   xpos -370
   ypos 902
  }
-push $Nd069d050
+push $N31968ec0
  Group {
   inputs 2
   name X_Distort2
@@ -1076,7 +1080,7 @@ push $Nd069d050
   addUserKnob {7 noise_z l z t "Use this to animate the noise pattern.\nFor instance you could try with the expression \"frame/100\".\n\nRight click --> Add expression" -STARTLINE +HIDDEN}
   noise_z 4.815162342
   addUserKnob {7 blur_map l "blur map" t "Filter the map to make it smoother and get rid of the high frequency distortions. Increase this value to make a smoother distortion." R 0 100}
-  blur_map {{X_Distort_PARENT.blur_map x1001 0.35}}
+  blur_map {{X_Distort_PARENT.blur_map x1001 0.35 x1009 0.35}}
   addUserKnob {6 fast_blur_map l fast t "Uses a multipass blur that, altough not as accurate as a bruteforce blur, gets rid of the artifacts at a reduced cost. It is recommended to keep this on." -STARTLINE}
   fast_blur_map true
   addUserKnob {26 ""}
@@ -1113,19 +1117,19 @@ push $Nd069d050
    xpos -106
    ypos -406
   }
-set Nd0699250 [stack 0]
+set N31db7b30 [stack 0]
   Dot {
    name Dot2
    xpos 94
    ypos -406
   }
-set Nd0699630 [stack 0]
+set N31dbca10 [stack 0]
   Dot {
    name Dot1
    xpos 94
    ypos -356
   }
-set Nd0697b10 [stack 0]
+set N31dc1920 [stack 0]
   Noise {
    cliptype bbox
    replace true
@@ -1151,10 +1155,10 @@ set Nd0697b10 [stack 0]
    ypos -408
    disable {{"\[exists parent.input1.disable]==0"}}
   }
-set Nd069c890 [stack 0]
-push $Nd0697b10
-push $Nd069c890
-push $Nd0699630
+set N31de0250 [stack 0]
+push $N31dc1920
+push $N31de0250
+push $N31dbca10
   Switch {
    inputs 2
    which {{"\[exists parent.input1.disable]==1"}}
@@ -1192,7 +1196,7 @@ push $Nd0699630
    ypos -160
    disable {{use_all_channels}}
   }
-set Nd0696f70 [stack 0]
+set N31e0db80 [stack 0]
   Dot {
    name Dot6
    xpos 194
@@ -1215,7 +1219,7 @@ set Nd0696f70 [stack 0]
    xpos 494
    ypos 94
   }
-push $Nd0696f70
+push $N31e0db80
   Blur {
    size {{blur_map}}
    quality {{parent.fast_blur_map?15:blur_map+1}}
@@ -1270,7 +1274,7 @@ push $Nd0696f70
    xpos 294
    ypos 194
   }
-set Nd0699a10 [stack 0]
+set N31e78fc0 [stack 0]
   BlinkScript {
    ProgramGroup 1
    KernelDescription "2 \"X_Distort\" iterate pixelWise c808228749d48a9f044958c8efc9a2b21aa668de9616076bf59cb1bcfcd28dcc 2 \"map\" Read Ranged2D \"dst\" Write Point 4 \"distortion\" Float 4 AAAAAAAAAAAAAAAAAAAAAA== \"direction\" Float 1 AAAAAA== \"stmap\" Int 1 AAAAAA== \"format\" Int 2 AAAAAAAAAAA= 4 \"distortion\" 4 1 \"direction\" 1 1 \"stmap\" 1 1 \"format\" 2 1 4 \"maprangeMin\" Int 2 1 AAAAAAAAAAA= \"maprangeMax\" Int 2 1 AAAAAAAAAAA= \"mapconstEdgeColor\" Float 4 1 AAAAAAAAAAAAAAAAAAAAAA== \"rotate\" Float 2 1 AAAAAAAAAAA="
@@ -1291,8 +1295,8 @@ set Nd0699a10 [stack 0]
    xpos 294
    ypos 344
   }
-push $Nd0699a10
-push $Nd0699250
+push $N31e78fc0
+push $N31db7b30
   AdjBBox {
    numpixels 1
    name AdjBBox1
@@ -1321,7 +1325,7 @@ push $Nd0699250
    xpos -140
    ypos 184
   }
-push $Nd0699250
+push $N31db7b30
   Dot {
    name Dot5
    xpos -206
@@ -1353,7 +1357,7 @@ push $Nd0699250
    ypos 440
   }
  end_group
-push $Nd06967b0
+push $N3196ddc0
  Noise {
   size 1.5
   zoffset {{t/2}}
@@ -1365,7 +1369,7 @@ push $Nd06967b0
   xpos -370
   ypos 806
  }
-push $Nd069d050
+push $N31968ec0
  Group {
   inputs 2
   name X_Distort_PARENT
@@ -1431,19 +1435,19 @@ push $Nd069d050
    xpos -106
    ypos -406
   }
-set Ncfbd43f0 [stack 0]
+set N31f0f800 [stack 0]
   Dot {
    name Dot2
    xpos 94
    ypos -406
   }
-set Ncfbd4bb0 [stack 0]
+set N31f143f0 [stack 0]
   Dot {
    name Dot1
    xpos 94
    ypos -356
   }
-set Nab856c00 [stack 0]
+set N31f19300 [stack 0]
   Noise {
    cliptype bbox
    replace true
@@ -1469,10 +1473,10 @@ set Nab856c00 [stack 0]
    ypos -408
    disable {{"\[exists parent.input1.disable]==0"}}
   }
-set Nd0691650 [stack 0]
-push $Nab856c00
-push $Nd0691650
-push $Ncfbd4bb0
+set N31f37c30 [stack 0]
+push $N31f19300
+push $N31f37c30
+push $N31f143f0
   Switch {
    inputs 2
    which {{"\[exists parent.input1.disable]==1"}}
@@ -1510,7 +1514,7 @@ push $Ncfbd4bb0
    ypos -160
    disable {{use_all_channels}}
   }
-set Nd0692d90 [stack 0]
+set N31f65560 [stack 0]
   Dot {
    name Dot6
    xpos 194
@@ -1533,7 +1537,7 @@ set Nd0692d90 [stack 0]
    xpos 494
    ypos 94
   }
-push $Nd0692d90
+push $N31f65560
   Blur {
    size {{blur_map}}
    quality {{parent.fast_blur_map?15:blur_map+1}}
@@ -1588,7 +1592,7 @@ push $Nd0692d90
    xpos 294
    ypos 194
   }
-set Nd06925d0 [stack 0]
+set N31fd09a0 [stack 0]
   BlinkScript {
    ProgramGroup 1
    KernelDescription "2 \"X_Distort\" iterate pixelWise c808228749d48a9f044958c8efc9a2b21aa668de9616076bf59cb1bcfcd28dcc 2 \"map\" Read Ranged2D \"dst\" Write Point 4 \"distortion\" Float 4 AAAAAAAAAAAAAAAAAAAAAA== \"direction\" Float 1 AAAAAA== \"stmap\" Int 1 AAAAAA== \"format\" Int 2 AAAAAAAAAAA= 4 \"distortion\" 4 1 \"direction\" 1 1 \"stmap\" 1 1 \"format\" 2 1 4 \"maprangeMin\" Int 2 1 AAAAAAAAAAA= \"maprangeMax\" Int 2 1 AAAAAAAAAAA= \"mapconstEdgeColor\" Float 4 1 AAAAAAAAAAAAAAAAAAAAAA== \"rotate\" Float 2 1 AAAAAAAAAAA="
@@ -1609,8 +1613,8 @@ set Nd06925d0 [stack 0]
    xpos 294
    ypos 344
   }
-push $Nd06925d0
-push $Ncfbd43f0
+push $N31fd09a0
+push $N31f0f800
   AdjBBox {
    numpixels 1
    name AdjBBox1
@@ -1639,7 +1643,7 @@ push $Ncfbd43f0
    xpos -140
    ypos 184
   }
-push $Ncfbd43f0
+push $N31f0f800
   Dot {
    name Dot5
    xpos -206
@@ -1671,7 +1675,7 @@ push $Ncfbd43f0
    ypos 440
   }
  end_group
-push $Nd069c0d0
+push $N31963fa0
  Copy {
   inputs 2
   from0 rgba.red
@@ -1679,7 +1683,7 @@ push $Nd069c0d0
   mix 0.1
   name Copy_COLOR
   xpos 70
-  ypos 798
+  ypos 800
  }
  Copy {
   inputs 2
@@ -1689,7 +1693,7 @@ push $Nd069c0d0
   mix {{Copy_COLOR.mix}}
   name Copy2
   xpos 70
-  ypos 894
+  ypos 896
  }
  Copy {
   inputs 2
@@ -1698,7 +1702,7 @@ push $Nd069c0d0
   mix {{Copy_COLOR.mix}}
   name Copy3
   xpos 70
-  ypos 1014
+  ypos 1016
  }
  Copy {
   inputs 2
@@ -1708,7 +1712,7 @@ push $Nd069c0d0
   mix 0.2
   name Copy_SMALL
   xpos 70
-  ypos 1223
+  ypos 1226
  }
  Copy {
   inputs 2
@@ -1718,23 +1722,23 @@ push $Nd069c0d0
   mix 0.4
   name Copy_LARGE
   xpos 70
-  ypos 1439
+  ypos 1442
  }
-push $Nd5f0fc00
+push $N319412f0
  Dissolve {
   inputs 2
   which 1
   name Dissolve1
   label "Which: \[value which]"
   xpos 290
-  ypos 1439
+  ypos 1442
  }
-push $Nd068ebb0
+push $N319374e0
  Keymix {
   inputs 3
   name Keymix1
   xpos 510
-  ypos 1446
+  ypos 1448
  }
  Output {
   name Output1
