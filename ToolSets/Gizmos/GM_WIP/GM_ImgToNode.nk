@@ -1,0 +1,30 @@
+Group {
+ inputs 0
+ name GM_ImgToNode1
+ tile_color 0xffc428ff
+ label "\[file tail \[value fname]]"
+ selected true
+ xpos 400
+ ypos -226
+ addUserKnob {20 User}
+ addUserKnob {2 fname l "<b><font color=#D3BA4F>File name"}
+ addUserKnob {26 ""}
+ addUserKnob {22 add_to_sel l "<b><font color=#D3BA4F>Add to selected" T "### ImgToNode_add ##\n\nthis_node = nuke.thisNode()\n\nnuke.root().begin()\n\nnodes = nuke.selectedNodes()\n\nnuke.root().end()\n\nthis_node.begin()\n\nimg_path = nuke.thisNode().knob('fname').getValue()\nthis_node.end()\n\nnuke.root().begin()\n\nfor node in nodes:\n    node.knob('icon').setValue(img_path)\n\nnuke.root().end()\n\n###" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {22 cl_sel l "<b><font color=#D3BA4F>Clear Selected" T "### ImgToNode_clear ##\n\nnuke.root().begin()\n\nnodes = nuke.selectedNodes()\n\nfor node in nodes:\n    node.knob('icon').setValue('')\n\nnuke.root().end()\n\n###" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.01 version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_ImgToNode© by Attila Gasparetz</font>"}
+}
+ NoOp {
+  inputs 0
+  name DoingNothing
+  xpos 400
+  ypos 254
+ }
+ Output {
+  name Output1
+  xpos 400
+  ypos 326
+ }
+end_group
