@@ -1,0 +1,292 @@
+Group {
+name GM_ColorIterate1
+tile_color 0x6a55ffff
+selected true
+xpos 40220
+ypos -849
+addUserKnob {20 User}
+addUserKnob {4 colors_1 l "<h3><font color=#da5d5d>Co<font color=#87da5d>lo<font color=#5db0da>rs" M {RGB RG RB "GB " "" ""}}
+addUserKnob {26 waves l "<h3><font color=#7c6fde>Waves"}
+addUserKnob {41 waveLength l WaveLength T DissolveCI_RGB.waveLength}
+addUserKnob {41 offset l Offset T DissolveCI_RGB.offset}
+addUserKnob {26 colors l "<h3><font color=#7c6fde>Brightness"}
+addUserKnob {41 multiply l Red T GradeRED.multiply}
+addUserKnob {41 multiply_1 l Green T GradeGREEN.multiply}
+addUserKnob {41 multiply_2 l Blue T GradeBLUE.multiply}
+addUserKnob {26 saturation l "<h3><font color=#7c6fde>Saturation"}
+addUserKnob {41 saturation_1 l Red T SaturationRED.saturation}
+addUserKnob {41 saturation_2 l Green T SaturationGREEN.saturation}
+addUserKnob {41 saturation_3 l Blue T SaturationBLUE.saturation}
+addUserKnob {26 mix l "<h3><font color=#7c6fde>Mix"}
+addUserKnob {41 operation T MergeCI.operation}
+addUserKnob {41 mix_1 l mix T MergeCI.mix}
+addUserKnob {20 info l Info}
+addUserKnob {26 info1 l "" +STARTLINE T "<h1><font color=#888888>1.1 version</h1>GM_ColorIterate<font color=#777777> by Attil Gasparetz\n\n2020"}
+}
+Input {
+ inputs 0
+ name mask
+ xpos 950
+ ypos 351
+ number 1
+}
+Dot {
+ name Dot1
+ tile_color 0x949494ff
+ note_font_size 72
+ note_font_color 0xffffffff
+ xpos 984
+ ypos 450
+}
+Input {
+ inputs 0
+ name image
+ xpos 510
+ ypos -57
+}
+Dot {
+ name Dot276
+ tile_color 0x949494ff
+ note_font_size 72
+ note_font_color 0xffffffff
+ xpos 544
+ ypos 18
+}
+set Nceda2000 [stack 0]
+Shuffle {
+ red black
+ green black
+ blue black
+ alpha white
+ name Shuffle1
+ label "\[string toupper \[value in]]"
+ xpos 730
+ ypos 9
+}
+ChannelMerge {
+ inputs 2
+ operation multiply
+ name ChannelMerge1
+ xpos 730
+ ypos 434
+ disable {{"!\[exists parent.input1]"}}
+}
+push $Nceda2000
+Dot {
+ name Dot273
+ tile_color 0x949494ff
+ note_font_size 72
+ note_font_color 0xffffffff
+ xpos -6
+ ypos 18
+}
+set Nc67f8000 [stack 0]
+Shuffle {
+ red black
+ green white
+ blue black
+ alpha black
+ name ShuffleGREEN1
+ tile_color 0x6aff55ff
+ label "\[string toupper \[value in]]"
+ xpos -40
+ ypos 81
+}
+Grade {
+ multiply {{GradeGREEN.multiply}}
+ name GradeGREEN2
+ xpos -40
+ ypos 135
+}
+Saturation {
+ saturation {{SaturationGREEN.saturation}}
+ name SaturationGREEN2
+ label "Value: \[value saturation]"
+ xpos -40
+ ypos 177
+}
+push 0
+push $Nc67f8000
+Shuffle {
+ red black
+ green black
+ blue white
+ alpha black
+ name Shuffle_BLUE
+ tile_color 0x9fffff
+ label "\[string toupper \[value in]]"
+ xpos 70
+ ypos 81
+}
+Grade {
+ multiply 4
+ name GradeBLUE
+ xpos 70
+ ypos 135
+}
+Saturation {
+ name SaturationBLUE
+ label "Value: \[value saturation]"
+ xpos 70
+ ypos 177
+}
+set Na62aa800 [stack 0]
+push $Nc67f8000
+Shuffle {
+ red black
+ green white
+ blue black
+ alpha black
+ name ShuffleGREEN
+ tile_color 0x6aff55ff
+ label "\[string toupper \[value in]]"
+ xpos -150
+ ypos 81
+}
+Grade {
+ name GradeGREEN
+ xpos -150
+ ypos 135
+}
+Saturation {
+ name SaturationGREEN
+ label "Value: \[value saturation]"
+ xpos -150
+ ypos 177
+}
+set Na0a95800 [stack 0]
+Dissolve {
+ inputs 3+1
+ which {{"((frame+offset) % waveLength)/ waveLength * (2-0) + 0"}}
+ name DissolveCI_GB
+ label "Which: \[format \"%.2f\" \[value which]]"
+ xpos -40
+ ypos 554
+ addUserKnob {20 User}
+ addUserKnob {7 waveLength R 0 100}
+ waveLength {{DissolveCI_RGB.waveLength}}
+ addUserKnob {7 offset R 0 100}
+ offset {{DissolveCI_RGB.offset}}
+}
+push $Nc67f8000
+Shuffle {
+ red white
+ green black
+ blue black
+ alpha black
+ name ShuffleRED2
+ tile_color 0xff0000ff
+ label "\[string toupper \[value in]]"
+ xpos 180
+ ypos 81
+}
+Grade {
+ multiply {{GradeRED.multiply}}
+ name GradeRED2
+ xpos 180
+ ypos 135
+}
+Saturation {
+ saturation {{SaturationRED.saturation}}
+ name SaturationRED2
+ label "Value: \[value saturation]"
+ xpos 180
+ ypos 177
+}
+set Na0a95000 [stack 0]
+push 0
+push $Na62aa800
+push $Nc67f8000
+Shuffle {
+ red white
+ green black
+ blue black
+ alpha black
+ name ShuffleRED
+ tile_color 0xff0000ff
+ label "\[string toupper \[value in]]"
+ xpos -260
+ ypos 81
+}
+Grade {
+ name GradeRED
+ xpos -260
+ ypos 135
+}
+Saturation {
+ name SaturationRED
+ label "Value: \[value saturation]"
+ xpos -260
+ ypos 177
+}
+set Nf778a800 [stack 0]
+Dissolve {
+ inputs 3+1
+ which {{"((frame+offset) % waveLength)/ waveLength * (2-0) + 0"}}
+ name DissolveCI_RB
+ label "Which: \[format \"%.2f\" \[value which]]"
+ xpos -40
+ ypos 483
+ addUserKnob {20 User}
+ addUserKnob {7 waveLength R 0 100}
+ waveLength {{DissolveCI_RGB.waveLength}}
+ addUserKnob {7 offset R 0 100}
+ offset {{DissolveCI_RGB.offset}}
+}
+push $Na0a95000
+push 0
+push $Na0a95800
+push $Nf778a800
+Dissolve {
+ inputs 3+1
+ which {{"((frame+offset) % waveLength)/ waveLength * (2-0) + 0"}}
+ name DissolveCI_RG
+ label "Which: \[format \"%.2f\" \[value which]]"
+ xpos -40
+ ypos 386
+ addUserKnob {20 User}
+ addUserKnob {7 waveLength R 0 100}
+ waveLength {{DissolveCI_RGB.waveLength}}
+ addUserKnob {7 offset R 0 100}
+ offset {{DissolveCI_RGB.offset}}
+}
+push $Na0a95000
+push $Na62aa800
+push 0
+push $Na0a95800
+push $Nf778a800
+Dissolve {
+ inputs 4+1
+ which {{"((frame+offset) % waveLength)/ waveLength * (3-0) + 0"}}
+ name DissolveCI_RGB
+ label "Which: \[format \"%.2f\" \[value which]]"
+ xpos -40
+ ypos 314
+ addUserKnob {20 User}
+ addUserKnob {7 waveLength R 0 100}
+ waveLength 20
+ addUserKnob {7 offset R 0 100}
+}
+Switch {
+ inputs 4
+ which {{colors_1}}
+ name Switch_COLORS
+ label "Which: \[value which]"
+ xpos 180
+ ypos 441
+}
+push $Nceda2000
+Merge2 {
+ inputs 2+1
+ operation soft-light
+ also_merge all
+ name MergeCI
+ xpos 510
+ ypos 447
+}
+Output {
+ name Output1
+ xpos 510
+ ypos 711
+}
+end_group
