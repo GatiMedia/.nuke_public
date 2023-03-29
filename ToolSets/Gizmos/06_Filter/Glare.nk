@@ -1,0 +1,172 @@
+Group {
+name Glare1
+tile_color 0xc9007fff
+selected true
+xpos 110985
+ypos 71174
+addUserKnob {20 "" l User}
+addUserKnob {4 output l Output M {comp "effect only" shape "" "" "" ""}}
+addUserKnob {26 "" +STARTLINE}
+addUserKnob {7 glaretol l Tolerance}
+glaretol 0.75
+addUserKnob {7 glaresize l "Glare Size" R 0.25 20}
+glaresize 10
+addUserKnob {7 chroma_spread l "Chroma Spread" R 0 0.3}
+chroma_spread 0.3
+addUserKnob {7 speed l Speed t "the higher the slider the faster the result although detail is sacrificed. \n" R 3 10}
+speed 5
+addUserKnob {26 _1 l <b>Shape}
+addUserKnob {7 glareaspect l Aspect R 0 2}
+glareaspect 1
+addUserKnob {3 Flare1_corners l corners}
+Flare1_corners 5
+addUserKnob {7 Flare1_flattening l "edge flattening" R 0 100}
+addUserKnob {7 Flare1_sharpness l "corner sharpness"}
+Flare1_sharpness 0.5
+addUserKnob {26 "" l "@b;Asymmetry"}
+addUserKnob {41 asym_repeat l Repeat T Flare1.asym_repeat}
+addUserKnob {41 asym_multiplier l Multiplier T Flare1.asym_multiplier}
+addUserKnob {41 asym_falloff l Falloff T Flare1.asym_falloff}
+addUserKnob {41 asym_angle l Angle T Flare1.asym_angle}
+addUserKnob {26 _2 l "<b>Color Options"}
+addUserKnob {19 Grade1_multiply l Mult R 0 4}
+Grade1_multiply 1
+addUserKnob {6 Grade1_multiply_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {19 Grade1_gamma l Gamma R 0.2 5}
+Grade1_gamma {1 1 1 1}
+addUserKnob {6 Grade1_gamma_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {26 ""}
+addUserKnob {6 crop l "crop to bbox" -STARTLINE}
+}
+Constant {
+inputs 0
+format "1000 1000 0 0 1000 1000 1 Glare"
+name Constant1
+xpos 70
+ypos 351
+}
+Flare {
+position {{width/2} {height/2}}
+radius {289.5 356.55 416.91}
+inner_color 0
+chroma_spread {{parent.chroma_spread}}
+chroma_shift_angle_add true
+corners {{Flare1_corners}}
+flattening {{parent.Flare1_flattening}}
+sharpness {{Flare1_sharpness}}
+name Flare1
+xpos 70
+ypos 494
+}
+set Nd8707a00 [stack 0]
+Input {
+inputs 0
+name img
+xpos 730
+ypos 254
+}
+Dot {
+name Dot1
+xpos 764
+ypos 354
+}
+set N95614aa0 [stack 0]
+push $Nd8707a00
+Transform {
+scale {{parent.glaresize/(speed*20)} {w/glareaspect}}
+center {500 500}
+name Transform1_glare
+xpos 180
+ypos 494
+}
+push $N95614aa0
+Transform {
+scale {{(1/(speed*10))*10}}
+center {{input.width/2} {input.height/2}}
+name Transform2_glare
+xpos 510
+ypos 350
+}
+Keyer {
+operation "luminance key"
+range {{parent.glaretol} 1 1 1}
+name Keyer_glare
+tile_color 0xff0000
+xpos 290
+ypos 344
+}
+Shuffle {
+red alpha
+green alpha
+blue alpha
+alpha black
+name Shuffle_glare
+xpos 290
+ypos 446
+}
+Convolve {
+inputs 2
+channels rgb
+name Convolve1
+xpos 290
+ypos 494
+}
+Grade {
+multiply {{parent.Grade1_multiply.r} {parent.Grade1_multiply.g} {parent.Grade1_multiply.b} {parent.Grade1_multiply.a}}
+gamma {{parent.Grade1_gamma.r} {parent.Grade1_gamma.g} {parent.Grade1_gamma.b} {parent.Grade1_gamma.a}}
+unpremult -rgba.alpha
+name Grade1_glare
+tile_color 0x7aa9ff00
+xpos 400
+ypos 494
+}
+Transform {
+scale {{1/Transform2_glare.scale}}
+center {{input.width/2} {input.height/2}}
+filter Parzen
+name Transform3_glare
+xpos 510
+ypos 494
+}
+CopyBBox {
+inputs 2
+name CopyBBox1_glare
+tile_color 0x9e4d6d00
+xpos 510
+ypos 734
+disable {{!crop}}
+}
+Crop {
+box {{bbox.x} {bbox.y} {bbox.r} {"bbox.t "}}
+name Crop2Bbox1_glare
+xpos 510
+ypos 806
+disable {{1-parent.crop}}
+}
+set Nbce453f0 [stack 0]
+push $N95614aa0
+push $Nbce453f0
+Merge {
+inputs 2
+operation plus
+bbox B
+name Plus
+tile_color 0x7171c600
+note_font "Helvetica Bold"
+note_font_size 16
+xpos 730
+ypos 804
+}
+Switch {
+inputs 3
+which {{parent.output}}
+name Switch1_glare
+xpos 70
+ypos 1070
+}
+Output {
+name Output1
+xpos 70
+ypos 1238
+}
+end_group
