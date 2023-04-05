@@ -1,0 +1,17 @@
+NoOp {
+name GM_Shift1
+selected true
+xpos 111891
+ypos 70070
+addUserKnob {20 User}
+addUserKnob {3 amount l "Amount = ("}
+amount 100
+addUserKnob {26 amount_2 l "" -STARTLINE T "* Grid Height/Width )"}
+addUserKnob {26 ""}
+addUserKnob {26 a l " " T "           "}
+addUserKnob {22 shiftU l ▲ -STARTLINE T "shiftU = nuke.toNode('preferences')\['GridHeight'].value()\n\namount = int(nuke.thisNode()\['amount'].value())\n\nsel = nuke.selectedNodes()\nfor n in sel:\n    this = n\['ypos'].value()\n    n\['ypos'].setValue(int(this) - (int(shiftU)*amount))\n    thisnow = n\['ypos'].value()\n\n"}
+addUserKnob {22 shiftL l ◄ T "shiftL = nuke.toNode('preferences')\['GridWidth'].value()\n\namount = int(nuke.thisNode()\['amount'].value())\n\nsel = nuke.selectedNodes()\nfor n in sel:\n    this = n\['xpos'].value()\n    n\['xpos'].setValue(int(this) - (int(shiftL)*amount))\n    thisnow = n\['xpos'].value()\n" +STARTLINE}
+addUserKnob {22 shiftR l ► -STARTLINE T "shiftR = nuke.toNode('preferences')\['GridWidth'].value()\n\namount = int(nuke.thisNode()\['amount'].value())\n\nsel = nuke.selectedNodes()\nfor n in sel:\n    this = n\['xpos'].value()\n    n\['xpos'].setValue(int(this) + (int(shiftR)*amount))\n    thisnow = n\['xpos'].value()"}
+addUserKnob {26 b l " " T "           "}
+addUserKnob {22 shiftD l ▼ -STARTLINE T "shiftD = nuke.toNode('preferences')\['GridHeight'].value()\n\namount = int(nuke.thisNode()\['amount'].value())\n\nsel = nuke.selectedNodes()\nfor n in sel:\n    this = n\['ypos'].value()\n    n\['ypos'].setValue(int(this) + (int(shiftD)*amount))\n    thisnow = n\['ypos'].value()"}
+}
