@@ -1,0 +1,10 @@
+Crop {
+box {{input.bbox.x} {input.bbox.y} {input.bbox.r} {input.bbox.t}}
+reformat true
+crop false
+name Crop_to_bbox1
+label "Box: x:\[value box.x]  y:\[value box.y] r:\[value box.r] t:\[value box.t]"
+selected true
+xpos -2271
+ypos 6008
+}
