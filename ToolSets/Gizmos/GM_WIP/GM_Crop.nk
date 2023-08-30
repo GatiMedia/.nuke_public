@@ -1,45 +1,44 @@
 Group {
- name GM_Crop1
- tile_color 0xaa55ffff
- selected true
- xpos -7300
- ypos -19978
- addUserKnob {20 User}
- addUserKnob {7 CropInc l "All Direction" R 0 10000}
- addUserKnob {26 ""}
- addUserKnob {7 vertical l Vertical R 0 10000}
- addUserKnob {7 horizontal l Horizontal R 0 10000}
- addUserKnob {26 ""}
- addUserKnob {7 left l Left R 0 10000}
- addUserKnob {7 right l Right R 0 10000}
- addUserKnob {7 top l Top R 0 10000}
- addUserKnob {7 bottom l Bottom R 0 10000}
- addUserKnob {26 ""}
- addUserKnob {41 reformat T Crop.reformat}
- addUserKnob {41 intersect -STARTLINE T Crop.intersect}
- addUserKnob {41 crop l "black outside" -STARTLINE T Crop.crop}
- addUserKnob {26 ""}
- addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
- addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Crop© by Attila Gasparetz</font>"}
+name GM_Crop1
+tile_color 0xaa55ffff
+selected true
+xpos -2336
+ypos 5917
+addUserKnob {20 User}
+addUserKnob {7 CropInc l "All Direction" R -1000 1000}
+addUserKnob {26 ""}
+addUserKnob {7 vertical l Vertical R -1000 1000}
+addUserKnob {7 horizontal l Horizontal R -1000 1000}
+addUserKnob {26 ""}
+addUserKnob {7 left l Left R -1000 1000}
+addUserKnob {7 right l Right R -1000 1000}
+addUserKnob {7 top l Top R -1000 1000}
+addUserKnob {7 bottom l Bottom R -1000 1000}
+addUserKnob {26 ""}
+addUserKnob {41 reformat T Crop_GM.reformat}
+addUserKnob {41 intersect -STARTLINE T Crop_GM.intersect}
+addUserKnob {41 crop l "black outside" -STARTLINE T Crop_GM.crop}
+addUserKnob {26 ""}
+addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Crop© by Attila Gasparetz</font>"}
 }
- Input {
-  inputs 0
-  name Input
-  xpos 510
-  ypos 230
- }
- Crop {
-  box {{"-(((input.format.r + CropInc) + horizontal + left) - input.format.r )"} {"-(((input.format.t + CropInc) + vertical + bottom) - input.format.t )"} {"(input.format.r + CropInc) + horizontal + right"} {"(input.format.t + CropInc) + vertical + top"}}
-  reformat true
-  crop false
-  name Crop
-  label "Box: x:\[value box.x]  y:\[value box.y] r:\[value box.r] t:\[value box.t]"
-  xpos 510
-  ypos 320
- }
- Output {
-  name Output1
-  xpos 510
-  ypos 398
- }
+Input {
+inputs 0
+name Input
+xpos 510
+ypos 278
+}
+Crop {
+box {{"-(((input.format.r + CropInc) + horizontal + left) - input.format.r )"} {"-(((input.format.t + CropInc) + vertical + bottom) - input.format.t )"} {"(input.format.r + CropInc) + horizontal + right"} {"(input.format.t + CropInc) + vertical + top"}}
+name Crop_GM
+label "Box: x:\[value box.x]  y:\[value box.y] r:\[value box.r] t:\[value box.t]"
+selected true
+xpos 510
+ypos 320
+}
+Output {
+name Output1
+xpos 510
+ypos 374
+}
 end_group
