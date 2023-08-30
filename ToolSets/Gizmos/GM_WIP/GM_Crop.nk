@@ -1,9 +1,10 @@
 Group {
 name GM_Crop1
 tile_color 0xaa55ffff
+label "Box: x:\[value this.Crop_GM.box.x]  y:\[value this.Crop_GM.box.y]  r:\[value this.Crop_GM.box.r]  t:\[value this.Crop_GM.box.t]  "
 selected true
-xpos -2336
-ypos 5917
+xpos -2240
+ypos 5912
 addUserKnob {20 User}
 addUserKnob {7 CropInc l "All Direction" R -1000 1000}
 addUserKnob {26 ""}
@@ -26,19 +27,17 @@ Input {
 inputs 0
 name Input
 xpos 510
-ypos 278
+ypos 302
 }
 Crop {
 box {{"-(((input.format.r + CropInc) + horizontal + left) - input.format.r )"} {"-(((input.format.t + CropInc) + vertical + bottom) - input.format.t )"} {"(input.format.r + CropInc) + horizontal + right"} {"(input.format.t + CropInc) + vertical + top"}}
 name Crop_GM
-label "Box: x:\[value box.x]  y:\[value box.y] r:\[value box.r] t:\[value box.t]"
-selected true
 xpos 510
-ypos 320
+ypos 326
 }
 Output {
 name Output1
 xpos 510
-ypos 374
+ypos 350
 }
 end_group
