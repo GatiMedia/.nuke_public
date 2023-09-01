@@ -134,6 +134,8 @@ nuke.knobDefault('StickyNote.note_font_size', "22")
 nuke.toolbar('Nodes').addCommand('Channel/ChannelMerge', 'nuke.createNode("ChannelMerge")', 'shift+c', shortcutContext=dagContext)
 # Shuffle
 nuke.toolbar('Nodes').addCommand('Channel/Shuffle', 'nuke.createNode("Shuffle2")', 'h', shortcutContext=dagContext)
+# Tracker
+nuke.menu('Nodes').addCommand("Transform/Tracker4", "nuke.createNode('Tracker4')", "ctrl+alt+t", icon="Tracker.png", shortcutContext=2)
 
 # --------------------------------------------------------------
 #  CUSTOM MENUS ::::::::::::::::::::::::::::::::::::::::::::::::
