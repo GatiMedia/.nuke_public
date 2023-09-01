@@ -130,7 +130,10 @@ nuke.knobDefault('StickyNote.note_font_size', "22")
 #  SHORTCUTS ::::::::::::::::::::::::::::::::::::::::::::::::::
 # --------------------------------------------------------------
 
+# ChannelMerge
 nuke.toolbar('Nodes').addCommand('Channel/ChannelMerge', 'nuke.createNode("ChannelMerge")', 'shift+c', shortcutContext=dagContext)
+# Shuffle
+nuke.toolbar('Nodes').addCommand('Channel/Shuffle', 'nuke.createNode("Shuffle2")', 'h', shortcutContext=dagContext)
 
 # --------------------------------------------------------------
 #  CUSTOM MENUS ::::::::::::::::::::::::::::::::::::::::::::::::
