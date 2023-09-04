@@ -232,6 +232,13 @@ utilitiesMenu = nuke.menu('Nuke').addMenu('GM Menu')
 # --------------------------------------------------------------
 
 
+def open_gatimedia_site():
+    webbrowser.open('https://sites.google.com/misc-studios.com/tvfilmwiki/projects/ntls-nautilus', new=2)
+    
+utilitiesMenuu.addCommand('Open GatiMedia', 'open_gatimedia_site()', icon='link.png')
+
+utilitiesMenu.addSeparator()
+
 # From https://www.ftrack.com/en/2019/09/8-ways-to-increase-your-efficiency-with-foundrys-nuke.html
 
 def close():
