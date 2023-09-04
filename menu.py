@@ -235,7 +235,7 @@ utilitiesMenu = nuke.menu('Nuke').addMenu('GM Menu')
 def open_gatimedia_site():
     webbrowser.open('https://sites.google.com/misc-studios.com/tvfilmwiki/projects/ntls-nautilus', new=2)
     
-utilitiesMenuu.addCommand('Open GatiMedia', 'open_gatimedia_site()', icon='link.png')
+utilitiesMenuu.addCommand('Open GatiMedia', 'open_gatimedia_site()')
 
 utilitiesMenu.addSeparator()
 
