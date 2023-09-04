@@ -231,161 +231,60 @@ utilitiesMenu = nuke.menu('Nuke').addMenu('GM Menu')
 #  USEFUL MENU ITEMS :::::::::::::::::::::::::::::::::::::::::::
 # --------------------------------------------------------------
 
-
 def open_gatimedia_site():
-    webbrowser.open('https://sites.google.com/misc-studios.com/tvfilmwiki/projects/ntls-nautilus', new=2)
-    
-utilitiesMenuu.addCommand('Open GatiMedia', 'open_gatimedia_site()')
+    webbrowser.open('https://www.gatimedia.co.uk/tutorials', new=2)
+
+utilitiesMenu.addCommand('Open GatiMedia', 'open_gatimedia_site()')
 
 utilitiesMenu.addSeparator()
 
-# From https://www.ftrack.com/en/2019/09/8-ways-to-increase-your-efficiency-with-foundrys-nuke.html
+try:
+    import close
+    utilitiesMenu.addCommand('Close', 'close.close()', 'shift+d')
+except:
+    pass
 
-def close():
-    for node in nuke.allNodes(recurseGroups=True):
-        node.hideControlPanel()
+try:
+    import shuffle_rgb
+    utilitiesMenu.addCommand('Shuffle RGB', 'shuffle_rgb.shuffleRGB()', 'ctrl+h', icon='CopyNode.png')
+except:
+    pass
 
-utilitiesMenu.addCommand('close', 'close()' , 'shift+d', index=0 )
+try:
+    import layer_shuffle
+    utilitiesMenu.addCommand('LayerShuffle', 'layer_shuffle.layerShuffle()', icon='Shuffle.png')
+except:
+    pass
 
-# Change Channels between 'all' and 'rgba'
+try:
+    import change_channels
+    utilitiesMenu.addCommand('Change Channels', 'change_channels.changeChannels()', 'shift+a')
+except:
+    pass
 
-def changeChannels():
-    sel_nodes = nuke.selectedNodes()
-    if len(sel_nodes) > 0:
-        ok_channels = ['all', 'none', 'rgba', 'rgb', 'alpha']
-        for sel_node in sel_nodes:
-            # setting up for channels knob
-            if sel_node.knob('channels'):
-                if not sel_node['channels'].value() == "alpha" and sel_node.knob('channels').value() in ok_channels:
-                    channel_index = ok_channels.index(sel_node['channels'].value())
-                    sel_node['channels'].setValue(ok_channels[channel_index + 1])
-                else:
-                    sel_node['channels'].setValue('all')
-            # setting up for output knob
-            if sel_node.knob('output'):
-                try:
-                    if not sel_node['output'].value() == "alpha" and sel_node.knob('output').value() in ok_channels:
-                        channel_index = ok_channels.index(sel_node['output'].value())
-                        sel_node['output'].setValue(ok_channels[channel_index + 1])
-                    else:
-                        sel_node['output'].setValue('all')
-                except:
-                    pass
-            # setting up for retimedChannels knob
-            if sel_node.knob('retimedChannels'):
-                if not sel_node['retimedChannels'].value() == "alpha" and sel_node.knob('retimedChannels').value() in ok_channels:
-                    channel_index = ok_channels.index(sel_node['retimedChannels'].value())
-                    sel_node['retimedChannels'].setValue(ok_channels[channel_index + 1])
-                else:
-                    sel_node['retimedChannels'].setValue('all')
-    else:
-        nuke.message('<center><b>Select a node/nodes first.\nThis shortcut iterates through the following channels:</b>\n<i>all, none, rgba, rgb, alpha</i></center>')
+try:
+    import add_retime
+    utilitiesMenu.addCommand('Add Retime', 'add_retime.addRetime()')
+except:
+    pass
 
-utilitiesMenu.addCommand('Change Channels', 'changeChannels()' , 'shift+a', index=1 )
+try:
+    import find_animated_nodes
+    utilitiesMenu.addCommand('Find Animated Nodes', 'find_animated_nodes.openAnimNodesWindow()', icon='CurveTool.png')
+except:
+    pass
 
+try:
+    import open_folder
+    utilitiesMenu.addCommand('Open Folder in file browser', 'open_folder.openFolder()', 'ctrl+f')
+except:
+    pass
 
-# Written by Attila Gasparetz based on https://community.foundry.com/discuss/topic/154100/how-to-open-folder-from-write-node
-
-def openFolder():
-    import platform
-    import subprocess
-    multipleNodes = nuke.selectedNodes()
-    if len(multipleNodes) == 0 or len(multipleNodes) > 1:
-        nuke.message("""<center><font color=orange>Select a single node with a <font color=yellow><u><a href="https://learn.foundry.com/nuke/developers/63/ndkdevguide/knobs-and-handles/knobtypes.html#knobs-knobtypes-file-knob"><font color=yellow>File</a></u><font color=orange> knob!""")
-    else:
-        fileNode = nuke.selectedNode()
-        if fileNode.knob('file'):
-            # get path to directory
-            dirname = fileNode.knob('file').evaluate()
-            dirname = os.path.dirname(dirname)
-            operatingSystem = platform.system()
-            if os.path.isdir(dirname):
-                # windows
-                if operatingSystem == 'Windows':
-                    os.startfile(dirname)
-                # mac
-                elif operatingSystem == 'Darwin':
-                    subprocess.Popen(['open', dirname])
-                # linux
-                else:
-                    subprocess.Popen(['xdg-open', dirname])
-            else:
-                nuke.message("<center><font color=orange>The folder wasn't created yet to open!")
-        else:
-            nuke.message(
-                """<center><font color=orange>Select a single node with a <font color=yellow><u><a href="https://learn.foundry.com/nuke/developers/63/ndkdevguide/knobs-and-handles/knobtypes.html#knobs-knobtypes-file-knob"><font color=yellow>File</a></u><font color=orange> knob!""")
-
-utilitiesMenu.addCommand('Open Folder in file browser', 'openFolder()', shortcut='ctrl+f', index=2 )
-
-def shuffleRGB():
-    for node in nuke.selectedNodes():
-        try:
-            dot = nuke.nodes.Dot()
-            dot['xpos'].setValue(node['xpos'].value() + 35)
-            dot['ypos'].setValue(node['ypos'].value() + 150)
-            dot.setInput(0, node)
-            
-            shuffleR = nuke.createNode('Shuffle2')
-            shuffleR['xpos'].setValue(dot['xpos'].value() - 144)
-            shuffleR['ypos'].setValue(dot['ypos'].value() + 120)
-            shuffleR['mappings'].setValue([(0, 'rgba.red', 'rgba.red'), (0, 'rgba.red', 'rgba.green'), (0, 'rgba.red', 'rgba.blue'), (0, 'rgba.red', 'rgba.alpha')])
-            shuffleR['tile_color'].setValue(4278190335)
-            shuffleR['label'].setValue('[value in1]')
-            shuffleR.hideControlPanel()
-
-            shuffleG = nuke.createNode('Shuffle2')
-            shuffleG['xpos'].setValue(dot['xpos'].value() - 34)
-            shuffleG['ypos'].setValue(dot['ypos'].value() + 120)
-            shuffleG['mappings'].setValue([(0, 'rgba.green', 'rgba.red'), (0, 'rgba.green', 'rgba.green'), (0, 'rgba.green', 'rgba.blue'), (0, 'rgba.green', 'rgba.alpha')])
-            shuffleG['tile_color'].setValue(536805631)
-            shuffleG['label'].setValue('[value in1]')
-            shuffleG.hideControlPanel()
-
-            shuffleB = nuke.createNode('Shuffle2')
-            shuffleB['xpos'].setValue(dot['xpos'].value() + 76)
-            shuffleB['ypos'].setValue(dot['ypos'].value() + 120)
-            shuffleB['mappings'].setValue([(0, 'rgba.blue', 'rgba.red'), (0, 'rgba.blue', 'rgba.green'), (0, 'rgba.blue', 'rgba.blue'), (0, 'rgba.blue', 'rgba.alpha')])
-            shuffleB['tile_color'].setValue(10485759)
-            shuffleB['label'].setValue('[value in1]')
-            shuffleB.hideControlPanel()
-
-            dot.setInput(0, node)
-            shuffleR.setInput(0, dot)
-            shuffleR.setInput(1, None)
-            shuffleG.setInput(0, dot)
-            shuffleG.setInput(1, None)
-            shuffleB.setInput(0, dot)
-            shuffleB.setInput(1, None)
-        except Exception:
-            pass
-
-utilitiesMenu.addCommand('Shuffle RGB', 'shuffleRGB()', shortcut='ctrl+h', index=3 )
-
-
-def addRetime():
-    for node in nuke.selectedNodes():
-        try:
-            retime = nuke.createNode('Retime')
-            retime['output.first_lock'].setValue(1)
-            retime['output.first'].setValue(1001)
-            retime['xpos'].setValue(node['xpos'].value())
-            retime['ypos'].setValue(node['ypos'].value() + 100)
-            retime.setInput(0, node)
-        except Exception:
-            pass
-
-utilitiesMenu.addCommand('Add Retime', 'addRetime()', index=4)
-
-def cleanDroppedKnobs():
-    for node in nuke.allNodes(recurseGroups=True):
-        for knob in node.knobs():
-            if 'panelDropped' in knob:
-                try:
-                    node.removeKnob(node[knob])
-                except:
-                    pass
-
-utilitiesMenu.addCommand('Clean Dropped Knobs', 'cleanDroppedKnobs()', index=5)
+try:
+    import clean_droppedknobs
+    utilitiesMenu.addCommand('Clean DroppedKnobs', 'clean_droppedknobs.cleanDroppedKnobs()')
+except:
+    pass
 
 ####-----------####
 #### TextFixer ####
