@@ -1,5 +1,7 @@
 import nuke
 
+# From http://www.lookinvfx.com/nuke-python-snippets/
+
 def disconnectViewers():
     nuke.selectAll()
     nuke.invertSelection()
