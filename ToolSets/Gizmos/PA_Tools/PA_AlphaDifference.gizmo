@@ -1,0 +1,72 @@
+
+Group {
+ name PA_AlphaDifference1
+ inputs 2
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold"
+ addUserKnob {20 User}
+ addUserKnob {41 factor l Range T Expression3.factor}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Alpha Difference v1.0\nCreated by Pedro Andrade\n-2019-"}
+}
+ Input {
+  inputs 0
+  name A
+  xpos 710
+  ypos -254
+ }
+ Input {
+  inputs 0
+  name B
+  xpos 960
+  ypos -260
+  number 1
+ }
+ Dot {
+  name Dot1
+  xpos 994
+  ypos -138
+ }
+set N2d60b610 [stack 0]
+ Difference {
+  inputs 2
+  name Difference2
+  xpos 839
+  ypos -147
+ }
+ Expression {
+  expr3 a>factor?1:0
+  name Expression3
+  xpos 839
+  ypos -63
+  addUserKnob {20 User}
+  addUserKnob {7 factor R 0 0.01}
+ }
+ Shuffle {
+  in alpha
+  name Shuffle2
+  label "\[value in]"
+  xpos 839
+  ypos 29
+ }
+push $N2d60b610
+ Dot {
+  name Dot2
+  selected true
+  xpos 994
+  ypos 112
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 839
+  ypos 103
+ }
+ Output {
+  name Output1
+  xpos 839
+  ypos 179
+ }
+end_group
