@@ -1,8 +1,9 @@
 # --------------------------------------------------------------
 #  init.py
-#  Version: 1.0.10
-#  Last Updated: March 5th, 2021
+#  Last Updated by: Attila Gasparetz
+#  Last Updated: 05/09/2023
 # --------------------------------------------------------------
 
 nuke.pluginAddPath('./gizmos')
 nuke.pluginAddPath('./icons')
+nuke.pluginAddPath('./python')
