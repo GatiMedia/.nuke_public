@@ -1,0 +1,56 @@
+
+Group {
+ name PA_PositionMatte
+ tile_color 0xff5f00ff
+ note_font "Verdana Bold"
+ selected true
+ xpos 5776
+ ypos 1908
+ addUserKnob {20 User}
+ addUserKnob {41 point1 l Position T PA_PositionMatte1.point1}
+ addUserKnob {41 conform l "Lock Value" -STARTLINE T PA_PositionMatte1.conform}
+ addUserKnob {41 resample l Resample -STARTLINE T PA_PositionMatte1.resample}
+ addUserKnob {41 sample l "Sampled Value" T PA_PositionMatte1.sample}
+ addUserKnob {41 radius l Radius T PA_PositionMatte1.radius}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 author l "" +STARTLINE T "Position Matte v1.0\nCreated by Pedro Andrade\n-2017-"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 270
+  ypos 416
+ }
+ Expression {
+  temp_name0 x
+  temp_expr0 r-sample.r
+  temp_name1 y
+  temp_expr1 g-sample.g
+  temp_name2 z
+  temp_expr2 b-sample.b
+  channel0 alpha
+  expr0 clamp(1-(sqrt(pow2(x)+pow2(y)+pow2(z))/radius))
+  channel1 {-rgba.alpha}
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  name PA_PositionMatte1
+  knobChanged "\n\nnuke.thisNode().knob('conform').setEnabled(True)\nnuke.thisNode().knob('track').setEnabled(True)\n\n\nnuke.thisNode().knob('track').setEnabled(False)\n\nif nuke.thisKnob().name() == 'conform':\n    nuke.thisNode().knob('conform').setEnabled(False)\n    nuke.thisNode().knob('track').setEnabled(True)\n\n\n\n"
+  selected true
+  xpos 270
+  ypos 466
+  addUserKnob {20 User}
+  addUserKnob {12 point1}
+  point1 {1316 772}
+  addUserKnob {22 conform -STARTLINE T nuke.thisNode().knob('sample').clearAnimated()}
+  addUserKnob {22 resample -STARTLINE T "nuke.selectedNode().knob('sample').setExpression('\[sample this red point1.x point1.y]', 0)\nnuke.selectedNode().knob('sample').setExpression('\[sample this green point1.x point1.y]', 1)\nnuke.selectedNode().knob('sample').setExpression('\[sample this blue point1.x point1.y]', 2)"}
+  addUserKnob {18 sample}
+  sample {{"\[sample this red point1.x point1.y]"} {"\[sample this green point1.x point1.y]"} {"\[sample this blue point1.x point1.y]"}}
+  addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {7 radius R 0.001 0.1}
+  radius 0.041
+ }
+ Output {
+  name Output1
+  xpos 270
+  ypos 556
+ }
+end_group

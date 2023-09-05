@@ -1,0 +1,2750 @@
+
+Group {
+ name PA_DetailCatcher1
+ knobChanged "\n\n#DETAIL CATCHER\n#CREATED BY PEDRO ANDRADE\n#2014\n\nwith nuke.thisNode():\n\n    if nuke.thisNode().knob('stereo_friendly').value() == True or nuke.thisNode().knob('despilled_inputs').value() == True:\n        nuke.thisNode().knob('style').setValue('Divide')\n        nuke.thisNode().knob('style').setEnabled(False)\n        nuke.thisNode().knob('log2lin').setValue(False)\n        nuke.thisNode().knob('log2lin').setEnabled(False)\n    \n        try:   \n            for n in nuke.allNodes('Input'):\n                if n.knob('name').value() == 'BG':\n                    bgInputXPos = n.knob('xpos').value()\n                    bgInputYPos = n.knob('ypos').value()\n                    nuke.nodes.StickyNote(name = '_StickyNote_', label = str(bgInputXPos) + ',' + str(bgInputYPos))\n                    nuke.delete(n)\n        except:\n            pass\n    \n    \n    \n    else:\n        nuke.thisNode().knob('style').setEnabled(True)\n        nuke.thisNode().knob('log2lin').setEnabled(True)\n        nuke.thisNode().knob('log2lin').setValue(True)\n    \n        try:\n            dotBG = nuke.nodes.Input(name='BG', xpos = nuke.toNode('_StickyNote_').knob('label').value().split(',')\[0], ypos = nuke.toNode('_StickyNote_').knob('label').value().split(',')\[1])\n            nuke.delete(nuke.toNode('_StickyNote_'))\n            for n in nuke.allNodes('Dot'):\n                if n.knob('label').value() == 'BG':\n                    n.setInput(0, dotBG)\n        except:\n            pass\n    \n    \n    \n    \n    if nuke.thisNode().knob('despill_preset').value() == 'Pick':\n        nuke.thisNode().knob('despill_color').setVisible(True)\n    else:\n        nuke.thisNode().knob('despill_color').setVisible(False)\n    \n    \n    \n    if nuke.thisNode().knob('despilled_inputs').value() == True:\n        nuke.thisNode().knob('stereo_friendly').setValue(True)\n        nuke.thisNode().knob('stereo_friendly').setEnabled(False)\n        nuke.thisNode().knob('despill_preset').setVisible(True)\n    \n    \n    \n    \n    else:\n        nuke.thisNode().knob('despill_preset').setVisible(False)\n        nuke.thisNode().knob('despill_color').setVisible(False)\n        nuke.thisNode().knob('stereo_friendly').setEnabled(True)\n\n\n"
+ tile_color 0xff5f00ff
+ label "\[if \{\[value stereo_friendly]==true\} \{return \"Stereo Friendly Mode\\nOutput to be Multiplied\"\} \{return \"\"\}]\n"
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -2740
+ ypos -459
+ addUserKnob {20 User}
+ addUserKnob {26 Instructions l "" +STARTLINE T "- Meant to be used as part of the BG. \nPremultiplied key shoud be merged over this!\n\n- 'Stereo Friedly' mode's output needs \nto be multiplied by the BG"}
+ addUserKnob {26 ""}
+ addUserKnob {68 style l Style M {Subtract Divide ""}}
+ addUserKnob {6 log2lin l "Log Math" -STARTLINE}
+ log2lin true
+ addUserKnob {6 stereo_friendly l "Stereo Friendly" -STARTLINE}
+ addUserKnob {6 despilled_inputs l "Despill Inputs" -STARTLINE}
+ addUserKnob {4 despill_preset l "Despill Preset" +HIDDEN M {Green Blue Pick}}
+ addUserKnob {18 despill_color l "Despill Color" +HIDDEN}
+ despill_color {0 0 0}
+ addUserKnob {6 despill_color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 ""}
+ addUserKnob {18 color_correct l "Color Correct"}
+ color_correct {1 1 1}
+ addUserKnob {6 color_correct_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 gamma_correct l "Gamma Correct"}
+ gamma_correct {1 1 1}
+ addUserKnob {6 gamma_correct_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 ""}
+ addUserKnob {6 gamma_correct_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {6 color_correct_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {7 saturation_1 l Saturation R 0 2}
+ saturation_1 1
+ addUserKnob {7 top_end l "Top End" R 0 2}
+ top_end 1
+ addUserKnob {7 low_end l "Low End" R 0 2}
+ low_end 1
+ addUserKnob {41 size l Blur T Blur1.size}
+ addUserKnob {7 mix l Mix}
+ mix 1
+ addUserKnob {26 ""}
+ addUserKnob {26 Author l "" +STARTLINE T "DetailCatcher v5.0\nCreated by Pedro Andrade\n-2014-"}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/Zdi2Inf2n9w" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x71c67100
+  label SUBTRACT
+  note_font_size 42
+  xpos -241
+  ypos -136
+  bdwidth 256
+  bdheight 356
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x7caa90ff
+  label GREEN
+  note_font_size 42
+  xpos 570
+  ypos -1504
+  bdwidth 282
+  bdheight 170
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x7d94aaff
+  label BLUE
+  note_font_size 42
+  xpos 908
+  ypos -1504
+  bdwidth 285
+  bdheight 173
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x8e7237ff
+  label PICK
+  note_font_size 42
+  xpos 1244
+  ypos -1504
+  bdwidth 307
+  bdheight 173
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x71c67100
+  label MIX
+  note_font_size 42
+  xpos 380
+  ypos 1584
+  bdwidth 401
+  bdheight 128
+ }
+ Input {
+  inputs 0
+  name BG
+  xpos 691
+  ypos 539
+  number 2
+ }
+ Dot {
+  name Dot6
+  label BG
+  xpos 725
+  ypos 733
+ }
+set N2cb964d0 [stack 0]
+ Colorspace {
+  colorspace_out HSL
+  name Colorspace2
+  label "\[value colorspace_out]"
+  xpos 534
+  ypos 723
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle13
+  label B
+  xpos 384
+  ypos 717
+ }
+ Input {
+  inputs 0
+  name FG
+  xpos -41
+  ypos -2040
+ }
+ Grade {
+  white {{parent.color_correct} {parent.color_correct} {parent.color_correct} {parent.color_correct}}
+  gamma {{parent.gamma_correct} {parent.gamma_correct} {parent.gamma_correct} {parent.gamma_correct}}
+  name Grade1
+  xpos -40
+  ypos -1942
+ }
+ set C2e995250 [stack 0]
+ Log2Lin {
+  operation lin2log
+  name Log2Lin1
+  xpos -41
+  ypos -1858
+  disable {{!parent.log2lin||parent.stereo_friendly}}
+ }
+ set C2cd7dbc0 [stack 0]
+ Dot {
+  name Dot4
+  label "normal plate"
+  xpos -6
+  ypos -1695
+ }
+set N2dc26740 [stack 0]
+ Input {
+  inputs 0
+  name CleanPlate
+  xpos 137
+  ypos -2040
+  number 1
+ }
+clone $C2e995250 {
+  xpos 137
+  ypos -1930
+  selected false
+ }
+clone $C2cd7dbc0 {
+  xpos 137
+  ypos -1858
+  selected false
+ }
+ Dot {
+  name Dot5
+  label "clean plate"
+  xpos 172
+  ypos -1701
+ }
+set N2cdb3290 [stack 0]
+ Merge2 {
+  inputs 2
+  operation divide
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge4
+  xpos 138
+  ypos -1485
+ }
+set N2cd743e0 [stack 0]
+ Shuffle {
+  red white
+  green white
+  blue white
+  alpha white
+  name Shuffle1
+  label "\[value in]"
+  xpos 325
+  ypos -1497
+ }
+ Dot {
+  name Dot31
+  xpos 359
+  ypos -1381
+ }
+set N2cdc4250 [stack 0]
+ Dot {
+  name Dot30
+  xpos 359
+  ypos -1288
+ }
+set N2cdcc310 [stack 0]
+ Dot {
+  name Dot39
+  xpos 360
+  ypos -1149
+ }
+ Dot {
+  name Dot35
+  xpos 510
+  ypos -1149
+ }
+set N2dc0acd0 [stack 0]
+ Dot {
+  name Dot40
+  xpos 872
+  ypos -1149
+ }
+set N2dc0f160 [stack 0]
+ Dot {
+  name Dot41
+  xpos 1235
+  ypos -1149
+ }
+ Dot {
+  name Dot42
+  xpos 1234
+  ypos -1079
+ }
+set N2dc177b0 [stack 0]
+ Dot {
+  name Dot43
+  xpos 1234
+  ypos -986
+ }
+push $N2dc177b0
+push $N2dc26740
+ Dot {
+  name Dot20
+  xpos -6
+  ypos -1625
+ }
+set N2cdf78c0 [stack 0]
+ Dot {
+  name Dot21
+  xpos 614
+  ypos -1625
+ }
+set N2cdfaec0 [stack 0]
+ Dot {
+  name Dot22
+  xpos 952
+  ypos -1625
+ }
+set N2dc23540 [stack 0]
+ Dot {
+  name Dot23
+  xpos 1288
+  ypos -1625
+ }
+ Group {
+  name PA_DespillFast4
+  tile_color 0xff5f00ff
+  label "PICK\nFG"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 1254
+  ypos -1424
+  mapsize {0.15 0.15}
+  addUserKnob {20 User}
+  addUserKnob {4 viewer l Viewer M {Despill "Spill Map"}}
+  addUserKnob {22 extract_despill_map l "Extract Despill Map" -STARTLINE T "with nuke.thisNode():\n\n    for n in nuke.allNodes():\n        n.knob('selected').setValue(False)\n\n    for n in nuke.allNodes('Shuffle'):\n        n.knob('selected').setValue(True)\n\n    for n in nuke.selectedNodes():\n        nuke.nodeCopy('%clipboad%')\n\nnuke.nodePaste('%clipboad%')\n        "}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenColour l "Screen Color" T Keylight1.screenColour}
+  addUserKnob {6 matchluminance l "Match Luminance" -STARTLINE}
+  matchluminance true
+  addUserKnob {41 mode l "Luminance Math" T Saturation1.mode}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenGain l "Screen Gain" T Keylight1.screenGain}
+  addUserKnob {41 screenBalance l "Screen Balance" T Keylight1.screenBalance}
+  addUserKnob {41 alphaBias l "Despill Bias" T Keylight1.alphaBias}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenClipMin l "Clip Matte Black" T Keylight1.screenClipMin}
+  addUserKnob {41 screenClipMax l "Clip Matte White" T Keylight1.screenClipMax}
+  addUserKnob {26 ""}
+  addUserKnob {41 white l "Color Correction" T Grade1.white}
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "PA_Despill v5.1\nCreated by Pedro Andrade\n-2014-"}
+ }
+  BackdropNode {
+   inputs 0
+   name BackdropNode1
+   tile_color 0x9000ff
+   label GREEN
+   note_font_size 42
+   xpos 1481
+   ypos 106
+   bdwidth 201
+   bdheight 337
+  }
+  BackdropNode {
+   inputs 0
+   name BackdropNode2
+   tile_color 0x93ff
+   label BLUE
+   note_font_size 42
+   xpos 1703
+   ypos 108
+   bdwidth 201
+   bdheight 337
+  }
+  Dot {
+   inputs 0
+   name Dot4
+   xpos 1674
+   ypos 34
+  }
+set N2ea61580 [stack 0]
+  Dot {
+   name Dot8
+   xpos 1809
+   ypos 34
+  }
+  Expression {
+   expr2 g>b?b:g
+   name Expression1
+   xpos 1775
+   ypos 237
+  }
+  Expression {
+   expr1 r>g?g:r
+   name Expression2
+   xpos 1777
+   ypos 272
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression5
+   xpos 1777
+   ypos 314
+  }
+push $N2ea61580
+  Dot {
+   name Dot2
+   xpos 1589
+   ypos 34
+  }
+set N382b90 [stack 0]
+  Dot {
+   name Dot5
+   xpos 1445
+   ypos 34
+  }
+  Dot {
+   name Dot6
+   xpos 1445
+   ypos 576
+  }
+push $N382b90
+  Expression {
+   expr1 r>g?g:r
+   name Expression3
+   xpos 1555
+   ypos 257
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression4
+   xpos 1555
+   ypos 299
+  }
+  Dot {
+   name Dot3
+   xpos 1589
+   ypos 504
+  }
+  Dissolve {
+   inputs 2
+   name Dissolve2
+   xpos 1653
+   ypos 568
+  }
+  Input {
+   inputs 0
+   name img
+   xpos 311
+   ypos -90
+  }
+  Dot {
+   name Dot1
+   xpos 345
+   ypos -6
+  }
+set N2dd41b10 [stack 0]
+  OFXuk.co.thefoundry.keylight.keylight_v201 {
+   show "Final Result"
+   unPreMultiply false
+   screenColour {{despill_color.r} {despill_color.g} {despill_color.b}}
+   screenGain 1
+   screenBalance 0.5
+   alphaBias {0.5 0.5 0.5}
+   despillBias {0.5 0.5 0.5}
+   gangBiases true
+   preBlur 0
+   "Screen Matte" 0
+   screenClipMin 0
+   screenClipMax 1
+   screenClipRollback 0
+   screenGrowShrink 0
+   screenSoftness 0
+   screenDespotBlack 0
+   screenDespotWhite 0
+   screenReplaceMethod "Soft Colour"
+   screenReplaceColour {0.5 0.5 0.5}
+   Tuning 0
+   midPoint 0.5
+   lowGain 1
+   midGain 1
+   highGain 1
+   "Inside Mask" 0
+   sourceAlphaHandling Ignore
+   insideReplaceMethod "Soft Colour"
+   insideReplaceColour {0.5 0.5 0.5}
+   Crops 0
+   SourceXMethod Colour
+   SourceYMethod Colour
+   SourceEdgeColour 0
+   SourceCropL 0
+   SourceCropR 1
+   SourceCropB 0
+   SourceCropT 1
+   balanceSet true
+   insideComponent None
+   outsideComponent None
+   cacheBreaker true
+   name Keylight1
+   xpos 311
+   ypos 138
+  }
+set N2deac810 [stack 0]
+  Dot {
+   name Dot9
+   xpos 345
+   ypos 330
+  }
+set N2e107600 [stack 0]
+  Dot {
+   name Dot13
+   xpos 152
+   ypos 330
+  }
+set N2e61f400 [stack 0]
+push $N2dd41b10
+  Dot {
+   name Dot10
+   xpos -6
+   ypos -6
+  }
+  Saturation {
+   saturation 0
+   name Saturation1
+   label "mode: \[value mode]"
+   xpos -40
+   ypos 85
+  }
+  set C2e627a20 [stack 0]
+  Clamp {
+   name Clamp1
+   xpos -40
+   ypos 166
+   disable true
+  }
+  set C2e632400 [stack 0]
+  Grade {
+   white {1 1 1 1}
+   name Grade1
+   xpos -40
+   ypos 270
+  }
+  set C2e63e040 [stack 0]
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -40
+   ypos 326
+  }
+push $N2dd41b10
+  Dot {
+   name Dot7
+   xpos 526
+   ypos -6
+  }
+push $N2deac810
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge9
+   xpos 492
+   ypos 138
+  }
+clone $C2e627a20 {
+   xpos 492
+   ypos 323
+   selected false
+  }
+clone $C2e632400 {
+   xpos 492
+   ypos 404
+   selected false
+  }
+clone $C2e63e040 {
+   xpos 492
+   ypos 510
+   selected false
+  }
+set N2e801810 [stack 0]
+  Dot {
+   name Dot12
+   xpos 526
+   ypos 773
+  }
+set N2e80e950 [stack 0]
+  Dot {
+   name Dot14
+   xpos 526
+   ypos 904
+  }
+push $N2e80e950
+push $N2e801810
+push $N2e107600
+  Merge2 {
+   inputs 2
+   operation plus
+   name Merge10
+   xpos 311
+   ypos 510
+  }
+push $N2e61f400
+  Dot {
+   name Dot11
+   xpos 152
+   ypos 617
+  }
+  Switch {
+   inputs 2
+   which {{parent.matchluminance}}
+   name Switch2
+   xpos 311
+   ypos 613
+  }
+  Switch {
+   inputs 2
+   which {{parent.viewer}}
+   name Switch1
+   xpos 311
+   ypos 769
+  }
+add_layer {despillMap despillMap.red despillMap.green despillMap.blue despillMap.alpha}
+  ShuffleCopy {
+   inputs 2
+   red red
+   green green
+   blue blue
+   out despillMap
+   name ShuffleCopy1
+   xpos 311
+   ypos 894
+  }
+  Dot {
+   name Dot15
+   xpos 345
+   ypos 1003
+  }
+set N2e843b90 [stack 0]
+  Output {
+   name Output1
+   xpos 311
+   ypos 1143
+  }
+push $N2e843b90
+  Shuffle {
+   in despillMap
+   alpha red
+   name Shuffle1
+   label "\[value in]"
+   xpos 451
+   ypos 987
+  }
+push 0
+  Viewer {
+   inputs 2
+   frame_range 1-1
+   input_number 1
+   near 0.9
+   far 10000
+   name Viewer1
+   xpos 601
+   ypos 999
+  }
+ end_group
+push $N2cdb3290
+ Dot {
+  name Dot19
+  xpos 764
+  ypos -1701
+ }
+set N2eaa1b00 [stack 0]
+ Dot {
+  name Dot24
+  xpos 1102
+  ypos -1701
+ }
+set N2eaa5cd0 [stack 0]
+ Dot {
+  name Dot25
+  xpos 1440
+  ypos -1701
+ }
+ Group {
+  name PA_DespillFast5
+  tile_color 0xff5f00ff
+  label "PICK\nCLEAN PLATE"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 1406
+  ypos -1424
+  mapsize {0.15 0.15}
+  addUserKnob {20 User}
+  addUserKnob {4 viewer l Viewer M {Despill "Spill Map"}}
+  addUserKnob {22 extract_despill_map l "Extract Despill Map" -STARTLINE T "with nuke.thisNode():\n\n    for n in nuke.allNodes():\n        n.knob('selected').setValue(False)\n\n    for n in nuke.allNodes('Shuffle'):\n        n.knob('selected').setValue(True)\n\n    for n in nuke.selectedNodes():\n        nuke.nodeCopy('%clipboad%')\n\nnuke.nodePaste('%clipboad%')\n        "}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenColour l "Screen Color" T Keylight1.screenColour}
+  addUserKnob {6 matchluminance l "Match Luminance" -STARTLINE}
+  matchluminance true
+  addUserKnob {41 mode l "Luminance Math" T Saturation1.mode}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenGain l "Screen Gain" T Keylight1.screenGain}
+  addUserKnob {41 screenBalance l "Screen Balance" T Keylight1.screenBalance}
+  addUserKnob {41 alphaBias l "Despill Bias" T Keylight1.alphaBias}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenClipMin l "Clip Matte Black" T Keylight1.screenClipMin}
+  addUserKnob {41 screenClipMax l "Clip Matte White" T Keylight1.screenClipMax}
+  addUserKnob {26 ""}
+  addUserKnob {41 white l "Color Correction" T Grade1.white}
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "PA_Despill v5.1\nCreated by Pedro Andrade\n-2014-"}
+ }
+  BackdropNode {
+   inputs 0
+   name BackdropNode1
+   tile_color 0x9000ff
+   label GREEN
+   note_font_size 42
+   xpos 1481
+   ypos 106
+   bdwidth 201
+   bdheight 337
+  }
+  BackdropNode {
+   inputs 0
+   name BackdropNode2
+   tile_color 0x93ff
+   label BLUE
+   note_font_size 42
+   xpos 1703
+   ypos 108
+   bdwidth 201
+   bdheight 337
+  }
+  Dot {
+   inputs 0
+   name Dot4
+   xpos 1674
+   ypos 34
+  }
+set N2ae25650 [stack 0]
+  Dot {
+   name Dot8
+   xpos 1809
+   ypos 34
+  }
+  Expression {
+   expr2 g>b?b:g
+   name Expression1
+   xpos 1775
+   ypos 237
+  }
+  Expression {
+   expr1 r>g?g:r
+   name Expression2
+   xpos 1777
+   ypos 272
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression5
+   xpos 1777
+   ypos 314
+  }
+push $N2ae25650
+  Dot {
+   name Dot2
+   xpos 1589
+   ypos 34
+  }
+set N2dc350a0 [stack 0]
+  Dot {
+   name Dot5
+   xpos 1445
+   ypos 34
+  }
+  Dot {
+   name Dot6
+   xpos 1445
+   ypos 576
+  }
+push $N2dc350a0
+  Expression {
+   expr1 r>g?g:r
+   name Expression3
+   xpos 1555
+   ypos 257
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression4
+   xpos 1555
+   ypos 299
+  }
+  Dot {
+   name Dot3
+   xpos 1589
+   ypos 504
+  }
+  Dissolve {
+   inputs 2
+   name Dissolve2
+   xpos 1653
+   ypos 568
+  }
+  Input {
+   inputs 0
+   name img
+   xpos 311
+   ypos -90
+  }
+  Dot {
+   name Dot1
+   xpos 345
+   ypos -6
+  }
+set N2aeea750 [stack 0]
+  OFXuk.co.thefoundry.keylight.keylight_v201 {
+   show "Final Result"
+   unPreMultiply false
+   screenColour {{parent.parent.PA_DespillFast4.Keylight1.screenColour} {parent.parent.PA_DespillFast4.Keylight1.screenColour} {parent.parent.PA_DespillFast4.Keylight1.screenColour}}
+   screenGain 1
+   screenBalance 0.5
+   alphaBias {0.5 0.5 0.5}
+   despillBias {0.5 0.5 0.5}
+   gangBiases true
+   preBlur 0
+   "Screen Matte" 0
+   screenClipMin 0
+   screenClipMax 1
+   screenClipRollback 0
+   screenGrowShrink 0
+   screenSoftness 0
+   screenDespotBlack 0
+   screenDespotWhite 0
+   screenReplaceMethod "Soft Colour"
+   screenReplaceColour {0.5 0.5 0.5}
+   Tuning 0
+   midPoint 0.5
+   lowGain 1
+   midGain 1
+   highGain 1
+   "Inside Mask" 0
+   sourceAlphaHandling Ignore
+   insideReplaceMethod "Soft Colour"
+   insideReplaceColour {0.5 0.5 0.5}
+   Crops 0
+   SourceXMethod Colour
+   SourceYMethod Colour
+   SourceEdgeColour 0
+   SourceCropL 0
+   SourceCropR 1
+   SourceCropB 0
+   SourceCropT 1
+   balanceSet true
+   insideComponent None
+   outsideComponent None
+   cacheBreaker true
+   name Keylight1
+   xpos 311
+   ypos 138
+  }
+set N2aeeea50 [stack 0]
+  Dot {
+   name Dot9
+   xpos 345
+   ypos 330
+  }
+set N2c201e90 [stack 0]
+  Dot {
+   name Dot13
+   xpos 152
+   ypos 330
+  }
+set N2c206100 [stack 0]
+push $N2aeea750
+  Dot {
+   name Dot10
+   xpos -6
+   ypos -6
+  }
+  Saturation {
+   saturation 0
+   name Saturation1
+   label "mode: \[value mode]"
+   xpos -40
+   ypos 85
+  }
+  set C2c20e720 [stack 0]
+  Clamp {
+   name Clamp1
+   xpos -40
+   ypos 166
+   disable true
+  }
+  set C2c219100 [stack 0]
+  Grade {
+   white {1 1 1 1}
+   name Grade1
+   xpos -40
+   ypos 270
+  }
+  set C2c224d40 [stack 0]
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -40
+   ypos 326
+  }
+push $N2aeea750
+  Dot {
+   name Dot7
+   xpos 526
+   ypos -6
+  }
+push $N2aeeea50
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge9
+   xpos 492
+   ypos 138
+  }
+clone $C2c20e720 {
+   xpos 492
+   ypos 323
+   selected false
+  }
+clone $C2c219100 {
+   xpos 492
+   ypos 404
+   selected false
+  }
+clone $C2c224d40 {
+   xpos 492
+   ypos 510
+   selected false
+  }
+set N2c2ec9b0 [stack 0]
+  Dot {
+   name Dot12
+   xpos 526
+   ypos 773
+  }
+set N2c2f9af0 [stack 0]
+  Dot {
+   name Dot14
+   xpos 526
+   ypos 904
+  }
+push $N2c2f9af0
+push $N2c2ec9b0
+push $N2c201e90
+  Merge2 {
+   inputs 2
+   operation plus
+   name Merge10
+   xpos 311
+   ypos 510
+  }
+push $N2c206100
+  Dot {
+   name Dot11
+   xpos 152
+   ypos 617
+  }
+  Switch {
+   inputs 2
+   which {{parent.matchluminance}}
+   name Switch2
+   xpos 311
+   ypos 613
+  }
+  Switch {
+   inputs 2
+   which {{parent.viewer}}
+   name Switch1
+   xpos 311
+   ypos 769
+  }
+  ShuffleCopy {
+   inputs 2
+   red red
+   green green
+   blue blue
+   out despillMap
+   name ShuffleCopy1
+   xpos 311
+   ypos 894
+  }
+  Dot {
+   name Dot15
+   xpos 345
+   ypos 1003
+  }
+set N2c613a70 [stack 0]
+  Output {
+   name Output1
+   xpos 311
+   ypos 1143
+  }
+push $N2c613a70
+  Shuffle {
+   in despillMap
+   alpha red
+   name Shuffle1
+   label "\[value in]"
+   xpos 451
+   ypos 987
+  }
+push 0
+  Viewer {
+   inputs 2
+   frame_range 1-1
+   input_number 1
+   near 0.9
+   far 10000
+   name Viewer1
+   xpos 601
+   ypos 999
+  }
+ end_group
+ Merge2 {
+  inputs 2
+  operation divide
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge10
+  xpos 1330
+  ypos -1279
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  mix {{clamp(1-parent.Multiply7.value)}}
+  name Merge16
+  label "LOW END"
+  xpos 1331
+  ypos -1089
+ }
+ Merge2 {
+  inputs 2
+  operation min
+  mix {{clamp(1-parent.Multiply6.value)}}
+  name Merge17
+  label "TOP END"
+  xpos 1331
+  ypos -996
+ }
+ Dot {
+  name Dot26
+  xpos 1365
+  ypos -656
+ }
+push $N2dc0f160
+ Dot {
+  name Dot36
+  xpos 871
+  ypos -1079
+ }
+set N2c7d8400 [stack 0]
+ Dot {
+  name Dot37
+  xpos 871
+  ypos -986
+ }
+push $N2c7d8400
+push $N2dc23540
+ Group {
+  name PA_DespillFast2
+  tile_color 0xff5f00ff
+  label "BLUE\nFG"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 918
+  ypos -1424
+  mapsize {0.15 0.15}
+  addUserKnob {20 User}
+  addUserKnob {4 viewer l Viewer M {Despill "Spill Map"}}
+  addUserKnob {22 extract_despill_map l "Extract Despill Map" -STARTLINE T "with nuke.thisNode():\n\n    for n in nuke.allNodes():\n        n.knob('selected').setValue(False)\n\n    for n in nuke.allNodes('Shuffle'):\n        n.knob('selected').setValue(True)\n\n    for n in nuke.selectedNodes():\n        nuke.nodeCopy('%clipboad%')\n\nnuke.nodePaste('%clipboad%')\n        "}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenColour l "Screen Color" T Keylight1.screenColour}
+  addUserKnob {6 matchluminance l "Match Luminance" -STARTLINE}
+  matchluminance true
+  addUserKnob {41 mode l "Luminance Math" T Saturation1.mode}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenGain l "Screen Gain" T Keylight1.screenGain}
+  addUserKnob {41 screenBalance l "Screen Balance" T Keylight1.screenBalance}
+  addUserKnob {41 alphaBias l "Despill Bias" T Keylight1.alphaBias}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenClipMin l "Clip Matte Black" T Keylight1.screenClipMin}
+  addUserKnob {41 screenClipMax l "Clip Matte White" T Keylight1.screenClipMax}
+  addUserKnob {26 ""}
+  addUserKnob {41 white l "Color Correction" T Grade1.white}
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "PA_Despill v5.1\nCreated by Pedro Andrade\n-2014-"}
+ }
+  BackdropNode {
+   inputs 0
+   name BackdropNode1
+   tile_color 0x9000ff
+   label GREEN
+   note_font_size 42
+   xpos 1481
+   ypos 106
+   bdwidth 201
+   bdheight 337
+  }
+  BackdropNode {
+   inputs 0
+   name BackdropNode2
+   tile_color 0x93ff
+   label BLUE
+   note_font_size 42
+   xpos 1703
+   ypos 108
+   bdwidth 201
+   bdheight 337
+  }
+  Dot {
+   inputs 0
+   name Dot4
+   xpos 1674
+   ypos 34
+  }
+set N2eac1ae0 [stack 0]
+  Dot {
+   name Dot8
+   xpos 1809
+   ypos 34
+  }
+  Expression {
+   expr2 g>b?b:g
+   name Expression1
+   xpos 1775
+   ypos 237
+  }
+  Expression {
+   expr1 r>g?g:r
+   name Expression2
+   xpos 1777
+   ypos 272
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression5
+   xpos 1777
+   ypos 314
+  }
+push $N2eac1ae0
+  Dot {
+   name Dot2
+   xpos 1589
+   ypos 34
+  }
+set N2eaef890 [stack 0]
+  Dot {
+   name Dot5
+   xpos 1445
+   ypos 34
+  }
+  Dot {
+   name Dot6
+   xpos 1445
+   ypos 576
+  }
+push $N2eaef890
+  Expression {
+   expr1 r>g?g:r
+   name Expression3
+   xpos 1555
+   ypos 257
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression4
+   xpos 1555
+   ypos 299
+  }
+  Dot {
+   name Dot3
+   xpos 1589
+   ypos 504
+  }
+  Dissolve {
+   inputs 2
+   name Dissolve2
+   xpos 1653
+   ypos 568
+  }
+  Input {
+   inputs 0
+   name img
+   xpos 311
+   ypos -90
+  }
+  Dot {
+   name Dot1
+   xpos 345
+   ypos -6
+  }
+set N2e02b290 [stack 0]
+  OFXuk.co.thefoundry.keylight.keylight_v201 {
+   show "Final Result"
+   unPreMultiply false
+   screenColour {0 0 1}
+   screenGain 1
+   screenBalance 0.5
+   alphaBias {0.5 0.5 0.5}
+   despillBias {0.5 0.5 0.5}
+   gangBiases true
+   preBlur 0
+   "Screen Matte" 0
+   screenClipMin 0
+   screenClipMax 1
+   screenClipRollback 0
+   screenGrowShrink 0
+   screenSoftness 0
+   screenDespotBlack 0
+   screenDespotWhite 0
+   screenReplaceMethod "Soft Colour"
+   screenReplaceColour {0.5 0.5 0.5}
+   Tuning 0
+   midPoint 0.5
+   lowGain 1
+   midGain 1
+   highGain 1
+   "Inside Mask" 0
+   sourceAlphaHandling Ignore
+   insideReplaceMethod "Soft Colour"
+   insideReplaceColour {0.5 0.5 0.5}
+   Crops 0
+   SourceXMethod Colour
+   SourceYMethod Colour
+   SourceEdgeColour 0
+   SourceCropL 0
+   SourceCropR 1
+   SourceCropB 0
+   SourceCropT 1
+   balanceSet true
+   insideComponent None
+   outsideComponent None
+   cacheBreaker true
+   name Keylight1
+   xpos 311
+   ypos 138
+  }
+set N2e02f590 [stack 0]
+  Dot {
+   name Dot9
+   xpos 345
+   ypos 330
+  }
+set N2e09a5a0 [stack 0]
+  Dot {
+   name Dot13
+   xpos 152
+   ypos 330
+  }
+set N2e09e870 [stack 0]
+push $N2e02b290
+  Dot {
+   name Dot10
+   xpos -6
+   ypos -6
+  }
+  Saturation {
+   saturation 0
+   name Saturation1
+   label "mode: \[value mode]"
+   xpos -40
+   ypos 85
+  }
+  set C2e0a6e90 [stack 0]
+  Clamp {
+   name Clamp1
+   xpos -40
+   ypos 166
+   disable true
+  }
+  set C2e0b18a0 [stack 0]
+  Grade {
+   white {1 1 1 1}
+   name Grade1
+   xpos -40
+   ypos 270
+  }
+  set C2e0bd4b0 [stack 0]
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -40
+   ypos 326
+  }
+push $N2e02b290
+  Dot {
+   name Dot7
+   xpos 526
+   ypos -6
+  }
+push $N2e02f590
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge9
+   xpos 492
+   ypos 138
+  }
+clone $C2e0a6e90 {
+   xpos 492
+   ypos 323
+   selected false
+  }
+clone $C2e0b18a0 {
+   xpos 492
+   ypos 404
+   selected false
+  }
+clone $C2e0bd4b0 {
+   xpos 492
+   ypos 510
+   selected false
+  }
+set N30f03df0 [stack 0]
+  Dot {
+   name Dot12
+   xpos 526
+   ypos 773
+  }
+set N30f10f10 [stack 0]
+  Dot {
+   name Dot14
+   xpos 526
+   ypos 904
+  }
+push $N30f10f10
+push $N30f03df0
+push $N2e09a5a0
+  Merge2 {
+   inputs 2
+   operation plus
+   name Merge10
+   xpos 311
+   ypos 510
+  }
+push $N2e09e870
+  Dot {
+   name Dot11
+   xpos 152
+   ypos 617
+  }
+  Switch {
+   inputs 2
+   which {{parent.matchluminance}}
+   name Switch2
+   xpos 311
+   ypos 613
+  }
+  Switch {
+   inputs 2
+   which {{parent.viewer}}
+   name Switch1
+   xpos 311
+   ypos 769
+  }
+  ShuffleCopy {
+   inputs 2
+   red red
+   green green
+   blue blue
+   out despillMap
+   name ShuffleCopy1
+   xpos 311
+   ypos 894
+  }
+  Dot {
+   name Dot15
+   xpos 345
+   ypos 1003
+  }
+set N30f46180 [stack 0]
+  Output {
+   name Output1
+   xpos 311
+   ypos 1143
+  }
+push $N30f46180
+  Shuffle {
+   in despillMap
+   alpha red
+   name Shuffle1
+   label "\[value in]"
+   xpos 451
+   ypos 987
+  }
+push 0
+  Viewer {
+   inputs 2
+   frame_range 1-1
+   input_number 1
+   near 0.9
+   far 10000
+   name Viewer1
+   xpos 601
+   ypos 999
+  }
+ end_group
+push $N2eaa5cd0
+ Group {
+  name PA_DespillFast3
+  tile_color 0xff5f00ff
+  label "BLUE\nCLEAN PLATE"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 1068
+  ypos -1424
+  mapsize {0.15 0.15}
+  addUserKnob {20 User}
+  addUserKnob {4 viewer l Viewer M {Despill "Spill Map"}}
+  addUserKnob {22 extract_despill_map l "Extract Despill Map" -STARTLINE T "with nuke.thisNode():\n\n    for n in nuke.allNodes():\n        n.knob('selected').setValue(False)\n\n    for n in nuke.allNodes('Shuffle'):\n        n.knob('selected').setValue(True)\n\n    for n in nuke.selectedNodes():\n        nuke.nodeCopy('%clipboad%')\n\nnuke.nodePaste('%clipboad%')\n        "}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenColour l "Screen Color" T Keylight1.screenColour}
+  addUserKnob {6 matchluminance l "Match Luminance" -STARTLINE}
+  matchluminance true
+  addUserKnob {41 mode l "Luminance Math" T Saturation1.mode}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenGain l "Screen Gain" T Keylight1.screenGain}
+  addUserKnob {41 screenBalance l "Screen Balance" T Keylight1.screenBalance}
+  addUserKnob {41 alphaBias l "Despill Bias" T Keylight1.alphaBias}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenClipMin l "Clip Matte Black" T Keylight1.screenClipMin}
+  addUserKnob {41 screenClipMax l "Clip Matte White" T Keylight1.screenClipMax}
+  addUserKnob {26 ""}
+  addUserKnob {41 white l "Color Correction" T Grade1.white}
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "PA_Despill v5.1\nCreated by Pedro Andrade\n-2014-"}
+ }
+  BackdropNode {
+   inputs 0
+   name BackdropNode1
+   tile_color 0x9000ff
+   label GREEN
+   note_font_size 42
+   xpos 1481
+   ypos 106
+   bdwidth 201
+   bdheight 337
+  }
+  BackdropNode {
+   inputs 0
+   name BackdropNode2
+   tile_color 0x93ff
+   label BLUE
+   note_font_size 42
+   xpos 1703
+   ypos 108
+   bdwidth 201
+   bdheight 337
+  }
+  Dot {
+   inputs 0
+   name Dot4
+   xpos 1674
+   ypos 34
+  }
+set N30f87830 [stack 0]
+  Dot {
+   name Dot8
+   xpos 1809
+   ypos 34
+  }
+  Expression {
+   expr2 g>b?b:g
+   name Expression1
+   xpos 1775
+   ypos 237
+  }
+  Expression {
+   expr1 r>g?g:r
+   name Expression2
+   xpos 1777
+   ypos 272
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression5
+   xpos 1777
+   ypos 314
+  }
+push $N30f87830
+  Dot {
+   name Dot2
+   xpos 1589
+   ypos 34
+  }
+set N30fb55e0 [stack 0]
+  Dot {
+   name Dot5
+   xpos 1445
+   ypos 34
+  }
+  Dot {
+   name Dot6
+   xpos 1445
+   ypos 576
+  }
+push $N30fb55e0
+  Expression {
+   expr1 r>g?g:r
+   name Expression3
+   xpos 1555
+   ypos 257
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression4
+   xpos 1555
+   ypos 299
+  }
+  Dot {
+   name Dot3
+   xpos 1589
+   ypos 504
+  }
+  Dissolve {
+   inputs 2
+   name Dissolve2
+   xpos 1653
+   ypos 568
+  }
+  Input {
+   inputs 0
+   name img
+   xpos 311
+   ypos -90
+  }
+  Dot {
+   name Dot1
+   xpos 345
+   ypos -6
+  }
+set N30fed060 [stack 0]
+  OFXuk.co.thefoundry.keylight.keylight_v201 {
+   show "Final Result"
+   unPreMultiply false
+   screenColour {{parent.parent.PA_DespillFast2.Keylight1.screenColour} {parent.parent.PA_DespillFast2.Keylight1.screenColour} {parent.parent.PA_DespillFast2.Keylight1.screenColour}}
+   screenGain 1
+   screenBalance 0.5
+   alphaBias {0.5 0.5 0.5}
+   despillBias {0.5 0.5 0.5}
+   gangBiases true
+   preBlur 0
+   "Screen Matte" 0
+   screenClipMin 0
+   screenClipMax 1
+   screenClipRollback 0
+   screenGrowShrink 0
+   screenSoftness 0
+   screenDespotBlack 0
+   screenDespotWhite 0
+   screenReplaceMethod "Soft Colour"
+   screenReplaceColour {0.5 0.5 0.5}
+   Tuning 0
+   midPoint 0.5
+   lowGain 1
+   midGain 1
+   highGain 1
+   "Inside Mask" 0
+   sourceAlphaHandling Ignore
+   insideReplaceMethod "Soft Colour"
+   insideReplaceColour {0.5 0.5 0.5}
+   Crops 0
+   SourceXMethod Colour
+   SourceYMethod Colour
+   SourceEdgeColour 0
+   SourceCropL 0
+   SourceCropR 1
+   SourceCropB 0
+   SourceCropT 1
+   balanceSet true
+   insideComponent None
+   outsideComponent None
+   cacheBreaker true
+   name Keylight1
+   xpos 311
+   ypos 138
+  }
+set N30ff1360 [stack 0]
+  Dot {
+   name Dot9
+   xpos 345
+   ypos 330
+  }
+set N3185b1c0 [stack 0]
+  Dot {
+   name Dot13
+   xpos 152
+   ypos 330
+  }
+set N3185f430 [stack 0]
+push $N30fed060
+  Dot {
+   name Dot10
+   xpos -6
+   ypos -6
+  }
+  Saturation {
+   saturation 0
+   name Saturation1
+   label "mode: \[value mode]"
+   xpos -40
+   ypos 85
+  }
+  set C31867a50 [stack 0]
+  Clamp {
+   name Clamp1
+   xpos -40
+   ypos 166
+   disable true
+  }
+  set C31872460 [stack 0]
+  Grade {
+   white {1 1 1 1}
+   name Grade1
+   xpos -40
+   ypos 270
+  }
+  set C3187e070 [stack 0]
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -40
+   ypos 326
+  }
+push $N30fed060
+  Dot {
+   name Dot7
+   xpos 526
+   ypos -6
+  }
+push $N30ff1360
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge9
+   xpos 492
+   ypos 138
+  }
+clone $C31867a50 {
+   xpos 492
+   ypos 323
+   selected false
+  }
+clone $C31872460 {
+   xpos 492
+   ypos 404
+   selected false
+  }
+clone $C3187e070 {
+   xpos 492
+   ypos 510
+   selected false
+  }
+set N318c0a30 [stack 0]
+  Dot {
+   name Dot12
+   xpos 526
+   ypos 773
+  }
+set N318cdb50 [stack 0]
+  Dot {
+   name Dot14
+   xpos 526
+   ypos 904
+  }
+push $N318cdb50
+push $N318c0a30
+push $N3185b1c0
+  Merge2 {
+   inputs 2
+   operation plus
+   name Merge10
+   xpos 311
+   ypos 510
+  }
+push $N3185f430
+  Dot {
+   name Dot11
+   xpos 152
+   ypos 617
+  }
+  Switch {
+   inputs 2
+   which {{parent.matchluminance}}
+   name Switch2
+   xpos 311
+   ypos 613
+  }
+  Switch {
+   inputs 2
+   which {{parent.viewer}}
+   name Switch1
+   xpos 311
+   ypos 769
+  }
+  ShuffleCopy {
+   inputs 2
+   red red
+   green green
+   blue blue
+   out despillMap
+   name ShuffleCopy1
+   xpos 311
+   ypos 894
+  }
+  Dot {
+   name Dot15
+   xpos 345
+   ypos 1003
+  }
+set N31906d40 [stack 0]
+  Output {
+   name Output1
+   xpos 311
+   ypos 1143
+  }
+push $N31906d40
+  Shuffle {
+   in despillMap
+   alpha red
+   name Shuffle1
+   label "\[value in]"
+   xpos 451
+   ypos 987
+  }
+push 0
+  Viewer {
+   inputs 2
+   frame_range 1-1
+   input_number 1
+   near 0.9
+   far 10000
+   name Viewer1
+   xpos 601
+   ypos 999
+  }
+ end_group
+ Merge2 {
+  inputs 2
+  operation divide
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge9
+  xpos 968
+  ypos -1279
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  mix {{clamp(1-parent.Multiply7.value)}}
+  name Merge14
+  label "LOW END"
+  xpos 968
+  ypos -1089
+ }
+ Merge2 {
+  inputs 2
+  operation min
+  mix {{clamp(1-parent.Multiply6.value)}}
+  name Merge15
+  label "TOP END"
+  xpos 968
+  ypos -996
+ }
+ Dot {
+  name Dot27
+  xpos 1003
+  ypos -722
+ }
+push $N2dc0acd0
+ Dot {
+  name Dot38
+  xpos 510
+  ypos -1085
+ }
+set N31961ad0 [stack 0]
+ Dot {
+  name Dot34
+  xpos 510
+  ypos -986
+ }
+push $N31961ad0
+push $N2cdfaec0
+ Group {
+  name PA_DespillFast11
+  tile_color 0xff5f00ff
+  label "GREEN\nFG"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 580
+  ypos -1424
+  mapsize {0.15 0.15}
+  addUserKnob {20 User}
+  addUserKnob {4 viewer l Viewer M {Despill "Spill Map"}}
+  addUserKnob {22 extract_despill_map l "Extract Despill Map" -STARTLINE T "with nuke.thisNode():\n\n    for n in nuke.allNodes():\n        n.knob('selected').setValue(False)\n\n    for n in nuke.allNodes('Shuffle'):\n        n.knob('selected').setValue(True)\n\n    for n in nuke.selectedNodes():\n        nuke.nodeCopy('%clipboad%')\n\nnuke.nodePaste('%clipboad%')\n        "}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenColour l "Screen Color" T Keylight1.screenColour}
+  addUserKnob {6 matchluminance l "Match Luminance" -STARTLINE}
+  matchluminance true
+  addUserKnob {41 mode l "Luminance Math" T Saturation1.mode}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenGain l "Screen Gain" T Keylight1.screenGain}
+  addUserKnob {41 screenBalance l "Screen Balance" T Keylight1.screenBalance}
+  addUserKnob {41 alphaBias l "Despill Bias" T Keylight1.alphaBias}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenClipMin l "Clip Matte Black" T Keylight1.screenClipMin}
+  addUserKnob {41 screenClipMax l "Clip Matte White" T Keylight1.screenClipMax}
+  addUserKnob {26 ""}
+  addUserKnob {41 white l "Color Correction" T Grade1.white}
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "PA_Despill v5.1\nCreated by Pedro Andrade\n-2014-"}
+ }
+  BackdropNode {
+   inputs 0
+   name BackdropNode1
+   tile_color 0x9000ff
+   label GREEN
+   note_font_size 42
+   xpos 1481
+   ypos 106
+   bdwidth 201
+   bdheight 337
+  }
+  BackdropNode {
+   inputs 0
+   name BackdropNode2
+   tile_color 0x93ff
+   label BLUE
+   note_font_size 42
+   xpos 1703
+   ypos 108
+   bdwidth 201
+   bdheight 337
+  }
+  Dot {
+   inputs 0
+   name Dot4
+   xpos 1674
+   ypos 34
+  }
+set N3197cc80 [stack 0]
+  Dot {
+   name Dot8
+   xpos 1809
+   ypos 34
+  }
+  Expression {
+   expr2 g>b?b:g
+   name Expression1
+   xpos 1775
+   ypos 237
+  }
+  Expression {
+   expr1 r>g?g:r
+   name Expression2
+   xpos 1777
+   ypos 272
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression5
+   xpos 1777
+   ypos 314
+  }
+push $N3197cc80
+  Dot {
+   name Dot2
+   xpos 1589
+   ypos 34
+  }
+set N319aaa30 [stack 0]
+  Dot {
+   name Dot5
+   xpos 1445
+   ypos 34
+  }
+  Dot {
+   name Dot6
+   xpos 1445
+   ypos 576
+  }
+push $N319aaa30
+  Expression {
+   expr1 r>g?g:r
+   name Expression3
+   xpos 1555
+   ypos 257
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression4
+   xpos 1555
+   ypos 299
+  }
+  Dot {
+   name Dot3
+   xpos 1589
+   ypos 504
+  }
+  Dissolve {
+   inputs 2
+   name Dissolve2
+   xpos 1653
+   ypos 568
+  }
+  Input {
+   inputs 0
+   name img
+   xpos 311
+   ypos -90
+  }
+  Dot {
+   name Dot1
+   xpos 345
+   ypos -6
+  }
+set N319e24b0 [stack 0]
+  OFXuk.co.thefoundry.keylight.keylight_v201 {
+   show "Final Result"
+   unPreMultiply false
+   screenColour {0 1 0}
+   screenGain 1
+   screenBalance 0.5
+   alphaBias {0.5 0.5 0.5}
+   despillBias {0.5 0.5 0.5}
+   gangBiases true
+   preBlur 0
+   "Screen Matte" 0
+   screenClipMin 0
+   screenClipMax 1
+   screenClipRollback 0
+   screenGrowShrink 0
+   screenSoftness 0
+   screenDespotBlack 0
+   screenDespotWhite 0
+   screenReplaceMethod "Soft Colour"
+   screenReplaceColour {0.5 0.5 0.5}
+   Tuning 0
+   midPoint 0.5
+   lowGain 1
+   midGain 1
+   highGain 1
+   "Inside Mask" 0
+   sourceAlphaHandling Ignore
+   insideReplaceMethod "Soft Colour"
+   insideReplaceColour {0.5 0.5 0.5}
+   Crops 0
+   SourceXMethod Colour
+   SourceYMethod Colour
+   SourceEdgeColour 0
+   SourceCropL 0
+   SourceCropR 1
+   SourceCropB 0
+   SourceCropT 1
+   balanceSet true
+   insideComponent None
+   outsideComponent None
+   cacheBreaker true
+   name Keylight1
+   xpos 311
+   ypos 138
+  }
+set N319e67b0 [stack 0]
+  Dot {
+   name Dot9
+   xpos 345
+   ypos 330
+  }
+set N31a55740 [stack 0]
+  Dot {
+   name Dot13
+   xpos 152
+   ypos 330
+  }
+set N31a59a10 [stack 0]
+push $N319e24b0
+  Dot {
+   name Dot10
+   xpos -6
+   ypos -6
+  }
+  Saturation {
+   saturation 0
+   name Saturation1
+   label "mode: \[value mode]"
+   xpos -40
+   ypos 85
+  }
+  set C31a62030 [stack 0]
+  Clamp {
+   name Clamp1
+   xpos -40
+   ypos 166
+   disable true
+  }
+  set C31a6ca40 [stack 0]
+  Grade {
+   white {1 1 1 1}
+   name Grade1
+   xpos -40
+   ypos 270
+  }
+  set C31a78650 [stack 0]
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -40
+   ypos 326
+  }
+push $N319e24b0
+  Dot {
+   name Dot7
+   xpos 526
+   ypos -6
+  }
+push $N319e67b0
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge9
+   xpos 492
+   ypos 138
+  }
+clone $C31a62030 {
+   xpos 492
+   ypos 323
+   selected false
+  }
+clone $C31a6ca40 {
+   xpos 492
+   ypos 404
+   selected false
+  }
+clone $C31a78650 {
+   xpos 492
+   ypos 510
+   selected false
+  }
+set N31abb010 [stack 0]
+  Dot {
+   name Dot12
+   xpos 526
+   ypos 773
+  }
+set N31ac8130 [stack 0]
+  Dot {
+   name Dot14
+   xpos 526
+   ypos 904
+  }
+push $N31ac8130
+push $N31abb010
+push $N31a55740
+  Merge2 {
+   inputs 2
+   operation plus
+   name Merge10
+   xpos 311
+   ypos 510
+  }
+push $N31a59a10
+  Dot {
+   name Dot11
+   xpos 152
+   ypos 617
+  }
+  Switch {
+   inputs 2
+   which {{parent.matchluminance}}
+   name Switch2
+   xpos 311
+   ypos 613
+  }
+  Switch {
+   inputs 2
+   which {{parent.viewer}}
+   name Switch1
+   xpos 311
+   ypos 769
+  }
+  ShuffleCopy {
+   inputs 2
+   red red
+   green green
+   blue blue
+   out despillMap
+   name ShuffleCopy1
+   xpos 311
+   ypos 894
+  }
+  Dot {
+   name Dot15
+   xpos 345
+   ypos 1003
+  }
+set N31b01320 [stack 0]
+  Output {
+   name Output1
+   xpos 311
+   ypos 1143
+  }
+push $N31b01320
+  Shuffle {
+   in despillMap
+   alpha red
+   name Shuffle1
+   label "\[value in]"
+   xpos 451
+   ypos 987
+  }
+push 0
+  Viewer {
+   inputs 2
+   frame_range 1-1
+   input_number 1
+   near 0.9
+   far 10000
+   name Viewer1
+   xpos 601
+   ypos 999
+  }
+ end_group
+push $N2eaa1b00
+ Group {
+  name PA_DespillFast1
+  tile_color 0xff5f00ff
+  label "GREEN\nCLEAN PLATE"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 729
+  ypos -1424
+  mapsize {0.15 0.15}
+  addUserKnob {20 User}
+  addUserKnob {4 viewer l Viewer M {Despill "Spill Map"}}
+  addUserKnob {22 extract_despill_map l "Extract Despill Map" -STARTLINE T "with nuke.thisNode():\n\n    for n in nuke.allNodes():\n        n.knob('selected').setValue(False)\n\n    for n in nuke.allNodes('Shuffle'):\n        n.knob('selected').setValue(True)\n\n    for n in nuke.selectedNodes():\n        nuke.nodeCopy('%clipboad%')\n\nnuke.nodePaste('%clipboad%')\n        "}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenColour l "Screen Color" T Keylight1.screenColour}
+  addUserKnob {6 matchluminance l "Match Luminance" -STARTLINE}
+  matchluminance true
+  addUserKnob {41 mode l "Luminance Math" T Saturation1.mode}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenGain l "Screen Gain" T Keylight1.screenGain}
+  addUserKnob {41 screenBalance l "Screen Balance" T Keylight1.screenBalance}
+  addUserKnob {41 alphaBias l "Despill Bias" T Keylight1.alphaBias}
+  addUserKnob {26 ""}
+  addUserKnob {41 screenClipMin l "Clip Matte Black" T Keylight1.screenClipMin}
+  addUserKnob {41 screenClipMax l "Clip Matte White" T Keylight1.screenClipMax}
+  addUserKnob {26 ""}
+  addUserKnob {41 white l "Color Correction" T Grade1.white}
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "PA_Despill v5.1\nCreated by Pedro Andrade\n-2014-"}
+ }
+  BackdropNode {
+   inputs 0
+   name BackdropNode1
+   tile_color 0x9000ff
+   label GREEN
+   note_font_size 42
+   xpos 1481
+   ypos 106
+   bdwidth 201
+   bdheight 337
+  }
+  BackdropNode {
+   inputs 0
+   name BackdropNode2
+   tile_color 0x93ff
+   label BLUE
+   note_font_size 42
+   xpos 1703
+   ypos 108
+   bdwidth 201
+   bdheight 337
+  }
+  Dot {
+   inputs 0
+   name Dot4
+   xpos 1674
+   ypos 34
+  }
+set N31b42870 [stack 0]
+  Dot {
+   name Dot8
+   xpos 1809
+   ypos 34
+  }
+  Expression {
+   expr2 g>b?b:g
+   name Expression1
+   xpos 1775
+   ypos 237
+  }
+  Expression {
+   expr1 r>g?g:r
+   name Expression2
+   xpos 1777
+   ypos 272
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression5
+   xpos 1777
+   ypos 314
+  }
+push $N31b42870
+  Dot {
+   name Dot2
+   xpos 1589
+   ypos 34
+  }
+set N31b70620 [stack 0]
+  Dot {
+   name Dot5
+   xpos 1445
+   ypos 34
+  }
+  Dot {
+   name Dot6
+   xpos 1445
+   ypos 576
+  }
+push $N31b70620
+  Expression {
+   expr1 r>g?g:r
+   name Expression3
+   xpos 1555
+   ypos 257
+  }
+  Expression {
+   expr2 b>g?g:b
+   name Expression4
+   xpos 1555
+   ypos 299
+  }
+  Dot {
+   name Dot3
+   xpos 1589
+   ypos 504
+  }
+  Dissolve {
+   inputs 2
+   name Dissolve2
+   xpos 1653
+   ypos 568
+  }
+  Input {
+   inputs 0
+   name img
+   xpos 311
+   ypos -90
+  }
+  Dot {
+   name Dot1
+   xpos 345
+   ypos -6
+  }
+set N31ba80a0 [stack 0]
+  OFXuk.co.thefoundry.keylight.keylight_v201 {
+   show "Final Result"
+   unPreMultiply false
+   screenColour {{parent.parent.PA_DespillFast11.Keylight1.screenColour x1019 0} {parent.parent.PA_DespillFast11.Keylight1.screenColour x1019 1} {parent.parent.PA_DespillFast11.Keylight1.screenColour x1019 0}}
+   screenGain 1
+   screenBalance 0.5
+   alphaBias {0.5 0.5 0.5}
+   despillBias {0.5 0.5 0.5}
+   gangBiases true
+   preBlur 0
+   "Screen Matte" 0
+   screenClipMin 0
+   screenClipMax 1
+   screenClipRollback 0
+   screenGrowShrink 0
+   screenSoftness 0
+   screenDespotBlack 0
+   screenDespotWhite 0
+   screenReplaceMethod "Soft Colour"
+   screenReplaceColour {0.5 0.5 0.5}
+   Tuning 0
+   midPoint 0.5
+   lowGain 1
+   midGain 1
+   highGain 1
+   "Inside Mask" 0
+   sourceAlphaHandling Ignore
+   insideReplaceMethod "Soft Colour"
+   insideReplaceColour {0.5 0.5 0.5}
+   Crops 0
+   SourceXMethod Colour
+   SourceYMethod Colour
+   SourceEdgeColour 0
+   SourceCropL 0
+   SourceCropR 1
+   SourceCropB 0
+   SourceCropT 1
+   balanceSet true
+   insideComponent None
+   outsideComponent None
+   cacheBreaker true
+   name Keylight1
+   xpos 311
+   ypos 138
+  }
+set N31bac3a0 [stack 0]
+  Dot {
+   name Dot9
+   xpos 345
+   ypos 330
+  }
+set N31c1bd00 [stack 0]
+  Dot {
+   name Dot13
+   xpos 152
+   ypos 330
+  }
+set N31c1ff70 [stack 0]
+push $N31ba80a0
+  Dot {
+   name Dot10
+   xpos -6
+   ypos -6
+  }
+  Saturation {
+   saturation 0
+   name Saturation1
+   label "mode: \[value mode]"
+   xpos -40
+   ypos 85
+  }
+  set C31c28590 [stack 0]
+  Clamp {
+   name Clamp1
+   xpos -40
+   ypos 166
+   disable true
+  }
+  set C31c32fa0 [stack 0]
+  Grade {
+   white {1 1 1 1}
+   name Grade1
+   xpos -40
+   ypos 270
+  }
+  set C31c3ebb0 [stack 0]
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -40
+   ypos 326
+  }
+push $N31ba80a0
+  Dot {
+   name Dot7
+   xpos 526
+   ypos -6
+  }
+push $N31bac3a0
+  Merge2 {
+   inputs 2
+   operation minus
+   name Merge9
+   xpos 492
+   ypos 138
+  }
+clone $C31c28590 {
+   xpos 492
+   ypos 323
+   selected false
+  }
+clone $C31c32fa0 {
+   xpos 492
+   ypos 404
+   selected false
+  }
+clone $C31c3ebb0 {
+   xpos 492
+   ypos 510
+   selected false
+  }
+set N31c81570 [stack 0]
+  Dot {
+   name Dot12
+   xpos 526
+   ypos 773
+  }
+set N31c8e690 [stack 0]
+  Dot {
+   name Dot14
+   xpos 526
+   ypos 904
+  }
+push $N31c8e690
+push $N31c81570
+push $N31c1bd00
+  Merge2 {
+   inputs 2
+   operation plus
+   name Merge10
+   xpos 311
+   ypos 510
+  }
+push $N31c1ff70
+  Dot {
+   name Dot11
+   xpos 152
+   ypos 617
+  }
+  Switch {
+   inputs 2
+   which {{parent.matchluminance}}
+   name Switch2
+   xpos 311
+   ypos 613
+  }
+  Switch {
+   inputs 2
+   which {{parent.viewer}}
+   name Switch1
+   xpos 311
+   ypos 769
+  }
+  ShuffleCopy {
+   inputs 2
+   red red
+   green green
+   blue blue
+   out despillMap
+   name ShuffleCopy1
+   xpos 311
+   ypos 894
+  }
+  Dot {
+   name Dot15
+   xpos 345
+   ypos 1003
+  }
+set N31cc3900 [stack 0]
+  Output {
+   name Output1
+   xpos 311
+   ypos 1143
+  }
+push $N31cc3900
+  Shuffle {
+   in despillMap
+   alpha red
+   name Shuffle1
+   label "\[value in]"
+   xpos 451
+   ypos 987
+  }
+push 0
+  Viewer {
+   inputs 2
+   frame_range 1-1
+   input_number 1
+   near 0.9
+   far 10000
+   name Viewer1
+   xpos 601
+   ypos 999
+  }
+ end_group
+ Merge2 {
+  inputs 2
+  operation divide
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge8
+  xpos 654
+  ypos -1279
+ }
+ Merge2 {
+  inputs 2
+  operation max
+  mix {{clamp(1-parent.Multiply7.value)}}
+  name Merge7
+  label "LOW END"
+  xpos 655
+  ypos -1095
+ }
+ Merge2 {
+  inputs 2
+  operation min
+  mix {{clamp(1-parent.Multiply6.value)}}
+  name Merge13
+  label "TOP END"
+  xpos 655
+  ypos -996
+ }
+ Dot {
+  name Dot28
+  xpos 689
+  ypos -749
+ }
+push $N2cdcc310
+push $N2cdc4250
+push $N2cd743e0
+ Merge2 {
+  inputs 2
+  operation max
+  mix {{clamp(1-parent.Multiply7.value)}}
+  name Merge12
+  label "LOW END"
+  xpos 138
+  ypos -1391
+ }
+ Merge2 {
+  inputs 2
+  operation min
+  mix {{clamp(1-parent.Multiply6.value)}}
+  name Merge11
+  label "TOP END"
+  xpos 138
+  ypos -1298
+ }
+ Dot {
+  name Dot29
+  xpos 172
+  ypos -1154
+ }
+push $N2cdf78c0
+push $N2cdb3290
+ Merge2 {
+  inputs 2
+  operation minus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge1
+  xpos -40
+  ypos -1480
+ }
+ Dot {
+  name Dot33
+  xpos -7
+  ypos -1154
+ }
+ Switch {
+  inputs 2
+  which {{parent.style}}
+  name Switch2
+  xpos 41
+  ypos -1158
+ }
+ Switch {
+  inputs 4
+  which {{parent.despilled_inputs==0?0:parent.despill_preset+1}}
+  name Switch6
+  xpos 42
+  ypos -660
+ }
+ Saturation {
+  saturation {{parent.saturation_1}}
+  name Saturation2
+  xpos 41
+  ypos -500
+ }
+ Dot {
+  name Dot12
+  xpos 75
+  ypos -286
+ }
+set N31d66e60 [stack 0]
+ Dot {
+  name Dot16
+  xpos 234
+  ypos -286
+ }
+ Dot {
+  name Dot32
+  xpos 234
+  ypos 354
+ }
+push $N31d66e60
+ Dot {
+  name Dot14
+  xpos -45
+  ypos -286
+ }
+set N31d735a0 [stack 0]
+ Dot {
+  name Dot13
+  xpos -197
+  ypos -286
+ }
+ Clamp {
+  channels rgb
+  maximum 1000
+  name Clamp_l1
+  label "max == 1000\n"
+  xpos -231
+  ypos -56
+ }
+ Multiply {
+  value {{parent.top_end}}
+  name Multiply6
+  label "TOP END"
+  xpos -231
+  ypos 61
+ }
+push $N31d735a0
+ Clamp {
+  channels rgb
+  minimum -1000
+  maximum 0
+  name Clamp_d1
+  label "min == -1000"
+  xpos -75
+  ypos -56
+ }
+ Multiply {
+  value {{parent.low_end}}
+  name Multiply7
+  label "LOW END"
+  xpos -75
+  ypos 58
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge2
+  xpos -160
+  ypos 190
+ }
+ Dot {
+  name Dot15
+  xpos -126
+  ypos 354
+ }
+ Switch {
+  inputs 2
+  which {{parent.style}}
+  name Switch4
+  xpos 31
+  ypos 350
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge6
+  xpos 31
+  ypos 729
+  disable true
+ }
+ Dot {
+  name Dot11
+  xpos 65
+  ypos 1074
+ }
+ Blur {
+  crop false
+  name Blur1
+  xpos 165
+  ypos 1064
+ }
+ Dot {
+  name Dot7
+  xpos 424
+  ypos 1074
+ }
+set N31ddd960 [stack 0]
+ Dot {
+  name Dot10
+  xpos 424
+  ypos 1197
+ }
+set N31de1b70 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  color 1
+  name Constant1
+  xpos 180
+  ypos 1647
+ }
+ Dissolve {
+  inputs 2
+  which {{parent.mix}}
+  name Dissolve2
+  xpos 390
+  ypos 1664
+ }
+ Dot {
+  name Dot18
+  xpos 424
+  ypos 1854
+ }
+push $N31de1b70
+push $N2cb964d0
+ Dot {
+  name Dot1
+  xpos 725
+  ypos 839
+ }
+set N31dfba20 [stack 0]
+clone $C2cd7dbc0 {
+  xpos 691
+  ypos 955
+  selected false
+ }
+ Dot {
+  name Dot8
+  xpos 725
+  ypos 1017
+ }
+set N31e10210 [stack 0]
+ Dot {
+  name Dot9
+  xpos 578
+  ypos 1017
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge5
+  xpos 544
+  ypos 1193
+ }
+push $N31ddd960
+push $N31e10210
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge3
+  xpos 691
+  ypos 1071
+ }
+ Switch {
+  inputs 2
+  which {{parent.style}}
+  name Switch3
+  xpos 691
+  ypos 1193
+ }
+ Log2Lin {
+  name Log2Lin4
+  xpos 691
+  ypos 1315
+  disable {{!parent.log2lin}}
+ }
+push $N31dfba20
+ Dot {
+  name Dot2
+  xpos 972
+  ypos 839
+ }
+ Dot {
+  name Dot3
+  xpos 972
+  ypos 1399
+ }
+set N31e4a7c0 [stack 0]
+ Switch {
+  inputs 2
+  which {{!parent.disable}}
+  name Switch1
+  xpos 691
+  ypos 1395
+ }
+push $N31e4a7c0
+ Dot {
+  name Dot17
+  xpos 972
+  ypos 1680
+ }
+ Dissolve {
+  inputs 2
+  which {{parent.mix}}
+  name Dissolve1
+  xpos 691
+  ypos 1670
+ }
+ Switch {
+  inputs 2
+  which {{parent.stereo_friendly}}
+  name Switch5
+  xpos 691
+  ypos 1850
+ }
+ Output {
+  name Output1
+  xpos 691
+  ypos 2160
+ }
+end_group

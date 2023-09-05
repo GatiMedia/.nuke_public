@@ -1,0 +1,151 @@
+
+Group {
+ name PA_Kaleidoscope
+ knobChanged "\n\nif nuke.thisNode().knob('pattern').value() == 'driver':\n    nuke.thisNode().knob('xysize').setEnabled(False)\n    nuke.thisNode().knob('seed').setEnabled(False)\n    nuke.thisNode().knob('lacunarity').setEnabled(False)\n    nuke.thisNode().knob('gain').setEnabled(False)\n    nuke.thisNode().knob('gamma').setEnabled(False)\n\nelse:\n    nuke.thisNode().knob('xysize').setEnabled(True)\n    nuke.thisNode().knob('seed').setEnabled(True)\n    nuke.thisNode().knob('lacunarity').setEnabled(True)\n    nuke.thisNode().knob('gain').setEnabled(True)\n    nuke.thisNode().knob('gamma').setEnabled(True)\n    \n\n"
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -2206
+ ypos -59
+ addUserKnob {20 User}
+ addUserKnob {4 pattern l Pattern M {A B driver "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {7 xysize l "XY Size" R 0 1000}
+ xysize 350
+ addUserKnob {7 seed l Seed R 0 5}
+ addUserKnob {7 lacunarity l Lacunarity R 1 10}
+ lacunarity 2
+ addUserKnob {7 gain l Gain R 0.1 1}
+ gain 0.5
+ addUserKnob {7 gamma l Gamma}
+ gamma 0.5
+ addUserKnob {26 ""}
+ addUserKnob {7 feature_scale l "Feature Scale" R 1 50}
+ feature_scale 1
+ addUserKnob {7 blur l Blur R 1 100}
+ blur 1
+ addUserKnob {26 ""}
+ addUserKnob {3 iterations l Iterations}
+ iterations 1
+ addUserKnob {6 no_interations l "No Interations" -STARTLINE}
+ addUserKnob {7 scale l "Format Scale" R 1 10}
+ scale 1
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Kaleidoscope v1.0\nCreated by Pedro Andrade\n-2017-"}
+}
+ Input {
+  inputs 0
+  name driver
+  xpos -280
+  ypos 208
+  number 1
+ }
+ Transform {
+  scale {{parent.Noise1.scale}}
+  center {{input.width/2} {input.height/2}}
+  name Transform1
+  xpos -280
+  ypos 250
+ }
+ Reformat {
+  type scale
+  scale {{parent.scale}}
+  name Reformat1
+  xpos -280
+  ypos 292
+ }
+ set C11d2fd70 [stack 0]
+ Dot {
+  name Dot1
+  xpos -246
+  ypos 373
+ }
+clone $C11d2fd70 {
+  inputs 0
+  xpos 133
+  ypos 134
+  selected false
+ }
+set N11d430c0 [stack 0]
+ Noise {
+  type turbulence
+  size {{parent.Noise1.size}}
+  zoffset {{parent.Noise1.zoffset}}
+  lacunarity {{parent.Noise1.lacunarity}}
+  gain {{parent.Noise1.gain}}
+  gamma {{parent.Noise1.gamma}}
+  scale {{parent.Noise1.scale}}
+  center {960 540}
+  name Noise2
+  xpos 212
+  ypos 230
+ }
+push $N11d430c0
+ Noise {
+  size {{parent.xysize}}
+  zoffset {{parent.seed}}
+  lacunarity {{parent.lacunarity}}
+  gain {{parent.gain}}
+  gamma {{parent.gamma}}
+  scale {{parent.feature_scale}}
+  center {{input.width/2} {input.height/2}}
+  yrotate 81
+  name Noise1
+  xpos 80
+  ypos 230
+ }
+ Switch {
+  inputs 3
+  which {{parent.pattern}}
+  name Switch1
+  xpos 124
+  ypos 370
+ }
+ Blur {
+  size {{parent.blur}}
+  name Blur6
+  xpos 124
+  ypos 440
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 373
+  ypos 70
+ }
+ Dot {
+  name Dot5
+  xpos 407
+  ypos 326
+ }
+ STMap {
+  inputs 2
+  uv rgb
+  name STMap1
+  xpos 373
+  ypos 440
+ }
+set N11d98fe0 [stack 0]
+push $N11d98fe0
+ Tile {
+  rows {{parent.iterations*2}}
+  mirrorRows true
+  columns {{rows}}
+  mirrorCols true
+  name Tile1
+  xpos 274
+  ypos 572
+ }
+ Switch {
+  inputs 2
+  which {{parent.no_interations}}
+  name Switch2
+  xpos 373
+  ypos 656
+ }
+ Output {
+  name Output1
+  xpos 373
+  ypos 790
+ }
+end_group

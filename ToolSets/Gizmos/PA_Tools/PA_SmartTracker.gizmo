@@ -1,0 +1,591 @@
+set cut_paste_input [stack 0]
+version 11.3 v6
+push $cut_paste_input
+Group {
+ name PA_SmartTracker1
+ knobChanged "\n\n#FRAME DISTANCE\nif nuke.thisKnob().name() == 'framedistance':\n\n\n    frameDistance = nuke.thisNode().knob('framedistance').value()\n\n    with nuke.thisNode():\n        classes = \['VectorDistort']\n        for n in nuke.allNodes():\n            if n.Class() in classes:\n                n.knob('frame_distance').setValue(frameDistance)\n\n\n\n\n#REF FRAME\nif nuke.thisKnob().name() == 'refframe':\n\n\n    refFrame = nuke.thisNode().knob('refframe').value()\n\n    with nuke.thisNode():\n        classes = \['VectorDistort']\n        for n in nuke.allNodes():\n            if n.Class() in classes:\n                n.knob('reference_frame').setValue(refFrame)\n\n\n\n\n#BUTTONS\nnuke.thisNode().knob('setall').setEnabled(True)\nnuke.thisNode().knob('track').setEnabled(True)\n\n\nnuke.thisNode().knob('track').setEnabled(False)\n\nif nuke.thisKnob().name() == 'setall':\n    nuke.thisNode().knob('setall').setEnabled(False)\n    nuke.thisNode().knob('track').setEnabled(True)\n\n\n\n\n#DYNAMIC INPUTS\n#SMART VECTORS\n\nif nuke.thisNode().knob('input_choice').value() == 'SmartVector':\n\n    for n in nuke.allNodes('Input'):\n        if n.knob('name').value() == 'SmartVector':\n            smartVectorInputXPos = n.knob('xpos').value()\n            smartVectorInputYPos = n.knob('ypos').value()\n            nuke.nodes.StickyNote(name = '_StickyNote_1', label = str(smartVectorInputXPos) + ',' + str(smartVectorInputYPos))\n            nuke.delete(n)\n                          \n    dotSmartVectorInput = nuke.nodes.Input(name='SmartVector', xpos = nuke.toNode('_StickyNote_1').knob('label').value().split(',')\[0], ypos = nuke.toNode('_StickyNote_1').knob('label').value().split(',')\[1])\n    nuke.delete(nuke.toNode('_StickyNote_1'))\n    for n in nuke.allNodes('Dot'):\n        if n.knob('label').value() == 'smart_vector_input':\n            n.setInput(0, dotSmartVectorInput)\n\n\nelse:\n    for n in nuke.allNodes('Input'):\n        if n.knob('name').value() == 'SmartVector':\n            smartVectorInputXPos = n.knob('xpos').value()\n            smartVectorInputYPos = n.knob('ypos').value()\n            nuke.nodes.StickyNote(name = '_StickyNote_1', label = str(smartVectorInputXPos) + ',' + str(smartVectorInputYPos))\n            nuke.delete(n)\n\n\n#STMAP\nif nuke.thisNode().knob('input_choice').value() == 'STMap':\n    for n in nuke.allNodes('Input'):\n        if n.knob('name').value() == 'STMap':\n            stMapInputXPos = n.knob('xpos').value()\n            stMapInputYPos = n.knob('ypos').value()\n            nuke.nodes.StickyNote(name = '_StickyNote_2', label = str(stMapInputXPos) + ',' + str(stMapInputYPos))\n            nuke.delete(n)\n\n                          \n    dotSTMapInput = nuke.nodes.Input(name='STMap', xpos = nuke.toNode('_StickyNote_2').knob('label').value().split(',')\[0], ypos = nuke.toNode('_StickyNote_2').knob('label').value().split(',')\[1])\n    nuke.delete(nuke.toNode('_StickyNote_2'))\n    for n in nuke.allNodes('Dot'):\n        if n.knob('label').value() == 'stmap_input':\n            n.setInput(0, dotSTMapInput)\n\nelse:\n    for n in nuke.allNodes('Input'):\n        if n.knob('name').value() == 'STMap':\n            stMapInputXPos = n.knob('xpos').value()\n            stMapInputYPos = n.knob('ypos').value()\n            nuke.nodes.StickyNote(name = '_StickyNote_2', label = str(stMapInputXPos) + ',' + str(stMapInputYPos))\n            nuke.delete(n)\n    \n\n"
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -274
+ ypos -49
+ addUserKnob {20 User l Main}
+ addUserKnob {4 input_choice l "Input Choice" M {SmartVector STMap}}
+ addUserKnob {26 ""}
+ addUserKnob {7 framedistance l "Frame Distance" R 0 6}
+ framedistance 1
+ addUserKnob {26 ""}
+ addUserKnob {41 point1 l Point1 T sample1.point1}
+ addUserKnob {41 conform l Set -STARTLINE T sample1.conform}
+ addUserKnob {41 track_5 l Track -STARTLINE T sample1.track}
+ addUserKnob {22 reset l Reset -STARTLINE T "nukescripts.cache_clear('')\n\nwith nuke.thisNode():\n    for n in nuke.allNodes():\n        if n.knob('name').value() == 'CurveTool1':\n            n.knob('maxlumapixdata').clearAnimated()\n            n.knob('maxlumapixdata').setValue(0)\n\n            n.knob('minlumapixdata').clearAnimated()\n            n.knob('minlumapixdata').setValue(0)\n\n            n.knob('maxlumapixvalue').clearAnimated()\n            n.knob('maxlumapixvalue').setValue(0)\n\n            n.knob('minlumapixvalue').clearAnimated()\n            n.knob('minlumapixvalue').setValue(0)\n\n        if n.knob('name').value() == 'sample1':\n            n.knob('point1').clearAnimated()\n\n            n.knob('point1').setValue(100, 0)\n            n.knob('point1').setValue(0, 1)\n\n            n.knob('sample').setValue(0, 0)\n            n.knob('sample').setValue(0, 1)\n            n.knob('sample').setValue(0, 2)\n\n            n.knob('radius').setValue(0.03)\n\n            n.knob('radius').setValue(0.03)\n    \n            \n\n            "}
+ addUserKnob {41 point2 l Point2 T sample2.point2}
+ addUserKnob {41 conform_1 l Set -STARTLINE T sample2.conform}
+ addUserKnob {41 track_1 l Track -STARTLINE T sample2.track}
+ addUserKnob {22 reset_1 l Reset -STARTLINE T "nukescripts.cache_clear('')\n\nwith nuke.thisNode():\n    for n in nuke.allNodes():\n        if n.knob('name').value() == 'CurveTool2':\n            n.knob('maxlumapixdata').clearAnimated()\n            n.knob('maxlumapixdata').setValue(0)\n\n            n.knob('minlumapixdata').clearAnimated()\n            n.knob('minlumapixdata').setValue(0)\n\n            n.knob('maxlumapixvalue').clearAnimated()\n            n.knob('maxlumapixvalue').setValue(0)\n\n            n.knob('minlumapixvalue').clearAnimated()\n            n.knob('minlumapixvalue').setValue(0)\n\n        if n.knob('name').value() == 'sample2':\n            n.knob('point2').clearAnimated()\n\n            n.knob('point2').setValue(200, 0)\n            n.knob('point2').setValue(0, 1)\n\n            n.knob('sample').setValue(0, 0)\n            n.knob('sample').setValue(0, 1)\n            n.knob('sample').setValue(0, 2)\n\n            n.knob('radius').setValue(0.03)\n\n            n.knob('radius').setValue(0.03)\n    \n            \n\n            "}
+ addUserKnob {41 point3 l Point3 T sample3.point3}
+ addUserKnob {41 conform_2 l Set -STARTLINE T sample3.conform}
+ addUserKnob {41 track_2 l Track -STARTLINE T sample3.track}
+ addUserKnob {22 reset_2 l Reset -STARTLINE T "nukescripts.cache_clear('')\n\nwith nuke.thisNode():\n    for n in nuke.allNodes():\n        if n.knob('name').value() == 'CurveTool3':\n            n.knob('maxlumapixdata').clearAnimated()\n            n.knob('maxlumapixdata').setValue(0)\n\n            n.knob('minlumapixdata').clearAnimated()\n            n.knob('minlumapixdata').setValue(0)\n\n            n.knob('maxlumapixvalue').clearAnimated()\n            n.knob('maxlumapixvalue').setValue(0)\n\n            n.knob('minlumapixvalue').clearAnimated()\n            n.knob('minlumapixvalue').setValue(0)\n\n        if n.knob('name').value() == 'sample3':\n            n.knob('point3').clearAnimated()\n\n            n.knob('point3').setValue(300, 0)\n            n.knob('point3').setValue(0, 1)\n\n            n.knob('sample').setValue(0, 0)\n            n.knob('sample').setValue(0, 1)\n            n.knob('sample').setValue(0, 2)\n\n            n.knob('radius').setValue(0.03)\n\n            n.knob('radius').setValue(0.03)\n    \n            \n\n            "}
+ addUserKnob {41 point4 l Point4 T sample4.point4}
+ addUserKnob {41 conform_3 l Set -STARTLINE T sample4.conform}
+ addUserKnob {41 track_3 l Track -STARTLINE T sample4.track}
+ addUserKnob {22 reset_3 l Reset -STARTLINE T "nukescripts.cache_clear('')\n\nwith nuke.thisNode():\n    for n in nuke.allNodes():\n        if n.knob('name').value() == 'CurveTool4':\n            n.knob('maxlumapixdata').clearAnimated()\n            n.knob('maxlumapixdata').setValue(0)\n\n            n.knob('minlumapixdata').clearAnimated()\n            n.knob('minlumapixdata').setValue(0)\n\n            n.knob('maxlumapixvalue').clearAnimated()\n            n.knob('maxlumapixvalue').setValue(0)\n\n            n.knob('minlumapixvalue').clearAnimated()\n            n.knob('minlumapixvalue').setValue(0)\n\n        if n.knob('name').value() == 'sample4':\n            n.knob('point4').clearAnimated()\n\n            n.knob('point4').setValue(400, 0)\n            n.knob('point4').setValue(0, 1)\n\n            n.knob('sample').setValue(0, 0)\n            n.knob('sample').setValue(0, 1)\n            n.knob('sample').setValue(0, 2)\n\n            n.knob('radius').setValue(0.03)\n\n            n.knob('radius').setValue(0.03)\n    \n            \n\n            "}
+ addUserKnob {26 ""}
+ addUserKnob {20 calculatedtracks l "Calculated Tracks" n 1}
+ addUserKnob {41 maxlumapixdata l Track1 T CurveTool1.maxlumapixdata}
+ addUserKnob {41 maxlumapixdata_1 l Track2 T CurveTool2.maxlumapixdata}
+ addUserKnob {41 maxlumapixdata_2 l Track3 T CurveTool3.maxlumapixdata}
+ addUserKnob {41 maxlumapixdata_3 l Track4 T CurveTool4.maxlumapixdata}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {22 setall l "Set All" T "conformList = \['conform', 'conform_1', 'conform_2', 'conform_3']\n\nfor n in conformList:\n    nuke.thisNode().knob(n).execute()" +STARTLINE}
+ addUserKnob {22 track l "Track All" -STARTLINE +DISABLED T "panel = nuke.Panel('Frame Range')\n\nfirstDefFrame = str(int(nuke.root().knob('first_frame').value()))\nlastDefFrame = str(int(nuke.root().knob('last_frame').value()))\n\npanel.addSingleLineInput('Frame Range', firstDefFrame+'-'+lastDefFrame)\n\nif panel.show():\n\n    firstFrameTrack = panel.value('Frame Range').split('-')\[0]\n    lastFrameTrack = panel.value('Frame Range').split('-')\[1]\n\n############################\n\n    nukescripts.cache_clear('')\n    \n    with nuke.thisNode():\n    \n        for n in nuke.allNodes('CurveTool'):\n            nuke.execute(n, int(firstFrameTrack), int(lastFrameTrack))\n\n\n"}
+ addUserKnob {22 resetall l "Reset All" -STARTLINE T "nuke.thisNode().knob('reset').execute()\nnuke.thisNode().knob('reset_1').execute()\nnuke.thisNode().knob('reset_2').execute()\nnuke.thisNode().knob('reset_3').execute()"}
+ addUserKnob {26 ""}
+ addUserKnob {3 refframe l "Reference Frame" -STARTLINE}
+ refframe 1046
+ addUserKnob {4 export l "" -STARTLINE M {Tracker CornerPin "" "" "" "" "" ""}}
+ export CornerPin
+ addUserKnob {22 export_1 l Export -STARTLINE T "curFrame = str(int(nuke.thisNode().knob('refframe').value()))\ncurName = str(nuke.thisNode().knob('name').value())\n\nfirstFrame = str(int(nuke.root().knob('first_frame').value()))\nlastFrame = str(int(nuke.root().knob('last_frame').value()))\n\n#TRACKER\nif nuke.thisNode().knob('export').value() == 'Tracker':\n    \n    with nuke.thisNode():\n        for n in nuke.allNodes():\n            n.knob('selected').setValue(False)\n            if n.Class() == 'Tracker3':\n                n.knob('selected').setValue(True)\n                nuke.nodeCopy('%clipboard%')\n                n.knob('selected').setValue(False)\n\n    nuke.nodePaste('%clipboard%')\n    \n    \n    \n    for n in nuke.selectedNodes():\n        if n.Class() == 'Tracker3':\n            n.knob('track1').setExpression('parent.' + curName + '.CurveTool1.maxlumapixdata')\n            n.knob('track2').setExpression('parent.' + curName + '.CurveTool2.maxlumapixdata')\n            n.knob('track3').setExpression('parent.' + curName + '.CurveTool3.maxlumapixdata')\n            n.knob('track4').setExpression('parent.' + curName + '.CurveTool4.maxlumapixdata')\n\n            nuke.animation(n.knob('name').value() + \".track1.x\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n            nuke.animation(n.knob('name').value() + \".track1.y\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n\n            nuke.animation(n.knob('name').value() + \".track2.x\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n            nuke.animation(n.knob('name').value() + \".track2.y\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n\n            nuke.animation(n.knob('name').value() + \".track3.x\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n            nuke.animation(n.knob('name').value() + \".track3.y\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n\n            nuke.animation(n.knob('name').value() + \".track4.x\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n            nuke.animation(n.knob('name').value() + \".track4.y\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n\n\n\n    \n            n.knob('reference_frame').setValue(int(curFrame))\n            n.knob('label').setValue('from ' + curName + '\\nRef Frame: \[value reference_frame]' + '\\n\[value transform]')\n\n            nuke.extractSelected()\n        \n            n.knob('selected').setValue(False)\n\n\n#CORNER PIN\n\nelif nuke.thisNode().knob('export').value() == 'CornerPin':\n\n    with nuke.thisNode():\n        for n in nuke.allNodes():\n            n.knob('selected').setValue(False)\n            if n.Class() == 'CornerPin2D':\n                n.knob('selected').setValue(True)\n                nuke.nodeCopy('%clipboard%')\n                n.knob('selected').setValue(False)\n\n    nuke.nodePaste('%clipboard%')\n    \n    for n in nuke.selectedNodes():\n        if n.Class() == 'CornerPin2D':\n            n.knob('to1').setExpression('parent.' + curName + '.CurveTool1.maxlumapixdata')\n            n.knob('to2').setExpression('parent.' + curName + '.CurveTool2.maxlumapixdata')\n            n.knob('to3').setExpression('parent.' + curName + '.CurveTool3.maxlumapixdata')\n            n.knob('to4').setExpression('parent.' + curName + '.CurveTool4.maxlumapixdata')\n\n            nuke.animation(n.knob('name').value() + \".to1.x\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n            nuke.animation(n.knob('name').value() + \".to1.y\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n\n            nuke.animation(n.knob('name').value() + \".to2.x\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n            nuke.animation(n.knob('name').value() + \".to2.y\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n\n            nuke.animation(n.knob('name').value() + \".to3.x\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n            nuke.animation(n.knob('name').value() + \".to3.y\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n\n            nuke.animation(n.knob('name').value() + \".to4.x\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n            nuke.animation(n.knob('name').value() + \".to4.y\", \"generate\", (firstFrame, lastFrame, \"1\", \"y\", \"y\")) \n\n            n.knob('from1').setExpression('to1(%s)' %(curFrame))\n            n.knob('from2').setExpression('to2(%s)' %(curFrame))\n            n.knob('from3').setExpression('to3(%s)' %(curFrame))\n            n.knob('from4').setExpression('to4(%s)' %(curFrame))\n\n            n.knob('ref_frame').setValue(int(curFrame))\n\n    \n            n.knob('label').setValue('from ' + curName + '\\nRef Frame: \[value ref_frame]' + '\\n\[if \{\[value invert]==true\} \{return \"Mode:Stabilize\"\} \{return \"Mode: Match-Move\"\}]')\n\n            nuke.extractSelected()\n        \n            n.knob('selected').setValue(False)\n\n\n\n\n\n\n"}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Smart Tracker v1.1\nCreated by Pedro Andrade\n-2017-"}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/v4fmGnZstAk" +STARTLINE}
+ addUserKnob {20 Sampler}
+ addUserKnob {4 viewer l Viewer M {Plate Points}}
+ addUserKnob {26 ""}
+ addUserKnob {41 sample l Sample1 T sample1.sample}
+ addUserKnob {41 radius l "Radius 1" T sample1.radius}
+ addUserKnob {26 ""}
+ addUserKnob {41 sample_1 l Sample2 T sample2.sample}
+ addUserKnob {41 radius_1 l "Radius 2" T sample2.radius}
+ addUserKnob {26 ""}
+ addUserKnob {41 sample_2 l Sample3 T sample3.sample}
+ addUserKnob {41 radius_2 l "Radius 3" T sample3.radius}
+ addUserKnob {26 ""}
+ addUserKnob {41 sample_3 l Sample4 T sample4.sample}
+ addUserKnob {41 radius_3 l "Radius 4" T sample4.radius}
+ addUserKnob {26 ""}
+ addUserKnob {26 author_1 l "" +STARTLINE T "Smart Tracker v1.2\nCreated by Pedro Andrade\n-2017-"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x7171c600
+  label "TO COPY"
+  note_font_size 42
+  xpos 703
+  ypos 1735
+  bdwidth 446
+  bdheight 248
+ }
+ Tracker3 {
+  inputs 0
+  track1 {865 445}
+  offset1 {0 0}
+  pattern1 {-30 -30 30 30}
+  search1 {-21 -21 21 21}
+  enable2 true
+  use_for2 {T}
+  track2 {1055 445}
+  offset2 {0 0}
+  pattern2 {-30 -30 30 30}
+  search2 {-21 -21 21 21}
+  enable3 true
+  use_for3 {T}
+  track3 {1055 635}
+  offset3 {0 0}
+  pattern3 {-30 -30 30 30}
+  search3 {-21 -21 21 21}
+  enable4 true
+  use_for4 {T}
+  track4 {865 635}
+  offset4 {0 0}
+  pattern4 {-30 -30 30 30}
+  search4 {-21 -21 21 21}
+  center {960 540}
+  name Tracker7
+  label "\[value transform]\nreference frame: \[value reference_frame]"
+  xpos 761
+  ypos 1858
+ }
+ Dot {
+  inputs 0
+  name stmap_input
+  label stmap_input
+  xpos 994
+  ypos 247
+ }
+ Input {
+  inputs 0
+  name SmartVector
+  xpos 862
+  ypos 244
+ }
+ Dot {
+  name smart_vector_input
+  label smart_vector_input
+  xpos 1194
+  ypos 44
+ }
+ VectorDistort {
+  referenceFrame 1046
+  reference_frame_set true
+  outputMode st-map
+  last_output_mode st-map
+  name VectorDistort1
+  xpos 1160
+  ypos 141
+  disable {{"!\[exists parent.input0]"}}
+ }
+ Switch {
+  inputs 2
+  which {{parent.input_choice}}
+  name Switch2
+  xpos 1160
+  ypos 244
+ }
+ Remove {
+  operation keep
+  channels {rgba.red rgba.green -rgba.blue none}
+  name Remove1
+  xpos 1160
+  ypos 335
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 1358
+  ypos 99
+  number 1
+ }
+ Dot {
+  name Dot6
+  xpos 1392
+  ypos 410
+ }
+add_layer {STMap STMap.red STMap.green STMap.blue STMap.alpha}
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  blue blue
+  alpha black
+  out STMap
+  name ShuffleCopy1
+  xpos 1160
+  ypos 407
+ }
+ Dot {
+  name Dot20
+  xpos 1194
+  ypos 634
+ }
+set Na00bfb90 [stack 0]
+ Shuffle {
+  in STMap
+  name Shuffle6
+  label "\[value in]"
+  xpos 1160
+  ypos 784
+ }
+set Na00c1f10 [stack 0]
+ Dot {
+  name Dot11
+  xpos 1794
+  ypos 794
+ }
+set Na00ca260 [stack 0]
+ Dot {
+  name Dot16
+  xpos 2340
+  ypos 794
+ }
+ Expression {
+  temp_name0 x
+  temp_expr0 r-sample.r
+  temp_name1 y
+  temp_expr1 g-sample.g
+  temp_name2 z
+  temp_expr2 b-sample.b
+  channel0 alpha
+  expr0 clamp(1-(sqrt(pow2(x)+pow2(y)+pow2(z))/radius))
+  channel1 {-rgba.alpha}
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  name sample4
+  knobChanged "\n\nnuke.thisNode().knob('conform').setEnabled(True)\nnuke.thisNode().knob('track').setEnabled(True)\n\n\nnuke.thisNode().knob('track').setEnabled(False)\n\nif nuke.thisKnob().name() == 'conform':\n    nuke.thisNode().knob('conform').setEnabled(False)\n    nuke.thisNode().knob('track').setEnabled(True)\n\n\n\n"
+  xpos 2306
+  ypos 910
+  addUserKnob {20 User}
+  addUserKnob {12 point4}
+  point4 {400 0}
+  addUserKnob {22 conform -STARTLINE T "pickerX = nuke.thisNode().knob('point4').value()\[0]\npickerY = nuke.thisNode().knob('point4').value()\[1]\n\nxx = nuke.sample(nuke.toNode('Shuffle6'), 'r', pickerX, pickerY)\nyy = nuke.sample(nuke.toNode('Shuffle6'), 'g', pickerX, pickerY)\nzz = float(0)\n\ncoordinatesValues =  \[xx, yy, zz]\n\n\nnuke.thisNode().knob('sample').setValue(\[coordinatesValues\[0], coordinatesValues\[1], coordinatesValues\[2]])"}
+  addUserKnob {18 sample}
+  sample {0 0 0}
+  addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 pos_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {7 radius R 0.001 0.1}
+  radius 0.03
+  addUserKnob {22 track +DISABLED T "panel = nuke.Panel('Frame Range')\n\nfirstDefFrame = str(int(nuke.root().knob('first_frame').value()))\nlastDefFrame = str(int(nuke.root().knob('last_frame').value()))\n\npanel.addSingleLineInput('Frame Range', firstDefFrame+'-'+lastDefFrame)\n\nif panel.show():\n\n    firstFrameTrack = panel.value('Frame Range').split('-')\[0]\n    lastFrameTrack = panel.value('Frame Range').split('-')\[1]\n\n\n\n########################################\n\n    nukescripts.cache_clear('')\n    \n    \n      \n    for n in nuke.allNodes():\n    \n        if n.knob('name').value() == 'CurveTool4':\n            n.knob('maxlumapixdata').clearAnimated()\n            nuke.execute(n, int(firstFrameTrack), int(lastFrameTrack))\n\n" +STARTLINE}
+ }
+ Dot {
+  name Dot15
+  xpos 2340
+  ypos 1034
+ }
+set Na00d8e60 [stack 0]
+push $Na00ca260
+ Expression {
+  temp_name0 x
+  temp_expr0 r-sample.r
+  temp_name1 y
+  temp_expr1 g-sample.g
+  temp_name2 z
+  temp_expr2 b-sample.b
+  channel0 alpha
+  expr0 clamp(1-(sqrt(pow2(x)+pow2(y)+pow2(z))/radius))
+  channel1 {-rgba.alpha}
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  name sample3
+  knobChanged "\n\nnuke.thisNode().knob('conform').setEnabled(True)\nnuke.thisNode().knob('track').setEnabled(True)\n\n\nnuke.thisNode().knob('track').setEnabled(False)\n\nif nuke.thisKnob().name() == 'conform':\n    nuke.thisNode().knob('conform').setEnabled(False)\n    nuke.thisNode().knob('track').setEnabled(True)\n\n\n\n"
+  xpos 1760
+  ypos 910
+  addUserKnob {20 User}
+  addUserKnob {12 point3}
+  point3 {300 0}
+  addUserKnob {22 conform -STARTLINE T "pickerX = nuke.thisNode().knob('point3').value()\[0]\npickerY = nuke.thisNode().knob('point3').value()\[1]\n\nxx = nuke.sample(nuke.toNode('Shuffle6'), 'r', pickerX, pickerY)\nyy = nuke.sample(nuke.toNode('Shuffle6'), 'g', pickerX, pickerY)\nzz = float(0)\n\ncoordinatesValues =  \[xx, yy, zz]\n\n\nnuke.thisNode().knob('sample').setValue(\[coordinatesValues\[0], coordinatesValues\[1], coordinatesValues\[2]])"}
+  addUserKnob {18 sample}
+  sample {0 0 0}
+  addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 pos_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {7 radius R 0.001 0.1}
+  radius 0.03
+  addUserKnob {22 track +DISABLED T "panel = nuke.Panel('Frame Range')\n\nfirstDefFrame = str(int(nuke.root().knob('first_frame').value()))\nlastDefFrame = str(int(nuke.root().knob('last_frame').value()))\n\npanel.addSingleLineInput('Frame Range', firstDefFrame+'-'+lastDefFrame)\n\nif panel.show():\n\n    firstFrameTrack = panel.value('Frame Range').split('-')\[0]\n    lastFrameTrack = panel.value('Frame Range').split('-')\[1]\n\n\n\n########################################\n\n    nukescripts.cache_clear('')\n    \n    \n      \n    for n in nuke.allNodes():\n    \n        if n.knob('name').value() == 'CurveTool3':\n            n.knob('maxlumapixdata').clearAnimated()\n            nuke.execute(n, int(firstFrameTrack), int(lastFrameTrack))\n\n\n" +STARTLINE}
+ }
+ Dot {
+  name Dot14
+  xpos 1794
+  ypos 1034
+ }
+set Na00e5420 [stack 0]
+push 0
+push $Na00c1f10
+ Dot {
+  name Dot12
+  xpos 656
+  ypos 794
+ }
+set Na00e7610 [stack 0]
+ Expression {
+  temp_name0 x
+  temp_expr0 r-sample.r
+  temp_name1 y
+  temp_expr1 g-sample.g
+  temp_name2 z
+  temp_expr2 b-sample.b
+  channel0 alpha
+  expr0 clamp(1-(sqrt(pow2(x)+pow2(y)+pow2(z))/radius))
+  channel1 {-rgba.alpha}
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  name sample2
+  knobChanged "\n\nnuke.thisNode().knob('conform').setEnabled(True)\nnuke.thisNode().knob('track').setEnabled(True)\n\n\nnuke.thisNode().knob('track').setEnabled(False)\n\nif nuke.thisKnob().name() == 'conform':\n    nuke.thisNode().knob('conform').setEnabled(False)\n    nuke.thisNode().knob('track').setEnabled(True)\n\n\n\n"
+  xpos 622
+  ypos 910
+  addUserKnob {20 User}
+  addUserKnob {12 point2}
+  point2 {200 0}
+  addUserKnob {22 conform -STARTLINE T "pickerX = nuke.thisNode().knob('point2').value()\[0]\npickerY = nuke.thisNode().knob('point2').value()\[1]\n\nxx = nuke.sample(nuke.toNode('Shuffle6'), 'r', pickerX, pickerY)\nyy = nuke.sample(nuke.toNode('Shuffle6'), 'g', pickerX, pickerY)\nzz = float(0)\n\ncoordinatesValues =  \[xx, yy, zz]\n\n\nnuke.thisNode().knob('sample').setValue(\[coordinatesValues\[0], coordinatesValues\[1], coordinatesValues\[2]])"}
+  addUserKnob {18 sample}
+  sample {0 0 0}
+  addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 pos_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {7 radius R 0.001 0.1}
+  radius 0.03
+  addUserKnob {22 track +DISABLED T "panel = nuke.Panel('Frame Range')\n\nfirstDefFrame = str(int(nuke.root().knob('first_frame').value()))\nlastDefFrame = str(int(nuke.root().knob('last_frame').value()))\n\npanel.addSingleLineInput('Frame Range', firstDefFrame+'-'+lastDefFrame)\n\nif panel.show():\n\n    firstFrameTrack = panel.value('Frame Range').split('-')\[0]\n    lastFrameTrack = panel.value('Frame Range').split('-')\[1]\n\n\n\n########################################\n\n    nukescripts.cache_clear('')\n    \n    \n      \n    for n in nuke.allNodes():\n    \n        if n.knob('name').value() == 'CurveTool2':\n            n.knob('maxlumapixdata').clearAnimated()\n            nuke.execute(n, int(firstFrameTrack), int(lastFrameTrack))\n    \n\n\n\n" +STARTLINE}
+ }
+ Dot {
+  name Dot8
+  xpos 656
+  ypos 1034
+ }
+set N9cd0e220 [stack 0]
+push $Na00e7610
+ Dot {
+  name Dot4
+  xpos 176
+  ypos 794
+ }
+ Expression {
+  temp_name0 x
+  temp_expr0 r-sample.r
+  temp_name1 y
+  temp_expr1 g-sample.g
+  temp_name2 z
+  temp_expr2 b-sample.b
+  channel0 alpha
+  expr0 clamp(1-(sqrt(pow2(x)+pow2(y)+pow2(z))/radius))
+  channel1 {-rgba.alpha}
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  name sample1
+  knobChanged "\n\nnuke.thisNode().knob('conform').setEnabled(True)\nnuke.thisNode().knob('track').setEnabled(True)\n\n\nnuke.thisNode().knob('track').setEnabled(False)\n\nif nuke.thisKnob().name() == 'conform':\n    nuke.thisNode().knob('conform').setEnabled(False)\n    nuke.thisNode().knob('track').setEnabled(True)\n\n\n\n"
+  xpos 142
+  ypos 910
+  addUserKnob {20 User}
+  addUserKnob {12 point1}
+  point1 {100 0}
+  addUserKnob {22 conform -STARTLINE T "pickerX = nuke.thisNode().knob('point1').value()\[0]\npickerY = nuke.thisNode().knob('point1').value()\[1]\n\nxx = nuke.sample(nuke.toNode('Shuffle6'), 'r', pickerX, pickerY)\nyy = nuke.sample(nuke.toNode('Shuffle6'), 'g', pickerX, pickerY)\nzz = float(0)\n\ncoordinatesValues =  \[xx, yy, zz]\n\n\nnuke.thisNode().knob('sample').setValue(\[coordinatesValues\[0], coordinatesValues\[1], coordinatesValues\[2]])"}
+  addUserKnob {18 sample}
+  sample {0 0 0}
+  addUserKnob {6 sample_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 sample_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 pos_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {7 radius R 0.001 0.1}
+  radius 0.03
+  addUserKnob {22 track +DISABLED T "panel = nuke.Panel('Frame Range')\n\nfirstDefFrame = str(int(nuke.root().knob('first_frame').value()))\nlastDefFrame = str(int(nuke.root().knob('last_frame').value()))\n\npanel.addSingleLineInput('Frame Range', firstDefFrame+'-'+lastDefFrame)\n\nif panel.show():\n\n    firstFrameTrack = panel.value('Frame Range').split('-')\[0]\n    lastFrameTrack = panel.value('Frame Range').split('-')\[1]\n\n############################\n\n    nukescripts.cache_clear('')\n    \n    for n in nuke.allNodes():\n    \n        if n.knob('name').value() == 'CurveTool1':\n            n.knob('maxlumapixdata').clearAnimated()\n            nuke.execute(n, int(firstFrameTrack), int(lastFrameTrack))" +STARTLINE}
+ }
+ Dot {
+  name Dot7
+  xpos 176
+  ypos 1034
+ }
+set N9cf53750 [stack 0]
+ Merge2 {
+  inputs 4+1
+  operation max
+  name Merge1
+  xpos 1520
+  ypos 1030
+ }
+ Shuffle {
+  in alpha
+  name Shuffle1
+  label "\[value in]"
+  xpos 1520
+  ypos 1224
+ }
+ Dot {
+  name Dot17
+  xpos 1554
+  ypos 1771
+ }
+push $Na00d8e60
+ Shuffle {
+  in alpha
+  name Shuffle3
+  label "\[value in]"
+  xpos 2306
+  ypos 1136
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  avgframes 1
+  ROI {0 0 {input.width} {input.height}}
+  autocropdata {0 0 {input.width} {input.height}}
+  name CurveTool4
+  xpos 2306
+  ypos 1230
+ }
+ Dot {
+  name Dot3
+  xpos 2340
+  ypos 1634
+ }
+push $Na00e5420
+ Shuffle {
+  in alpha
+  name Shuffle2
+  label "\[value in]"
+  xpos 1760
+  ypos 1152
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  avgframes 1
+  ROI {0 0 {input.width} {input.height}}
+  autocropdata {{curve} {curve} {input.width} {input.height}}
+  name CurveTool3
+  xpos 1760
+  ypos 1246
+ }
+ Dot {
+  name Dot1
+  xpos 1794
+  ypos 1474
+ }
+push $N9cf53750
+ Shuffle {
+  in alpha
+  name Shuffle5
+  label "\[value in]"
+  xpos 142
+  ypos 1136
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  avgframes 1
+  ROI {0 0 {input.width} {input.height}}
+  autocropdata {0 0 {input.width} {input.height}}
+  name CurveTool1
+  xpos 142
+  ypos 1230
+ }
+ Dot {
+  name Dot2
+  xpos 176
+  ypos 1354
+ }
+push $N9cd0e220
+ Shuffle {
+  in alpha
+  name Shuffle4
+  label "\[value in]"
+  xpos 622
+  ypos 1144
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  avgframes 1
+  ROI {0 0 {input.width} {input.height}}
+  autocropdata {0 0 {input.width} {input.height}}
+  name CurveTool2
+  xpos 622
+  ypos 1230
+ }
+push $Na00bfb90
+ Dot {
+  name Dot13
+  xpos 1331
+  ypos 634
+ }
+ Dot {
+  name Dot10
+  xpos 1331
+  ypos 1034
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression2
+  xpos 1297
+  ypos 1230
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression1
+  xpos 1297
+  ypos 1350
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression3
+  xpos 1297
+  ypos 1470
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression4
+  xpos 1297
+  ypos 1630
+ }
+ Switch {
+  inputs 2
+  which {{parent.viewer}}
+  name Switch1
+  xpos 1297
+  ypos 1767
+ }
+ Output {
+  name Output1
+  xpos 1297
+  ypos 1870
+ }
+ CornerPin2D {
+  inputs 0
+  to1 {0 0}
+  to2 {1920 0}
+  to3 {1920 1080}
+  to4 {0 1080}
+  invert false
+  from1 {{to1(ref_frame)} {to1(ref_frame)}}
+  from2 {{to2(ref_frame)} {to2(ref_frame)}}
+  from3 {{to3(ref_frame)} {to3(ref_frame)}}
+  from4 {{to4(ref_frame)} {to4(ref_frame)}}
+  name CornerPin2D1
+  label "\n\[if \{\[value invert]==true\} \{return \"Stabilize\"\} \{return \"Matchmove\"\}]\nRef Frame: \[value ref_frame]"
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold"
+  xpos 887
+  ypos 1870
+  addUserKnob {20 "Reference Frame"}
+  addUserKnob {3 ref_frame l "Reference Frame"}
+  ref_frame 1022
+  addUserKnob {22 current_frame l "Set To Current Frame" -STARTLINE T nuke.thisNode().knob('ref_frame').setValue(nuke.frame())}
+ }
+ StickyNote {
+  inputs 0
+  name _StickyNote_2
+  label 1160.0,-36.0
+ }
+ StickyNote {
+  inputs 0
+  name _StickyNote_1
+  label 1160.0,-36.0
+ }
+end_group

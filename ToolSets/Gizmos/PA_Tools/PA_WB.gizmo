@@ -1,0 +1,38 @@
+
+Group {
+ name PA_WB
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold"
+ selected true
+ xpos -4611
+ ypos -62
+ addUserKnob {20 User}
+ addUserKnob {41 white_balance l "White Balance" T Grade5.white_balance}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "WB v1.0\nCreated by Pedro Andrade\n-2017-"}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 838
+  ypos 446
+ }
+ Grade {
+  whitepoint {{white_balance/((white_balance.r+white_balance.g+white_balance.b)/3)} {white_balance/((white_balance.r+white_balance.g+white_balance.b)/3)} {white_balance/((white_balance.r+white_balance.g+white_balance.b)/3)} {white_balance/((white_balance.r+white_balance.g+white_balance.b)/3)}}
+  black_clamp false
+  name Grade5
+  selected true
+  xpos 838
+  ypos 486
+  addUserKnob {20 User}
+  addUserKnob {18 white_balance}
+  white_balance {1 1 1}
+  addUserKnob {6 white_balance_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 white_balance_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+ Output {
+  name Output1
+  xpos 838
+  ypos 586
+ }
+end_group

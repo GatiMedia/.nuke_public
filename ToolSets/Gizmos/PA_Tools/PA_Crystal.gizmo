@@ -1,0 +1,411 @@
+
+Group {
+ name PA_Crystal1
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos 69226
+ ypos 30094
+ addUserKnob {20 User}
+ addUserKnob {4 viewer l Viewer M {Result Normals ""}}
+ addUserKnob {26 ""}
+ addUserKnob {41 in l "Normals Channel" T Shuffle8.in}
+ addUserKnob {6 nconversion l "N Conversion" -STARTLINE}
+ nconversion true
+ addUserKnob {26 ""}
+ addUserKnob {20 refraction l Refraction n 1}
+ addUserKnob {41 blackpoint l "Refraction Curvature" T Grade9.blackpoint}
+ addUserKnob {7 multiplier l "Refraction Multiplier" R 1 10}
+ multiplier 1
+ addUserKnob {41 uv_scale l "Refraction Scale" T IDistort1.uv_scale}
+ addUserKnob {6 invert l Invert +STARTLINE}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 gloss l Gloss n 1}
+ addUserKnob {7 glossmix l "Gloss Mix"}
+ addUserKnob {7 glossreach l "Gloss Reach"}
+ addUserKnob {7 glossgain l "Gloss Gain" R 1 5}
+ glossgain 1
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {7 chromadiffraction l "Chroma Diffraction" R 0 200}
+ addUserKnob {26 ""}
+ addUserKnob {26 autor l "" +STARTLINE T "Crystal v1.0\nCreated by Pedro Andrade\n-2015-"}
+ addUserKnob {26 ""}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/6Ts1GPjLw0o" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x388e8e00
+  label "N CONVERT"
+  note_font_size 42
+  xpos 554
+  ypos -1251
+  bdwidth 269
+  bdheight 299
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x7171c600
+  label GLOSS
+  note_font_size 42
+  xpos -125
+  ypos 1264
+  bdwidth 772
+  bdheight 398
+ }
+ Input {
+  inputs 0
+  name alpha
+  xpos 55
+  ypos -674
+  number 1
+ }
+ Dot {
+  name Dot9
+  xpos 89
+  ypos -526
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 637
+  ypos -1670
+  number 2
+ }
+ Dot {
+  name Dot3
+  xpos 671
+  ypos -1546
+ }
+ Shuffle {
+  in rgb
+  name Shuffle8
+  label "\[value in]"
+  xpos 637
+  ypos -1456
+ }
+ Dot {
+  name Dot5
+  xpos 671
+  ypos -1386
+ }
+set N8f1d0800 [stack 0]
+ Grade {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  blackpoint -1
+  name Grade2
+  xpos 637
+  ypos -1161
+ }
+ Grade {
+  channels {-rgba.red rgba.green -rgba.blue none}
+  blackpoint -1
+  name Grade8
+  xpos 637
+  ypos -1081
+ }
+ Invert {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  name Invert2
+  xpos 637
+  ypos -1010
+ }
+push $N8f1d0800
+ Dot {
+  name Dot6
+  xpos 474
+  ypos -1386
+ }
+ Dot {
+  name Dot7
+  xpos 474
+  ypos -846
+ }
+ Switch {
+  inputs 2
+  which {{parent.nconversion}}
+  name Switch1
+  xpos 637
+  ypos -850
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 637
+  ypos -536
+ }
+ Premult {
+  name Premult1
+  xpos 637
+  ypos -410
+ }
+set N99a8db90 [stack 0]
+ Dot {
+  name Dot15
+  xpos 1314
+  ypos -406
+ }
+ Dot {
+  name Dot16
+  xpos 1314
+  ypos 1914
+ }
+push $N99a8db90
+ Unpremult {
+  name Unpremult2
+  xpos 637
+  ypos -250
+ }
+ Grade {
+  channels {rgba.red rgba.green -rgba.blue none}
+  blackpoint 0.5
+  black_clamp false
+  name Grade9
+  xpos 637
+  ypos -130
+ }
+set Nb2dc85a0 [stack 0]
+ Grade {
+  channels {rgba.red rgba.green -rgba.blue -rgba.alpha}
+  white {{parent.Grade10.white*-1}}
+  black_clamp false
+  maskChannelInput rgba.blue
+  name Grade1
+  xpos 723
+  ypos -16
+ }
+push $Nb2dc85a0
+ Grade {
+  channels {rgba.red rgba.green -rgba.blue -rgba.alpha}
+  white {{parent.multiplier*-30}}
+  black_clamp false
+  maskChannelInput rgba.blue
+  name Grade10
+  xpos 560
+  ypos -16
+ }
+ Switch {
+  inputs 2
+  which {{parent.Switch3.which}}
+  name Switch4
+  xpos 637
+  ypos 150
+ }
+ Premult {
+  name Premult2
+  xpos 637
+  ypos 270
+ }
+ Dot {
+  name Dot10
+  xpos 671
+  ypos 390
+ }
+set N518fd2d0 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle10
+  label B
+  xpos 637
+  ypos 605
+ }
+ Dot {
+  name Dot2
+  xpos 523
+  ypos 615
+ }
+set N5a378b00 [stack 0]
+ Grade {
+  channels all
+  blackpoint {{parent.glossreach}}
+  name Grade3
+  xpos 489
+  ypos 1344
+ }
+ Dot {
+  name Dot8
+  xpos 523
+  ypos 1527
+ }
+ Blur {
+  inputs 0
+  size 500
+  name Blur1
+  xpos -115
+  ypos 1517
+ }
+ Grade {
+  white {{parent.glossgain}}
+  name Grade4
+  xpos 101
+  ypos 1523
+ }
+push $N518fd2d0
+ Dot {
+  name Dot11
+  xpos 883
+  ypos 390
+ }
+ Dot {
+  name Dot12
+  xpos 883
+  ypos 790
+ }
+push $N5a378b00
+ Input {
+  inputs 0
+  name BG
+  xpos -115
+  ypos 310
+ }
+ Dot {
+  name Dot17
+  xpos -81
+  ypos 454
+ }
+ Dot {
+  name Dot1
+  xpos -81
+  ypos 615
+ }
+ Dot {
+  name Dot13
+  xpos 57
+  ypos 615
+ }
+set N23e73330 [stack 0]
+ Group {
+  name PA_ChromaAberration1
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 23
+  ypos 491
+  addUserKnob {20 User}
+  addUserKnob {7 AberrationAmount l "Horizontal Aberration" R 0 10}
+  AberrationAmount {{parent.chromadiffraction}}
+  addUserKnob {7 VerticalAberrationAmount l "Vertical Aberration" R 0 10}
+  VerticalAberrationAmount {{AberrationAmount*-1}}
+  addUserKnob {26 ""}
+  addUserKnob {26 Author l "" +STARTLINE T "ChromaAberration v1.0\nCreated by PedroAndrade\n-2013-"}
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/-l2v0XzaITs')" +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name img
+   xpos -99
+   ypos -186
+  }
+  TransformMasked {
+   channels {rgba.red -rgba.green -rgba.blue none}
+   translate {{parent.AberrationAmount i} {parent.VerticalAberrationAmount i}}
+   center {960 540}
+   name Master1
+   xpos -99
+   ypos -134
+  }
+  TransformMasked {
+   channels {-rgba.red -rgba.green rgba.blue none}
+   translate {{parent.Master1.translate.x*-1 i} {parent.Master1.translate.y*-1 i}}
+   center {960 540}
+   name Slave1
+   xpos -99
+   ypos -76
+  }
+  Output {
+   name Output1
+   xpos -99
+   ypos 24
+  }
+ end_group
+ Crop {
+  box {0 0 1920 1080}
+  name Crop1
+  xpos 143
+  ypos 491
+ }
+ Dot {
+  name Dot14
+  xpos 328
+  ypos 495
+ }
+push $N23e73330
+ Keymix {
+  inputs 3
+  name Keymix2
+  xpos 294
+  ypos 605
+ }
+add_layer {Refr Refr.red Refr.green Refr.blue Refr.alpha}
+ ShuffleCopy {
+  inputs 2
+  red red
+  green green
+  blue blue
+  out Refr
+  name ShuffleCopy2
+  xpos 294
+  ypos 786
+ }
+set N6ed71020 [stack 0]
+add_layer {REFRACTION REFRACTION.red REFRACTION.green REFRACTION.blue REFRACTION.alpha}
+ IDistort {
+  channels {rgba.red rgba.green rgba.blue none}
+  uv Refr
+  uv_scale {{parent.IDistort1.uv_scale*-1}}
+  blur REFRACTION.blue
+  name IDistort2
+  xpos 363
+  ypos 932
+ }
+push $N6ed71020
+ IDistort {
+  channels {rgba.red rgba.green rgba.blue none}
+  uv Refr
+  uv_scale 30
+  blur REFRACTION.blue
+  name IDistort1
+  xpos 200
+  ypos 932
+ }
+ Switch {
+  inputs 2
+  which {{parent.invert}}
+  name Switch3
+  xpos 294
+  ypos 1084
+ }
+ Keymix {
+  inputs 3
+  mix {{parent.glossmix}}
+  name Keymix1
+  xpos 294
+  ypos 1517
+ }
+ Switch {
+  inputs 2
+  which {{parent.viewer}}
+  name Switch2
+  xpos 294
+  ypos 1910
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop3
+  xpos 294
+  ypos 2020
+ }
+ Output {
+  name Output1
+  xpos 294
+  ypos 2350
+ }
+end_group
+

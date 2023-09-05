@@ -1,0 +1,63 @@
+
+Group {
+ name PA_Bitcrusher
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -4206
+ ypos -59
+ addUserKnob {20 User}
+ addUserKnob {41 format l Format T Reformat1.format}
+ addUserKnob {7 crusher l Crush R 1 0.001}
+ crusher 1
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Bitcrusher v1.1\nCreated by Pedro Andrade\n-2015-"}
+ addUserKnob {26 ""}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/SWUXV6jHmrE" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 838
+  ypos 390
+ }
+ Reformat {
+  type scale
+  scale {{parent.crusher}}
+  resize fit
+  name Reformat5
+  xpos 838
+  ypos 479
+ }
+ Grade {
+  name Grade9
+  xpos 838
+  ypos 550
+ }
+ Reformat {
+  format {{{parent.Reformat1.format}}}
+  filter Impulse
+  name Reformat6
+  xpos 838
+  ypos 621
+ }
+ Crop {
+  box {{curve} {curve} {parent.Reformat1.width} {parent.Reformat1.height}}
+  name Crop2
+  xpos 838
+  ypos 690
+ }
+ Output {
+  name Output1
+  xpos 838
+  ypos 780
+ }
+ Reformat {
+  inputs 0
+  name Reformat1
+  tile_color 0xff00ff
+  xpos 1028
+  ypos 692
+  hide_input true
+ }
+end_group

@@ -1,0 +1,200 @@
+
+Group {
+ name PA_PixelHealer
+ tile_color 0xff5f00ff
+ label "Mode: \[value mode] "
+ note_font "DejaVu Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -2009
+ ypos -65
+ addUserKnob {20 User}
+ addUserKnob {4 mode l Heal M {Static "In Motion"}}
+ addUserKnob {26 ""}
+ addUserKnob {6 off l Off +STARTLINE}
+ addUserKnob {41 size l "Pixel Blend" T Blur2.size}
+ addUserKnob {41 size_1 l "Alpha Stroke Blur" T Blur1.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 Author l "" +STARTLINE T "Pixe Healer v2.0\nCreated by Pedro Andrade\n-2016-"}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/B84477USquE" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0xaaaaaa00
+  label "ALPHA \nSTROKE BLUR"
+  note_font_size 42
+  xpos 341
+  ypos 590
+  bdwidth 291
+  bdheight 176
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x8e8e3800
+  label "PIXEL BLEND"
+  note_font_size 42
+  xpos 668
+  ypos 427
+  bdwidth 254
+  bdheight 142
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 761
+  ypos -170
+  number 1
+ }
+ Dot {
+  name Dot6
+  xpos 795
+  ypos 114
+ }
+set N11e98b40 [stack 0]
+ Dot {
+  name Dot7
+  xpos 999
+  ypos 114
+ }
+ Dot {
+  name Dot8
+  xpos 999
+  ypos 794
+ }
+set N11ea1cd0 [stack 0]
+ Dot {
+  name Dot11
+  xpos 999
+  ypos 936
+ }
+ Input {
+  inputs 0
+  name alpha_stroke
+  xpos 225
+  ypos -170
+ }
+ Dot {
+  name Dot1
+  xpos 259
+  ypos -102
+ }
+set N11eaf6c0 [stack 0]
+ Dot {
+  name Dot9
+  xpos 114
+  ypos -102
+ }
+ Dot {
+  name Dot10
+  xpos 114
+  ypos 74
+ }
+push $N11eaf6c0
+ Shuffle {
+  alpha black
+  name Shuffle1
+  label "\[value in]"
+  xpos 225
+  ypos -41
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 225
+  ypos 64
+ }
+ Dot {
+  name Dot2
+  xpos 259
+  ypos 370
+ }
+set N11edae20 [stack 0]
+ Dot {
+  name Dot3
+  xpos 259
+  ypos 714
+ }
+ Blur {
+  name Blur1
+  xpos 360
+  ypos 704
+ }
+ Dot {
+  name Dot4
+  xpos 394
+  ypos 794
+ }
+push $N11edae20
+ Dot {
+  name Dot5
+  xpos 394
+  ypos 370
+ }
+ Invert {
+  name Invert1
+  xpos 360
+  ypos 202
+ }
+push $N11e98b40
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 761
+  ypos 202
+ }
+ Premult {
+  name Premult1
+  xpos 761
+  ypos 352
+ }
+set N11f12b30 [stack 0]
+ FrameBlend {
+  numframes {{parent.Blur2.size*2}}
+  name FrameBlend1
+  xpos 815
+  ypos 504
+ }
+push $N11f12b30
+ Blur {
+  size 15
+  name Blur2
+  xpos 680
+  ypos 504
+ }
+ Switch {
+  inputs 2
+  which {{mode}}
+  name Switch2
+  xpos 761
+  ypos 590
+ }
+ Unpremult {
+  name Unpremult1
+  xpos 761
+  ypos 686
+ }
+push $N11ea1cd0
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos 761
+  ypos 784
+ }
+ Switch {
+  inputs 2
+  which {{parent.off}}
+  name Switch1
+  xpos 760
+  ypos 932
+ }
+ Output {
+  name Output1
+  xpos 761
+  ypos 1070
+ }
+end_group

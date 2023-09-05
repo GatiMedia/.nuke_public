@@ -1,0 +1,2785 @@
+
+push $cut_paste_input
+add_layer {P P.red P.green P.blue P.alpha}
+add_layer {N N.red N.green N.blue N.alpha}
+Group {
+ name PA_SuperReconcile
+ knobChanged "\n\n\n#SUPER RECONCILE\n#CREATED BY PEDRO ANDRADE\n#-2019-\n\nwith nuke.thisNode():\n\n\n    #TEST MODE\n    if nuke.thisKnob().name() == 'test_mode':\n        nuke.toNode('CornerPin2D3').knob('ref_frame').setValue(nuke.frame())\n\n    if nuke.thisNode().knob('input_type').value() == 'Plate':\n\n        nuke.thisNode().knobs()\['in'].setVisible(False)\n        nuke.thisNode().knobs()\['in_1'].setVisible(False)\n\n        nuke.thisNode().knob('place_at').setVisible(False)\n        nuke.thisNode().knob('set').setVisible(False)\n        nuke.thisNode().knob('auxiliar_method').setVisible(True)\n        nuke.thisNode().knob('auxiliar_method_2').setVisible(False)\n\n       \n        try:\n\n            for n in nuke.allNodes('Input'):\n                if n.knob('name').value() == 'position_pass':\n                    auxInputXPos = n.knob('xpos').value()\n                    auxInputYPos = n.knob('ypos').value()\n                    nuke.nodes.StickyNote(name = '_StickyNote_1', label = str(auxInputXPos) + ',' + str(auxInputYPos))\n                    nuke.delete(n)\n                                  \n\n            dotAux = nuke.nodes.Input(name='aux', xpos = nuke.toNode('_StickyNote_').knob('label').value().split(',')\[0], ypos = nuke.toNode('_StickyNote_').knob('label').value().split(',')\[1])\n            nuke.delete(nuke.toNode('_StickyNote_'))\n            for n in nuke.allNodes('Dot'):\n                if n.knob('label').value() == 'aux_input':\n                    n.setInput(0, dotAux)\n\n        except:\n            pass\n\n        if nuke.thisNode().knob('auxiliar_method').value() == 'Geo/Cones':\n            nuke.thisNode().knob('place_at').setVisible(True)\n            nuke.thisNode().knob('set').setVisible(True)\n            nuke.thisNode().knob('set_2').setVisible(False)\n\n        else:\n            nuke.thisNode().knob('place_at').setVisible(False)\n            nuke.thisNode().knob('set').setVisible(False)\n            nuke.thisNode().knob('set_2').setVisible(False)\n    \n    \n    else:\n\n        nuke.thisNode().knobs()\['in'].setVisible(True)\n        nuke.thisNode().knobs()\['in_1'].setVisible(True)\n\n        nuke.thisNode().knob('place_at').setVisible(True)\n        nuke.thisNode().knob('set').setVisible(False)\n        nuke.thisNode().knob('set_2').setVisible(True)\n    \n        nuke.thisNode().knob('auxiliar_method').setVisible(False)\n        nuke.thisNode().knob('auxiliar_method_2').setVisible(True)\n\n        nuke.toNode('PositionPass2').knob('in').setEnabled(True)\n\n        nuke.thisNode().knob('auxiliar_method').setValue('Geo/Cones')\n\n        try:   \n\n            for n in nuke.allNodes('Input'):\n                if n.knob('name').value() == 'aux':\n                    auxInputXPos = n.knob('xpos').value()\n                    auxInputYPos = n.knob('ypos').value()\n                    nuke.nodes.StickyNote(name = '_StickyNote_', label = str(auxInputXPos) + ',' + str(auxInputYPos))\n                    nuke.delete(n)\n\n                                        \n        except:\n            pass\n\n\n    #MAP TO SURFACE\n    if nuke.thisNode().knob('map_surface').value() == True:\n        nuke.thisNode().knob('look_cam').setEnabled(False)\n        nuke.thisNode().knob('face_camera').setEnabled(False)\n    else:\n        nuke.thisNode().knob('look_cam').setEnabled(True)\n        nuke.thisNode().knob('face_camera').setEnabled(True)\n\n    if nuke.thisKnob().name() == 'map_surface':\n        nuke.thisNode().knob('xtra_translate').setValue(0)\n        nuke.thisNode().knob('xtra_rotation').setValue(0)\n        nuke.thisNode().knob('xtra_scaling').setValue(0)\n\n    \n    #LOOK AT CAM  \n    if nuke.thisNode().knob('look_cam').value() == True:\n\n        nuke.thisNode().knob('xtra_translate').setValue(0)\n        nuke.thisNode().knob('xtra_rotation').setValue(0)\n        nuke.thisNode().knob('xtra_scaling').setValue(0)\n\n        nuke.thisNode().knob('xtra_translate').setEnabled(False)\n        nuke.thisNode().knob('xtra_rotation').setEnabled(False)\n        nuke.thisNode().knob('xtra_scaling').setEnabled(False)\n        nuke.thisNode().knob('map_surface').setEnabled(False)\n        nuke.thisNode().knob('face_camera').setEnabled(False)\n\n\n    else:\n        nuke.thisNode().knob('xtra_translate').setEnabled(True)\n        nuke.thisNode().knob('xtra_rotation').setEnabled(True)\n        nuke.thisNode().knob('xtra_scaling').setEnabled(True)\n        nuke.thisNode().knob('map_surface').setEnabled(True)\n        nuke.thisNode().knob('face_camera').setEnabled(True)\n\n    if nuke.thisNode().knob('map_surface').value() == True or nuke.thisNode().knob('look_cam').value() == True:\n        nuke.thisNode().knob('face_camera').setEnabled(False)\n    else:\n        nuke.thisNode().knob('face_camera').setEnabled(True)\n\n\n\n    #SELECTION MODE\n    if nuke.thisNode().knob('selection_mode').value() == 'Quad':\n\n        for n in range(1, 4+1):\n            nuke.thisNode().knobs()\['to'+str(n)].setVisible(True)\n            nuke.thisNode().knob('place_at').setVisible(False)\n            \n            nuke.toNode('CornerPin2D2').knob('to'+str(n)).clearAnimated()\n            nuke.toNode('CornerPin2D2').knob('from'+str(n)).clearAnimated()\n\n\n\n    else:\n      \n        for n in range(1, 4+1):\n            nuke.thisNode().knobs()\['to'+str(n)].setVisible(False)\n            nuke.thisNode().knob('place_at').setVisible(True)\n            \n            nuke.toNode('CornerPin2D2').knob('to'+str(n)).setValue(nuke.toNode('Transformed_2D_Coordinates').knob('point'+str(n)).value())\n            nuke.toNode('CornerPin2D2').knob('from'+str(n)).setValue(nuke.toNode('Transformed_2D_Coordinates').knob('point'+str(n)).value())\n  \n\n\n    if not nuke.thisNode().knob('auxiliar_method').value() == 'Geo/Cones':\n        nuke.thisNode().knob('selection_mode').setVisible(False)\n        nuke.thisNode().knob('place_at').setVisible(False)\n        nuke.thisNode().knob('set').setVisible(False)\n        nuke.thisNode().knob('set_2').setVisible(False)\n\n    else:\n        nuke.thisNode().knob('selection_mode').setVisible(True)\n\n\n    if nuke.thisNode().knob('auxiliar_method').value() == 'Axis/Card' or nuke.thisNode().knob('selection_mode').value() == 'Quad':\n        nuke.thisNode().knob('xtra_translate').setValue(0)\n        nuke.thisNode().knob('xtra_rotation').setValue(0)\n        nuke.thisNode().knob('xtra_scaling').setValue(0)\n        nuke.thisNode().knob('xtra_uniform_scale').setValue(1)\n        nuke.thisNode().knob('map_surface').setValue(False)\n        nuke.thisNode().knob('look_cam').setValue(False)\n\n        nuke.thisNode().knobs()\['additional_transforms'].setVisible(False)\n        nuke.thisNode().knobs()\['divider_line1'].setVisible(False)\n        nuke.thisNode().knobs()\['divider_line2'].setVisible(False)\n        nuke.thisNode().knobs()\['divider_line_trs'].setVisible(False)\n        nuke.thisNode().knob('map_surface').setVisible(False)\n        nuke.thisNode().knob('face_camera').setVisible(False)\n        nuke.thisNode().knob('xtra_uniform_scale').setVisible(False)\n        nuke.thisNode().knob('face_camera').setVisible(False)\n        nuke.thisNode().knob('map_surface').setVisible(False)\n        nuke.thisNode().knob('look_cam').setVisible(False)\n\n    else:\n        nuke.thisNode().knobs()\['additional_transforms'].setVisible(True)\n        nuke.thisNode().knobs()\['divider_line1'].setVisible(True)\n        nuke.thisNode().knobs()\['divider_line2'].setVisible(True)\n        nuke.thisNode().knobs()\['divider_line_trs'].setVisible(True)\n        nuke.thisNode().knob('map_surface').setVisible(True)\n        nuke.thisNode().knob('face_camera').setVisible(True)\n        nuke.thisNode().knob('xtra_uniform_scale').setVisible(True)\n        nuke.thisNode().knob('face_camera').setVisible(True)\n        nuke.thisNode().knob('map_surface').setVisible(True)\n        nuke.thisNode().knob('look_cam').setVisible(True)\n\n\n\n    if nuke.thisNode().knob('auxiliar_method').value() == 'Axis/Card' and not nuke.thisNode().knob('selection_mode').value() == 'Quad':\n        nuke.thisNode().knob('reset').setVisible(False)\n    else:\n        nuke.thisNode().knob('reset').setVisible(True)\n        nuke.thisNode().knobs()\['divider_line2'].setVisible(True)\n\n\n    if nuke.thisNode().knob('input_type').value() == 'CG' and nuke.thisNode().knob('selection_mode').value() == 'Quad':\n        nuke.thisNode().knobs()\['in'].setVisible(False)\n        nuke.thisNode().knobs()\['in_1'].setVisible(False)\n\n    elif nuke.thisNode().knob('input_type').value() == 'Plate' or nuke.thisNode().knob('selection_mode').value() == 'Quad':\n        nuke.thisNode().knobs()\['in'].setVisible(False)\n        nuke.thisNode().knobs()\['in_1'].setVisible(False)\n\n    else:\n        nuke.thisNode().knobs()\['in'].setVisible(True)\n        nuke.thisNode().knobs()\['in_1'].setVisible(True)\n\n\n    #SET COLOR    \n    knobsList = list(nuke.thisNode().knobs())\n    knobsList.remove('set')\n    knobsList.remove('set_2')\n    knobsList.remove('selected')\n    knobsList.remove('test_mode')\n\n    for n in knobsList:\n        if nuke.thisKnob().name() == n:\n            nuke.toNode('Switch10').knob('which').setValue(0)\n            nuke.toNode('CornerPin2D2').knob('gl_color').setValue(4278190335)\n\n\n"
+ tile_color 0xff5f00ff
+ label "\n"
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos 147
+ ypos 1042
+ addUserKnob {20 User l Main}
+ addUserKnob {4 input_type l "Input Type" M {Plate CG "" "" ""}}
+ addUserKnob {4 auxiliar_method l "    Auxiliar Input Type" t "Axis/Card - Place an Axis in the 3D scene where you want it to be tracked\n\nGeo/Cones - Connect the geo/cones directily to the input. Selected the point of the geo/cones that you want to track\n\nCG Render - Connect the CG Render directily to the input. Selected the point of the CG Render that you want to track. Needs position pass." -STARTLINE M {Axis/Card Geo/Cones "" "" "" "" ""}}
+ addUserKnob {4 auxiliar_method_2 l "    Auxiliar Input Type" -STARTLINE +DISABLED +HIDDEN M {"CG Render" ""}}
+ addUserKnob {41 in l "Position Channel" +HIDDEN T PositionPass2.in}
+ addUserKnob {41 in_1 l "Normals Channel" -STARTLINE +HIDDEN T NormalsPass3.in}
+ addUserKnob {26 divider_line1 l "" +STARTLINE +HIDDEN}
+ addUserKnob {4 selection_mode l "Calculation Mathod" +HIDDEN M {Planar Quad "" ""}}
+ addUserKnob {12 place_at l "Place At" +HIDDEN}
+ place_at {200 200}
+ addUserKnob {41 to1 l Point1 +HIDDEN T CornerPin2D2.to1}
+ addUserKnob {41 to2 l Point2 -STARTLINE +HIDDEN T CornerPin2D2.to2}
+ addUserKnob {41 to3 l Point3 +HIDDEN T CornerPin2D2.to3}
+ addUserKnob {41 to4 l Point4 -STARTLINE +HIDDEN T CornerPin2D2.to4}
+ addUserKnob {22 set l Set +HIDDEN T "with nuke.thisNode():\n\n    for n in nuke.allNodes():\n\n    \tnuke.toNode('TransformGeo1').knob('sample').setValue(nuke.toNode('PositionPicker1').knob('extracted_value').value())\n\n        if nuke.toNode('Switch12').knob('which').value() == 1:\t\n    \t\tnuke.toNode('Axis1').knob('translate').setValue(nuke.toNode('PositionPicker3').knob('extracted_value').value())\n        else:\n            nuke.toNode('Axis1').knob('translate').setValue(0)\n\n\n    nuke.toNode('Transformed_2D_Coordinates').knob('calculate_all').execute()\n\n    nuke.toNode('Switch10').knob('which').setValue(1)\n\n    nuke.toNode('CornerPin2D2').knob('gl_color').setValue(16711935)\n\n" +STARTLINE}
+ addUserKnob {22 set_2 l Set +HIDDEN T "with nuke.thisNode():\n\n    for n in nuke.allNodes():\n\n    \tnuke.toNode('TransformGeo1').knob('sample').setValue(nuke.toNode('PositionPicker2').knob('extracted_value').value())\n\n        if nuke.toNode('Switch12').knob('which').value() == 1:\t\n    \t\tnuke.toNode('Axis1').knob('translate').setValue(nuke.toNode('PositionPicker4').knob('extracted_value').value())\n        else:\n            nuke.toNode('Axis1').knob('translate').setValue(0)\n\n\n    nuke.toNode('Transformed_2D_Coordinates').knob('calculate_all').execute()\n\n    nuke.toNode('Switch10').knob('which').setValue(1)\n\n    nuke.toNode('CornerPin2D2').knob('gl_color').setValue(16711935)\n\n" +STARTLINE}
+ addUserKnob {26 divider_line2 l "" +STARTLINE +HIDDEN}
+ addUserKnob {20 additional_transforms l "Fine Point Position Adjustment" +HIDDEN n 1}
+ additional_transforms 0
+ addUserKnob {13 xtra_translate l Translate}
+ addUserKnob {13 xtra_rotation l Rotation}
+ addUserKnob {13 xtra_scaling l Scale}
+ addUserKnob {7 xtra_uniform_scale l "Uniform Scale" +HIDDEN R -1 10}
+ xtra_uniform_scale 1
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 divider_line_trs l "" +STARTLINE +HIDDEN}
+ addUserKnob {6 map_surface l "Map to Surface" +HIDDEN +STARTLINE}
+ addUserKnob {22 face_camera l "Face Camera" -STARTLINE +HIDDEN T "with nuke.thisNode():\n    nuke.thisNode().knob('xtra_rotation').setValue(nuke.toNode('CameraMaster').knob('rotate').value())"}
+ addUserKnob {6 look_cam l "Lock Facing Camera" -STARTLINE +HIDDEN}
+ addUserKnob {22 reset l Reset +HIDDEN T "nuke.thisNode().knob('xtra_translate').setValue(0)\nnuke.thisNode().knob('xtra_rotation').setValue(0)\nnuke.thisNode().knob('xtra_scaling').setValue(0)\nnuke.thisNode().knob('xtra_uniform_scale').setValue(10)\n\nwith nuke.thisNode():\n\tfor n in range(1, 4+1):\n\t\tnuke.toNode('TransformGeo1').knob('point'+str(n)).setValue(0)\n\n\t\tnuke.toNode('Transformed_2D_Coordinates').knob('reset_all').execute()\n\t\tnuke.toNode('TransformGeo1').knob('sample').setValue(0)\n\t\tnuke.toNode('Axis1').knob('translate').setValue(0)\n\n\t\tnuke.toNode('HueShift1').knob('hue_rotation').setValue(0)" +STARTLINE}
+ addUserKnob {26 divider_line3 l "" +STARTLINE}
+ addUserKnob {41 line_width l "Lines Width" T Wireframe7.line_width}
+ addUserKnob {41 hue_rotation l "Lines Color" T HueShift1.hue_rotation}
+ addUserKnob {26 divider_line4 l "" +STARTLINE}
+ addUserKnob {6 test_mode l "<b><font color=#E5E518>TEST MODE</font><b>" +STARTLINE}
+ addUserKnob {4 export l Export M {CornerPin Tracker ""}}
+ addUserKnob {22 create l Create -STARTLINE T "#SUPER RECONCILE\n#CREATED BY PEDRO ANDRADE\n#-2019-\n\n\nwith nuke.thisNode():\n\n#CALCULATE\n    if nuke.thisNode().knob('auxiliar_method').value() == 'Axis/Card':\n        nuke.thisNode().knob('reset').execute()\n        nuke.toNode('Transformed_2D_Coordinates').knob('calculate_all').execute()\n\n#FORCED SET\n    if nuke.thisNode().knob('input_type').value() == 'Plate':\n        nuke.thisNode().knob('set').execute()\n    else:\n        nuke.thisNode().knob('set_2').execute()\n\n#FORCED AXIS RESET\n    if not nuke.thisNode().knob('selection_mode').value() == 'Quad':\n        for n in range(1, 4+1):\n            nuke.toNode('CornerPin2D1').knob('axis' + str(n)).setValue(0)\n            nuke.toNode('Tracker1').knob('axis' + str(n)).setValue(0)\n    \n\n#EXPORTS\n    if nuke.thisNode().knob('export').value() == 'CornerPin':\n        for n in nuke.allNodes():\n            n.knob('selected').setValue(False)\n\n        nuke.toNode('CornerPin2D1').knob('selected').setValue(True)\n\n        for n in nuke.allNodes('CornerPin2D'):\n            if n.name().startswith('CornerPin2D1'):\n                n.knob('current_frame').execute()\n                nuke.toNode('Crop_CornerPin').knob('selected').setValue(True)\n                nuke.nodeCopy('%clipboard%')\n\n    else:\n        for n in nuke.allNodes():\n            n.knob('selected').setValue(False)\n\n            nuke.toNode('Tracker1').knob('selected').setValue(True)            \n\n        for n in nuke.allNodes('Tracker3'):\n            n.knob('reference_frame').setValue(nuke.frame())\n            nuke.toNode('Crop_Tracker').knob('selected').setValue(True)\n            nuke.nodeCopy('%clipboard%')\n\n    for n in nuke.allNodes():\n        n.knob('selected').setValue(False)\n\nnuke.nodePaste('%clipboard%')\n\nlabel = str(nuke.getInput('Add Label', 'Add Label'))\nfor n in nuke.selectedNodes():\n    if not n.Class() == 'Crop':\n        n.knob('label').setValue(label.upper() + '\\n\\n'+n.knob('label').value())\ntry:\n    nuke.extractSelected()\nexcept:\n    pass\n\nfor n in nuke.allNodes():\n    n.knob('selected').setValue(False)\n\n\n\n"}
+ addUserKnob {26 divider_line5 l "" +STARTLINE}
+ addUserKnob {26 author l "" +STARTLINE T "Super Reconcile v1.0\nCreated by Pedro Andrade\n-2019-\n"}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/SQXhiaaxBnw" +STARTLINE}
+ addUserKnob {20 points l Points}
+ addUserKnob {20 extracted_3d_points l "Extracted 3D Points" n 1}
+ addUserKnob {41 point1_1 l Point1 T VectorsExtractor.point1}
+ addUserKnob {41 point2_1 l Point2 T VectorsExtractor.point2}
+ addUserKnob {41 point3_1 l Point3 T VectorsExtractor.point3}
+ addUserKnob {41 point4_1 l Point4 T VectorsExtractor.point4}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 calculated_2d_points l "Calculated 2D Points" n 1}
+ addUserKnob {41 point1 l Point1 T Transformed_2D_Coordinates.point1}
+ addUserKnob {41 point2 l Point2 T Transformed_2D_Coordinates.point2}
+ addUserKnob {41 point3 l Point3 T Transformed_2D_Coordinates.point3}
+ addUserKnob {41 point4 l Point4 T Transformed_2D_Coordinates.point4}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {41 sample l "Sampled Position" T TransformGeo1.sample}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x8e388e00
+  label "POINT 1"
+  note_font_size 42
+  xpos -2599
+  ypos -1019
+  bdwidth 319
+  bdheight 787
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode10
+  tile_color 0x6a55ffff
+  label "LOOK AT CAM"
+  note_font_size 42
+  xpos -623
+  ypos -3947
+  bdwidth 296
+  bdheight 127
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode11
+  tile_color 0x6a55ffff
+  label "LOOK AT CAM"
+  note_font_size 42
+  xpos -611
+  ypos -2828
+  bdwidth 296
+  bdheight 127
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode12
+  tile_color 0x37a428ff
+  label "COMP\nINPUT"
+  note_font_size 42
+  note_font_color 0xff00ff
+  xpos 76
+  ypos -1687
+  bdwidth 335
+  bdheight 180
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode13
+  tile_color 0xaaaaaa00
+  label CENTRE
+  note_font_size 42
+  xpos 90
+  ypos -2289
+  bdwidth 213
+  bdheight 123
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode14
+  tile_color 0x71c67100
+  label CALCULATIONS
+  note_font_size 42
+  xpos -73
+  ypos 213
+  bdwidth 417
+  bdheight 374
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode15
+  tile_color 0x8e8e3800
+  label "AUX GEO/CG"
+  note_font_size 42
+  xpos 4007
+  ypos -3420
+  bdwidth 493
+  bdheight 1347
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode16
+  tile_color 0x37a428ff
+  label "COMP\nAUX GEO/CG"
+  note_font_size 42
+  note_font_color 0xff00ff
+  xpos 3467
+  ypos -2568
+  bdwidth 359
+  bdheight 509
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode17
+  tile_color 0x388e8e00
+  label "AUX METHOD"
+  note_font_size 42
+  xpos 2975
+  ypos -2164
+  bdwidth 413
+  bdheight 339
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode18
+  tile_color 0xaaaaaa00
+  label SIDES
+  note_font_size 42
+  xpos 94
+  ypos -2562
+  bdwidth 213
+  bdheight 123
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode19
+  tile_color 0x8e388e00
+  label "TEST MODE"
+  note_font_size 42
+  xpos 835
+  ypos -2625
+  bdwidth 1421
+  bdheight 845
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x8e388e00
+  label "POINT 2"
+  note_font_size 42
+  xpos -1410
+  ypos -1025
+  bdwidth 334
+  bdheight 804
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode20
+  tile_color 0x468e37ff
+  label "TEST SWITCHER"
+  note_font_size 42
+  xpos 90
+  ypos 761
+  bdwidth 353
+  bdheight 185
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode21
+  tile_color 0x8e388e00
+  label "QUAD MODE"
+  note_font_size 42
+  xpos -50
+  ypos -1895
+  bdwidth 271
+  bdheight 149
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode22
+  tile_color 0xaaaaaa00
+  label ROTATION
+  note_font_size 42
+  xpos 90
+  ypos -4110
+  bdwidth 295
+  bdheight 163
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode23
+  tile_color 0x8e8e3800
+  label "INPUT FORMAT"
+  note_font_size 42
+  xpos 550
+  ypos -89
+  bdwidth 301
+  bdheight 168
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x8e388e00
+  label "POINT 3"
+  note_font_size 42
+  xpos -1409
+  ypos -4194
+  bdwidth 368
+  bdheight 804
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x8e388e00
+  label "POINT 4"
+  note_font_size 42
+  xpos -2614
+  ypos -4146
+  bdwidth 287
+  bdheight 782
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0xaaaaaa00
+  label CAMERA
+  note_font_size 42
+  xpos -709
+  ypos -3752
+  bdwidth 329
+  bdheight 208
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0xaaaaaa00
+  label POSITION
+  note_font_size 42
+  xpos 85
+  ypos -3831
+  bdwidth 291
+  bdheight 361
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  tile_color 0x8e388e00
+  label "POINT CENTRE"
+  note_font_size 42
+  xpos -3356
+  ypos -3350
+  bdwidth 425
+  bdheight 698
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode8
+  tile_color 0x7171c600
+  label "POSSIBLE OUTPUTS"
+  note_font_size 42
+  xpos 486
+  ypos 367
+  bdwidth 447
+  bdheight 266
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode9
+  tile_color 0x6a55ffff
+  label "LOOK AT CAM"
+  note_font_size 42
+  xpos -310
+  ypos -3725
+  bdwidth 296
+  bdheight 127
+ }
+ Input {
+  inputs 0
+  name cam
+  xpos -822
+  ypos -3643
+  number 1
+ }
+ Camera2 {
+  inputs 0
+  translate {{"\[topnode parent.input1].translate.x" x1 0 x51 0.1659999937} {"\[topnode parent.input1].translate.y" x1 0 x51 0} {"\[topnode parent.input1].translate.z" x1 1.129999995 x51 1.129999995}}
+  rotate {{"\[topnode parent.input1].rotate.x" x1 0 x51 0} {"\[topnode parent.input1].rotate.y" x1 0 x51 7.470156551} {"\[topnode parent.input1].rotate.z" x1 0 x51 0}}
+  scaling {{"\[topnode parent.input1].scaling.x"} {"\[topnode parent.input1].scaling.y"} {"\[topnode parent.input1].scaling.z"}}
+  uniform_scale {{"\[topnode parent.input1].uniform_scale"}}
+  skew {{"\[topnode parent.input1].skew.x"} {"\[topnode parent.input1].skew.y"} {"\[topnode parent.input1].skew.z"}}
+  pivot {{"\[topnode parent.input1].pivot.x"} {"\[topnode parent.input1].pivot.y"} {"\[topnode parent.input1].pivot.z"}}
+  focal {{"\[topnode parent.input1].focal"}}
+  haperture {{"\[topnode parent.input1].haperture"}}
+  vaperture {{"\[topnode parent.input1].vaperture"}}
+  near {{"\[topnode parent.input1].near"}}
+  far {{"\[topnode parent.input1].far"}}
+  win_translate {{"\[topnode parent.input1].win_translate.u"} {"\[topnode parent.input1].win_translate.v"}}
+  win_scale {{"\[topnode parent.input1].win_scale.u"} {"\[topnode parent.input1].win_scale.v"}}
+  winroll {{"\[topnode parent.input1].winroll"}}
+  focal_point {{"\[topnode parent.input1].focal_point"}}
+  fstop {{"\[topnode parent.input1].fstop"}}
+  name CameraMaster
+  xpos -578
+  ypos -3666
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+set N19047870 [stack 0]
+push 0
+ Switch {
+  inputs 2
+  which {{parent.Switch1.which}}
+  name Switch2
+  xpos -588
+  ypos -3878
+ }
+ Dot {
+  name Dot15
+  xpos -554
+  ypos -4342
+ }
+ Dot {
+  name Dot14
+  xpos -1920
+  ypos -4343
+ }
+ Dot {
+  name Dot13
+  xpos -1920
+  ypos -3843
+ }
+set N189f6890 [stack 0]
+ Dot {
+  name Dot21
+  xpos -1920
+  ypos -2951
+ }
+push 0
+ Axis2 {
+  inputs 2
+  translate {{parent.TransformGeo1.translate} {parent.TransformGeo1.translate} {parent.TransformGeo1.translate}}
+  rotate {{parent.TransformGeo1.rotate} {parent.TransformGeo1.rotate} {parent.TransformGeo1.rotate}}
+  scaling {{parent.TransformGeo1.scaling} {parent.TransformGeo1.scaling} {parent.TransformGeo1.scaling}}
+  uniform_scale {{parent.TransformGeo1.uniform_scale}}
+  name Axis7
+  xpos -3077
+  ypos -2975
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+set N18edba60 [stack 0]
+ Camera2 {
+  translate {{parent.Card8.translate} {parent.Card8.translate} {parent.Card8.translate+0.2}}
+  rotate {{parent.Card8.rotate} {parent.Card8.rotate} {parent.Card8.rotate}}
+  name Camera10
+  xpos -3077
+  ypos -2838
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+push $N18edba60
+ Axis2 {
+  inputs 0
+  translate {{parent.Axis1.translate} {parent.Axis1.translate} {parent.Axis1.translate}}
+  name Axis11
+  xpos -3215
+  ypos -3253
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+push 0
+ Wireframe {
+  inputs 0
+  channels {-rgba.red rgba.green -rgba.blue rgba.alpha}
+  line_width {{parent.Wireframe7.line_width}}
+  name Wireframe4
+  tile_color 0xff00ff
+  xpos -1259
+  ypos -4716
+ }
+ Wireframe {
+  inputs 0
+  channels {rgba.red rgba.green -rgba.blue rgba.alpha}
+  line_width {{parent.Wireframe7.line_width}}
+  name Wireframe1
+  tile_color 0xffff00ff
+  xpos -1460
+  ypos -4716
+ }
+ Switch {
+  inputs 2
+  which {{parent.Switch10.which}}
+  name Switch11
+  label SET
+  xpos -1361
+  ypos -4616
+ }
+ Dot {
+  name Dot27
+  xpos -1327
+  ypos -4526
+ }
+set N18db2490 [stack 0]
+ Dot {
+  name Dot53
+  xpos -2406
+  ypos -4526
+ }
+set N189d5a60 [stack 0]
+ Dot {
+  name Dot23
+  xpos -2815
+  ypos -4526
+ }
+set N18954c70 [stack 0]
+ Dot {
+  name Dot56
+  xpos -3053
+  ypos -4526
+ }
+ Card2 {
+  image_aspect false
+  rows 2
+  columns {{rows}}
+  translate {{parent.Card3.translate.x} {parent.Card3.translate.y} {parent.Card3.translate.z}}
+  rotate {{parent.Card3.rotate.x} 0 0}
+  scaling {0.05 {scaling.x} {scaling.x}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card8
+  label centre
+  xpos -3087
+  ypos -3314
+ }
+ TransformGeo {
+  inputs 3
+  name TransformGeo12
+  xpos -3087
+  ypos -3232
+ }
+ Switch {
+  which {{parent.Switch7.which}}
+  name Switch9
+  label "CENTRE VS QUAD"
+  xpos -3087
+  ypos -3154
+ }
+ TransformGeo {
+  inputs 2
+  uniform_scale 2
+  name TransformGeo6
+  xpos -3087
+  ypos -3067
+ }
+ Dot {
+  name Dot22
+  xpos -3320
+  ypos -3064
+ }
+ Dot {
+  name Dot43
+  xpos -3320
+  ypos -2814
+ }
+set N189b9990 [stack 0]
+push 0
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  overscan 100
+  motion_vectors_type distance
+  MB_channel forward
+  output_shader_vectors true
+  P_channel P
+  name ScanlineRender9
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos -3261
+  ypos -2826
+ }
+ Input {
+  inputs 0
+  name input
+  xpos 3141
+  ypos -3075
+ }
+ Dot {
+  name Dot29
+  xpos 3175
+  ypos -2914
+ }
+set N32afe860 [stack 0]
+ Dot {
+  name Dot70
+  xpos 2073
+  ypos -2916
+ }
+set N1714c040 [stack 0]
+ Dot {
+  name Dot68
+  xpos 1873
+  ypos -2916
+ }
+set N189ec060 [stack 0]
+ Dot {
+  name Dot49
+  xpos 994
+  ypos -2916
+ }
+set N17157660 [stack 0]
+ Dot {
+  name Dot69
+  xpos 994
+  ypos -2456
+ }
+set N1896b7f0 [stack 0]
+ Dot {
+  name Dot55
+  xpos 1294
+  ypos -2456
+ }
+ Remove {
+  name Remove5
+  xpos 1260
+  ypos -2365
+ }
+set N189e2160 [stack 0]
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green -rgba.blue rgba.alpha}
+  message "TEST MODE"
+  old_message {{84 69 83 84 32 77 79 68 69}
+    }
+  box {0 0 {input.width} {input.height}}
+  transforms {{0 2}
+    }
+  cursor_position 9
+  scale {1 1}
+  center {640 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1080}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 640 540 0 0 1 1 0 0 0 0}
+    }
+  name Text4
+  xpos 1106
+  ypos -2213
+ }
+push $N189e2160
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green -rgba.blue rgba.alpha}
+  message "TEST MODE"
+  old_message {{84 69 83 84 32 77 79 68 69}
+    }
+  box {0 0 {input.width} {input.height}}
+  xjustify right
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 9
+  scale {1 1}
+  center {640 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1080}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 640 540 0 0 1 1 0 0 0 0}
+    }
+  name Text1
+  xpos 1319
+  ypos -2213
+ }
+push 0
+push $N189e2160
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green -rgba.blue rgba.alpha}
+  message "TEST MODE"
+  old_message {{84 69 83 84 32 77 79 68 69}
+    }
+  box {0 0 {input.width} {input.height}}
+  xjustify right
+  transforms {{0 2}
+    }
+  cursor_position 9
+  scale {1 1}
+  center {640 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1080}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 640 540 0 0 1 1 0 0 0 0}
+    }
+  name Text2
+  xpos 1220
+  ypos -2213
+ }
+push $N189e2160
+ Text2 {
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red rgba.green -rgba.blue rgba.alpha}
+  message "TEST MODE"
+  old_message {{84 69 83 84 32 77 79 68 69}
+    }
+  box {0 0 {input.width} {input.height}}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  cursor_position 9
+  scale {1 1}
+  center {640 540}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 1080}
+    }
+  group_animations {{0} imported: 0 selected: 0 items: "root transform/"}
+  animation_layers {{1 11 640 540 0 0 1 1 0 0 0 0}
+    }
+  name Text3
+  xpos 1431
+  ypos -2213
+ }
+ Merge2 {
+  inputs 4+1
+  name Merge3
+  xpos 1268
+  ypos -2009
+ }
+set N190c9490 [stack 0]
+push $N1896b7f0
+ CornerPin2D {
+  to1 {{parent.CornerPin2D1.to1} {parent.CornerPin2D1.to1}}
+  to2 {{parent.CornerPin2D1.to2} {parent.CornerPin2D1.to2}}
+  to3 {{parent.CornerPin2D1.to3} {parent.CornerPin2D1.to3}}
+  to4 {{parent.CornerPin2D1.to4} {parent.CornerPin2D1.to4}}
+  invert true
+  from1 {{to1(ref_frame)} {to1(ref_frame)}}
+  from2 {{to2(ref_frame)} {to2(ref_frame)}}
+  from3 {{to3(ref_frame)} {to3(ref_frame)}}
+  from4 {{to4(ref_frame)} {to4(ref_frame)}}
+  name CornerPin2D3
+  label "From PA_SuperReconcile\n\n\[if \{\[value invert]==true\} \{return \"Stabilize\"\} \{return \"Matchmove\"\}]\nRef Frame: \[value ref_frame]"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 960
+  ypos -2381
+  addUserKnob {20 "Reference Frame"}
+  addUserKnob {3 ref_frame l "Reference Frame"}
+  ref_frame 1195
+  addUserKnob {22 current_frame l "Set To Current Frame" -STARTLINE T nuke.thisNode().knob('ref_frame').setValue(nuke.frame())}
+  addUserKnob {20 card_revert l "Card Revert"}
+  addUserKnob {13 translate l Translate +DISABLED}
+  addUserKnob {13 rotate l Rotate +DISABLED}
+  addUserKnob {13 scale l Scale +DISABLED}
+  scale {1 1 1}
+  addUserKnob {7 uniform_scale l "Uniform Scale" +DISABLED}
+  uniform_scale 1
+  addUserKnob {22 revert_card l "Revert Card" T "card = nuke.nodes.Card2()\ncard.knob('translate').setValue(nuke.thisNode().knob('translate').value(), 0)\ncard.knob('translate').setValue(nuke.thisNode().knob('translate').value(), 1)\ncard.knob('translate').setValue(nuke.thisNode().knob('translate').value(), 2)\n\ncard.knob('rotate').setValue(nuke.thisNode().knob('rotate').value(), 0)\ncard.knob('rotate').setValue(nuke.thisNode().knob('rotate').value(), 1)\ncard.knob('rotate').setValue(nuke.thisNode().knob('rotate').value(), 2)\n\ncard.knob('scaling').setValue(nuke.thisNode().knob('scale').value(), 0)\ncard.knob('scaling').setValue(nuke.thisNode().knob('scale').value(), 1)\ncard.knob('scaling').setValue(nuke.thisNode().knob('scale').value(), 2)\n\ncard.knob('uniform_scale').setValue(nuke.thisNode().knob('uniform_scale').value())\n\ncard.knob('label').setValue('Reverted Card From '+ nuke.thisNode().name())\n\ncard.knob('xpos').setValue(nuke.thisNode().knob('xpos').value())\ncard.knob('ypos').setValue(nuke.thisNode().knob('ypos').value()+100)\n\n\n\n\n" +STARTLINE}
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop5
+  xpos 960
+  ypos -2283
+ }
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos 960
+  ypos -2009
+ }
+push $N190c9490
+push $N19047870
+ Dot {
+  name Dot38
+  xpos -554
+  ypos -3217
+ }
+set N18b02d80 [stack 0]
+ Dot {
+  name Dot64
+  xpos 1694
+  ypos -3214
+ }
+set N19115850 [stack 0]
+ Dot {
+  name Dot66
+  xpos 1694
+  ypos -2522
+ }
+set N191187e0 [stack 0]
+ FrameHold {
+  first_frame {{parent.CornerPin2D3.ref_frame}}
+  name FrameHold1
+  xpos 1660
+  ypos -2329
+ }
+ Dot {
+  name Dot71
+  xpos 1694
+  ypos -2122
+ }
+push $N191187e0
+push $N189ec060
+ Project3D2 {
+  inputs 2
+  name Project3D1
+  xpos 1839
+  ypos -2525
+ }
+push $N19047870
+push 0
+ Switch {
+  inputs 2
+  which {{parent.look_cam}}
+  name Switch1
+  label MASTER
+  xpos -300
+  ypos -3649
+ }
+ Dot {
+  name Dot1
+  tile_color 0xff0000ff
+  label cam
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_color 0xff0000ff
+  xpos -51
+  ypos -3640
+ }
+push 0
+ Axis2 {
+  inputs 0
+  name Axis1
+  xpos 270
+  ypos -4030
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+push 0
+ Wireframe {
+  inputs 0
+  channels {-rgba.red rgba.green -rgba.blue rgba.alpha}
+  line_width {{parent.Wireframe7.line_width}}
+  name Wireframe2
+  tile_color 0xff00ff
+  xpos 216
+  ypos -4451
+ }
+ Wireframe {
+  inputs 0
+  channels {rgba.red -rgba.green -rgba.blue rgba.alpha}
+  line_width 1
+  name Wireframe7
+  tile_color 0xff0000ff
+  xpos 19
+  ypos -4451
+ }
+ Switch {
+  inputs 2
+  name Switch10
+  label SET
+  xpos 100
+  ypos -4363
+ }
+ Switch {
+  which {{parent.Switch7.which}}
+  name Switch8
+  label "CENTRE VS QUAD"
+  xpos 100
+  ypos -4301
+ }
+ Card2 {
+  display wireframe
+  image_aspect false
+  rows 3
+  columns {{rows}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card3
+  label "card master"
+  xpos 100
+  ypos -4213
+ }
+ TransformGeo {
+  inputs 3
+  name TransformGeo7
+  xpos 100
+  ypos -4009
+  disable {{!parent.map_surface}}
+ }
+ TransformGeo {
+  inputs 3
+  translate {{"parent.Switch4.which==0?\[topnode parent.input\[value parent.Switch5.which]].translate.x+xtra_translate.x:sample.x+xtra_translate.x"} {"parent.Switch4.which==0?\[topnode parent.input\[value parent.Switch5.which]].translate.y+xtra_translate.y:sample.y+xtra_translate.y"} {"parent.Switch4.which==0?\[topnode parent.input\[value parent.Switch5.which]].translate.z+xtra_translate.z:sample.z+xtra_translate.z"}}
+  rotate {{"parent.Switch4.which==0?\[topnode parent.input\[value parent.Switch5.which]].rotate.x+xtra_rotation.x:1+xtra_rotation.x"} {"parent.Switch4.which==0?\[topnode parent.input\[value parent.Switch5.which]].rotate.y+xtra_rotation.y:1+xtra_rotation.y"} {"parent.Switch4.which==0?\[topnode parent.input\[value parent.Switch5.which]].rotate.z+xtra_rotation.z:1+xtra_rotation.z"}}
+  scaling {{"parent.Switch4.which==0?\[topnode parent.input\[value parent.Switch5.which]].scaling.x+xtra_scaling.x:1+xtra_scaling.x"} {"parent.Switch4.which==0?\[topnode parent.input\[value parent.Switch5.which]].scaling.y+xtra_scaling.y:1+xtra_scaling.y"} {"parent.Switch4.which==0?\[topnode parent.input\[value parent.Switch5.which]].scaling.z+xtra_scaling.z:1+xtra_scaling.z"}}
+  uniform_scale {{"parent.Switch4.which==0?\[topnode parent.input\[value parent.Switch5.which]].uniform_scale+xtra_uniform_scale:1+xtra_uniform_scale"}}
+  name TransformGeo1
+  xpos 100
+  ypos -3643
+  addUserKnob {20 User}
+  addUserKnob {13 xtra_translate}
+  xtra_translate {{parent.xtra_translate} {parent.xtra_translate} {parent.xtra_translate}}
+  addUserKnob {13 xtra_rotation}
+  xtra_rotation {{parent.xtra_rotation} {parent.xtra_rotation} {parent.xtra_rotation}}
+  addUserKnob {13 xtra_scaling}
+  xtra_scaling {{parent.xtra_scaling x133 0.0567599982} {parent.xtra_scaling x133 0.2469999939} {parent.xtra_scaling x133 0.4600000083}}
+  addUserKnob {7 xtra_uniform_scale R -1 1}
+  xtra_uniform_scale {{Switch4.which==1?parent.xtra_uniform_scale:0}}
+  addUserKnob {26 ""}
+  addUserKnob {13 sample}
+  addUserKnob {13 point1}
+  addUserKnob {13 point2}
+  addUserKnob {13 point3}
+  addUserKnob {13 point4}
+ }
+ Dot {
+  name Dot73
+  xpos 134
+  ypos -3306
+ }
+set N18b26830 [stack 0]
+ Dot {
+  name Dot74
+  xpos 1482
+  ypos -3306
+ }
+ Dot {
+  name Dot75
+  xpos 1482
+  ypos -2383
+ }
+ ApplyMaterial {
+  inputs 2
+  name ApplyMaterial1
+  xpos 1839
+  ypos -2386
+ }
+push $N1714c040
+ Remove {
+  name Remove12
+  xpos 2039
+  ypos -2129
+ }
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  motion_vectors_type distance
+  name ScanlineRender14
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos 1839
+  ypos -2134
+ }
+ Merge2 {
+  inputs 2
+  name Merge7
+  xpos 1839
+  ypos -2009
+ }
+ Dot {
+  name Dot72
+  xpos 1873
+  ypos -1856
+ }
+ Switch {
+  inputs 2
+  which {{parent.Switch4.which}}
+  name Switch13
+  xpos 960
+  ypos -1859
+ }
+ Dot {
+  name Dot60
+  xpos 994
+  ypos 844
+ }
+push $N18b02d80
+ Dot {
+  name Dot20
+  xpos -554
+  ypos -2917
+ }
+set N18cac360 [stack 0]
+push 0
+ Switch {
+  inputs 2
+  which {{parent.Switch1.which}}
+  name Switch3
+  xpos -588
+  ypos -2755
+ }
+ Dot {
+  name Dot19
+  xpos -554
+  ypos -1135
+ }
+ Dot {
+  name Dot18
+  xpos -1945
+  ypos -1136
+ }
+ Dot {
+  name Dot17
+  xpos -1945
+  ypos -682
+ }
+set N18cb9260 [stack 0]
+push 0
+ Axis2 {
+  inputs 2
+  translate {{parent.TransformGeo1.translate} {parent.TransformGeo1.translate} {parent.TransformGeo1.translate}}
+  rotate {{parent.TransformGeo1.rotate} {parent.TransformGeo1.rotate} {parent.TransformGeo1.rotate}}
+  scaling {{parent.TransformGeo1.scaling} {parent.TransformGeo1.scaling} {parent.TransformGeo1.scaling}}
+  uniform_scale {{parent.TransformGeo1.uniform_scale}}
+  name Axis3
+  xpos -2392
+  ypos -702
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+ Axis2 {
+  inputs 0
+  translate {{parent.Axis1.translate} {parent.Axis1.translate} {parent.Axis1.translate}}
+  name Axis9
+  xpos -2530
+  ypos -881
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+push 0
+push $N18954c70
+ Dot {
+  name Dot24
+  xpos -2815
+  ypos -969
+ }
+ Dot {
+  name Dot25
+  xpos -2368
+  ypos -969
+ }
+set N18cd8f10 [stack 0]
+ Card2 {
+  image_aspect false
+  rows 2
+  columns {{rows}}
+  translate {{parent.Card3.translate+(-parent.Card3.uniform_scale/2)} {parent.Card3.translate+(-parent.Card3.uniform_scale/2)} {curve}}
+  scaling {0.05 {scaling.x} {scaling.x}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card5
+  label "bottom left"
+  xpos -2402
+  ypos -925
+ }
+ TransformGeo {
+  inputs 3
+  name TransformGeo10
+  xpos -2402
+  ypos -860
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo2
+  xpos -2402
+  ypos -781
+ }
+set N18c0ecd0 [stack 0]
+ Dot {
+  name Dot5
+  xpos -2548
+  ypos -778
+ }
+ Reformat {
+  inputs 0
+  type "to box"
+  box_width 10
+  box_height 10
+  box_fixed true
+  name Reformat7
+  xpos -2461
+  ypos -559
+ }
+ ScanlineRender {
+  inputs 2
+  conservative_shader_sampling false
+  projection_mode uv
+  motion_vectors_type distance
+  output_shader_vectors true
+  P_channel P
+  name ScanlineRender12
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos -2582
+  ypos -568
+ }
+ Remove {
+  operation keep
+  channels P
+  name Remove10
+  xpos -2582
+  ypos -500
+ }
+ Shuffle {
+  in P
+  name Shuffle3
+  label "\[value in]"
+  xpos -2582
+  ypos -442
+ }
+ Crop {
+  box {{(width/2)+1} {(height/2)+1} {(width/2)+1} {(height/2)+1}}
+  reformat true
+  crop false
+  name point1
+  label point1
+  xpos -2582
+  ypos -385
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop_Input.box.r}}
+  box_height {{parent.Crop_Input.box.t}}
+  box_fixed true
+  name Reformat1
+  xpos -2582
+  ypos -327
+ }
+ NoOp {
+  name vector_1_extractor
+  xpos -2582
+  ypos -277
+  addUserKnob {20 User}
+  addUserKnob {12 position l "Place in:"}
+  position {{parent.place_at} {parent.place_at}}
+  addUserKnob {26 ""}
+  addUserKnob {13 vector l Vector}
+  vector {{"\[sample this red position.x position.y]"} {"\[sample this green position.x position.y]"} {"\[sample this blue position.x position.y]"}}
+ }
+ Dot {
+  name Dot16
+  xpos -2548
+  ypos -57
+ }
+push $N18cb9260
+push 0
+ Axis2 {
+  inputs 2
+  translate {{parent.TransformGeo1.translate} {parent.TransformGeo1.translate} {parent.TransformGeo1.translate}}
+  rotate {{parent.TransformGeo1.rotate} {parent.TransformGeo1.rotate} {parent.TransformGeo1.rotate}}
+  scaling {{parent.TransformGeo1.scaling} {parent.TransformGeo1.scaling} {parent.TransformGeo1.scaling}}
+  uniform_scale {{parent.TransformGeo1.uniform_scale}}
+  name Axis6
+  xpos -1359
+  ypos -706
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+ Axis2 {
+  inputs 0
+  translate {{parent.Axis1.translate} {parent.Axis1.translate} {parent.Axis1.translate}}
+  name Axis8
+  xpos -1199
+  ypos -881
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+push 0
+push $N18cd8f10
+ Dot {
+  name Dot26
+  xpos -1335
+  ypos -969
+ }
+ Card2 {
+  image_aspect false
+  rows 2
+  columns {{rows}}
+  translate {{parent.Card3.translate+(parent.Card3.uniform_scale/2)} {parent.Card3.translate+(-parent.Card3.uniform_scale/2)} {curve}}
+  scaling {0.05 {scaling.x} {scaling.x}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card7
+  label "bottom right"
+  xpos -1369
+  ypos -925
+ }
+ TransformGeo {
+  inputs 3
+  name TransformGeo9
+  xpos -1369
+  ypos -860
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo5
+  xpos -1369
+  ypos -789
+ }
+set N18ba8ac0 [stack 0]
+ Dot {
+  name Dot9
+  xpos -1176
+  ypos -786
+ }
+ Reformat {
+  inputs 0
+  type "to box"
+  box_width 10
+  box_height 10
+  box_fixed true
+  name Reformat8
+  xpos -1340
+  ypos -572
+ }
+ ScanlineRender {
+  inputs 2
+  conservative_shader_sampling false
+  projection_mode uv
+  motion_vectors_type distance
+  output_shader_vectors true
+  P_channel P
+  name ScanlineRender13
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos -1210
+  ypos -581
+ }
+ Remove {
+  operation keep
+  channels P
+  name Remove11
+  xpos -1210
+  ypos -513
+ }
+ Shuffle {
+  in P
+  name Shuffle4
+  label "\[value in]"
+  xpos -1210
+  ypos -455
+ }
+ Crop {
+  box {{(width/2)+1} {(height/2)+1} {(width/2)+1} {(height/2)+1}}
+  reformat true
+  crop false
+  name point2
+  label point2
+  xpos -1210
+  ypos -374
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop_Input.box.r}}
+  box_height {{parent.Crop_Input.box.t}}
+  box_fixed true
+  name Reformat2
+  xpos -1210
+  ypos -316
+ }
+ NoOp {
+  name vector_2_extractor
+  xpos -1210
+  ypos -266
+  addUserKnob {20 User}
+  addUserKnob {12 position l "Place in:"}
+  position {{parent.place_at} {parent.place_at}}
+  addUserKnob {26 ""}
+  addUserKnob {13 vector l Vector}
+  vector {{"\[sample this red position.x position.y]"} {"\[sample this green position.x position.y]"} {"\[sample this blue position.x position.y]"}}
+ }
+push $N189f6890
+push 0
+ Axis2 {
+  inputs 2
+  translate {{parent.TransformGeo1.translate} {parent.TransformGeo1.translate} {parent.TransformGeo1.translate}}
+  rotate {{parent.TransformGeo1.rotate} {parent.TransformGeo1.rotate} {parent.TransformGeo1.rotate}}
+  scaling {{parent.TransformGeo1.scaling} {parent.TransformGeo1.scaling} {parent.TransformGeo1.scaling}}
+  uniform_scale {{parent.TransformGeo1.uniform_scale}}
+  name Axis4
+  xpos -2430
+  ypos -3867
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+ Axis2 {
+  inputs 0
+  translate {{parent.Axis1.translate} {parent.Axis1.translate} {parent.Axis1.translate}}
+  name Axis10
+  xpos -2568
+  ypos -4061
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+push 0
+push $N189d5a60
+ Card2 {
+  image_aspect false
+  rows 2
+  columns {{rows}}
+  translate {{parent.Card3.translate+(-parent.Card3.uniform_scale/2)} {parent.Card3.translate+(parent.Card3.uniform_scale/2)} {parent.Card3.translate.z}}
+  scaling {0.05 {scaling.x} {scaling.x}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card6
+  label "top left"
+  xpos -2440
+  ypos -4114
+ }
+ TransformGeo {
+  inputs 3
+  name TransformGeo11
+  xpos -2440
+  ypos -4040
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo3
+  xpos -2440
+  ypos -3959
+ }
+set N18f3cc20 [stack 0]
+ Dot {
+  name Dot4
+  xpos -2580
+  ypos -3956
+ }
+ Reformat {
+  inputs 0
+  type "to box"
+  box_width 10
+  box_height 10
+  box_fixed true
+  name Reformat6
+  xpos -2493
+  ypos -3693
+ }
+ ScanlineRender {
+  inputs 2
+  conservative_shader_sampling false
+  projection_mode uv
+  motion_vectors_type distance
+  output_shader_vectors true
+  P_channel P
+  name ScanlineRender11
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos -2614
+  ypos -3702
+ }
+ Remove {
+  operation keep
+  channels P
+  name Remove9
+  xpos -2614
+  ypos -3634
+ }
+ Shuffle {
+  in P
+  name Shuffle2
+  label "\[value in]"
+  xpos -2614
+  ypos -3576
+ }
+ Crop {
+  box {{(width/2)+1} {(height/2)+1} {(width/2)+1} {(height/2)+1}}
+  reformat true
+  crop false
+  name point4
+  label point4
+  xpos -2614
+  ypos -3518
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop_Input.box.r}}
+  box_height {{parent.Crop_Input.box.t}}
+  box_fixed true
+  name Reformat4
+  xpos -2614
+  ypos -3460
+ }
+ NoOp {
+  name vector_4_extractor
+  xpos -2614
+  ypos -3409
+  addUserKnob {20 User}
+  addUserKnob {12 position l "Place in:"}
+  position {{parent.place_at} {parent.place_at}}
+  addUserKnob {26 ""}
+  addUserKnob {13 vector l Vector}
+  vector {{"\[sample this red position.x position.y]"} {"\[sample this green position.x position.y]"} {"\[sample this blue position.x position.y]"}}
+ }
+ Dot {
+  name Dot12
+  xpos -2580
+  ypos -1295
+ }
+push $N189f6890
+push 0
+ Axis2 {
+  inputs 2
+  translate {{parent.TransformGeo1.translate} {parent.TransformGeo1.translate} {parent.TransformGeo1.translate}}
+  rotate {{parent.TransformGeo1.rotate} {parent.TransformGeo1.rotate} {parent.TransformGeo1.rotate}}
+  scaling {{parent.TransformGeo1.scaling} {parent.TransformGeo1.scaling} {parent.TransformGeo1.scaling}}
+  uniform_scale {{parent.TransformGeo1.uniform_scale}}
+  name Axis5
+  xpos -1351
+  ypos -3867
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+ Axis2 {
+  inputs 0
+  translate {{parent.Axis1.translate} {parent.Axis1.translate} {parent.Axis1.translate}}
+  name Axis2
+  xpos -1244
+  ypos -4074
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+push 0
+push $N18db2490
+ Card2 {
+  image_aspect false
+  rows 2
+  columns {{rows}}
+  translate {{parent.Card3.translate+(parent.Card3.uniform_scale/2)} {parent.Card3.translate+(parent.Card3.uniform_scale/2)} {curve}}
+  scaling {0.05 {scaling.x} {scaling.x}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card4
+  label "top right"
+  xpos -1361
+  ypos -4114
+ }
+ TransformGeo {
+  inputs 3
+  name TransformGeo8
+  xpos -1361
+  ypos -4053
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo4
+  xpos -1361
+  ypos -3979
+ }
+set Nd4372770 [stack 0]
+ Dot {
+  name Dot3
+  xpos -1168
+  ypos -3976
+ }
+ Reformat {
+  inputs 0
+  type "to box"
+  box_width 10
+  box_height 10
+  box_fixed true
+  name Reformat5
+  xpos -1340
+  ypos -3736
+ }
+ ScanlineRender {
+  inputs 2
+  conservative_shader_sampling false
+  projection_mode uv
+  motion_vectors_type distance
+  output_shader_vectors true
+  P_channel P
+  name ScanlineRender3
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos -1202
+  ypos -3748
+ }
+ Remove {
+  operation keep
+  channels P
+  name Remove8
+  xpos -1202
+  ypos -3680
+ }
+ Shuffle {
+  in P
+  name Shuffle1
+  label "\[value in]"
+  xpos -1202
+  ypos -3622
+ }
+ Crop {
+  box {{(width/2)+1} {(height/2)+1} {(width/2)+1} {(height/2)+1}}
+  reformat true
+  crop false
+  name point3
+  label point3
+  xpos -1202
+  ypos -3564
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop_Input.box.r}}
+  box_height {{parent.Crop_Input.box.t}}
+  box_fixed true
+  name Reformat3
+  xpos -1202
+  ypos -3506
+ }
+ NoOp {
+  name vector_3_extractor
+  xpos -1202
+  ypos -3456
+  addUserKnob {20 User}
+  addUserKnob {12 position l "Place in:"}
+  position {{parent.place_at} {parent.place_at}}
+  addUserKnob {26 ""}
+  addUserKnob {13 vector l Vector}
+  vector {{"\[sample this red position.x position.y]"} {"\[sample this green position.x position.y]"} {"\[sample this blue position.x position.y]"}}
+ }
+ Dot {
+  name Dot11
+  xpos -1168
+  ypos -1407
+ }
+push $N19115850
+ Dot {
+  name Dot30
+  xpos 4364
+  ypos -3214
+ }
+ Dot {
+  name Dot31
+  xpos 4364
+  ypos -2914
+ }
+ Wireframe {
+  inputs 0
+  channels {-rgba.red -rgba.green rgba.blue rgba.alpha}
+  line_width {{parent.Wireframe7.line_width/10}}
+  name Wireframe3
+  tile_color 0xffff
+  xpos 4330
+  ypos -3513
+ }
+ Input {
+  inputs 0
+  name aux
+  xpos 4130
+  ypos -3856
+  number 2
+ }
+ Dot {
+  name Dot2
+  label aux_input
+  xpos 4164
+  ypos -3752
+ }
+ ApplyMaterial {
+  inputs 2
+  name ApplyMaterial2
+  xpos 4130
+  ypos -3507
+ }
+ Scene {
+  name Scene2
+  xpos 4140
+  ypos -3317
+ }
+push $N32afe860
+ Remove {
+  name Remove2
+  xpos 3275
+  ypos -2921
+ }
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  motion_vectors_type distance
+  output_shader_vectors true
+  P_channel P
+  N_channel N
+  name ScanlineRender10
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos 4130
+  ypos -2927
+ }
+ Expression {
+  expr3 clamp(r+g+b)
+  name Expression1
+  xpos 4130
+  ypos -2853
+ }
+ Dot {
+  name Dot32
+  xpos 4162
+  ypos -2453
+ }
+set N18ff7f00 [stack 0]
+ Dot {
+  name Dot59
+  xpos 4285
+  ypos -2453
+ }
+ Shuffle {
+  in N
+  name PositionPass4
+  label "\[value in]"
+  xpos 4251
+  ypos -2393
+ }
+set N18ffd3a0 [stack 0]
+ NoOp {
+  name PositionPicker3
+  label Normals
+  xpos 4251
+  ypos -2293
+  addUserKnob {20 User}
+  addUserKnob {12 position l "Place in:"}
+  position {{parent.place_at} {parent.place_at}}
+  addUserKnob {26 ""}
+  addUserKnob {13 extracted_value l "Extracted Value"}
+  extracted_value {{"\[sample this red position.x position.y]"} {"\[sample this green position.x position.y]"} {"\[sample this blue position.x position.y]"}}
+ }
+ Dot {
+  name Dot54
+  xpos 4285
+  ypos -2153
+ }
+ Switch {
+  which {{!parent.map_surface}}
+  name Switch15
+  label "MAP TO SURFACE"
+  xpos 4058
+  ypos -2162
+ }
+push $N18ff7f00
+ Dot {
+  name Dot58
+  xpos 4055
+  ypos -2453
+ }
+set N19010500 [stack 0]
+ Shuffle {
+  in P
+  name PositionPass1
+  label "\[value in]"
+  xpos 4021
+  ypos -2393
+ }
+set N190131b0 [stack 0]
+ NoOp {
+  name PositionPicker1
+  label Position
+  xpos 4021
+  ypos -2313
+  addUserKnob {20 User}
+  addUserKnob {12 position l Centre}
+  position {{parent.place_at} {parent.place_at}}
+  addUserKnob {18 extracted_value l "Extracted Value"}
+  extracted_value {{"\[sample this red position.x position.y]"} {"\[sample this green position.x position.y]"} {"\[sample this blue position.x position.y]"}}
+  addUserKnob {6 extracted_value_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {26 ""}
+  addUserKnob {12 point1 l Point1}
+  point1 {{parent.CornerPin2D2.to1} {parent.CornerPin2D2.to1}}
+  addUserKnob {18 extracted_value_1 l "Extracted Value"}
+  extracted_value_1 {{"\[sample this red point1.x point1.y]"} {"\[sample this green point1.x point1.y]"} {"\[sample this blue point1.x point1.y]"}}
+  addUserKnob {6 extracted_value_1_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {12 point2 l Point2}
+  point2 {{parent.CornerPin2D2.to2} {parent.CornerPin2D2.to2}}
+  addUserKnob {18 extracted_value_2 l "Extracted Value"}
+  extracted_value_2 {{"\[sample this red point2.x point2.y]"} {"\[sample this green point2.x point2.y]"} {"\[sample this blue point2.x point2.y]"}}
+  addUserKnob {6 extracted_value_2_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {12 point3 l Point3}
+  point3 {{parent.CornerPin2D2.to3} {parent.CornerPin2D2.to3}}
+  addUserKnob {18 extracted_value_3 l "Extracted Value"}
+  extracted_value_3 {{"\[sample this red point3.x point3.y]"} {"\[sample this green point3.x point3.y]"} {"\[sample this blue point3.x point3.y]"}}
+  addUserKnob {6 extracted_value_3_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {12 point4 l Point4}
+  point4 {{parent.CornerPin2D2.to4} {parent.CornerPin2D2.to4}}
+  addUserKnob {18 extracted_value_4 l "Extracted Value"}
+  extracted_value_4 {{"\[sample this red point4.x point4.y]"} {"\[sample this green point4.x point4.y]"} {"\[sample this blue point4.x point4.y]"}}
+  addUserKnob {6 extracted_value_4_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+ Dot {
+  name Dot33
+  xpos 4055
+  ypos -2235
+ }
+push $N19010500
+push $N32afe860
+ Dot {
+  name Dot34
+  xpos 3175
+  ypos -2653
+ }
+set Nb3063e50 [stack 0]
+ Dot {
+  name Dot42
+  xpos 3646
+  ypos -2653
+ }
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos 3612
+  ypos -2456
+  disable {{!parent.Switch4.which}}
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression6
+  xpos 3612
+  ypos -2238
+  disable {{!parent.Switch4.which}}
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression5
+  xpos 3612
+  ypos -2156
+  disable {{!parent.Switch4.which}}
+ }
+ Dot {
+  name Dot35
+  xpos 3646
+  ypos -2006
+ }
+push $Nb3063e50
+ Dot {
+  name Dot61
+  xpos 2880
+  ypos -2655
+ }
+set Nb3084350 [stack 0]
+ Dot {
+  name Dot63
+  xpos 2715
+  ypos -2655
+ }
+ Dot {
+  name Dot62
+  label normals_pass_input
+  xpos 2715
+  ypos -2544
+ }
+ Shuffle {
+  in N
+  name NormalsPass3
+  label "\[value in]\n\nN"
+  xpos 2681
+  ypos -2496
+ }
+ NoOp {
+  name PositionPicker4
+  label Normals
+  xpos 2681
+  ypos -2243
+  addUserKnob {20 User}
+  addUserKnob {12 position l "Place in:"}
+  position {{parent.place_at} {parent.place_at}}
+  addUserKnob {26 ""}
+  addUserKnob {13 extracted_value l "Extracted Value"}
+  extracted_value {{"\[sample this red position.x position.y]"} {"\[sample this green position.x position.y]"} {"\[sample this blue position.x position.y]"}}
+ }
+ Switch {
+  which {{!parent.map_surface}}
+  name Switch14
+  label "MAP TO SURFACE"
+  xpos 2960
+  ypos -2241
+ }
+push $Nb3084350
+ Dot {
+  name Dot39
+  label position_pass_input
+  xpos 2880
+  ypos -2544
+ }
+ Shuffle {
+  in P
+  name PositionPass2
+  label "\[value in]\n\nP"
+  xpos 2846
+  ypos -2500
+ }
+ NoOp {
+  name PositionPicker2
+  label Position
+  xpos 2846
+  ypos -2340
+  addUserKnob {20 User}
+  addUserKnob {12 position l Centre}
+  position {{parent.place_at} {parent.place_at}}
+  addUserKnob {18 extracted_value l "Extracted Value"}
+  extracted_value {{"\[sample this red position.x position.y]"} {"\[sample this green position.x position.y]"} {"\[sample this blue position.x position.y]"}}
+  addUserKnob {6 extracted_value_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {26 ""}
+  addUserKnob {12 point1 l Point1}
+  point1 {{parent.CornerPin2D2.to1} {parent.CornerPin2D2.to1}}
+  addUserKnob {18 extracted_value_1 l "Extracted Value"}
+  extracted_value_1 {{"\[sample this red point1.x point1.y]"} {"\[sample this green point1.x point1.y]"} {"\[sample this blue point1.x point1.y]"}}
+  addUserKnob {6 extracted_value_1_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_1_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {12 point2 l Point2}
+  point2 {{parent.CornerPin2D2.to2} {parent.CornerPin2D2.to2}}
+  addUserKnob {18 extracted_value_2 l "Extracted Value"}
+  extracted_value_2 {{"\[sample this red point2.x point2.y]"} {"\[sample this green point2.x point2.y]"} {"\[sample this blue point2.x point2.y]"}}
+  addUserKnob {6 extracted_value_2_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_2_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {12 point3 l Point3}
+  point3 {{parent.CornerPin2D2.to3} {parent.CornerPin2D2.to3}}
+  addUserKnob {18 extracted_value_3 l "Extracted Value"}
+  extracted_value_3 {{"\[sample this red point3.x point3.y]"} {"\[sample this green point3.x point3.y]"} {"\[sample this blue point3.x point3.y]"}}
+  addUserKnob {6 extracted_value_3_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_3_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {12 point4 l Point4}
+  point4 {{parent.CornerPin2D2.to4} {parent.CornerPin2D2.to4}}
+  addUserKnob {18 extracted_value_4 l "Extracted Value"}
+  extracted_value_4 {{"\[sample this red point4.x point4.y]"} {"\[sample this green point4.x point4.y]"} {"\[sample this blue point4.x point4.y]"}}
+  addUserKnob {6 extracted_value_4_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_4_panelDropped_1_1_1_1_1_1_1_1_1_1_1_1_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+ }
+push $Nb3063e50
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression7
+  xpos 3141
+  ypos -2334
+  disable {{!parent.Switch5.which}}
+ }
+ MergeExpression {
+  inputs 2
+  channel0 {rgba.red -rgba.green -rgba.blue none}
+  expr0 Ar+Br-Ar
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 Ag+Bg-Ag
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 Ab+Bb-Ab
+  name MergeExpression8
+  xpos 3141
+  ypos -2235
+  disable {{!parent.Switch5.which}}
+ }
+ Dot {
+  name Dot40
+  xpos 3175
+  ypos -2103
+ }
+set Nb30ca290 [stack 0]
+ Switch {
+  inputs 2
+  which {{"auxiliar_method!=0 || parent.Switch5.which==1?1:0"}}
+  name Switch4
+  label "\[value which]\nCARD VS GEO/CONES"
+  xpos 3141
+  ypos -2018
+ }
+push $Nb30ca290
+ Dot {
+  name Dot41
+  xpos 2994
+  ypos -2103
+ }
+ Dot {
+  name Dot37
+  xpos 2994
+  ypos -1895
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name Constant1
+  xpos 3287
+  ypos -1922
+ }
+ Switch {
+  inputs 3
+  which {{parent.input_type==0?2:1}}
+  name Switch5
+  label "\[value which]\nPLATE VS CG"
+  xpos 3141
+  ypos -1907
+ }
+ Dot {
+  name Dot36
+  xpos 3175
+  ypos -1573
+ }
+push $N17157660
+ Dot {
+  name Dot77
+  xpos 594
+  ypos -2916
+ }
+set Nb30e5c10 [stack 0]
+ Remove {
+  name Remove1
+  xpos 360
+  ypos -2923
+ }
+set Nb30e8c90 [stack 0]
+ Dot {
+  name Dot50
+  xpos 394
+  ypos -2776
+ }
+set Nb30ee4a0 [stack 0]
+ Dot {
+  name Dot57
+  xpos 394
+  ypos -1806
+ }
+push $N18cac360
+ Dot {
+  name Dot44
+  xpos -265
+  ypos -2917
+ }
+set Nb30f4d10 [stack 0]
+push $N189b9990
+ Dot {
+  name Dot45
+  xpos -3320
+  ypos -2207
+ }
+push $Nb30ee4a0
+ Dot {
+  name Dot47
+  xpos -143
+  ypos -2777
+ }
+ Dot {
+  name Dot51
+  xpos -143
+  ypos -2083
+ }
+set N18dfb010 [stack 0]
+ Dot {
+  name Dot52
+  xpos -265
+  ypos -2083
+ }
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  overscan 100
+  motion_vectors_type distance
+  MB_channel forward
+  output_shader_vectors true
+  P_channel P
+  name ScanlineRender1
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos -299
+  ypos -2218
+ }
+push $Nb30f4d10
+ Dot {
+  name Dot46
+  xpos -43
+  ypos -2917
+ }
+set N18e14fd0 [stack 0]
+ Dot {
+  name Dot48
+  xpos -43
+  ypos -2656
+ }
+push $N18ba8ac0
+ Dot {
+  name Dot10
+  xpos -1568
+  ypos -786
+ }
+push $N18c0ecd0
+ Dot {
+  name Dot6
+  xpos -2151
+  ypos -778
+ }
+push $Nd4372770
+ Dot {
+  name Dot8
+  xpos -1568
+  ypos -3976
+ }
+push $N18f3cc20
+ Dot {
+  name Dot7
+  xpos -2280
+  ypos -3956
+ }
+ MergeGeo {
+  inputs 4
+  name MergeGeo1
+  xpos -1954
+  ypos -2510
+ }
+push $N18dfb010
+ Dot {
+  name Dot28
+  xpos -43
+  ypos -2083
+ }
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  motion_vectors_type distance
+  name ScanlineRender2
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos -77
+  ypos -2518
+ }
+push $N18e14fd0
+push $N18b26830
+push $Nb30e8c90
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  motion_vectors_type distance
+  output_shader_vectors true
+  P_channel P
+  name ScanlineRender8
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos 100
+  ypos -2929
+ }
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 100
+  ypos -2509
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 100
+  ypos -2209
+ }
+ Expression {
+  expr3 clamp(r+g+b)
+  name Expression2
+  xpos 100
+  ypos -2059
+ }
+ HueShift {
+  name HueShift1
+  xpos 100
+  ypos -1991
+ }
+ Dot {
+  name Dot65
+  xpos 134
+  ypos -1923
+ }
+ Switch {
+  inputs 2
+  which {{parent.selection_mode}}
+  name Switch7
+  label "CENTRE VS QUAD"
+  xpos 100
+  ypos -1815
+ }
+ Merge2 {
+  inputs 2
+  operation under
+  name Merge6
+  xpos 100
+  ypos -1579
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression2
+  xpos 100
+  ypos -1409
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop1
+  xpos 100
+  ypos -1359
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression1
+  xpos 100
+  ypos -1301
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop2
+  xpos 100
+  ypos -1251
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression3
+  xpos 100
+  ypos -266
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop3
+  xpos 100
+  ypos -216
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression4
+  xpos 100
+  ypos -63
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop4
+  xpos 100
+  ypos -13
+ }
+ Dot {
+  name Dot67
+  xpos 134
+  ypos 294
+ }
+ NoOp {
+  name VectorsExtractor
+  tile_color 0xff00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 100
+  ypos 369
+  addUserKnob {20 User}
+  addUserKnob {13 point1 l Point1}
+  addUserKnob {13 point2 l Point2}
+  addUserKnob {13 point3 l Point3}
+  addUserKnob {13 point4 l Point4}
+  addUserKnob {26 ""}
+  addUserKnob {22 extract_all T "nuke.clearDiskCache()\nnuke.clearRAMCache()\n\n\nfor n in range(1, 4+1):\n    vectorExtractor = 'vector_' + str(n) + '_extractor'\n    vectorExtractorCorners = 'extracted_value_' + str(n)\n    point = 'point' + str(n)\n\n    if nuke.toNode('Switch7').knob('which').value() == 0:\n\t    nuke.thisNode().knob(point).setValue(nuke.toNode(vectorExtractor).knob('vector').value())\n\n    else:\n        if nuke.toNode('Switch5').knob('which').value() == 2:\n    \t    nuke.thisNode().knob(point).setValue(nuke.toNode('PositionPicker1').knob(vectorExtractorCorners).value())\n\n        else:\n    \t    nuke.thisNode().knob(point).setValue(nuke.toNode('PositionPicker2').knob(vectorExtractorCorners).value())\n\n\n" +STARTLINE}
+  addUserKnob {22 reset_all -STARTLINE T "nuke.clearDiskCache()\nnuke.clearRAMCache()\n\ntry:\n\tfor n in range(1, 4+1):\n\t    point = 'point' + str(n)\n\t    nuke.thisNode().knob(point).setValue(0)\nexcept:\n\tpass"}
+ }
+ NoOp {
+  name Transformed_2D_Coordinates
+  tile_color 0xffff00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 100
+  ypos 491
+  addUserKnob {20 User}
+  addUserKnob {12 point1 l Point1}
+  addUserKnob {12 point2 l Point2}
+  addUserKnob {12 point3 l Point3}
+  addUserKnob {12 point4 l Point4}
+  addUserKnob {22 calculate_all T "import nuke\nfrom nukescripts import snap3d\nimport _nukemath\nimport math\n\n#SUPER RECONCILE\n#CREATED BY PEDRO ANDRADE\n#-2019-\n\n\n#GET PROJECTION MATRIX IN ALL FRAMES\n###############################################################\n#   Note: this is mostly the same function provided by The Foundry      \n#   in nukescripts.snap3d.cameraProjectionMatrix(), with only                 \n#   a few modifications to accept a \"frame\" argument                      \n##############################################################\n\n\ndef cameraProjectionMatrixAt(cameraNode, frame):\n    #Calculate the projection matrix for the camera, based on it's knob values\n    \n    # Matrix to transform points into camera-relative coords.\n    ctx = nuke.OutputContext()\n    ctx.setFrame(frame)\n    camTransform = cameraNode\['transform'].value(ctx).inverse()\n    \n    # Matrix to take the camera projection knobs into account\n    roll = float(cameraNode\['winroll'].getValueAt(frame,0))\n    scale_x = float(cameraNode\['win_scale'].getValueAt(frame,0))\n    scale_y = float(cameraNode\['win_scale'].getValueAt(frame,1))\n    translate_x = float(cameraNode\['win_translate'].getValueAt(frame,0))\n    translate_y = float(cameraNode\['win_translate'].getValueAt(frame,1))\n    m = _nukemath.Matrix4()\n    m.makeIdentity()\n    m.rotateZ(math.radians(roll))\n    m.scale(1.0 / scale_x, 1.0 / scale_y, 1.0)\n    m.translate(-translate_x, -translate_y, 0.0)\n    \n    # Projection matrix based on the focal length, aperture and clipping planes of the camera\n    focal_length = float(cameraNode\['focal'].getValueAt(frame))\n    h_aperture = float(cameraNode\['haperture'].getValueAt(frame))\n    near = float(cameraNode\['near'].getValueAt(frame))\n    far = float(cameraNode\['far'].getValueAt(frame))\n    projection_mode = int(cameraNode\['projection_mode'].getValueAt(frame))\n    p = _nukemath.Matrix4()\n    p.projection(focal_length / h_aperture, near, far, projection_mode == 0)\n    \n    # Matrix to translate the projected points into normalised pixel coords\n    format = nuke.root()\['format'].value()\n    imageAspect = float(format.height()) / float(format.width())\n    t = _nukemath.Matrix4()\n    t.makeIdentity()\n    t.translate( 1.0, 1.0 - (1.0 - imageAspect / float(format.pixelAspect())), 0.0 )\n    \n    # Matrix to scale normalised pixel coords into actual pixel coords.\n    x_scale = float(format.width()) / 2.0\n    y_scale = x_scale * format.pixelAspect()\n    s = _nukemath.Matrix4()\n    s.makeIdentity()\n    s.scale(x_scale, y_scale, 1.0)\n    \n    # The projection matrix transforms points into camera coords, modifies based\n    # on the camera knob values, projects points into clip coords, translates the\n    # clip coords so that they lie in the range 0,0 - 2,2 instead of -1,-1 - 1,1,\n    # then scales the clip coords to proper pixel coords.\n    return s * t * p * m * camTransform\n\n############################################################################\n\n\ndef calculate():\n\n    #EXTRACTING POINTS(VECTORS)\n    nuke.toNode('VectorsExtractor').knob('reset_all').execute()\n    nuke.toNode('VectorsExtractor').knob('extract_all').execute()\n\n\n    #CHANGING ROOT FORMAT\n    nuke.root().knob('format').setValue(nuke.addFormat(nuke.tcl('value \[topnode parent.input0].format')))\n\n    curFrame = nuke.frame()\n    for n in range(1, 4+1):\n        point = 'point' + str(n)\n        tracks = 'tracks.' + str(n)\n        cornerPinTo = 'to' + str(n)\n        \n        nuke.toNode('Transformed_2D_Coordinates').knob(point).clearAnimated()\n        nuke.toNode('Transformed_2D_Coordinates').knob(point).setValue(0)\n\n        pointVector_x = float(nuke.toNode('VectorsExtractor').knob(point).value()\[0])\n        pointVector_y = float(nuke.toNode('VectorsExtractor').knob(point).value()\[1])\n        pointVector_z = float(nuke.toNode('VectorsExtractor').knob(point).value()\[2])\n        pointVector_w = float(1.0)\n\n        vectorToTransform = nuke.math.Vector4(pointVector_x, pointVector_y, pointVector_z, pointVector_w)\n\n        #2D POINT CONVERSION\n        firstFrame = int(nuke.root().knob('first_frame').value())\n        lastFrame = int(nuke.root().knob('last_frame').value())\n\n        transformedVectorReconciledList_x = \[]\n        transformedVectorReconciledList_y = \[]\n        for n in range(firstFrame, lastFrame+1):\n            transformedVector = cameraProjectionMatrixAt(nuke.toNode('CameraMaster'), n) * vectorToTransform\n\n    #2D POINT CONVERTED      \n            transformedVectorReconciled = nuke.math.Vector2(transformedVector.x/transformedVector.w, transformedVector.y/transformedVector.w)\n\n            transformedVectorReconciledList_x.append(transformedVectorReconciled\[0])\n            transformedVectorReconciledList_y.append(transformedVectorReconciled\[1])\n\n    #2D POINT CONVERTED VECTOR TO ANIMATION OBJECT\n        pointsXKeys = \[]\n        pointsYKeys = \[]\n        curFrame = nuke.frame()\n        for n in range(firstFrame, lastFrame+1):\n            pointsX = nuke.AnimationKey(n, float(transformedVectorReconciledList_x\[n-firstFrame]))\n            pointsY = nuke.AnimationKey(n, float(transformedVectorReconciledList_y\[n-firstFrame]))\n\n            pointsXKeys.append(pointsX)\n            pointsYKeys.append(pointsY)\n\n        nuke.toNode('Transformed_2D_Coordinates').knob(point).setAnimated(0, 0)\n        nuke.toNode('Transformed_2D_Coordinates').knob(point).animation(0).addKey(pointsXKeys)\n\n        nuke.toNode('Transformed_2D_Coordinates').knob(point).setAnimated(1, 0)\n        nuke.toNode('Transformed_2D_Coordinates').knob(point).animation(1).addKey(pointsYKeys)\n\n\n    #COPYING ANIMATION TO TRACKER AND CORNER PIN\n        #TRACKER\n        nuke.toNode('Tracker1').knob('track1').copyAnimations(nuke.toNode('Transformed_2D_Coordinates').knob('point1').animations())\n        nuke.toNode('Tracker1').knob('track2').copyAnimations(nuke.toNode('Transformed_2D_Coordinates').knob('point2').animations())\n        nuke.toNode('Tracker1').knob('track3').copyAnimations(nuke.toNode('Transformed_2D_Coordinates').knob('point3').animations())\n        nuke.toNode('Tracker1').knob('track4').copyAnimations(nuke.toNode('Transformed_2D_Coordinates').knob('point4').animations())\n\n        nuke.toNode('Tracker1').knob('translate_1').setValue(nuke.toNode('TransformGeo1').knob('translate').value())\n        nuke.toNode('Tracker1').knob('rotate_1').setValue(nuke.toNode('TransformGeo1').knob('rotate').value())\n        nuke.toNode('Tracker1').knob('scale_1').setValue(nuke.toNode('TransformGeo1').knob('scaling').value())\n        nuke.toNode('Tracker1').knob('uniform_scale').setValue(nuke.toNode('TransformGeo1').knob('uniform_scale').value())\n        nuke.toNode('Tracker1').knob('orientation').setValue(nuke.toNode('Axis1').knob('translate').value())\n        nuke.toNode('Tracker1').knob('lock_facing_camera').setValue(nuke.toNode('Switch1').knob('which').value())\n\n        nuke.toNode('Crop_Tracker').knob('box').setValue(nuke.toNode('Crop_Input').knob('box').value())\n\n        nuke.toNode('Tracker1').knob('translate_1').setEnabled(False)\n        nuke.toNode('Tracker1').knob('rotate_1').setEnabled(False)\n        nuke.toNode('Tracker1').knob('scale_1').setEnabled(False)\n        nuke.toNode('Tracker1').knob('uniform_scale').setEnabled(False)\n        nuke.toNode('Tracker1').knob('orientation').setEnabled(False)\n\n        nuke.toNode('Tracker1').knob('axis1').setEnabled(False)\n        nuke.toNode('Tracker1').knob('axis2').setEnabled(False)\n        nuke.toNode('Tracker1').knob('axis3').setEnabled(False)\n        nuke.toNode('Tracker1').knob('axis4').setEnabled(False)\n\n        if nuke.toNode('Switch7').knob('which').value() == 1:\n            nuke.toNode('Tracker1').knob('axis1').setValue(nuke.toNode('VectorsExtractor').knob('point1').value())\n            nuke.toNode('Tracker1').knob('axis2').setValue(nuke.toNode('VectorsExtractor').knob('point2').value())\n            nuke.toNode('Tracker1').knob('axis3').setValue(nuke.toNode('VectorsExtractor').knob('point3').value())\n            nuke.toNode('Tracker1').knob('axis4').setValue(nuke.toNode('VectorsExtractor').knob('point4').value())\n\n        else:\n            pass\n\n\n        #CORNER PIN\n        nuke.toNode('CornerPin2D1').knob('to1').copyAnimations(nuke.toNode('Transformed_2D_Coordinates').knob('point1').animations())\n        nuke.toNode('CornerPin2D1').knob('to2').copyAnimations(nuke.toNode('Transformed_2D_Coordinates').knob('point2').animations())\n        nuke.toNode('CornerPin2D1').knob('to3').copyAnimations(nuke.toNode('Transformed_2D_Coordinates').knob('point3').animations())\n        nuke.toNode('CornerPin2D1').knob('to4').copyAnimations(nuke.toNode('Transformed_2D_Coordinates').knob('point4').animations())\n\n        nuke.toNode('CornerPin2D1').knob('translate').setValue(nuke.toNode('TransformGeo1').knob('translate').value())\n        nuke.toNode('CornerPin2D1').knob('rotate').setValue(nuke.toNode('TransformGeo1').knob('rotate').value())\n        nuke.toNode('CornerPin2D1').knob('scale').setValue(nuke.toNode('TransformGeo1').knob('scaling').value())\n        nuke.toNode('CornerPin2D1').knob('uniform_scale').setValue(nuke.toNode('TransformGeo1').knob('uniform_scale').value())\n        nuke.toNode('CornerPin2D1').knob('orientation').setValue(nuke.toNode('Axis1').knob('translate').value())\n        nuke.toNode('CornerPin2D1').knob('lock_facing_camera').setValue(nuke.toNode('Switch1').knob('which').value())\n\n        nuke.toNode('Crop_CornerPin').knob('box').setValue(nuke.toNode('Crop_Input').knob('box').value())\n\n        nuke.toNode('CornerPin2D1').knob('translate').setEnabled(False)\n        nuke.toNode('CornerPin2D1').knob('rotate').setEnabled(False)\n        nuke.toNode('CornerPin2D1').knob('scale').setEnabled(False)\n        nuke.toNode('CornerPin2D1').knob('uniform_scale').setEnabled(False)\n        nuke.toNode('CornerPin2D1').knob('orientation').setEnabled(False)\n\n        nuke.toNode('CornerPin2D1').knob('axis1').setEnabled(False)\n        nuke.toNode('CornerPin2D1').knob('axis2').setEnabled(False)\n        nuke.toNode('CornerPin2D1').knob('axis3').setEnabled(False)\n        nuke.toNode('CornerPin2D1').knob('axis4').setEnabled(False)\n\n        if nuke.toNode('Switch7').knob('which').value() == 1:\n            nuke.toNode('CornerPin2D1').knob('axis1').setValue(nuke.toNode('VectorsExtractor').knob('point1').value())\n            nuke.toNode('CornerPin2D1').knob('axis2').setValue(nuke.toNode('VectorsExtractor').knob('point2').value())\n            nuke.toNode('CornerPin2D1').knob('axis3').setValue(nuke.toNode('VectorsExtractor').knob('point3').value())\n            nuke.toNode('CornerPin2D1').knob('axis4').setValue(nuke.toNode('VectorsExtractor').knob('point4').value())\n        else:\n            pass\n\n\n\n    #FLAGGING VECTORS NOT EXTRATED\n    if nuke.toNode('VectorsExtractor').knob('point1').value() == \[0.0, 0.0, 0.0] and \\\n        nuke.toNode('VectorsExtractor').knob('point2').value() == \[0.0, 0.0, 0.0] and \\\n        nuke.toNode('VectorsExtractor').knob('point3').value() == \[0.0, 0.0, 0.0] and \\\n        nuke.toNode('VectorsExtractor').knob('point4').value() == \[0.0, 0.0, 0.0]:\n\n        nuke.message('Something went wrong. Please reposition and re-set the region again')        \n\n\n    #HACK\n    nuke.frame(curFrame+1)\n    nuke.frame(curFrame-1+1)\n\n\n#CALCULATIONS\nnuke.clearDiskCache()\nnuke.clearRAMCache()\n\nrootFormat = nuke.tcl('format \[value root.format]')\n\ncalculate()\n\n\n#REVERT BACK TO ORIGINAL ROOT FORMAT\nnuke.root().knob('format').setValue(nuke.addFormat(rootFormat))\n\n    \n" +STARTLINE}
+  addUserKnob {22 reset_all -STARTLINE T "#SUPER RECONCILE\n#CREATED BY PEDRO ANDRADE\n#-2019-\n\n\nfor n in range(1, 4+1):\n    point = 'point' + str(n)\n    \n    nuke.toNode('Transformed_2D_Coordinates').knob(point).clearAnimated()\n    nuke.toNode('Transformed_2D_Coordinates').knob(point).setValue(0)\n\n\nnuke.toNode('VectorsExtractor').knob('reset_all').execute()\n\n\n#CORNER PIN\nnuke.toNode('CornerPin2D1').knob('to1').clearAnimated()\nnuke.toNode('CornerPin2D1').knob('to2').clearAnimated()\nnuke.toNode('CornerPin2D1').knob('to3').clearAnimated()\nnuke.toNode('CornerPin2D1').knob('to4').clearAnimated()\n\nnuke.toNode('CornerPin2D1').knob('to1').setValue(0)\nnuke.toNode('CornerPin2D1').knob('to2').setValue(0)\nnuke.toNode('CornerPin2D1').knob('to3').setValue(0)\nnuke.toNode('CornerPin2D1').knob('to4').setValue(0)\n\n\nnuke.toNode('CornerPin2D1').knob('translate').setValue(0)\nnuke.toNode('CornerPin2D1').knob('rotate').setValue(0)\nnuke.toNode('CornerPin2D1').knob('scale').setValue(1)\nnuke.toNode('CornerPin2D1').knob('uniform_scale').setValue(1)\nnuke.toNode('CornerPin2D1').knob('orientation').setValue(0)\nfor n in range(1, 4+1):\n    nuke.toNode('CornerPin2D1').knob('axis' + str(n)).setValue(0)\n\n\n\n#TRACKER\nnuke.toNode('Tracker1').knob('track1').clearAnimated()\nnuke.toNode('Tracker1').knob('track2').clearAnimated()\nnuke.toNode('Tracker1').knob('track3').clearAnimated()\nnuke.toNode('Tracker1').knob('track4').clearAnimated()\n\nnuke.toNode('Tracker1').knob('track1').setValue(0)\nnuke.toNode('Tracker1').knob('track2').setValue(0)\nnuke.toNode('Tracker1').knob('track3').setValue(0)\nnuke.toNode('Tracker1').knob('track4').setValue(0)\n\nnuke.toNode('Tracker1').knob('translate_1').setValue(0)\nnuke.toNode('Tracker1').knob('rotate_1').setValue(0)\nnuke.toNode('Tracker1').knob('scale_1').setValue(1)\nnuke.toNode('Tracker1').knob('uniform_scale').setValue(1)\nnuke.toNode('Tracker1').knob('orientation').setValue(0)\nfor n in range(1, 4+1):\n    nuke.toNode('Tracker1').knob('axis' + str(n)).setValue(0)\n\n"}
+ }
+ Switch {
+  inputs 2
+  which {{parent.test_mode}}
+  name Switch6
+  xpos 100
+  ypos 841
+ }
+ Output {
+  name Output1
+  xpos 101
+  ypos 1091
+ }
+ StickyNote {
+  inputs 0
+  name _StickyNote_1
+  label 2089.0,-2609.0
+  xpos 3460
+  ypos -9
+ }
+ StickyNote {
+  inputs 0
+  name _StickyNote_2
+  label 1924.0,-2609.0
+  xpos 3560
+  ypos -9
+ }
+ CornerPin2D {
+  inputs 0
+  to1 {0 0}
+  to2 {0 0}
+  to3 {0 0}
+  to4 {0 0}
+  invert false
+  shutteroffset centred
+  from1 {0 0}
+  from2 {0 0}
+  from3 {0 0}
+  from4 {0 0}
+  name CornerPin2D2
+  knobChanged "\n\n#SET COLOR\nknobsList = \[]\nfor n in range(1, 4+1):\n    knobs = 'to'+str(n)\n    knobsList.append(knobs)\n\n\nfor n in knobsList:\n    if nuke.thisKnob().name()== n:\n        nuke.thisNode().knob('gl_color').setValue(4278190335)\n\n"
+  tile_color 0xff00ff
+  gl_color 0xff0000ff
+  label QUAD
+  xpos -40
+  ypos -1815
+  hide_input true
+ }
+push $Nb30e5c10
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop_Input
+  xpos 560
+  ypos -9
+ }
+push $N18ffd3a0
+push $N190131b0
+ Switch {
+  inputs 2
+  which {{parent.map_surface}}
+  name Switch12
+  label "map to surface\n"
+  xpos 4137
+  ypos -2393
+ }
+ CornerPin2D {
+  inputs 0
+  to1 {0 0}
+  to2 {0 0}
+  to3 {0 0}
+  to4 {0 0}
+  invert false
+  motionblur {{"!\$gui"}}
+  shutteroffset centred
+  from1 {{to1(ref_frame)} {to1(ref_frame)}}
+  from2 {{to2(ref_frame)} {to2(ref_frame)}}
+  from3 {{to3(ref_frame)} {to3(ref_frame)}}
+  from4 {{to4(ref_frame)} {to4(ref_frame)}}
+  name CornerPin2D1
+  knobChanged "\n\n\n\nif nuke.thisNode().knob('show_values').value() == True:\n    nuke.thisNode().knob('translate').setVisible(True)\n    nuke.thisNode().knob('rotate').setVisible(True)\n    nuke.thisNode().knob('scale').setVisible(True)\n    nuke.thisNode().knob('uniform_scale').setVisible(True)\n    nuke.thisNode().knob('orientation').setVisible(True)\n    nuke.thisNode().knob('lock_facing_camera').setVisible(True)\n\n    for n in range(1, 4+1):\n        nuke.thisNode().knob('axis' + str(n)).setVisible(True)\n\n    for n in range(1, 2+1):\n        nuke.thisNode().knob('divider_line' + str(n)).setVisible(True)\n\nelse:\n    nuke.thisNode().knob('translate').setVisible(False)\n    nuke.thisNode().knob('rotate').setVisible(False)\n    nuke.thisNode().knob('scale').setVisible(False)\n    nuke.thisNode().knob('uniform_scale').setVisible(False)\n    nuke.thisNode().knob('orientation').setVisible(False)\n    nuke.thisNode().knob('lock_facing_camera').setVisible(False)\n\n    for n in range(1, 4+1):\n        nuke.thisNode().knob('axis' + str(n)).setVisible(False)\n\n    for n in range(1, 2+1):\n        nuke.thisNode().knob('divider_line' + str(n)).setVisible(False)\n\n\n\n\n\n"
+  tile_color 0xff00ff
+  label "From PA_SuperReconcile\n\n\[if \{\[value invert]==true\} \{return \"Stabilize\"\} \{return \"Matchmove\"\}]\nRef Frame: \[value ref_frame]"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 660
+  ypos 467
+  addUserKnob {20 "Reference Frame"}
+  addUserKnob {3 ref_frame l "Reference Frame"}
+  ref_frame 54
+  addUserKnob {22 current_frame l "Set To Current Frame" -STARTLINE T nuke.thisNode().knob('ref_frame').setValue(nuke.frame())}
+  addUserKnob {20 card_revert l "3D System Revert"}
+  addUserKnob {6 show_values l "Show Values" +STARTLINE}
+  addUserKnob {13 translate l Translate +DISABLED +HIDDEN}
+  addUserKnob {13 rotate l Rotate +DISABLED +HIDDEN}
+  addUserKnob {13 scale l Scale +DISABLED +HIDDEN}
+  scale {1 1 1}
+  addUserKnob {7 uniform_scale l "Uniform Scale" +DISABLED +HIDDEN}
+  uniform_scale 1
+  addUserKnob {13 orientation l Orientation +DISABLED +HIDDEN}
+  addUserKnob {6 lock_facing_camera l "Lock Facing Camera" +DISABLED +HIDDEN +STARTLINE}
+  addUserKnob {26 divider_line1 l "" +STARTLINE +HIDDEN}
+  addUserKnob {13 axis1 l Axis1 +DISABLED +HIDDEN}
+  addUserKnob {13 axis2 l Axis2 +DISABLED +HIDDEN}
+  addUserKnob {13 axis3 l Axis3 +DISABLED +HIDDEN}
+  addUserKnob {13 axis4 l Axis4 +DISABLED +HIDDEN}
+  addUserKnob {26 divider_line2 l "" +STARTLINE +HIDDEN}
+  addUserKnob {22 revert_card l "Revert to 3D System " T "for n in nuke.allNodes():\n    n.knob('selected').setValue(False)\n\ndef revertSystem():\n\n    #MAIN BACKDROP       \n    mainBackdrop = nuke.nodes.BackdropNode(xpos=2899, ypos=1304, note_font_size=42, bdwidth=456, bdheight=834, tile_color=1434451967, selected=True)\n    mainBackdrop.knob('label').setValue('From ' + str(nuke.thisNode().knob('name').value()))\n\n    #3D SYSTEM\n    mainCard = nuke.nodes.Card2(xpos=3060, ypos=1384, selected=True)\n    mainCard.knob('rows').setValue(3)\n    mainCard.knob('columns').setValue(3)\n    mainCard.knob('image_aspect').setValue(False)\n\n    Axis = nuke.nodes.Axis2(xpos=3230, ypos=1567, selected=True)\n\n    rotationTransformGeo = nuke.nodes.TransformGeo(xpos=3060, ypos=1588, selected=True)\n    rotationTransformGeo.setInput(0, mainCard)\n    rotationTransformGeo.setInput(2, Axis)\n\n    dotConnectCamera = nuke.nodes.Dot(xpos=2960, ypos=1847, selected=True)\n    dotCamera = nuke.nodes.Dot(xpos=2960, ypos=2044, label='cam', tile_color=4278190335, note_font_size=20, selected=True)\n    dotCamera.setInput(0, dotConnectCamera)\n\n    positionTransformGeo = nuke.nodes.TransformGeo(xpos=3060, ypos=1844, selected=True)\n    positionTransformGeo.setInput(0, rotationTransformGeo)\n    positionTransformGeo.setInput(2, dotConnectCamera)\n\n    scanlineRender = nuke.nodes.ScanlineRender(xpos=3060, ypos=2032, label='\[value projection_mode]\\noverscan: : \[value overscan]', selected=True)\n    scanlineRender.setInput(1, positionTransformGeo)\n    scanlineRender.setInput(2, dotCamera)\n\n    rotationBackdrop = nuke.nodes.BackdropNode(xpos=3050, ypos=1487, label='ROTATION', bdwidth=295, bdheight=163, note_font_size=42, selected=True)\n\n    positionBackdrop = nuke.nodes.BackdropNode(xpos=3045, ypos=1766, label='POSITION', bdwidth=296, bdheight=162, note_font_size=42, selected=True)\n\n\n    #3D SYSTEM VALUES\n    Axis.knob('translate').setValue(nuke.thisNode().knob('orientation').value())\n    positionTransformGeo.knob('translate').setValue(nuke.thisNode().knob('translate').value())\n    positionTransformGeo.knob('rotate').setValue(nuke.thisNode().knob('rotate').value())\n    positionTransformGeo.knob('scaling').setValue(nuke.thisNode().knob('scale').value())\n    positionTransformGeo.knob('uniform_scale').setValue(nuke.thisNode().knob('uniform_scale').value())\n\n    if nuke.thisNode().knob('lock_facing_camera').value() == 0:\n        nuke.delete(dotConnectCamera)    \n\n    if nuke.thisNode().knob('orientation').value() == \[0.0, 0.0, 0.0]:        \n        nuke.delete(rotationTransformGeo)\n        nuke.delete(Axis)\n        nuke.delete(rotationBackdrop)\n        nuke.delete(mainBackdrop)\n\n        mainCard.knob('ypos').setValue(mainCard.knob('ypos').value()+300)\n        scanlineRender.knob('ypos').setValue(scanlineRender.knob('ypos').value()-50)\n        dotCamera.knob('ypos').setValue(dotCamera.knob('ypos').value()-50)\n\n        mainBackdrop = nukescripts.autoBackdrop()\n        mainBackdrop.knob('note_font_size').setValue(42)\n        mainBackdrop.knob('tile_color').setValue(1434451967)\n        mainBackdrop.knob('selected').setValue(True)\n        mainBackdrop.knob('label').setValue('From ' + str(nuke.thisNode().knob('name').value()))\n        mainBackdrop.knob('bdwidth').setValue(436)\n        mainBackdrop.knob('bdheight').setValue(475)\n\n\n\n#AXIS\n\nif nuke.thisNode().knob('axis1').value() == \[0.0, 0.0, 0.0] and \\\n    nuke.thisNode().knob('axis2').value() == \[0.0, 0.0, 0.0] and \\\n    nuke.thisNode().knob('axis3').value() == \[0.0, 0.0, 0.0] and \\\n    nuke.thisNode().knob('axis4').value() == \[0.0, 0.0, 0.0]:\n\n    revertSystem()\n\nelse:\n\n    for n2 in nuke.allNodes():\n        n2.knob('selected').setValue(False)\n\n    if nuke.ask('This Conerpin was reconciled based on a non planar method.\\n\\nWould you like to load the Axis nodes from which this Node was based from?'):\n\n        for n in range(1, 4+1):\n            axisNodes = nuke.nodes.Axis(selected=True)\n            axisNodes.knob('translate').setValue(nuke.thisNode().knob('axis' + str(n)).value())\n\n    else:\n        pass\n\n\n#REPOSITIONING IN THE DAG\nclassList = \[]\n\nfor n in nuke.selectedNodes():\n    classList.append(n.Class())\n\nif not len(classList) == 0:\n\n    if not 'Card2' in classList:\n        nuke.autoplace_all()\n        axisBackdrop = nukescripts.autoBackdrop()\n        axisBackdrop.knob('note_font_size').setValue(42)\n        axisBackdrop.knob('selected').setValue(True)\n        axisBackdrop.knob('label').setValue('From ' + str(nuke.thisNode().knob('name').value()))\n        \n    PosFixList = \[]\n    for n2 in nuke.selectedNodes():\n        xPosAnchor = n2.knob('xpos').value()\n        yPosAnchor = n2.knob('ypos').value()\n\n        xPosFix = xPosAnchor - nuke.thisNode().knob('xpos').value()\n        yPosFix = yPosAnchor - nuke.thisNode().knob('ypos').value()\n        PosFixList.append(xPosFix)\n        PosFixList.append(yPosFix)\n\n\n    for n2 in nuke.selectedNodes():\n        n2.knob('xpos').setValue(n2.knob('xpos').value() - PosFixList\[0])\n        n2.knob('ypos').setValue(n2.knob('ypos').value() - PosFixList\[1]+300)    \n\n\n    if 'Card2' in classList:\n        PosFixList = \[]\n        for n in nuke.selectedNodes('Card2'):\n            xPosAnchor = n.knob('xpos').value()\n            yPosAnchor = n.knob('ypos').value()\n\n            xPosFix = xPosAnchor - nuke.thisNode().knob('xpos').value()\n            yPosFix = yPosAnchor - nuke.thisNode().knob('ypos').value()\n            PosFixList.append(xPosFix)\n            PosFixList.append(yPosFix)\n\n\n        for n in nuke.selectedNodes():\n            n.knob('xpos').setValue(n.knob('xpos').value() - PosFixList\[0])\n            n.knob('ypos').setValue(n.knob('ypos').value() - PosFixList\[1]+300)    \n\nelse:\n    pass\n\n\n\n\n\n\n\n" +STARTLINE}
+ }
+ Crop {
+  box {0 0 3424 2202}
+  name Crop_CornerPin
+  tile_color 0xff00ff
+  xpos 660
+  ypos 591
+ }
+ Tracker3 {
+  inputs 0
+  use_for1 all
+  track1 {0 0}
+  offset1 {0 0}
+  pattern1 {-32 -32 32 32}
+  search1 {-22 -22 22 22}
+  enable2 true
+  use_for2 all
+  track2 {0 0}
+  offset2 {0 0}
+  pattern2 {-32 -32 32 32}
+  search2 {-22 -22 22 22}
+  enable3 true
+  use_for3 all
+  track3 {0 0}
+  offset3 {0 0}
+  pattern3 {-32 -32 32 32}
+  search3 {-22 -22 22 22}
+  enable4 true
+  use_for4 all
+  track4 {0 0}
+  offset4 {0 0}
+  pattern4 {-32 -32 32 32}
+  search4 {-22 -22 22 22}
+  transform match-move
+  reference_frame 52
+  jitter_period 81
+  translate {{curve 7.684204102 7.592041016 7.47857666 7.355163574 7.219238281 7.079772949 6.926696777 6.77142334 6.602661133 6.407592773 6.175231934 5.890563965 5.56237793 5.213562012 4.855102539 4.516235352 4.192626953 3.879333496 3.586791992 3.31652832 3.088623047 2.87713623 2.683105469 2.502929688 2.326904297 2.14050293 1.912963867 1.66229248 1.393859863 1.110595703 0.818359375 0.5504760742 0.3231811523 0.1384277344 0 -0.083984375 -0.1708374023 -0.2974243164 -0.4546508789 -0.6469116211 -0.9002075195 -1.2109375 -1.595214844 -2.033874512 -2.528564453 -3.081481934 -3.738220215 -4.484741211 -5.261108398 -6.061157227 -6.907958984 -7.755187988 -8.609436035 -9.44354248 -10.22857666 -11.04272461 -11.9107666 -12.8414917 -13.82550049 -14.85217285 -15.88879395 -16.91369629 -17.91290283 -18.89147949 -19.84967041 -20.76916504 -21.58605957 -22.2958374 -22.9140625 -23.48681641 -24.01635742 -24.4901123 -24.96148682 -25.39343262 -25.77667236 -26.09155273 -26.31500244 -26.49353027 -26.59521484 -26.58789062 -26.46887207 -26.26623535 -25.99890137 -25.66400146 -25.24475098 -24.75164795 -24.20135498 -23.59893799 -22.96112061 -22.30987549 -21.66113281 -20.9954834 -20.2746582 -19.54614258 -18.87207031 -18.28216553 -17.81237793 -17.49108887 -17.31524658 -17.22625732 -17.22381592 -17.32409668 -17.47906494 -17.67651367 -17.92333984 -18.20983887 -18.52380371 -18.86328125 -19.20672607 -19.52520752 -19.80163574 -20.0244751 -20.20123291 -20.29614258 -20.33013916 -20.31958008 -20.27130127 -20.16241455 -19.9854126 -19.73760986 -19.43408203 -19.09619141 -18.74194336 -18.37280273 -17.99597168 -17.60510254 -17.19293213 -16.77026367 -16.300354 -15.77606201 -15.22113037 -14.61474609 -13.95410156 -13.24847412 -12.49267578 -11.67401123 -10.78491211 -9.833496094 -8.843139648 -7.865600586 -6.937805176 -6.046142578} {curve -11.14801025 -10.76831055 -10.36053467 -9.912231445 -9.416931152 -8.86505127 -8.315002441 -7.721130371 -7.073913574 -6.394714355 -5.687438965 -4.948669434 -4.184448242 -3.373291016 -2.536804199 -1.672546387 -0.8313598633 -0.02465820312 0.7437133789 1.430480957 1.984863281 2.438171387 2.789855957 3.023498535 3.141662598 3.171264648 3.092102051 2.912414551 2.658935547 2.355163574 1.995361328 1.568908691 1.104125977 0.5868530273 0 -0.6212768555 -1.290222168 -1.951843262 -2.576599121 -3.195861816 -3.785461426 -4.303527832 -4.779846191 -5.244812012 -5.705566406 -6.101257324 -6.418273926 -6.62677002 -6.706481934 -6.807189941 -6.926452637 -6.862426758 -6.737365723 -6.711486816 -6.630981445 -6.474365234 -6.359558105 -6.165222168 -5.934265137 -5.675964355 -5.435119629 -5.209533691 -4.982910156 -4.758361816 -4.601135254 -4.469299316 -4.252258301 -3.890319824 -3.629272461 -3.551391602 -3.485412598 -3.36114502 -3.467224121 -3.64074707 -3.863891602 -4.128723145 -4.385559082 -4.806030273 -5.273742676 -5.72467041 -6.217102051 -6.76763916 -7.269592285 -7.714233398 -8.151306152 -8.583679199 -8.969787598 -9.351379395 -9.635070801 -9.83215332 -10.00018311 -10.06378174 -10.01031494 -9.911437988 -9.783447266 -9.578369141 -9.264160156 -8.930419922 -8.645812988 -8.28503418 -7.897399902 -7.530578613 -7.113586426 -6.651367188 -6.214233398 -5.801696777 -5.413635254 -5.043762207 -4.711608887 -4.415222168 -4.128234863 -3.910461426 -3.789855957 -3.728820801 -3.727539062 -3.804626465 -3.932189941 -4.089782715 -4.257995605 -4.444030762 -4.626708984 -4.789794922 -4.982177734 -5.172607422 -5.337280273 -5.482727051 -5.622009277 -5.772644043 -5.885070801 -5.96295166 -6.047668457 -6.102600098 -6.095703125 -6.094055176 -6.082336426 -6.054321289 -6.01739502 -6.010253906 -6.022399902 -6.043762207 -6.068054199 -6.115539551}}
+  rotate {{curve 0.2162063241 0.1997049657 0.1827738959 0.1641105643 0.1434903155 0.1199077529 0.09717721712 0.07213795755 0.04486666605 0.01724896786 -0.00991424701 -0.03601655334 -0.06117845003 -0.0878031903 -0.1152653755 -0.145238154 -0.1746771521 -0.2026927438 -0.2296333132 -0.2532001042 -0.2716832871 -0.2854472353 -0.2945389057 -0.2978741395 -0.2950884935 -0.2869017658 -0.2705825068 -0.2475343806 -0.2195095303 -0.1879405641 -0.1528203437 -0.1153036481 -0.07780084282 -0.03961759181 0 0.03869773243 0.08022139327 0.123464736 0.1663073319 0.2107130295 0.2566964635 0.3017336841 0.3483023274 0.3970838729 0.4485465202 0.4994043943 0.5512528656 0.6016674867 0.6463935361 0.6934466379 0.7438891811 0.7840463627 0.8210912497 0.8625655175 0.8984013073 0.9314289713 0.9694837431 1.006233673 1.043583207 1.081496989 1.12079204 1.160245062 1.198247283 1.235234832 1.274845568 1.313836197 1.342865737 1.35843895 1.374982784 1.399355064 1.422199561 1.439003396 1.46840809 1.499561064 1.531018895 1.561367805 1.586719765 1.618903894 1.649905143 1.674570332 1.696001594 1.716531369 1.731167998 1.739262316 1.742745703 1.742282085 1.736385267 1.727612902 1.711583176 1.689997169 1.666881134 1.637021955 1.597796166 1.555586281 1.51443693 1.473175837 1.431851598 1.396930248 1.372120953 1.347450752 1.325679035 1.310280366 1.29486607 1.279094518 1.26723623 1.258770804 1.253061487 1.249658005 1.248551923 1.248173497 1.246195683 1.245357506 1.247578113 1.248977776 1.250617568 1.254361373 1.258997082 1.262246095 1.262651291 1.260483411 1.255310878 1.247313436 1.240110354 1.232037771 1.222136867 1.210449488 1.197320369 1.184284745 1.166711331 1.144431754 1.120945904 1.093159723 1.059125827 1.02304387 0.9837924816 0.9403552979 0.8927482443 0.8435103557 0.7932602084 0.7440816513 0.6975430301 0.6540830379}}
+  scale {{curve 0.9827999724 0.9832141843 0.9836734413 0.9841780098 0.9847362769 0.9853486765 0.9859737252 0.986641034 0.9873698734 0.9881538064 0.9890000988 0.9899262581 0.9909188623 0.9919763724 0.9930694576 0.9941730895 0.9952450563 0.9962794586 0.9972623077 0.9981516013 0.9988804561 0.9995014402 1.000012283 1.000400658 1.000677834 1.000882253 1.001024612 1.001095737 1.001115746 1.001104086 1.001050162 1.000912624 1.000702289 1.00040438 1 0.9995136748 0.9989889601 0.9985116274 0.9980996696 0.9977289651 0.9974462769 0.997285631 0.997235893 0.9972516567 0.997328473 0.9975225981 0.9978909563 0.9984464225 0.999147608 0.9998571095 1.000600757 1.00150846 1.002480018 1.003348003 1.004216923 1.005184894 1.006174914 1.007302432 1.008521154 1.009812696 1.01110423 1.012375147 1.013624832 1.014855348 1.016009836 1.017104958 1.018168434 1.019246443 1.020139993 1.020825869 1.021456064 1.022078047 1.022496935 1.022815116 1.023038128 1.023151295 1.023172269 1.023002894 1.022709812 1.022312774 1.021758684 1.021064402 1.020342233 1.019596444 1.018766173 1.017860769 1.016933988 1.015956323 1.015024911 1.014154138 1.013312639 1.01254292 1.011815165 1.011120136 1.010510359 1.010057699 1.009827123 1.009771852 1.00982928 1.010044192 1.010374139 1.010795233 1.011317969 1.011925519 1.012564534 1.013225217 1.013894811 1.014576488 1.015230399 1.015827457 1.016372315 1.01680014 1.017093991 1.017248676 1.017285924 1.017207098 1.017043839 1.016789845 1.016454199 1.016027908 1.015545813 1.015044873 1.014501632 1.013944996 1.013403384 1.012864411 1.012309195 1.011733814 1.01114301 1.010526436 1.009873273 1.009193816 1.008513763 1.007784708 1.007015236 1.006198108 1.005320243 1.00435677 1.003341474 1.002335816 1.001382016 1.000448216}}
+  center {{curve 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029 1008.905029} {curve 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226 859.9506226}}
+  motionblur {{"!\$gui"}}
+  shutteroffset centred
+  name Tracker1
+  knobChanged "\n\n\n\nif nuke.thisNode().knob('show_values').value() == True:\n    nuke.thisNode().knob('translate_1').setVisible(True)\n    nuke.thisNode().knob('rotate_1').setVisible(True)\n    nuke.thisNode().knob('scale_1').setVisible(True)\n    nuke.thisNode().knob('uniform_scale').setVisible(True)\n    nuke.thisNode().knob('orientation').setVisible(True)\n    nuke.thisNode().knob('lock_facing_camera').setVisible(True)\n\n    for n in range(1, 4+1):\n        nuke.thisNode().knob('axis' + str(n)).setVisible(True)\n\n    for n in range(1, 2+1):\n        nuke.thisNode().knob('divider_line' + str(n)).setVisible(True)\n\nelse:\n    nuke.thisNode().knob('translate_1').setVisible(False)\n    nuke.thisNode().knob('rotate_1').setVisible(False)\n    nuke.thisNode().knob('scale_1').setVisible(False)\n    nuke.thisNode().knob('uniform_scale').setVisible(False)\n    nuke.thisNode().knob('orientation').setVisible(False)\n    nuke.thisNode().knob('lock_facing_camera').setVisible(False)\n\n    for n in range(1, 4+1):\n        nuke.thisNode().knob('axis' + str(n)).setVisible(False)\n\n    for n in range(1, 2+1):\n        nuke.thisNode().knob('divider_line' + str(n)).setVisible(False)\n\n\n\n\n\n"
+  tile_color 0xff00ff
+  label "From PA_SuperReconcile\n\n\[value transform]\nreference frame: \[value reference_frame]"
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  selected true
+  xpos 515
+  ypos 461
+  addUserKnob {20 card_revert l "Card Revert"}
+  addUserKnob {6 show_values l "Show Values" +STARTLINE}
+  addUserKnob {13 translate_1 l Translate +DISABLED +HIDDEN}
+  addUserKnob {13 rotate_1 l Rotate +DISABLED +HIDDEN}
+  addUserKnob {13 scale_1 l Scale +DISABLED +HIDDEN}
+  scale_1 {1 1 1}
+  addUserKnob {7 uniform_scale l "Uniform Scale" +DISABLED +HIDDEN}
+  uniform_scale 1
+  addUserKnob {13 orientation l Orientation +DISABLED +HIDDEN}
+  addUserKnob {6 lock_facing_camera l "Lock Facing Camera" +DISABLED +HIDDEN +STARTLINE}
+  addUserKnob {26 divider_line1 l "" +STARTLINE +HIDDEN}
+  addUserKnob {13 axis1 l Axis1 +DISABLED +HIDDEN}
+  addUserKnob {13 axis2 l Axis2 +DISABLED +HIDDEN}
+  addUserKnob {13 axis3 l Axis3 +DISABLED +HIDDEN}
+  addUserKnob {13 axis4 l Axis4 +DISABLED +HIDDEN}
+  addUserKnob {26 divider_line2 l "" +STARTLINE +HIDDEN}
+  addUserKnob {22 revert_card l "Revert to 3D System " T "for n in nuke.allNodes():\n    n.knob('selected').setValue(False)\n\ndef revertSystem():\n\n    #MAIN BACKDROP       \n    mainBackdrop = nuke.nodes.BackdropNode(xpos=2899, ypos=1304, note_font_size=42, bdwidth=456, bdheight=834, tile_color=1434451967, selected=True)\n    mainBackdrop.knob('label').setValue('From ' + str(nuke.thisNode().knob('name').value()))\n\n    #3D SYSTEM\n    mainCard = nuke.nodes.Card2(xpos=3060, ypos=1384, selected=True)\n    mainCard.knob('rows').setValue(3)\n    mainCard.knob('columns').setValue(3)\n    mainCard.knob('image_aspect').setValue(False)\n\n    Axis = nuke.nodes.Axis2(xpos=3230, ypos=1567, selected=True)\n\n    rotationTransformGeo = nuke.nodes.TransformGeo(xpos=3060, ypos=1588, selected=True)\n    rotationTransformGeo.setInput(0, mainCard)\n    rotationTransformGeo.setInput(2, Axis)\n\n    dotConnectCamera = nuke.nodes.Dot(xpos=2960, ypos=1847, selected=True)\n    dotCamera = nuke.nodes.Dot(xpos=2960, ypos=2044, label='cam', tile_color=4278190335, note_font_size=20, selected=True)\n    dotCamera.setInput(0, dotConnectCamera)\n\n    positionTransformGeo = nuke.nodes.TransformGeo(xpos=3060, ypos=1844, selected=True)\n    positionTransformGeo.setInput(0, rotationTransformGeo)\n    positionTransformGeo.setInput(2, dotConnectCamera)\n\n    scanlineRender = nuke.nodes.ScanlineRender(xpos=3060, ypos=2032, label='\[value projection_mode]\\noverscan: : \[value overscan]', selected=True)\n    scanlineRender.setInput(1, positionTransformGeo)\n    scanlineRender.setInput(2, dotCamera)\n\n    rotationBackdrop = nuke.nodes.BackdropNode(xpos=3050, ypos=1487, label='ROTATION', bdwidth=295, bdheight=163, note_font_size=42, selected=True)\n\n    positionBackdrop = nuke.nodes.BackdropNode(xpos=3045, ypos=1766, label='POSITION', bdwidth=296, bdheight=162, note_font_size=42, selected=True)\n\n\n    #3D SYSTEM VALUES\n    Axis.knob('translate').setValue(nuke.thisNode().knob('orientation').value())\n    positionTransformGeo.knob('translate').setValue(nuke.thisNode().knob('translate').value())\n    positionTransformGeo.knob('rotate').setValue(nuke.thisNode().knob('rotate').value())\n    positionTransformGeo.knob('scaling').setValue(nuke.thisNode().knob('scale').value())\n    positionTransformGeo.knob('uniform_scale').setValue(nuke.thisNode().knob('uniform_scale').value())\n\n    if nuke.thisNode().knob('lock_facing_camera').value() == 0:\n        nuke.delete(dotConnectCamera)    \n\n    if nuke.thisNode().knob('orientation').value() == \[0.0, 0.0, 0.0]:        \n        nuke.delete(rotationTransformGeo)\n        nuke.delete(Axis)\n        nuke.delete(rotationBackdrop)\n        nuke.delete(mainBackdrop)\n\n        mainCard.knob('ypos').setValue(mainCard.knob('ypos').value()+300)\n        scanlineRender.knob('ypos').setValue(scanlineRender.knob('ypos').value()-50)\n        dotCamera.knob('ypos').setValue(dotCamera.knob('ypos').value()-50)\n\n        mainBackdrop = nukescripts.autoBackdrop()\n        mainBackdrop.knob('note_font_size').setValue(42)\n        mainBackdrop.knob('tile_color').setValue(1434451967)\n        mainBackdrop.knob('selected').setValue(True)\n        mainBackdrop.knob('label').setValue('From ' + str(nuke.thisNode().knob('name').value()))\n        mainBackdrop.knob('bdwidth').setValue(436)\n        mainBackdrop.knob('bdheight').setValue(475)\n\n\n\n#AXIS\n\nif nuke.thisNode().knob('axis1').value() == \[0.0, 0.0, 0.0] and \\\n    nuke.thisNode().knob('axis2').value() == \[0.0, 0.0, 0.0] and \\\n    nuke.thisNode().knob('axis3').value() == \[0.0, 0.0, 0.0] and \\\n    nuke.thisNode().knob('axis4').value() == \[0.0, 0.0, 0.0]:\n\n    revertSystem()\n\nelse:\n\n    for n2 in nuke.allNodes():\n        n2.knob('selected').setValue(False)\n\n    if nuke.ask('This Conerpin was reconciled based on a non planar method.\\n\\nWould you like to load the Axis nodes from which this Node was based from?'):\n\n        for n in range(1, 4+1):\n            axisNodes = nuke.nodes.Axis(selected=True)\n            axisNodes.knob('translate').setValue(nuke.thisNode().knob('axis' + str(n)).value())\n\n    else:\n        pass\n\n\n#REPOSITIONING IN THE DAG\nclassList = \[]\n\nfor n in nuke.selectedNodes():\n    classList.append(n.Class())\n\nif not len(classList) == 0:\n\n    if not 'Card2' in classList:\n        nuke.autoplace_all()\n        axisBackdrop = nukescripts.autoBackdrop()\n        axisBackdrop.knob('note_font_size').setValue(42)\n        axisBackdrop.knob('selected').setValue(True)\n        axisBackdrop.knob('label').setValue('From ' + str(nuke.thisNode().knob('name').value()))\n        \n    PosFixList = \[]\n    for n2 in nuke.selectedNodes():\n        xPosAnchor = n2.knob('xpos').value()\n        yPosAnchor = n2.knob('ypos').value()\n\n        xPosFix = xPosAnchor - nuke.thisNode().knob('xpos').value()\n        yPosFix = yPosAnchor - nuke.thisNode().knob('ypos').value()\n        PosFixList.append(xPosFix)\n        PosFixList.append(yPosFix)\n\n\n    for n2 in nuke.selectedNodes():\n        n2.knob('xpos').setValue(n2.knob('xpos').value() - PosFixList\[0])\n        n2.knob('ypos').setValue(n2.knob('ypos').value() - PosFixList\[1]+300)    \n\n\n    if 'Card2' in classList:\n        PosFixList = \[]\n        for n in nuke.selectedNodes('Card2'):\n            xPosAnchor = n.knob('xpos').value()\n            yPosAnchor = n.knob('ypos').value()\n\n            xPosFix = xPosAnchor - nuke.thisNode().knob('xpos').value()\n            yPosFix = yPosAnchor - nuke.thisNode().knob('ypos').value()\n            PosFixList.append(xPosFix)\n            PosFixList.append(yPosFix)\n\n\n        for n in nuke.selectedNodes():\n            n.knob('xpos').setValue(n.knob('xpos').value() - PosFixList\[0])\n            n.knob('ypos').setValue(n.knob('ypos').value() - PosFixList\[1]+300)    \n\nelse:\n    pass\n\n\n\n\n\n\n\n" +STARTLINE}
+ }
+ Crop {
+  box {0 0 3424 2202}
+  name Crop_Tracker
+  tile_color 0xff00ff
+  xpos 515
+  ypos 591
+ }
+end_group

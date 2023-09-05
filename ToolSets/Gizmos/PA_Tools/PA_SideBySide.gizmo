@@ -1,0 +1,156 @@
+
+Group {
+ name PA_SideBySide
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold"
+ selected true
+ xpos 15241
+ ypos 4440
+ addUserKnob {20 User}
+ addUserKnob {4 orientation l "Inputs Orientation" M {Horizontal Vertical "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Side by Side v1.0\nCreated by Pedro Andrade\n-2017-"}
+}
+ Input {
+  inputs 0
+  name input1
+  xpos -1892
+  ypos 827
+ }
+ Dot {
+  name Dot160
+  xpos -1858
+  ypos 980
+ }
+ Reformat {
+  black_outside true
+  name Reformat1
+  selected true
+  xpos -1891
+  ypos 1023
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  crop false
+  name Crop7
+  xpos -1892
+  ypos 1091
+ }
+ BlackOutside {
+  name BlackOutside1
+  xpos -1892
+  ypos 1691
+ }
+set N5b071400 [stack 0]
+ Crop {
+  box {0 0 {input.width} {input.height*2}}
+  reformat true
+  name Crop4
+  xpos -1775
+  ypos 1810
+ }
+ Input {
+  inputs 0
+  name input2
+  xpos -842
+  ypos 841
+  number 1
+ }
+ Reformat {
+  black_outside true
+  name Reformat2
+  xpos -842
+  ypos 950
+ }
+ Crop {
+  box {{parent.Crop7.box} {parent.Crop7.box} {parent.Crop7.box} {parent.Crop7.box}}
+  reformat true
+  crop false
+  name Crop8
+  xpos -842
+  ypos 1090
+ }
+ BlackOutside {
+  name BlackOutside2
+  xpos -842
+  ypos 1708
+ }
+set N5b070400 [stack 0]
+ Crop {
+  box {0 0 {input.width} {input.height*2}}
+  reformat true
+  name Crop5
+  xpos -744
+  ypos 1796
+ }
+ Transform {
+  translate {0 {center.y}}
+  center {{input.width/2} {input.height/2}}
+  shutteroffset centred
+  name Transform1
+  xpos -744
+  ypos 1868
+ }
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos -1090
+  ypos 2064
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  crop false
+  name Crop6
+  xpos -1090
+  ypos 2136
+ }
+push $N5b071400
+ Crop {
+  box {0 0 {input.width*2} {input.height}}
+  reformat true
+  name Crop1
+  xpos -1990
+  ypos 1809
+ }
+push $N5b070400
+ Crop {
+  box {0 0 {input.width*2} {input.height}}
+  reformat true
+  name Crop2
+  xpos -1021
+  ypos 1782
+ }
+ Transform {
+  translate {{center.x} 0}
+  center {{input.width/2} {input.height/2}}
+  shutteroffset centred
+  name Transform4
+  xpos -1021
+  ypos 1854
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -1625
+  ypos 2064
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  crop false
+  name Crop3
+  xpos -1625
+  ypos 2136
+ }
+ Switch {
+  inputs 2
+  which {{parent.orientation}}
+  name Switch1
+  xpos -1332
+  ypos 2274
+ }
+ Output {
+  name Output1
+  xpos -1332
+  ypos 2440
+ }
+end_group

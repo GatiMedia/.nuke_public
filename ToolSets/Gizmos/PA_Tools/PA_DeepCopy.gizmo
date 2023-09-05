@@ -1,0 +1,120 @@
+
+Group {
+ name PA_DeepCopy
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos 11804
+ ypos 5331
+ addUserKnob {20 User}
+ addUserKnob {4 viewer l Viewer M {DeepRecolor Holdout}}
+ viewer Holdout
+ addUserKnob {12 deep_position l "Deep Position"}
+ deep_position {100 0}
+ addUserKnob {22 set l Set -STARTLINE T "with nuke.thisNode():\n\n    for n in nuke.allNodes('DeepSample'):\n        n.showControlPanel()\n        n.knob('set').execute()\n        n.hideControlPanel()\n\n"}
+ addUserKnob {26 ""}
+ addUserKnob {41 z l Depth T DeepFromImage1.z}
+ addUserKnob {41 falloff_1 l Falloff T DeepExpression1.falloff}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "DeepFromDepth\nCreated by Pedro Andrade\n-2019-"}
+}
+ Input {
+  inputs 0
+  name img
+  xpos 0
+  ypos 3
+ }
+ Multiply {
+  value 0.999999
+  name Multiply32
+  xpos 0
+  ypos 90
+ }
+ DeepFromImage {
+  set_z true
+  name DeepFromImage1
+  xpos 0
+  ypos 130
+ }
+set N446a7680 [stack 0]
+ DeepExpression {
+  chans1 deep
+  deep.back "front + \[value falloff]"
+  name DeepExpression1
+  xpos 0
+  ypos 175
+  addUserKnob {20 User}
+  addUserKnob {7 falloff R 0 1000}
+ }
+set Nccc9fde0 [stack 0]
+push $N446a7680
+ Viewer {
+  inputs 2
+  frame_range 1039-1047
+  input_number 1
+  near 0.9
+  far 10000
+  name Viewer1
+  xpos -211
+  ypos 130
+ }
+ Input {
+  inputs 0
+  name deep_data
+  xpos 260
+  ypos -10
+  number 1
+ }
+ Dot {
+  name Dot2
+  xpos 294
+  ypos 38
+ }
+set N6fd8f950 [stack 0]
+ Dot {
+  name Dot3
+  xpos 167
+  ypos 38
+ }
+push $Nccc9fde0
+ Dot {
+  name Dot1
+  xpos 34
+  ypos 274
+ }
+set Nccdbe150 [stack 0]
+ DeepHoldout2 {
+  inputs 2
+  name DeepHoldout2
+  xpos 133
+  ypos 270
+ }
+ Dot {
+  name Dot4
+  xpos 167
+  ypos 382
+ }
+push $Nccdbe150
+ Switch {
+  inputs 2
+  which {{parent.viewer}}
+  name Switch1
+  xpos 0
+  ypos 378
+ }
+ Output {
+  name Output1
+  xpos 0
+  ypos 480
+ }
+push $N6fd8f950
+ DeepSample {
+  pos {{parent.deep_position} {parent.deep_position}}
+  name DeepSample1
+  xpos 260
+  ypos 102
+  addUserKnob {20 User}
+  addUserKnob {22 set T "nuke.toNode('DeepFromImage1').knob('z').setValue(nuke.thisNode().knob('minz').value())\n\n" +STARTLINE}
+  addUserKnob {7 minz_1 l minZ}
+ }
+end_group

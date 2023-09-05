@@ -1,0 +1,114 @@
+
+Group {
+ name PA_PositionTracker
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -1606
+ ypos -65
+ addUserKnob {20 User}
+ addUserKnob {41 format l Format T Reformat1.format}
+ addUserKnob {41 in l "Position Channel" T PositionPass1.in}
+ addUserKnob {26 ""}
+ addUserKnob {41 position l "Drop Axis in:" T PositionPicker1.position}
+ addUserKnob {41 click l Set -STARTLINE T PositionPicker1.click}
+ addUserKnob {26 ""}
+ addUserKnob {26 framerange l "" +STARTLINE T "Frame Range"}
+ addUserKnob {3 firstframe l "First Frame"}
+ addUserKnob {3 lastframe l "Last Frame"}
+ addUserKnob {22 track l Track T "firstFrame = int(nuke.thisNode().knob('firstframe').value())\nlastFrame = int(nuke.thisNode().knob('lastframe').value())\n\nnuke.execute(nuke.toNode('Reconcile3D_Axis2'), firstFrame, lastFrame)" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 output l "2D Output" T Reconcile3D_Axis2.output}
+ addUserKnob {22 export l "Export Tracker" -STARTLINE T "curFrame = nuke.frame()\ncurSel = nuke.thisNode().name()\n\nwith nuke.root():\n    trackerTransform = nuke.createNode('Transform')\n    \n    expression = 'parent.%s.Reconcile3D_Axis2.output' %(curSel)\n    \n    trackerTransform.knob('translate').setExpression(expression, 0)\n    trackerTransform.knob('translate').setExpression(expression, 1)\n    trackerTransform.knob('label').setValue('from %s' %(curSel))\n    trackerTransform.hideControlPanel()\n\n\nxoffset = -abs(nuke.selectedNode().knob('translate').value(0))\nyoffset = -abs(nuke.selectedNode().knob('translate').value(1))\n\nmainOffset = nuke.createNode('Transform')\nmainOffset.knob('translate').setValue(xoffset, 0)\nmainOffset.knob('translate').setValue(yoffset, 1)\n\nmainOffset.knob('name').setValue('Offset')\nmainOffset.knob('label').setValue('Ref Frame = %s' %(curFrame))\nmainOffset.hideControlPanel()\n\n"}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Position Tracker v2.0\nCreated by Pedro Andrade\n-2015-"}
+ addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/R5wvN6_tseo')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name img
+  xpos 471
+  ypos 670
+ }
+ Dot {
+  name Dot4
+  xpos 505
+  ypos 848
+ }
+set N122e7fc0 [stack 0]
+ Shuffle {
+  name PositionPass1
+  label "\[value in]"
+  xpos 471
+  ypos 904
+ }
+ NoOp {
+  name PositionPicker1
+  xpos 471
+  ypos 1030
+  addUserKnob {20 User}
+  addUserKnob {12 position l "Place in:"}
+  addUserKnob {22 click l Create -STARTLINE T "pickerX = nuke.toNode('PositionPicker1').knob('position').value()\[0]\npickerY = nuke.toNode('PositionPicker1').knob('position').value()\[1]\n\nxx = nuke.sample(nuke.toNode('PositionPass1'), 'r', pickerX, pickerY)\nyy = nuke.sample(nuke.toNode('PositionPass1'), 'g', pickerX, pickerY)\nzz = nuke.sample(nuke.toNode('PositionPass1'), 'b', pickerX, pickerY)\n\ncoordinatesValues =  \[xx, yy, zz]\n\n\nnuke.toNode('MasterAxis1').knob('translate').setValue(\[coordinatesValues\[0], coordinatesValues\[1], coordinatesValues\[2]])\n\nnuke.message('Coordinates accepted')"}
+ }
+ Axis2 {
+  inputs 0
+  translate {3700 -35.00976562 -6418.75}
+  name MasterAxis1
+  xpos 848
+  ypos 490
+ }
+ Input {
+  inputs 0
+  name cam
+  xpos 1160
+  ypos 630
+  number 1
+ }
+ Dot {
+  name Dot3
+  tile_color 0xff0000ff
+  label CAM
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 1052
+  ypos 634
+ }
+ Reformat {
+  inputs 0
+  name Reformat1
+  xpos 680
+  ypos 630
+ }
+ Reconcile3D {
+  inputs 3
+  outputxyz {{curve x1001 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700 3700} {curve x1001 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562 -35.00976562} {curve x1001 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75 -6418.75}}
+  name Reconcile3D_Axis2
+  xpos 838
+  ypos 624
+ }
+ Dot {
+  name Dot2
+  xpos 872
+  ypos 731
+ }
+push $N122e7fc0
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos 838
+  ypos 844
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression1
+  xpos 838
+  ypos 1030
+ }
+ Output {
+  name Output1
+  xpos 838
+  ypos 1270
+ }
+end_group

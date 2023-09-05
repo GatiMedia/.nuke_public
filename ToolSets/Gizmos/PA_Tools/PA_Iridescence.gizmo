@@ -1,0 +1,57 @@
+#! /Applications/Nuke8.0v5/Nuke8.0v5.app/Contents/MacOS/libnuke-8.0.v5.dylib -nx
+version 8.0 v5
+Group {
+name PA_Iridescence
+ tile_color 0xff5f00ff
+ note_font "Verdana Bold"
+ addUserKnob {20 User}
+ addUserKnob {41 hue_rotation l Hue T HueShift1.hue_rotation}
+ addUserKnob {7 scale l Scale R 1 10}
+ scale {1}
+ addUserKnob {7 seed l Seed R 0 10}
+ seed {0}
+ addUserKnob {26 "" +STARTLINE}
+ addUserKnob {26 author l "" +STARTLINE T "Iridescence v1.0\nCreated by Pedro Andrade\n-2016-"}
+}
+ Input {
+  inputs 0
+  name img
+  xpos 284
+  ypos 161
+ }
+ Shuffle {
+  green white
+  blue white
+  name Shuffle1
+  label "\[value in]"
+  xpos 284
+  ypos 217
+ }
+ Grade {
+  multiply {{parent.scale}}
+  add {{parent.seed} 0 0 0}
+  name Grade3
+  selected true
+  xpos 284
+  ypos 291
+ }
+ HueShift {
+  color {5 4 0}
+  hue_rotation {0}
+  name HueShift1
+  xpos 284
+  ypos 344
+ }
+ Colorspace {
+  colorspace_in HSV
+  name Colorspace1
+  label "\[value colorspace_in]\n\[value colorspace_out]"
+  xpos 284
+  ypos 389
+ }
+ Output {
+  name Output1
+  xpos 284
+  ypos 489
+ }
+end_group

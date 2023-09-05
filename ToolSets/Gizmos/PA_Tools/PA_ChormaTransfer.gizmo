@@ -1,0 +1,182 @@
+
+push $cut_paste_input
+Group {
+name PA_ChromaTransfer
+tile_color 0xff5f00ff
+note_font "Verdana Bold Bold Bold Bold Bold Bold Bold"
+selected true
+xpos -22527
+ypos 17832
+addUserKnob {20 User}
+addUserKnob {7 averaging l Averaging}
+averaging 0.5
+addUserKnob {7 mix l Mix}
+mix 1
+addUserKnob {26 ""}
+addUserKnob {26 author l "" +STARTLINE T "Chroma Transfer v1.0\nCreated by Pedro Andrade\n-2018-"}
+}
+Input {
+inputs 0
+name to
+xpos 756
+ypos -509
+}
+Dot {
+name Dot2
+xpos 790
+ypos -386
+}
+set N33c24e00 [stack 0]
+Dot {
+name Dot3
+xpos 994
+ypos -386
+}
+Dot {
+name Dot4
+xpos 994
+ypos 344
+}
+set N3438b710 [stack 0]
+Input {
+inputs 0
+name from
+xpos 320
+ypos -509
+number 1
+}
+Shuffle {
+alpha white
+name Shuffle2
+label "\[value in]"
+selected true
+xpos 320
+ypos -371
+}
+Blur {
+size {{parent.averaging*1000}}
+name Blur3
+xpos 320
+ypos -165
+}
+Dot {
+name Dot5
+xpos 356
+ypos 38
+}
+push $N33c24e00
+Shuffle {
+alpha white
+name Shuffle1
+label "\[value in]"
+xpos 756
+ypos -342
+}
+Clamp {
+channels alpha
+name Clamp1
+xpos 756
+ypos -254
+}
+Unpremult {
+name Unpremult1
+xpos 756
+ypos -192
+}
+Dot {
+name Dot6
+xpos 790
+ypos -142
+}
+set N3c1d8ee0 [stack 0]
+FilterErode {
+channels rgba
+name FilterErode1
+xpos 601
+ypos -145
+}
+Blur {
+size {{parent.Blur3.size}}
+name Blur4
+xpos 601
+ypos -33
+}
+set Ndf71cf0 [stack 0]
+Dot {
+name Dot7
+xpos 635
+ypos 38
+}
+Merge2 {
+inputs 2
+operation divide
+name Merge3
+xpos 456
+ypos 35
+}
+push $N3c1d8ee0
+Dot {
+name Dot8
+xpos 790
+ypos 158
+}
+Merge2 {
+inputs 2
+operation multiply
+name Merge4
+xpos 456
+ypos 155
+}
+Crop {
+box {0 0 {input.width} {input.height}}
+name Crop1
+xpos 456
+ypos 205
+}
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy1
+xpos 456
+ypos 335
+}
+Premult {
+name Premult1
+xpos 456
+ypos 441
+}
+push $N3438b710
+Dot {
+name Dot1
+xpos 994
+ypos 544
+}
+Dissolve {
+inputs 2
+which {{parent.mix}}
+name Dissolve1
+xpos 456
+ypos 535
+}
+Output {
+name Output1
+xpos 456
+ypos 891
+}
+push $Ndf71cf0
+push 0
+Viewer {
+inputs 2
+frame_range 1001-1072
+frame_increment 8
+input_number 1
+overscan 300
+center_fstop 0
+viewerProcess Film
+far 100000
+name Viewer1
+xpos 956
+ypos -145
+}
+end_group

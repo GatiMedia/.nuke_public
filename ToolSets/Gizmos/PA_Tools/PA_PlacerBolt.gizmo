@@ -1,0 +1,173 @@
+
+Group {
+ name PA_PlacerBolt
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -1906
+ ypos -59
+ addUserKnob {20 User}
+ addUserKnob {41 format l Format T Reformat1.format}
+ addUserKnob {4 viewer l Viewer M {Combined Solo "" ""}}
+ addUserKnob {6 facecam l "Lock Geo Facing Camera" -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 positionpasschannel l "Position Channel" T PositionPass1.in}
+ addUserKnob {41 position l "Place in:" T PositionPicker1.position}
+ addUserKnob {41 click l Create -STARTLINE T PositionPicker1.click}
+ addUserKnob {26 ""}
+ addUserKnob {7 geo l "Geo Scale" R 1 1000}
+ geo 1
+ addUserKnob {41 antialiasing l Antialiasing T ScanlineRender5.antialiasing}
+ addUserKnob {41 samples l "Motion Blur" T ScanlineRender5.samples}
+ addUserKnob {26 ""}
+ addUserKnob {41 translate l "Calculated 3D Position" T TransformGeo1.translate}
+ addUserKnob {22 export l Export -STARTLINE T "curSel = nuke.thisNode()\ncurSelName = curSel.name()\n\nwith nuke.root(): \n    createTransform = nuke.createNode('TransformGeo')\n    \n    calculatedPositionX = nuke.toNode(curSelName).knob('translate').getValue(0)\n    calculatedPositionY = nuke.toNode(curSelName).knob('translate').getValue(1)\n    calculatedPositionZ = nuke.toNode(curSelName).knob('translate').getValue(2)\n    \n    calculatedScale = nuke.toNode(curSelName).knob('geo').getValue()\n    \n    createTransform.knob('translate').setValue(calculatedPositionX, 0)\n    createTransform.knob('translate').setValue(calculatedPositionY, 1)\n    createTransform.knob('translate').setValue(calculatedPositionZ, 2)\n    createTransform.knob('uniform_scale').setValue(calculatedScale)\n    \n    createTransform.knob('label').setValue('from %s' %(curSelName))\n\n    createTransform.hideControlPanel()\n\ncurSel.hideControlPanel()\n"}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "PlaceBolt v1.1\nCreated by Pedro Andrade\n-2015-"}
+ addUserKnob {22 Link l "How It Woks" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/ED4xz9C6Ii4')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name img
+  xpos 359
+  ypos 670
+ }
+ Dot {
+  name Dot3
+  xpos 393
+  ypos 751
+ }
+set N11f6ed30 [stack 0]
+ Shuffle {
+  name PositionPass1
+  label "\[value in]"
+  xpos 359
+  ypos 824
+ }
+ NoOp {
+  name PositionPicker1
+  xpos 359
+  ypos 950
+  addUserKnob {20 User}
+  addUserKnob {12 position l "Place in:"}
+  addUserKnob {22 click l Create -STARTLINE T "pickerX = nuke.toNode('PositionPicker1').knob('position').value()\[0]\npickerY = nuke.toNode('PositionPicker1').knob('position').value()\[1]\n\nxx = nuke.sample(nuke.toNode('PositionPass1'), 'r', pickerX, pickerY)\nyy = nuke.sample(nuke.toNode('PositionPass1'), 'g', pickerX, pickerY)\nzz = nuke.sample(nuke.toNode('PositionPass1'), 'b', pickerX, pickerY)\n\ncoordinatesValues =  \[xx, yy, zz]\n\n\nnuke.toNode('TransformGeo1').knob('translate').setValue(\[coordinatesValues\[0], coordinatesValues\[1], coordinatesValues\[2]])"}
+ }
+ Input {
+  inputs 0
+  name cam
+  xpos 816
+  ypos 208
+  number 2
+ }
+ Dot {
+  name Dot4
+  label CAM
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_color 0xff0000ff
+  xpos 850
+  ypos 290
+ }
+ Dot {
+  name Dot38
+  xpos 850
+  ypos 385
+ }
+set N11f92810 [stack 0]
+ Dot {
+  name Dot1
+  xpos 850
+  ypos 496
+ }
+push $N11f92810
+push 0
+ Switch {
+  inputs 2
+  which {{parent.facecam}}
+  name Switch2
+  xpos 715
+  ypos 381
+ }
+push 0
+ Input {
+  inputs 0
+  name geo
+  xpos 579
+  ypos 150
+  number 1
+ }
+ Dot {
+  name Dot2
+  label GEO
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  note_font_color 0xff0000ff
+  xpos 613
+  ypos 250
+ }
+ TransformGeo {
+  inputs 3
+  uniform_scale {{parent.geo}}
+  name TransformGeo1
+  xpos 579
+  ypos 381
+ }
+ Reformat {
+  inputs 0
+  name Reformat1
+  xpos 405
+  ypos 492
+ }
+ ScanlineRender {
+  inputs 3
+  ztest_enabled false
+  motion_vectors_type off
+  name ScanlineRender5
+  label "\[value projection_mode]"
+  xpos 579
+  ypos 486
+ }
+ Dot {
+  name Dot5
+  xpos 613
+  ypos 674
+ }
+set N11fe91d0 [stack 0]
+ Dot {
+  name Dot6
+  xpos 787
+  ypos 674
+ }
+ Dot {
+  name Dot7
+  xpos 787
+  ypos 874
+ }
+push $N11fe91d0
+push $N11f6ed30
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 579
+  ypos 747
+ }
+ Switch {
+  inputs 2
+  which {{parent.viewer}}
+  name Switch1
+  xpos 579
+  ypos 870
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression1
+  xpos 579
+  ypos 950
+ }
+ Output {
+  name Output1
+  xpos 579
+  ypos 1190
+ }
+end_group

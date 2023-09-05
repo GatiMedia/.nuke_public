@@ -1,0 +1,229 @@
+
+Group {
+name PA_Hazer2
+knobChanged "\n\nif nuke.thisNode().knob('hazesource').value() == 'BG':\n\n    nuke.thisNode().knob('constantcolor').setVisible(False)\n\n\nelse:\n    nuke.thisNode().knob('constantcolor').setVisible(True)\n"
+tile_color 0xff5f00ff
+note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+selected true
+xpos 102507
+ypos 10935
+addUserKnob {20 User}
+addUserKnob {26 warning l "" +STARTLINE T "Apply always before the premulted result!"}
+addUserKnob {26 ""}
+addUserKnob {4 viewer l Viewer M {Result "Depth Channel" "" ""}}
+viewer "Depth Channel"
+addUserKnob {4 hazesource l "Haze Source" M {"Constant " BG}}
+addUserKnob {26 ""}
+addUserKnob {41 in l "Depth Channel" T Shuffle62.in}
+addUserKnob {7 depth_multiplier l "Depth Multiplier"}
+depth_multiplier 0.666
+addUserKnob {41 size l "Depth Blur" T Blur47.size}
+addUserKnob {26 ""}
+addUserKnob {19 constantcolor l "Constant Color"}
+constantcolor {0 0 0 0}
+addUserKnob {6 constantcolor_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 constantcolor_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {6 constantcolor_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+addUserKnob {41 white l "Haze Gain" T Grade138.white}
+addUserKnob {41 gamma l "Haze Gamma" T Grade138.gamma}
+addUserKnob {6 extra l "Extra Haze" +STARTLINE}
+addUserKnob {26 ""}
+addUserKnob {7 mix l Mix R 1 0}
+mix 1
+addUserKnob {26 ""}
+addUserKnob {26 Author l "" +STARTLINE T "Hazer v1.1\nCreated by Pedro Andrade\n-2015-"}
+addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/lPWX7nJeD80" +STARTLINE}
+addUserKnob {26 ""}
+}
+Input {
+inputs 0
+name img
+xpos 838
+ypos 291
+}
+Dot {
+name Dot186
+xpos 872
+ypos 434
+}
+set Nedc43e30 [stack 0]
+Dot {
+name Dot7
+xpos 622
+ypos 434
+}
+Shuffle {
+name Shuffle62
+label "\[value in]"
+xpos 588
+ypos 584
+}
+Grade {
+channels rgba
+white {{1-parent.depth_multiplier*1.5}}
+name Grade137
+xpos 588
+ypos 710
+}
+set N5af9e2b0 [stack 0]
+Clamp {
+name Clamp13
+xpos 588
+ypos 784
+}
+Blur {
+name Blur47
+xpos 588
+ypos 904
+}
+set N5199de50 [stack 0]
+Input {
+inputs 0
+name BG
+xpos 1019
+ypos 670
+number 1
+}
+Blur {
+size 500
+name Blur1
+xpos 1019
+ypos 744
+}
+Reformat {
+name Reformat1
+xpos 1019
+ypos 830
+}
+Constant {
+inputs 0
+channels rgb
+color {{parent.constantcolor.r} {parent.constantcolor.g} {parent.constantcolor.b} {parent.constantcolor.a}}
+name Constant6
+xpos 1220
+ypos 886
+}
+Switch {
+inputs 2
+which {{parent.hazesource}}
+name Switch2
+xpos 1019
+ypos 910
+}
+push $Nedc43e30
+Keymix {
+inputs 3
+channels rgba
+name Keymix2
+xpos 838
+ypos 910
+}
+set N14aa8990 [stack 0]
+Unpremult {
+name Unpremult1
+xpos 920
+ypos 1070
+disable {{!parent.Switch2.which}}
+}
+push $N5af9e2b0
+push 0
+Viewer {
+inputs 2
+frame_range 1-296
+fps 25
+input_number 1
+input_process false
+name Viewer1
+xpos 1186
+ypos 1470
+}
+push $Nedc43e30
+Dot {
+name Dot3
+xpos 1520
+ypos 434
+}
+Dot {
+name Dot4
+xpos 1520
+ypos 1914
+}
+set N5b1f3380 [stack 0]
+Dot {
+name Dot5
+xpos 1520
+ypos 2094
+}
+push $N5199de50
+Dot {
+name Dot2
+xpos 622
+ypos 1194
+}
+set Nf20dd0 [stack 0]
+Dot {
+name Dot1
+xpos 622
+ypos 1794
+}
+Input {
+inputs 0
+name FG_Alpha
+xpos 359
+ypos 1270
+number 2
+}
+Shuffle {
+in alpha
+name Shuffle1
+label "\[value in]"
+xpos 359
+ypos 1464
+}
+push $Nf20dd0
+push $N14aa8990
+Grade {
+inputs 1+1
+name Grade138
+xpos 838
+ypos 1190
+}
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy1
+xpos 838
+ypos 1464
+disable {{parent.extra}}
+}
+Switch {
+inputs 2
+which {{parent.viewer}}
+name Switch1
+xpos 838
+ypos 1790
+}
+push $N5b1f3380
+Dissolve {
+inputs 2
+which {{parent.mix}}
+name Dissolve1
+xpos 838
+ypos 1904
+}
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy2
+xpos 838
+ypos 2084
+}
+Output {
+name Output1
+xpos 838
+ypos 2370
+}
+end_group
+

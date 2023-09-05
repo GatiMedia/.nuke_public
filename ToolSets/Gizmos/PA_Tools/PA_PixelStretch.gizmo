@@ -1,0 +1,435 @@
+
+Group {
+name PA_PixelStretch6
+knobChanged "\n\n#PIXEL STRETCH\n#CREATED BY PEDRO ANDRADE\n#2017\n\n\nwith nuke.thisNode():\n    if not nuke.thisNode().knob('filter').value() == 'blur':\n        for n in nuke.allNodes('FilterErode'):\n            if n.knob('label').value() == 'filter':\n                n.knob('disable').setValue(False)\n                n.knob('filter').setValue(nuke.thisNode().knob('filter').value())\n\n    if nuke.thisNode().knob('filter').value() == 'blur':\n        for n in nuke.allNodes('FilterErode'):\n            if n.knob('label').value() == 'filter':\n                n.knob('disable').setValue(True)\n\n    for n in nuke.allNodes('Merge2'):\n        if n.knob('label').value() == 'method':\n            n.knob('operation').setValue(nuke.thisNode().knob('stretchmethod').value())\n\n\n\n\n\n"
+tile_color 0xff5f00ff
+note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+selected true
+xpos -89666
+ypos 31561
+addUserKnob {20 User}
+addUserKnob {6 premulted_input l "Premulted Input" +STARTLINE}
+premulted_input true
+addUserKnob {4 viewer l Viewer M {Original "Pre Result" Stretch "Final Result" "" "" ""}}
+viewer "Final Result"
+addUserKnob {26 ""}
+addUserKnob {7 preerode l "Pre Erode" R 0 10}
+addUserKnob {7 preblur l "Pre Blur" R 0 3}
+addUserKnob {26 ""}
+addUserKnob {7 originalerode l "Original Erode" R 0 10}
+addUserKnob {7 originaledgeblur l "Original Edge Blur" R 0 5}
+addUserKnob {26 ""}
+addUserKnob {68 stretchmethod l "Stretch Method" M {conjoint-over geometric ""}}
+addUserKnob {68 filter l "    Filter" -STARTLINE M {box triangle quadratic gaussian blur "" "" "" "" "" ""}}
+addUserKnob {7 stretch l Stretch R 0 2}
+addUserKnob {7 blur l Blur R 0 10}
+addUserKnob {7 sharpen l Sharpen R 0 50}
+addUserKnob {26 ""}
+addUserKnob {26 author l "" +STARTLINE T "Pixel Stretch v1.0\nCreated by Pedro Andrade\n-2017-"}
+}
+BackdropNode {
+inputs 0
+name BackdropNode1
+tile_color 0x71c67100
+label FILTERS
+note_font_size 42
+xpos -2570
+ypos -176
+bdwidth 673
+bdheight 277
+}
+BackdropNode {
+inputs 0
+name BackdropNode2
+tile_color 0x8e388e00
+label METHOD
+note_font_size 42
+xpos -2570
+ypos 379
+bdwidth 534
+bdheight 122
+}
+BackdropNode {
+inputs 0
+name BackdropNode3
+tile_color 0x388e8e00
+label VIEWER
+note_font_size 42
+xpos -1818
+ypos 1413
+bdwidth 565
+bdheight 110
+}
+Input {
+inputs 0
+name img
+xpos -1360
+ypos -822
+}
+Dot {
+name Dot80
+xpos -1324
+ypos -692
+}
+set N23747fe0 [stack 0]
+Dot {
+name Dot81
+xpos -1326
+ypos 213
+}
+set N2375e380 [stack 0]
+Dot {
+name Dot8
+xpos -1048
+ypos 213
+}
+Dot {
+name Dot9
+xpos -1048
+ypos 1184
+}
+push $N2375e380
+Unpremult {
+name Unpremult15
+xpos -1558
+ypos 209
+disable {{!premulted_input}}
+}
+FilterErode {
+size {{parent.originalerode}}
+name FilterErode13
+xpos -1558
+ypos 251
+}
+Premult {
+name Premult26
+xpos -1558
+ypos 305
+}
+EdgeBlur {
+size {{parent.originaledgeblur}}
+name EdgeBlur3
+xpos -1558
+ypos 363
+}
+Dot {
+name Dot1
+xpos -1524
+ypos 506
+}
+set N711c2f30 [stack 0]
+push $N23747fe0
+Dot {
+name Dot7
+xpos -2526
+ypos -692
+}
+Unpremult {
+name Unpremult8
+xpos -2560
+ypos -610
+disable {{!premulted_input}}
+}
+FilterErode {
+size {{parent.preerode}}
+filter gaussian
+name FilterErode5
+xpos -2560
+ypos -554
+}
+Blur {
+channels alpha
+size {{parent.preblur}}
+name Blur18
+xpos -2560
+ypos -500
+}
+Premult {
+name Premult24
+xpos -2560
+ypos -416
+}
+Dot {
+name Dot4
+xpos -2526
+ypos -326
+}
+set N36b04c20 [stack 0]
+Dot {
+name Dot85
+xpos -2333
+ypos -326
+}
+set Nc82e36f0 [stack 0]
+Dot {
+name Dot84
+xpos -2167
+ypos -326
+}
+set Nc963db60 [stack 0]
+Dot {
+name Dot79
+xpos -1973
+ypos -326
+}
+set N36a601e0 [stack 0]
+FilterErode {
+channels all
+size {{parent.FilterErode6.size*8}}
+name FilterErode12
+label filter
+xpos -2007
+ypos -96
+}
+Blur {
+size {{abs(parent.FilterErode12.size)}}
+name Blur4
+label filter
+selected true
+xpos -2006
+ypos 10
+disable {{!parent.FilterErode12.disable x1027 1}}
+}
+Unpremult {
+name Unpremult12
+xpos -2007
+ypos 240
+}
+Blur {
+channels rgba
+size {{parent.blur}}
+maskChannelInput -rgba.alpha
+name Blur8
+xpos -2007
+ypos 292
+}
+push $Nc963db60
+FilterErode {
+channels all
+size {{parent.FilterErode6.size*4}}
+name FilterErode9
+label filter
+xpos -2201
+ypos -96
+}
+Blur {
+size {{abs(parent.FilterErode9.size)}}
+name Blur3
+label filter
+xpos -2200
+ypos 10
+disable {{!parent.FilterErode9.disable x1027 1}}
+}
+Unpremult {
+name Unpremult13
+xpos -2201
+ypos 240
+}
+Blur {
+channels rgba
+size {{parent.blur}}
+maskChannelInput -rgba.alpha
+name Blur7
+xpos -2201
+ypos 292
+}
+Merge2 {
+inputs 2
+operation conjoint-over
+name Merge4
+label method
+xpos -2126
+ypos 459
+}
+push $Nc82e36f0
+FilterErode {
+channels all
+size {{parent.FilterErode6.size*2}}
+name FilterErode7
+label filter
+xpos -2365
+ypos -72
+}
+Blur {
+size {{abs(parent.FilterErode7.size)}}
+name Blur2
+label filter
+xpos -2365
+ypos 10
+disable {{!parent.FilterErode7.disable x1027 1}}
+}
+Unpremult {
+name Unpremult14
+xpos -2368
+ypos 240
+}
+Blur {
+channels rgba
+size {{parent.blur}}
+maskChannelInput -rgba.alpha
+name Blur6
+xpos -2368
+ypos 292
+}
+Merge2 {
+inputs 2
+operation conjoint-over
+name Merge5
+label method
+xpos -2367
+ypos 459
+}
+push $N36b04c20
+FilterErode {
+channels all
+size {{parent.stretch*-1}}
+name FilterErode6
+label filter
+xpos -2560
+ypos -96
+}
+Blur {
+size {{abs(parent.FilterErode6.size)}}
+name Blur1
+label filter
+xpos -2560
+ypos -1
+disable {{!parent.FilterErode6.disable x1027 1}}
+}
+Unpremult {
+name Unpremult11
+xpos -2561
+ypos 232
+}
+Blur {
+channels rgba
+size {{parent.blur}}
+maskChannelInput -rgba.alpha
+name Blur5
+xpos -2561
+ypos 284
+}
+Merge2 {
+inputs 2
+operation conjoint-over
+name Merge6
+label method
+xpos -2560
+ypos 459
+}
+Group {
+name PA_Sharpen3
+tile_color 0xff5f00ff
+note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+xpos -2560
+ypos 670
+addUserKnob {20 User}
+addUserKnob {7 amount}
+amount {{parent.sharpen}}
+addUserKnob {7 size}
+size 1
+addUserKnob {26 ""}
+addUserKnob {26 author l "" +STARTLINE T "PA_Sharper v1.0\nCreated by Pedro Andrade\n-2017-"}
+}
+Input {
+inputs 0
+name Input1
+xpos 838
+ypos 446
+}
+Log2Lin {
+operation lin2log
+name Log2Lin3
+xpos 838
+ypos 486
+}
+Sharpen {
+amount {{parent.amount}}
+size {{parent.size}}
+name Sharpen1
+xpos 838
+ypos 528
+}
+Log2Lin {
+name Log2Lin4
+xpos 838
+ypos 582
+}
+Output {
+name Output1
+xpos 838
+ypos 682
+}
+end_group
+Merge2 {
+inputs 2
+name Merge37
+xpos -1558
+ypos 670
+}
+Dot {
+name Dot10
+xpos -1524
+ypos 834
+}
+set Nc82f55e0 [stack 0]
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy1
+xpos -1558
+ypos 1174
+}
+Premult {
+name Premult1
+xpos -1558
+ypos 1258
+}
+push $Nc82f55e0
+Dot {
+name Dot11
+xpos -1706
+ypos 834
+}
+Dot {
+name Dot12
+xpos -1706
+ypos 1324
+}
+push $N36a601e0
+Dot {
+name Dot5
+xpos -1806
+ypos -326
+}
+Dot {
+name Dot6
+xpos -1808
+ypos 1497
+}
+push $N711c2f30
+Dot {
+name Dot2
+xpos -1275
+ypos 506
+}
+Dot {
+name Dot3
+xpos -1275
+ypos 1497
+}
+Switch {
+inputs 4
+which {{parent.viewer}}
+name Switch1
+xpos -1558
+ypos 1493
+}
+Output {
+name Output1
+xpos -1558
+ypos 2020
+}
+end_group
+

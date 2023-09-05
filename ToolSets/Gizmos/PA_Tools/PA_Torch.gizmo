@@ -1,0 +1,234 @@
+
+Group {
+name PA_Torch
+tile_color 0xff5f00ff
+note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+selected true
+xpos 5725
+ypos 4891
+mapsize {0.15 0.15}
+addUserKnob {20 User}
+addUserKnob {41 translate l Translate T Axis12.translate}
+addUserKnob {41 rotate l Rotate T Axis12.rotate}
+addUserKnob {41 scaling l Scale T Axis12.scaling}
+addUserKnob {26 "" +STARTLINE}
+addUserKnob {7 Direction_1 l Sweep R 0 2}
+addUserKnob {6 invert l Invert -STARTLINE}
+addUserKnob {26 ""}
+addUserKnob {26 Author l "" +STARTLINE T "Torch v3.0\nCreated by Pedro Andrade\n-2014-"}
+addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/jPsfnoxuVUs')" +STARTLINE}
+}
+BackdropNode {
+inputs 0
+name BackdropNode1
+tile_color 0x7171c600
+label DIRECTION
+note_font_size 42
+xpos 80
+ypos -593
+bdwidth 218
+bdheight 166
+}
+Input {
+inputs 0
+name alpha
+xpos 460
+ypos -487
+number 1
+}
+Shuffle {
+in alpha
+name Shuffle6
+label "\[value in]"
+xpos 460
+ypos -373
+}
+Dot {
+name Dot2
+xpos 494
+ypos 37
+}
+set N32f17f40 [stack 0]
+Input {
+inputs 0
+name normals
+xpos 90
+ypos -834
+}
+Dot {
+name Dot1
+xpos 124
+ypos -656
+}
+set N32f1c960 [stack 0]
+ColorMatrix {
+matrix {
+    {{parent.Axis12.world_matrix.0} {parent.Axis12.world_matrix.1} {parent.Axis12.world_matrix.2}}
+    {{parent.Axis12.world_matrix.4} {parent.Axis12.world_matrix.5} {parent.Axis12.world_matrix.6}}
+    {{parent.Axis12.world_matrix.8} {parent.Axis12.world_matrix.9} {parent.Axis12.world_matrix.10}}
+  }
+name ColorMatrix5
+xpos 90
+ypos -513
+}
+Add {
+value {{parent.Axis12.world_matrix.3} {parent.Axis12.world_matrix.7} {parent.Axis12.world_matrix.11} 0}
+name Add4
+xpos 90
+ypos -463
+}
+Dot {
+name Dot7
+xpos 124
+ypos -273
+}
+set N34b00000 [stack 0]
+Shuffle {
+red blue
+green blue
+alpha blue
+name Shuffle4
+label B
+xpos 200
+ypos -194
+}
+push 0
+push $N34b00000
+Shuffle {
+red green
+blue green
+alpha green
+name Shuffle3
+label G
+xpos 90
+ypos -194
+}
+push $N34b00000
+Shuffle {
+green red
+blue red
+alpha red
+name Shuffle2
+label R
+xpos -20
+ypos -194
+}
+Dissolve {
+inputs 3+1
+which {{parent.Direction_1}}
+name Dissolve1
+xpos 90
+ypos -98
+}
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy1
+xpos 90
+ypos 24
+}
+Premult {
+name Premult1
+xpos 90
+ypos 150
+}
+Dot {
+name Dot3
+xpos 124
+ypos 234
+}
+set N3b261db0 [stack 0]
+Invert {
+name Invert1
+xpos 649
+ypos 227
+}
+set N3b263800 [stack 0]
+push 0
+Viewer {
+inputs 2
+frame_range 1-112
+fps 25
+input_number 1
+name Viewer1
+xpos 515
+ypos 593
+}
+push $N32f17f40
+push $N3b263800
+Shuffle {
+green red
+blue red
+alpha red
+name Shuffle5
+label R
+xpos 649
+ypos 347
+}
+Dot {
+name Dot4
+xpos 683
+ypos 428
+}
+Merge2 {
+inputs 2
+operation multiply
+name Merge1
+xpos 460
+ypos 424
+}
+push $N3b261db0
+Switch {
+inputs 2
+which {{parent.invert}}
+name Switch1
+xpos 90
+ypos 421
+}
+Shuffle {
+green red
+blue red
+alpha red
+name Shuffle7
+label R
+xpos 90
+ypos 487
+}
+Clamp {
+channels alpha
+name Clamp1
+selected true
+xpos 90
+ypos 545
+}
+push $N32f1c960
+Dot {
+name Dot5
+xpos -126
+ypos -654
+}
+Dot {
+name Dot6
+xpos -126
+ypos 714
+}
+Switch {
+inputs 2
+which {{!parent.disable}}
+name Switch2
+xpos 90
+ypos 710
+}
+Output {
+name Output1
+xpos 90
+ypos 830
+}
+Axis2 {
+inputs 0
+name Axis12
+xpos 228
+ypos -503
+}
+end_group

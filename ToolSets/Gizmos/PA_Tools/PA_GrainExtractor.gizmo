@@ -1,0 +1,1267 @@
+
+Group {
+ name PA_GrainExtractor
+ inputs 2
+ knobChanged "\n\nif not nuke.thisNode().knob('viewer').value() == 'Area Sampling':\n    nuke.thisNode().knob('side_by_side').setVisible(False)\n\nelse:\n    nuke.thisNode().knob('side_by_side').setVisible(True)\n\n\n"
+ tile_color 0xff5f00ff
+ label "mode: \[value viewer]"
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ addUserKnob {20 User}
+ addUserKnob {26 intructions l "" +STARTLINE T "Meant to be added as a 'plus' operation"}
+ addUserKnob {26 ""}
+ addUserKnob {4 viewer l Viewer M {"Area Sampling" Noise "" "" ""}}
+ addUserKnob {6 side_by_side l "Side by Side" -STARTLINE}
+ addUserKnob {15 bbox}
+ bbox {0 0 200 200}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Plate Noise v2.0\nCreated by Pedro Andrade\n-2018-"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x8e8e3800
+  label RANDOM1
+  note_font_size 42
+  xpos -1250
+  ypos 4914
+  bdwidth 850
+  bdheight 954
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode11
+  tile_color 0xaaaaaa00
+  label X
+  note_font_size 42
+  xpos -1008
+  ypos 224
+  bdwidth 539
+  bdheight 1805
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode12
+  tile_color 0x388e8e00
+  label Y
+  note_font_size 42
+  xpos -1025
+  ypos 2299
+  bdwidth 494
+  bdheight 1856
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0xaaaaaa00
+  label RANDOM2
+  note_font_size 42
+  xpos -1250
+  ypos 6354
+  bdwidth 850
+  bdheight 1024
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0xaaaaaa00
+  label "SIDE BY SIDE"
+  note_font_size 42
+  xpos -1631
+  ypos 7855
+  bdwidth 526
+  bdheight 425
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x8e8e3800
+  label "SAMPLE SIZE MESSAGE"
+  note_font_size 42
+  xpos -369
+  ypos 7781
+  bdwidth 445
+  bdheight 513
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote10
+  label "normal plate"
+  xpos -1999
+  ypos -395
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote17
+  label denoise
+  xpos -720
+  ypos -371
+ }
+ Input {
+  inputs 0
+  name plate
+  xpos -1916
+  ypos -442
+ }
+ Dot {
+  name Dot2
+  xpos -1882
+  ypos -201
+ }
+set N361ecfa0 [stack 0]
+ Dot {
+  name Dot25
+  xpos -1206
+  ypos -201
+ }
+set N7f3b160 [stack 0]
+ Input {
+  inputs 0
+  name denoised_plate
+  xpos -812
+  ypos -430
+  number 1
+ }
+ Dot {
+  name Dot3
+  xpos -778
+  ypos -201
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  maskChannelInput -rgba.alpha
+  name Merge14
+  xpos -994
+  ypos -205
+ }
+ Retime {
+  input.first {{input.first_frame}}
+  input.first_lock true
+  input.last {{input.last_frame}}
+  input.last_lock true
+  output.first 977
+  output.last 1125
+  before loop
+  after loop
+  filter none
+  time ""
+  name Retime1
+  xpos -994
+  ypos -119
+ }
+ Dot {
+  name Dot40
+  xpos -960
+  ypos -30
+ }
+ Crop {
+  box {{parent.Crop7.box} {parent.Crop7.box} {parent.Crop7.box} {parent.Crop7.box}}
+  reformat true
+  crop false
+  name Crop5
+  xpos -994
+  ypos 21
+ }
+ Shuffle {
+  alpha white
+  name Shuffle4
+  label "\[value in]"
+  xpos -994
+  ypos 93
+ }
+ Reformat {
+  type "to box"
+  box_width 4264
+  box_height 3100
+  box_fixed true
+  resize none
+  center false
+  black_outside true
+  name Reformat5
+  label 4264x3100
+  xpos -994
+  ypos 264
+ }
+ BlackOutside {
+  name BlackOutside2
+  xpos -994
+  ypos 340
+ }
+set N7f64230 [stack 0]
+ TimeOffset {
+  time_offset -2
+  time ""
+  name TimeOffset1
+  label "\[value time_offset]"
+  xpos -886
+  ypos 328
+ }
+ Dot {
+  name Dot4
+  xpos -756
+  ypos 344
+ }
+ Transform {
+  scale {-1 -1}
+  center {{input.bbox.w/2} {input.bbox.h/2}}
+  shutteroffset centred
+  name Transform1
+  label mirror
+  xpos -790
+  ypos 408
+ }
+ Transform {
+  translate {{input.bbox.w-20} 0}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform11
+  xpos -790
+  ypos 480
+ }
+push $N7f64230
+ Dot {
+  name Dot39
+  xpos -960
+  ypos 412
+ }
+set N7f79e70 [stack 0]
+ Merge2 {
+  inputs 2
+  name Merge15
+  xpos -994
+  ypos 480
+ }
+ Dot {
+  name Dot5
+  xpos -960
+  ypos 594
+ }
+set N7f829b0 [stack 0]
+ TimeOffset {
+  time_offset -2
+  time ""
+  name TimeOffset2
+  label "\[value time_offset]"
+  xpos -906
+  ypos 578
+ }
+ Dot {
+  name Dot6
+  xpos -756
+  ypos 594
+ }
+ Transform {
+  translate {{input.bbox.w-20} 0}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform12
+  xpos -790
+  ypos 750
+ }
+push $N7f829b0
+ Merge2 {
+  inputs 2
+  name Merge16
+  xpos -994
+  ypos 750
+ }
+ Dot {
+  name Dot7
+  xpos -960
+  ypos 841
+ }
+set N2e813eb0 [stack 0]
+ TimeOffset {
+  time_offset -2
+  time ""
+  name TimeOffset3
+  label "\[value time_offset]"
+  xpos -906
+  ypos 825
+ }
+ Dot {
+  name Dot8
+  xpos -756
+  ypos 841
+ }
+ Transform {
+  translate {{input.bbox.w-20} 0}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform13
+  xpos -790
+  ypos 977
+ }
+push $N2e813eb0
+ Merge2 {
+  inputs 2
+  name Merge17
+  xpos -994
+  ypos 977
+ }
+ Dot {
+  name Dot9
+  xpos -960
+  ypos 1091
+ }
+set N2e8290c0 [stack 0]
+ TimeOffset {
+  time_offset -2
+  time ""
+  name TimeOffset4
+  label "\[value time_offset]"
+  xpos -906
+  ypos 1075
+ }
+ Dot {
+  name Dot10
+  xpos -756
+  ypos 1091
+ }
+ Transform {
+  translate {{input.bbox.w-20} 0}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform14
+  xpos -790
+  ypos 1213
+ }
+push $N2e8290c0
+ Merge2 {
+  inputs 2
+  name Merge18
+  xpos -994
+  ypos 1213
+ }
+ Dot {
+  name Dot17
+  xpos -960
+  ypos 1394
+ }
+set N2e83e060 [stack 0]
+ TimeOffset {
+  time_offset -2
+  time ""
+  name TimeOffset5
+  label "\[value time_offset]"
+  xpos -895
+  ypos 1378
+ }
+ Dot {
+  name Dot18
+  xpos -756
+  ypos 1394
+ }
+ Transform {
+  translate {{input.bbox.w-20} 0}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform4
+  xpos -790
+  ypos 1516
+ }
+push $N2e83e060
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos -994
+  ypos 1516
+ }
+ Dot {
+  name Dot19
+  xpos -960
+  ypos 1688
+ }
+set N7f91eb0 [stack 0]
+ TimeOffset {
+  time_offset -2
+  time ""
+  name TimeOffset6
+  label "\[value time_offset]"
+  xpos -906
+  ypos 1672
+ }
+ Dot {
+  name Dot20
+  xpos -756
+  ypos 1688
+ }
+ Transform {
+  translate {{input.bbox.w-20} 0}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform5
+  xpos -790
+  ypos 1810
+ }
+push $N7f91eb0
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos -994
+  ypos 1810
+ }
+ Transform {
+  translate {{(input.bbox.w/2-input.format.w/2)*-1} 0}
+  center {{input.bbox.w/2} {input.bbox.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform15
+  xpos -994
+  ypos 1909
+ }
+ Crop {
+  box {{input.bbox.x} 0 {input.bbox.w} {parent.Crop8.box.t}}
+  name Crop4
+  xpos -994
+  ypos 2160
+ }
+ Dot {
+  name Dot11
+  xpos -960
+  ypos 2353
+ }
+set N7fb1d80 [stack 0]
+ Dot {
+  name Dot12
+  xpos -810
+  ypos 2353
+ }
+ Transform {
+  scale {-1 1}
+  center {{input.format.w/2} {input.bbox.h/2}}
+  shutteroffset centred
+  name Transform2
+  label mirror
+  xpos -844
+  ypos 2434
+ }
+ Transform {
+  translate {0 {input.bbox.h-50}}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform16
+  xpos -844
+  ypos 2559
+ }
+push $N7fb1d80
+ Merge2 {
+  inputs 2
+  operation under
+  name Merge19
+  xpos -994
+  ypos 2559
+ }
+ Dot {
+  name Dot13
+  xpos -960
+  ypos 2773
+ }
+set N7fc8590 [stack 0]
+ Dot {
+  name Dot14
+  xpos -810
+  ypos 2773
+ }
+ Transform {
+  translate {{curve} {input.bbox.h-50}}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform17
+  xpos -844
+  ypos 2947
+ }
+push $N7fc8590
+ Merge2 {
+  inputs 2
+  name Merge20
+  xpos -994
+  ypos 2947
+ }
+ Dot {
+  name Dot15
+  xpos -960
+  ypos 3176
+ }
+set N2e8523a0 [stack 0]
+ Dot {
+  name Dot16
+  xpos -810
+  ypos 3176
+ }
+ Transform {
+  translate {{curve} {input.bbox.h-50}}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform8
+  xpos -844
+  ypos 3350
+ }
+push $N2e8523a0
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -994
+  ypos 3350
+ }
+ Dot {
+  name Dot21
+  xpos -960
+  ypos 3564
+ }
+set N2e863130 [stack 0]
+ Dot {
+  name Dot22
+  xpos -810
+  ypos 3564
+ }
+ Transform {
+  translate {{curve} {input.bbox.h-50}}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform3
+  xpos -844
+  ypos 3738
+ }
+push $N2e863130
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos -994
+  ypos 3738
+ }
+ Dot {
+  name Dot23
+  xpos -960
+  ypos 3876
+ }
+set N2e874020 [stack 0]
+ Dot {
+  name Dot24
+  xpos -810
+  ypos 3876
+ }
+ Transform {
+  translate {{curve} {input.bbox.h-50}}
+  center {{input.format.w/2} {input.format.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform6
+  xpos -844
+  ypos 4050
+ }
+push $N2e874020
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos -994
+  ypos 4050
+ }
+ Transform {
+  translate {0 {(input.bbox.h/2-input.format.h/2)*-1}}
+  center {{input.bbox.w/2} {input.bbox.h/2}}
+  filter Impulse
+  shutteroffset centred
+  name Transform18
+  xpos -994
+  ypos 4395
+ }
+ Crop {
+  box {0 0 {input.format.w} {input.format.h}}
+  name Crop6
+  xpos -994
+  ypos 4610
+ }
+ Dot {
+  name Dot26
+  xpos -960
+  ypos 4994
+ }
+set N2e88fc70 [stack 0]
+ Dot {
+  name Dot31
+  xpos -1206
+  ypos 4994
+ }
+set N2e892210 [stack 0]
+ Dot {
+  name Dot58
+  xpos -1506
+  ypos 4994
+ }
+ Dot {
+  name Dot59
+  xpos -1506
+  ypos 7554
+ }
+ ColorBars {
+  inputs 0
+  name ColorBars1
+  xpos -84
+  ypos 4687
+ }
+ Crop {
+  box {{parent.Crop6.box} {parent.Crop6.box} {parent.Crop6.box} {parent.Crop6.box}}
+  name Crop1
+  xpos -84
+  ypos 4805
+ }
+set N2e89d430 [stack 0]
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle1
+  tile_color 0xff0000ff
+  label R
+  xpos -234
+  ypos 4945
+ }
+ Expression {
+  expr3 a>0?1:0
+  name Expression1
+  xpos -234
+  ypos 5060
+ }
+set N2e8a9640 [stack 0]
+ Dot {
+  name Dot41
+  xpos -200
+  ypos 6434
+ }
+ Dot {
+  name Dot53
+  xpos -1101
+  ypos 6434
+ }
+push $N2e8a9640
+ Dot {
+  name Dot27
+  xpos -1101
+  ypos 5064
+ }
+push $N2e892210
+ Mirror2 {
+  flip true
+  name Mirror2_1
+  xpos -1240
+  ypos 5130
+ }
+ Dot {
+  name Dot32
+  xpos -1206
+  ypos 5274
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -1135
+  ypos 5264
+ }
+ Premult {
+  name Premult2
+  xpos -1135
+  ypos 5348
+ }
+push 0
+push $N2e89d430
+ Shuffle {
+  red green
+  blue green
+  alpha green
+  name Shuffle2
+  tile_color 0xff00ff
+  label G
+  xpos -84
+  ypos 4945
+ }
+ Expression {
+  expr3 a>0?1:0
+  name Expression2
+  xpos -84
+  ypos 5060
+ }
+ Dot {
+  name Dot28
+  xpos -50
+  ypos 5171
+ }
+set N2e8d4040 [stack 0]
+ Dot {
+  name Dot30
+  xpos -844
+  ypos 5171
+ }
+ Dot {
+  name Dot29
+  xpos -844
+  ypos 5274
+ }
+push $N2e88fc70
+ Mirror2 {
+  flop true
+  name Mirror2_2
+  xpos -994
+  ypos 5130
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos -994
+  ypos 5264
+ }
+ Premult {
+  name Premult3
+  xpos -994
+  ypos 5348
+ }
+push $N2e89d430
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle3
+  tile_color 0xffff
+  label B
+  xpos 66
+  ypos 4945
+ }
+ Expression {
+  expr3 a>0?1:0
+  name Expression3
+  xpos 66
+  ypos 5060
+ }
+ Dot {
+  name Dot34
+  xpos 100
+  ypos 5274
+ }
+set N7fe5a60 [stack 0]
+push $N2e88fc70
+ Dot {
+  name Dot33
+  xpos -756
+  ypos 4994
+ }
+set N7fe7f20 [stack 0]
+ Mirror2 {
+  flip true
+  flop true
+  name Mirror2_3
+  xpos -790
+  ypos 5130
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos -790
+  ypos 5264
+ }
+ Premult {
+  name Premult4
+  xpos -790
+  ypos 5348
+ }
+ Merge2 {
+  inputs 3+1
+  name Merge6
+  xpos -994
+  ypos 5550
+ }
+ Dot {
+  name Dot36
+  xpos -960
+  ypos 5624
+ }
+set N7f28050 [stack 0]
+ Dot {
+  name Dot37
+  xpos -456
+  ypos 5624
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos -490
+  ypos 5754
+ }
+push $N7fe7f20
+ Dot {
+  name Dot38
+  xpos -636
+  ypos 4994
+ }
+ Mirror2 {
+  flip true
+  flop true
+  name Mirror2_4
+  xpos -670
+  ypos 5550
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy4
+  xpos -670
+  ypos 5754
+ }
+ Premult {
+  name Premult5
+  xpos -670
+  ypos 5838
+ }
+push $N7f28050
+ Merge2 {
+  inputs 2
+  name Merge7
+  xpos -994
+  ypos 5838
+ }
+ Dot {
+  name Dot42
+  xpos -960
+  ypos 6504
+ }
+set N2e8ed380 [stack 0]
+ Dot {
+  name Dot43
+  xpos -1206
+  ypos 6504
+ }
+ Mirror2 {
+  flop true
+  name Mirror2_5
+  xpos -1240
+  ypos 6640
+ }
+ Dot {
+  name Dot44
+  xpos -1206
+  ypos 6784
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy5
+  xpos -1135
+  ypos 6774
+ }
+ Premult {
+  name Premult6
+  xpos -1135
+  ypos 6858
+ }
+push 0
+push $N2e8d4040
+ Dot {
+  name Dot54
+  xpos -50
+  ypos 6681
+ }
+ Dot {
+  name Dot45
+  xpos -844
+  ypos 6681
+ }
+ Dot {
+  name Dot46
+  xpos -844
+  ypos 6784
+ }
+push $N2e8ed380
+ Mirror2 {
+  flip true
+  name Mirror2_6
+  xpos -994
+  ypos 6640
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy6
+  xpos -994
+  ypos 6774
+ }
+ Premult {
+  name Premult7
+  xpos -994
+  ypos 6858
+ }
+push $N7fe5a60
+ Dot {
+  name Dot51
+  xpos 100
+  ypos 6784
+ }
+ Mirror2 {
+  flip true
+  flop true
+  name Mirror2_11
+  xpos -490
+  ypos 6780
+ }
+push $N2e8ed380
+ Dot {
+  name Dot47
+  xpos -756
+  ypos 6504
+ }
+set N35fbd9e0 [stack 0]
+ Mirror2 {
+  flip true
+  flop true
+  name Mirror2_7
+  xpos -790
+  ypos 6640
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy7
+  xpos -790
+  ypos 6774
+ }
+ Premult {
+  name Premult8
+  xpos -790
+  ypos 6858
+ }
+ Merge2 {
+  inputs 3+1
+  name Merge8
+  xpos -994
+  ypos 7060
+ }
+ Dot {
+  name Dot48
+  xpos -960
+  ypos 7134
+ }
+set N35fd3d30 [stack 0]
+ Dot {
+  name Dot49
+  xpos -456
+  ypos 7134
+ }
+ Invert {
+  channels alpha
+  name Invert2
+  xpos -490
+  ypos 7264
+ }
+push $N35fbd9e0
+ Dot {
+  name Dot50
+  xpos -636
+  ypos 6504
+ }
+ Mirror2 {
+  flip true
+  flop true
+  name Mirror2_8
+  xpos -670
+  ypos 7060
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy8
+  xpos -670
+  ypos 7264
+ }
+ Premult {
+  name Premult9
+  xpos -670
+  ypos 7348
+ }
+push $N35fd3d30
+ Merge2 {
+  inputs 2
+  name Merge9
+  xpos -994
+  ypos 7348
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy11
+  xpos -994
+  ypos 7544
+  disable true
+ }
+ Reformat {
+  name Reformat3
+  xpos -994
+  ypos 7620
+ }
+ Dot {
+  name Dot57
+  xpos -960
+  ypos 7694
+ }
+set N35f63d40 [stack 0]
+ Dot {
+  name Dot56
+  xpos -275
+  ypos 7694
+ }
+ Invert {
+  channels alpha
+  name Invert3
+  xpos -309
+  ypos 7846
+ }
+set N35f687a0 [stack 0]
+ FilterErode {
+  size -2000
+  name FilterErode1
+  xpos -551
+  ypos 7894
+ }
+ Text2 {
+  inputs 0
+  font_size_toolbar 100
+  font_width_toolbar 100
+  font_height_toolbar 100
+  output {rgba.red -rgba.green -rgba.blue rgba.alpha}
+  message "SAMPLE TOO SMALL"
+  old_message {{83 65 77 80 76 69 32 84 79 79 32 83 77 65 76 76}
+    }
+  box {0 2171 483 2272}
+  transforms {{0 2}
+    }
+  cursor_position 16
+  center {1079 1136}
+  cursor_initialised true
+  initial_cursor_position {{0 2272}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1079 1136 0 0 1 1 0 0 0 0}
+    }
+  name Text1
+  xpos -62
+  ypos 7875
+ }
+ Dot {
+  name Dot52
+  xpos -28
+  ypos 7959
+ }
+set N35f7df30 [stack 0]
+ Dot {
+  name Dot55
+  xpos -178
+  ypos 7959
+ }
+push $N35f687a0
+ Dilate {
+  channels alpha
+  size 100
+  name Dilate1
+  xpos -309
+  ypos 7930
+ }
+ Expression {
+  expr3 a>0?1:0
+  name Expression4
+  xpos -309
+  ypos 8014
+ }
+ Crop {
+  box {{curve} {curve} {input.format.w} {input.format.h}}
+  name Crop3
+  xpos -309
+  ypos 8099
+ }
+push $N35f7df30
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy9
+  xpos -62
+  ypos 8093
+ }
+ Premult {
+  name Premult10
+  xpos -62
+  ypos 8241
+ }
+ Expression {
+  expr3 clamp(r+g+b)
+  name Expression5
+  xpos -62
+  ypos 8313
+ }
+set N35f9cc70 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy10
+  xpos -212
+  ypos 8235
+ }
+ Crop {
+  inputs 0
+  box {{box.r/2.5*-1} {curve} {input.bbox.w/2} {input.bbox.h}}
+  name Crop2
+  xpos -790
+  ypos 1950
+ }
+push $N35f687a0
+ Grade {
+  name Grade1
+  xpos -244
+  ypos 7900
+  disable {{"\[exists alpha]"}}
+ }
+push $N7f79e70
+ Dot {
+  name Dot35
+  xpos -1157
+  ypos 414
+ }
+ Crop {
+  box {0 0 2158 {input.bbox.w}}
+  name Crop8
+  xpos -1191
+  ypos 2165
+ }
+push $N35f63d40
+ Premult {
+  name Premult1
+  xpos -994
+  ypos 7970
+  disable true
+ }
+ Dot {
+  name Dot64
+  xpos -960
+  ypos 8093
+ }
+set N35f47260 [stack 0]
+push $N361ecfa0
+ Dot {
+  name Dot63
+  xpos -1956
+  ypos 7995
+ }
+set N35f49720 [stack 0]
+ BlackOutside {
+  name BlackOutside1
+  xpos -1540
+  ypos 7991
+ }
+ Crop {
+  box {{curve} {curve} {input.width*2} {input.height}}
+  reformat true
+  crop false
+  name Crop9
+  xpos -1540
+  ypos 8040
+ }
+push $N35f47260
+ EXPTool {
+  mode Stops
+  red 6
+  green 6
+  blue 6
+  name Exposure1
+  xpos -1211
+  ypos 8089
+ }
+ Crop {
+  box {{curve} {curve} {input.width*2} {input.height}}
+  reformat true
+  crop false
+  name Crop10
+  xpos -1390
+  ypos 8089
+ }
+ Transform {
+  translate {{input.width/2} 0}
+  center {{input.width/2} {input.height/2}}
+  shutteroffset centred
+  name Transform7
+  xpos -1390
+  ypos 8161
+ }
+ Merge2 {
+  inputs 2
+  name Merge11
+  xpos -1540
+  ypos 8161
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop12
+  xpos -1540
+  ypos 8233
+ }
+push $N35f49720
+ Dot {
+  name Dot1
+  xpos -1956
+  ypos 8394
+ }
+ Switch {
+  inputs 2
+  which {{parent.side_by_side}}
+  name Switch2
+  xpos -1540
+  ypos 8390
+ }
+ Switch {
+  inputs 2
+  which {{viewer}}
+  name Switch1
+  selected true
+  xpos -994
+  ypos 8390
+ }
+set N35f299d0 [stack 0]
+ Output {
+  name Output1
+  xpos -994
+  ypos 9090
+ }
+push $N7f3b160
+ Crop {
+  box {{parent.bbox} {parent.bbox} {parent.bbox} {parent.bbox}}
+  name Crop7
+  xpos -1240
+  ypos 29
+ }
+push $N35f9cc70
+push $N35f299d0
+ Merge2 {
+  inputs 2
+  name Merge10
+  xpos 110
+  ypos 8390
+ }
+end_group

@@ -1,0 +1,1181 @@
+
+Group {
+ inputs 0
+ name PA_StarField
+ knobChanged "\n\nif nuke.thisNode().knob('noshootinstars').value() == True:\n    nuke.thisNode().knob('shootingstarsvisibility').setEnabled(False)\nelse:\n    nuke.thisNode().knob('shootingstarsvisibility').setEnabled(True)\n\nif nuke.thisNode().knob('noflickering').value() == True:\n    nuke.thisNode().knob('starflickering').setEnabled(False)\nelse:\n    nuke.thisNode().knob('starflickering').setEnabled(True)\n\n\n"
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -2606
+ ypos -59
+ addUserKnob {20 User}
+ addUserKnob {41 format l "Output Format" T Reformat2.format}
+ addUserKnob {26 ""}
+ addUserKnob {41 stars_amount l "Stars Amount" T StarsAmount.stars_amount}
+ addUserKnob {7 starssize l "Stars Size"}
+ starssize 1
+ addUserKnob {41 zoffset l "Star Seed" T Noise3.zoffset}
+ addUserKnob {7 starflickering l "Star Flickering" R 0.1 1}
+ starflickering 1
+ addUserKnob {41 saturation_1 l "Star Saturation" T Saturation7.saturation}
+ addUserKnob {7 shootingstarsvisibility l "Shooting Stars Visibility" R 1 4}
+ shootingstarsvisibility 4
+ addUserKnob {41 disable_1 l "No Glint" T Glint2.disable}
+ addUserKnob {6 noshootinstars l "No Shooting Stars" -STARTLINE}
+ addUserKnob {6 noflickering l "No Stars Flickering" -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 value_1 l "Nebula Visibility" T Multiply3.value}
+ addUserKnob {41 pattern l "Nebula Seed" T nebula_control.pattern}
+ addUserKnob {41 scale l "Nebula Scale" T nebula_control.scale}
+ addUserKnob {41 saturation l "Nebula Saturation" T Saturation1.saturation}
+ addUserKnob {26 ""}
+ addUserKnob {41 hue_rotation l "Overall Color Variation" T HueShift1.hue_rotation}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Star Field v2.1\nCreated by Pedro Andrade\n-2015-"}
+ addUserKnob {26 ""}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/5AkatrPqwsk" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x8e8e3800
+  label COMBO
+  note_font_size 42
+  xpos 828
+  ypos -599
+  bdwidth 101
+  bdheight 208
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  tile_color 0x8e8e3800
+  label COMBO
+  note_font_size 42
+  xpos 192
+  ypos 249
+  bdwidth 260
+  bdheight 160
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote9
+  tile_color 0xff00ff
+  label "^\nFALLING STAR DIRECTION"
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 989
+  ypos 3637
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote12
+  tile_color 0xff00ff
+  label "GLINT ON/OFF >"
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 57
+  ypos 329
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  tile_color 0xff00ff
+  label "COSMIC DUST SATURATION  >"
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 833
+  ypos 390
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote2
+  tile_color 0xff00ff
+  label "^\nFALLING STARS MIX"
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 479
+  ypos 3588
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote10
+  tile_color 0xff00ff
+  label "STAR SEED >"
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 69
+  ypos -1565
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote3
+  tile_color 0xff00ff
+  label "STAR AMOUNT >"
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 64
+  ypos -1451
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote15
+  tile_color 0xff00ff
+  label "^\nCOSMIC DUST MIX"
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 481
+  ypos 2104
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name Constant1
+  xpos 1621
+  ypos -1691
+ }
+ Reformat {
+  format "1920 1080 0 0 1920 1080 1 HD_1080"
+  name Reformat2
+  xpos 1621
+  ypos -1562
+ }
+set N11305950 [stack 0]
+ Dot {
+  name Dot11
+  xpos 2944
+  ypos -1558
+ }
+ Dot {
+  name Dot15
+  xpos 2942
+  ypos -942
+ }
+set N113188f0 [stack 0]
+ Dot {
+  name Dot12
+  xpos 2942
+  ypos -462
+ }
+set N1131d1a0 [stack 0]
+ Dot {
+  name Dot23
+  xpos 2942
+  ypos -286
+ }
+set N11321a50 [stack 0]
+ Dot {
+  name Dot13
+  xpos 2942
+  ypos 354
+ }
+set N11326300 [stack 0]
+ Dot {
+  name Dot14
+  xpos 2942
+  ypos 808
+ }
+set N1132abb0 [stack 0]
+ Dot {
+  name Dot18
+  xpos 2942
+  ypos 1274
+ }
+set N1132f570 [stack 0]
+ Dot {
+  name Dot22
+  xpos 2942
+  ypos 1554
+ }
+ Noise {
+  type turbulence
+  zoffset {{parent.nebula_control.pattern}}
+  gain 0.79
+  gamma 0.38
+  center {960 540}
+  name Noise9
+  xpos 2290
+  ypos 1550
+ }
+push $N1132f570
+ Noise {
+  type turbulence
+  size 160
+  zoffset {{parent.nebula_control.pattern}}
+  gain 0.71
+  gamma 0.775
+  center {960 540}
+  name Noise8
+  xpos 2434
+  ypos 1270
+ }
+ ColorCorrect {
+  channels all
+  contrast 1.9
+  gamma 0.84
+  gain 1.26
+  offset 0.34
+  name ColorCorrect3
+  xpos 2266
+  ypos 1264
+ }
+push $N1132abb0
+ Noise {
+  type turbulence
+  size 160
+  zoffset {{parent.nebula_control.pattern}}
+  gain 0.71
+  gamma 0.775
+  center {960 540}
+  name Noise2
+  xpos 2455
+  ypos 804
+ }
+ ColorCorrect {
+  channels all
+  contrast 1.9
+  gamma 0.84
+  gain 1.26
+  offset 0.34
+  name ColorCorrect2
+  xpos 2240
+  ypos 798
+ }
+push $N11326300
+ Noise {
+  type turbulence
+  size 160
+  zoffset {{parent.nebula_control.pattern}}
+  gain 0.71
+  gamma 0.775
+  center {960 540}
+  name Noise1
+  xpos 2360
+  ypos 350
+ }
+ ColorCorrect {
+  channels all
+  contrast 1.9
+  gamma 0.84
+  gain 1.26
+  offset 0.34
+  name ColorCorrect1
+  xpos 2240
+  ypos 344
+ }
+push $N11321a50
+ Noise {
+  type turbulence
+  size 135
+  zoffset {{parent.nebula_control.pattern}}
+  gain 0.71
+  gamma 0.775
+  center {960 540}
+  name Noise10
+  xpos 2449
+  ypos -290
+ }
+ ColorCorrect {
+  channels all
+  contrast 1.9
+  gamma 0.84
+  gain 1.26
+  offset 0.34
+  name ColorCorrect4
+  xpos 2240
+  ypos -296
+ }
+push $N1131d1a0
+ Noise {
+  size 720
+  zoffset {{parent.nebula_control.pattern}}
+  gain 0.81
+  gamma 0.845
+  center {960 540}
+  name Noise11
+  xpos 2446
+  ypos -466
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix 0.3
+  name Merge17
+  xpos 2240
+  ypos -466
+ }
+push $N113188f0
+ Roto {
+  output alpha
+  curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 2097152}
+    {t x44700000 x44070000}
+    {a pt1x 0 pt1y 0 pt2x 0 pt2y 0 pt3x 0 pt3y 0 pt4x 0 pt4y 0 ptex00 0 ptex01 0 ptex02 0 ptex03 0 ptex10 0 ptex11 0 ptex12 0 ptex13 0 ptex20 0 ptex21 0 ptex22 0 ptex23 0 ptex30 0 ptex31 0 ptex32 0 ptex33 0 ptof1x 0 ptof1y 0 ptof2x 0 ptof2y 0 ptof3x 0 ptof3y 0 ptof4x 0 ptof4y 0 pterr 0 ptrefset 0 ptmot x40800000 ptref 0}
+    {curvegroup Ellipse1 512 bezier
+     {{cc
+       {f 8192}
+       {px 1
+        {xc3c51806 0}
+        {x44758000 x43547fff}
+        {x43c51808 0}
+        {0 xc32f59b4}
+        {x44d3f7ae x44048001}
+        {0 x432f59b4}
+        {x43c51808 0}
+        {x44758000 x4453e001}
+        {xc3c51806 0}
+        {0 x432f59b4}
+        {x43862148 x44048001}
+        {0 xc32f59b4}}}
+      {cc
+       {f 8192}
+       {px 1
+        {xc3c51806 0}
+        {0 0}
+        {x43c51808 0}
+        {0 xc32f59b4}
+        {0 0}
+        {0 x432f59b4}
+        {x43c51808 0}
+        {0 0}
+        {xc3c51806 0}
+        {0 x432f59b4}
+        {0 0}
+        {0 xc32f59b4}}}}
+     {tx 1 x445c8000 x43d80000}
+     {a osw x41200000 osf 0 str 1 spx x44700000 spy x44070000 sb 1 tt x40e00000}}}}}}
+  toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 tt 7 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+  toolbar_brush_hardness 0.200000003
+  toolbar_source_transform_scale {1 1}
+  toolbar_source_transform_center {960 540}
+  colorOverlay {0 0 0 0}
+  lifetime_type "all frames"
+  motionblur_shutter_offset_type centred
+  source_black_outside true
+  name Roto2
+  xpos 1947
+  ypos -952
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat3
+  xpos 1947
+  ypos -858
+ }
+ FilterErode {
+  size 200
+  name FilterErode1
+  xpos 1947
+  ypos -736
+ }
+ Blur {
+  size 500
+  name Blur4
+  xpos 1947
+  ypos -688
+ }
+ Crop {
+  box {0 0 1920 1080}
+  name Crop1
+  xpos 1947
+  ypos -634
+ }
+ Multiply {
+  value 0.12
+  name Multiply4
+  xpos 1947
+  ypos -592
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge10
+  xpos 1947
+  ypos -466
+ }
+ Dot {
+  name Dot5
+  xpos 1981
+  ypos 48
+ }
+set N114eff80 [stack 0]
+ Transform {
+  translate {{parent.offset1.x} {parent.offset1.y}}
+  scale 0.47
+  center {{format.width/2} {format.height/2}}
+  name Transform2
+  xpos 2512
+  ypos 44
+ }
+ NoOp {
+  name offset1
+  tile_color 0xff00ff
+  xpos 2512
+  ypos 216
+  addUserKnob {20 User}
+  addUserKnob {3 x}
+  x 700
+  addUserKnob {3 y}
+  y 300
+ }
+ Blur {
+  size 100
+  name Blur1
+  xpos 2392
+  ypos 210
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge6
+  xpos 2240
+  ypos 216
+ }
+push $N114eff80
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 1947
+  ypos 216
+ }
+ Dot {
+  name Dot6
+  xpos 1981
+  ypos 554
+ }
+set N11534450 [stack 0]
+ Transform {
+  translate {{parent.offset2.x} {parent.offset2.y}}
+  scale 0.47
+  center {{format.width/2} {format.height/2}}
+  name Transform3
+  xpos 2521
+  ypos 550
+ }
+ NoOp {
+  name offset2
+  tile_color 0xff00ff
+  xpos 2521
+  ypos 670
+  addUserKnob {20 User}
+  addUserKnob {3 x}
+  x -700
+  addUserKnob {3 y}
+  y 492
+ }
+ Blur {
+  size 100
+  name Blur2
+  xpos 2401
+  ypos 664
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge11
+  xpos 2240
+  ypos 670
+ }
+push $N11534450
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 1947
+  ypos 670
+ }
+ Dot {
+  name Dot10
+  xpos 1981
+  ypos 978
+ }
+set N11578e60 [stack 0]
+ Transform {
+  translate {{parent.offset3.x} {parent.offset3.y}}
+  scale 0.47
+  center {{format.width/2} {format.height/2}}
+  name Transform4
+  xpos 2573
+  ypos 974
+ }
+ NoOp {
+  name offset3
+  tile_color 0xff00ff
+  xpos 2573
+  ypos 1094
+  addUserKnob {20 User}
+  addUserKnob {3 x}
+  x 1000
+  addUserKnob {3 y}
+  y -505
+ }
+ Blur {
+  size 100
+  name Blur3
+  xpos 2424
+  ypos 1088
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge15
+  xpos 2266
+  ypos 1094
+ }
+push $N11578e60
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos 1947
+  ypos 1094
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge16
+  xpos 1947
+  ypos 1550
+ }
+ BlackOutside {
+  name BlackOutside1
+  xpos 1947
+  ypos 1630
+ }
+ Transform {
+  scale {{parent.nebula_control.scale}}
+  center {{format.width/2} {format.height/2}}
+  name Transform5
+  xpos 1947
+  ypos 1687
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat4
+  xpos 1947
+  ypos 1750
+ }
+ Dot {
+  name Dot16
+  xpos 1981
+  ypos 1826
+ }
+ NoOp {
+  name nebula_control
+  tile_color 0xff00ffff
+  xpos 1438
+  ypos 1822
+  addUserKnob {20 User}
+  addUserKnob {7 scale R 1 5}
+  scale 5
+  addUserKnob {7 pattern R 0 10}
+ }
+ ColorBars {
+  inputs 0
+  format {{{parent.Reformat2.format}}}
+  name ColorBars2
+  xpos 662
+  ypos -930
+ }
+ Blur {
+  size 1000
+  name Blur7
+  xpos 662
+  ypos -842
+ }
+ Saturation {
+  saturation 1.5
+  name Saturation5
+  xpos 662
+  ypos -788
+ }
+ Transform {
+  scale 2.4
+  center {{parent.Reformat2.format.width/2} {parent.Reformat2.format.height/2}}
+  name Transform1
+  xpos 662
+  ypos -734
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat14
+  xpos 662
+  ypos -692
+ }
+set N11628fc0 [stack 0]
+ HueShift {
+  hue_rotation {{parent.HueShift1.hue_rotation*0.5}}
+  name HueShift2
+  xpos 662
+  ypos -290
+ }
+ Dot {
+  name Dot19
+  xpos 696
+  ypos -72
+ }
+ Dot {
+  name Dot20
+  xpos 1085
+  ypos -72
+ }
+ Saturation {
+  saturation 5
+  name Saturation1
+  xpos 1051
+  ypos 390
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy6
+  xpos 1040
+  ypos 1816
+ }
+ Premult {
+  name Premult7
+  xpos 1040
+  ypos 2039
+ }
+ Multiply {
+  name Multiply3
+  xpos 497
+  ypos 2033
+ }
+push $N11305950
+ Dot {
+  name Dot4
+  xpos 507
+  ypos -1558
+ }
+set N1167aae0 [stack 0]
+ Noise {
+  size {{3.5*parent.starssize}}
+  gain 0.39
+  gamma {{parent.StarsAmount.stars_amount*0.1}}
+  center {960 540}
+  name Noise3
+  xpos 202
+  ypos -1562
+ }
+ NoOp {
+  name StarsAmount
+  tile_color 0xff00ff
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 202
+  ypos -1450
+  addUserKnob {20 User}
+  addUserKnob {7 stars_amount l "Stars Amount"}
+  stars_amount 0.5
+ }
+ Dot {
+  name Dot1
+  xpos 238
+  ypos -1304
+ }
+set N116983e0 [stack 0]
+ Dot {
+  name Dot2
+  xpos 389
+  ypos -1304
+ }
+ Dot {
+  name Dot3
+  xpos 389
+  ypos -1091
+ }
+set N116a1110 [stack 0]
+ Dot {
+  name Dot24
+  xpos 389
+  ypos -966
+ }
+push $N116983e0
+push $N1167aae0
+ Noise {
+  size 52
+  zoffset {{frame/50}}
+  center {960 540}
+  name Noise6
+  xpos 473
+  ypos -1207
+ }
+ ChannelMerge {
+  inputs 2
+  operation multiply
+  name ChannelMerge5
+  xpos 204
+  ypos -1219
+ }
+push $N116a1110
+ Dissolve {
+  inputs 2
+  which {{parent.starflickering}}
+  name Dissolve1
+  xpos 204
+  ypos -1101
+ }
+ Switch {
+  inputs 2
+  which {{parent.noflickering}}
+  name Switch1
+  xpos 204
+  ypos -970
+ }
+ Grade {
+  channels alpha
+  whitepoint 0.09
+  white_clamp true
+  name Grade8
+  xpos 202
+  ypos -753
+ }
+ Shuffle {
+  in alpha
+  green red
+  blue red
+  alpha red
+  name Shuffle3
+  label "\[value in]"
+  xpos 202
+  ypos -642
+ }
+push $N11628fc0
+ Mirror2 {
+  flip true
+  flop true
+  name Mirror2_2
+  xpos 838
+  ypos -692
+ }
+push 0
+ ColorWheel {
+  inputs 0
+  format {{{parent.Reformat2.format}}}
+  gamma 0.45
+  name ColorWheel3
+  xpos 1051
+  ypos -759
+ }
+ Transform {
+  scale 2.4
+  center {{parent.Reformat2.format.width/2} {parent.Reformat2.format.height/2}}
+  name Transform8
+  xpos 1051
+  ypos -671
+ }
+set N11710880 [stack 0]
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat15
+  xpos 1051
+  ypos -627
+ }
+ Dot {
+  name Dot17
+  xpos 1085
+  ypos -509
+ }
+push $N11628fc0
+ Dissolve {
+  inputs 3+1
+  which {{parent.FlickerNode3.value}}
+  name Dissolve4
+  xpos 838
+  ypos -519
+ }
+ HueShift {
+  name HueShift1
+  xpos 489
+  ypos -513
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy5
+  xpos 202
+  ypos -519
+ }
+ Premult {
+  name Premult6
+  xpos 202
+  ypos -382
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat13
+  xpos 202
+  ypos -262
+ }
+ Saturation {
+  saturation 0.5
+  name Saturation6
+  xpos 202
+  ypos -201
+ }
+ Glow2 {
+  size 1
+  name Glow9
+  xpos 202
+  ypos -116
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat12
+  xpos 202
+  ypos -74
+ }
+ Glow2 {
+  brightness 2
+  size 300
+  name Glow10
+  xpos 202
+  ypos -13
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat1
+  xpos 202
+  ypos 29
+ }
+ Glint {
+  aspect 2
+  oddlen 0.49
+  rotation {{parent.FlickerNode4.value}}
+  steps 30
+  tolerance 1
+  mix 0.01
+  name Glint2
+  xpos 202
+  ypos 331
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat7
+  xpos 202
+  ypos 621
+ }
+ Saturation {
+  name Saturation7
+  xpos 202
+  ypos 1590
+ }
+ Dot {
+  name Dot8
+  xpos 236
+  ypos 1794
+ }
+ Merge2 {
+  inputs 2
+  operation screen
+  name Merge4
+  xpos 202
+  ypos 2039
+ }
+ Dot {
+  name Dot21
+  xpos 234
+  ypos 3260
+ }
+set N117a82f0 [stack 0]
+ Dot {
+  name Dot9
+  xpos -10
+  ypos 3260
+ }
+ Shuffle {
+  alpha black
+  name Shuffle1
+  label "\[value in]"
+  xpos -44
+  ypos 3322
+ }
+ Roto {
+  output alpha
+  curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 2097152}
+    {t x44700000 x44070000}
+    {a pt1x 0 pt1y 0 pt2x 0 pt2y 0 pt3x 0 pt3y 0 pt4x 0 pt4y 0 ptex00 0 ptex01 0 ptex02 0 ptex03 0 ptex10 0 ptex11 0 ptex12 0 ptex13 0 ptex20 0 ptex21 0 ptex22 0 ptex23 0 ptex30 0 ptex31 0 ptex32 0 ptex33 0 ptof1x 0 ptof1y 0 ptof2x 0 ptof2y 0 ptof3x 0 ptof3y 0 ptof4x 0 ptof4y 0 pterr 0 ptrefset 0 ptmot x40800000 ptref 0}
+    {curvegroup Ellipse1 512 bezier
+     {{cc
+       {f 8192}
+       {px x42500000
+        {xc34fc420 0}
+        {x446f0667 x433a9eb7}
+        {x434fc430 0}
+        {0 xc33df992}
+        {x44a68969 x4404a666}
+        {0 x433df990}
+        {x434fc430 0}
+        {x446f0667 x445aa51e}
+        {xc34fc420 0}
+        {0 x433df990}
+        {x4410f9fd x4404a666}
+        {0 xc33df992}}}
+      {cc
+       {f 8192}
+       {px x42500000
+        {xc34fc420 0}
+        {0 0}
+        {x434fc430 0}
+        {0 xc33df992}
+        {0 0}
+        {0 x433df990}
+        {x434fc430 0}
+        {0 0}
+        {xc34fc420 0}
+        {0 x433df990}
+        {0 0}
+        {0 xc33df992}}}}
+     {tx x42500000 x4474a000 x43ee0000}
+     {a fx x43960000 fy x43960000 osw x41200000 osf 0 str 1 spx x44700000 spy x44070000 sb 1 ltn x42500000 ltm x42500000 tt x40e00000}}}}}}
+  toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 tt 5 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 tt 6 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 tt 7 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+  toolbar_brush_hardness 0.200000003
+  toolbar_source_transform_scale {1 1}
+  toolbar_source_transform_center {960 540}
+  colorOverlay {0 0 0 0}
+  lifetime_type "all frames"
+  lifetime_start 52
+  lifetime_end 52
+  motionblur_shutter_offset_type centred
+  feather 300
+  source_black_outside true
+  name Roto5
+  xpos -44
+  ypos 3388
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat16
+  xpos -44
+  ypos 3458
+ }
+ Invert {
+  name Invert2
+  xpos -44
+  ypos 3530
+ }
+ Camera2 {
+  inputs 0
+  translate {0 0 91}
+  frame_rate 25
+  name Camera2
+  xpos 1048
+  ypos 2983
+ }
+ Sphere {
+  inputs 0
+  name Sphere2
+  xpos 1235
+  ypos 2816
+ }
+push 0
+ ParticleEmitter {
+  inputs 2
+  start_frame -10
+  rate 0.018
+  lifetime 100
+  velocity 1.5
+  size 0.0075
+  name ParticleEmitter2
+  xpos 1235
+  ypos 2896
+ }
+push $N11305950
+ Dot {
+  name Dot7
+  xpos 1653
+  ypos 3007
+ }
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  antialiasing high
+  samples 10
+  motion_vectors_type distance
+  MB_channel forward
+  name ScanlineRender2
+  label "\[value projection_mode]"
+  xpos 1235
+  ypos 2997
+  disable {{parent.noshootinstars}}
+ }
+ Grade {
+  channels all
+  whitepoint 0.11
+  name Grade7
+  xpos 1235
+  ypos 3077
+ }
+ Blur {
+  size 1
+  name Blur5
+  xpos 1235
+  ypos 3170
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat8
+  xpos 1235
+  ypos 3248
+ }
+ Glow2 {
+  brightness 2.14
+  size 0.9
+  name Glow7
+  xpos 1235
+  ypos 3310
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat9
+  xpos 1235
+  ypos 3374
+ }
+ Glow2 {
+  brightness 3.18
+  nonlinear true
+  size 16
+  name Glow8
+  xpos 1235
+  ypos 3454
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat10
+  xpos 1235
+  ypos 3536
+ }
+ TimeOffset {
+  time ""
+  name TimeOffset2
+  label "\[value time_offset]"
+  xpos 1015
+  ypos 3530
+ }
+ Multiply {
+  value 0.32
+  name Multiply2
+  xpos 777
+  ypos 3530
+ }
+ Multiply {
+  value {{parent.shootingstarsvisibility}}
+  name Multiply1
+  xpos 487
+  ypos 3530
+ }
+push $N117a82f0
+ Merge2 {
+  inputs 2+1
+  name Merge5
+  xpos 200
+  ypos 3536
+ }
+ Reformat {
+  format {{{parent.Reformat2.format}}}
+  name Reformat11
+  xpos 200
+  ypos 4110
+ }
+set N119a9610 [stack 0]
+ Output {
+  name Output1
+  xpos 200
+  ypos 4274
+ }
+push $N11710880
+push $N119a9610
+ Viewer {
+  inputs 2
+  frame_range 1-100
+  fps 25
+  name Viewer1
+  xpos 322
+  ypos -747
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote11
+  tile_color 0xff00ff
+  label "STAR FLICKERING >"
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 43
+  ypos -1096
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote4
+  tile_color 0xff00ff
+  label "COLOR VARIATION >"
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 495
+  ypos -290
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode3
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 839
+  ypos -433
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  addUserKnob {7 maxVal l "Maximum Value"}
+  maxVal 2.1
+  addUserKnob {7 freqVal l Frequency}
+  freqVal 0.01
+  addUserKnob {26 ""}
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode4
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 325
+  ypos 329
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  minVal 90
+  addUserKnob {7 maxVal l "Maximum Value"}
+  maxVal 120
+  addUserKnob {7 freqVal l Frequency}
+  freqVal 0.2
+  addUserKnob {26 ""}
+ }
+end_group

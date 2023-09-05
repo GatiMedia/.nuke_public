@@ -1,0 +1,520 @@
+set cut_paste_input [stack 0]
+version 12.2 v8
+push $cut_paste_input
+Group {
+ name PA_PositionProjector8
+ knobChanged "\n\nif nuke.thisNode().knob('ref_frame_checkbox').value() == True:\n    nuke.thisNode().knob('ref_frame').setEnabled(True)\n    nuke.thisNode().knob('current_frame').setEnabled(True)\n\nelse:\n    nuke.thisNode().knob('ref_frame').setEnabled(False)\n    nuke.thisNode().knob('current_frame').setEnabled(False)\n\n\n\n"
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold"
+ selected true
+ xpos 56104
+ ypos 17844
+ addUserKnob {20 User}
+ addUserKnob {6 ref_frame_checkbox l "Reference Frame" +STARTLINE}
+ addUserKnob {3 ref_frame l "" -STARTLINE +DISABLED}
+ ref_frame 1
+ addUserKnob {22 current_frame l "Current Frame" -STARTLINE +DISABLED T nuke.thisNode().knob('ref_frame').setValue(nuke.frame())}
+ addUserKnob {26 ""}
+ addUserKnob {41 pchannel l "Position Channel" T Shuffle5.in}
+ addUserKnob {41 nchannel l "Normals Channel" T Shuffle19.in}
+ addUserKnob {26 ""}
+ addUserKnob {41 size l "Distortion Easing" T Blur1.size}
+ addUserKnob {41 mix l "Normals Mix" T Merge7.mix}
+ addUserKnob {6 alpha l "Alpha to RGB only" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Position Projector v4.2\nCreated by Pedro Andrade\n-2016-"}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/yFRUScWT4uY" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  tile_color 0x71c67100
+  label "WORLD TO OBJECT"
+  note_font_size 42
+  xpos 765
+  ypos -1516
+  bdwidth 1257
+  bdheight 981
+  z_order -1
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0xaaaaaa00
+  label CAM
+  note_font_size 42
+  xpos 1790
+  ypos -1428
+  bdheight 110
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0xaaaaaa00
+  label INPUT
+  note_font_size 42
+  xpos 741
+  ypos -2191
+  bdwidth 153
+  bdheight 142
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0xd15271ff
+  label ROTATION
+  note_font_size 42
+  xpos 1432
+  ypos -992
+  bdwidth 207
+  bdheight 144
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x7171c600
+  label TRANSLATION
+  note_font_size 42
+  xpos 1432
+  ypos -1196
+  bdwidth 282
+  bdheight 137
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0xaaaaaa00
+  label SAMPLE
+  note_font_size 42
+  xpos 438
+  ypos 1480
+  bdwidth 180
+  bdheight 163
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode8
+  tile_color 0x7171c600
+  label "PROJECTION \nTRANSFORM"
+  note_font_size 42
+  xpos 690
+  ypos 639
+  bdwidth 478
+  bdheight 826
+ }
+ Input {
+  inputs 0
+  name cam
+  xpos 1797
+  ypos -1358
+  number 1
+ }
+ Camera2 {
+  inputs 0
+  translate {{"parent.ref_frame_checkbox==true ? \[topnode parent.input1].translate.x(parent.ref_frame):\[topnode parent.input1].translate.x"} {"parent.ref_frame_checkbox==true ? \[topnode parent.input1].translate.y(parent.ref_frame):\[topnode parent.input1].translate.y"} {"parent.ref_frame_checkbox==true ? \[topnode parent.input1].translate.z(parent.ref_frame):\[topnode parent.input1].translate.z"}}
+  rotate {{"parent.ref_frame_checkbox==true ? \[topnode parent.input1].rotate.x(parent.ref_frame):\[topnode parent.input1].rotate.x"} {"parent.ref_frame_checkbox==true ? \[topnode parent.input1].rotate.y(parent.ref_frame):\[topnode parent.input1].rotate.y"} {"parent.ref_frame_checkbox==true ? \[topnode parent.input1].rotate.z(parent.ref_frame):\[topnode parent.input1].rotate.z"}}
+  focal {{"\[topnode parent.input1].focal"}}
+  haperture {{"\[topnode parent.input1].haperture"}}
+  vaperture {{"\[topnode parent.input1].vaperture"}}
+  near {{"\[topnode parent.input1].near"}}
+  far {{"\[topnode parent.input1].far"}}
+  name CameraMaster
+  xpos 1812
+  ypos -1128
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 775
+  ypos -2148
+ }
+ Dot {
+  name Dot8
+  xpos 809
+  ypos -1726
+ }
+ Dot {
+  name Dot4
+  xpos 809
+  ypos -1426
+ }
+set Nabbf0800 [stack 0]
+ Dot {
+  name Dot6
+  xpos 1169
+  ypos -1426
+ }
+set Nabbf0400 [stack 0]
+ Dot {
+  name Dot7
+  xpos 1169
+  ypos -1322
+ }
+set N18dc7c00 [stack 0]
+push $N18dc7c00
+push $Nabbf0400
+ Shuffle {
+  in none
+  name Shuffle5
+  label "\[value in]"
+  xpos 1442
+  ypos -1436
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 1442
+  ypos -1332
+ }
+ Add {
+  value {{parent.CameraMaster.matrix.3*-1} {parent.CameraMaster.matrix.7*-1} {parent.CameraMaster.matrix.11*-1} {curve}}
+  name Add3
+  xpos 1442
+  ypos -1116
+ }
+ ColorMatrix {
+  matrix {
+      {{parent.CameraMaster.world_matrix.0} {parent.CameraMaster.world_matrix.1} {parent.CameraMaster.world_matrix.2}}
+      {{parent.CameraMaster.world_matrix.4} {parent.CameraMaster.world_matrix.5} {parent.CameraMaster.world_matrix.6}}
+      {{parent.CameraMaster.world_matrix.8} {parent.CameraMaster.world_matrix.9} {parent.CameraMaster.world_matrix.10}}
+    }
+  invert true
+  name ColorMatrix4
+  xpos 1442
+  ypos -912
+ }
+ Dot {
+  name Dot10
+  xpos 1476
+  ypos -646
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 1135
+  ypos -656
+ }
+ Premult {
+  name Premult1
+  xpos 950
+  ypos -650
+ }
+push $Nabbf0800
+add_layer {PObject PObject.x PObject.y PObject.z}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 PObject.x
+  from1 rgba.green
+  to1 PObject.y
+  from2 rgba.blue
+  to2 PObject.z
+  name Copy3
+  xpos 775
+  ypos -668
+ }
+ Dot {
+  name Dot1
+  xpos 809
+  ypos -246
+ }
+set N18dc5800 [stack 0]
+ Shuffle {
+  in PObject
+  alpha white
+  name Shuffle20
+  label "\[value in]"
+  xpos 775
+  ypos 104
+ }
+ Dot {
+  name Dot11
+  xpos 809
+  ypos 234
+ }
+ NoOp {
+  name FOV
+  tile_color 0xffffff
+  note_font "Bitstream Vera Sans Bold"
+  xpos 775
+  ypos 765
+  addUserKnob {20 User}
+  addUserKnob {7 haperture l "h aperture" R 0 180}
+  haperture {{parent.CameraMaster.haperture}}
+  addUserKnob {7 vaperture l "v aperture" R 0 180}
+  vaperture {{parent.CameraMaster.vaperture}}
+  addUserKnob {7 focallenght l "focal lenght" R 0 180}
+  focallenght {{parent.CameraMaster.focal}}
+  addUserKnob {26 ""}
+  addUserKnob {7 h_fov l "calculated horizontal FOV (rad)"}
+  h_fov {{"(2 * atan(haperture / (2 * focallenght)))/2"}}
+  addUserKnob {7 v_fov l "calculated  vertical FOV (rad)"}
+  v_fov {{"(2 * atan(vaperture / (2 * focallenght)))/2"}}
+ }
+ ColorMatrix {
+  matrix {
+      {{1/tan(parent.FOV.h_fov)} {curve} {curve}}
+      {{curve} {1/tan(parent.FOV.v_fov)} {curve}}
+      {{curve} {curve} {((parent.CameraMaster.far+parent.CameraMaster.near)/(parent.CameraMaster.far-parent.CameraMaster.near))*-1}}
+    }
+  name ColorMatrix3
+  xpos 775
+  ypos 815
+ }
+ Dot {
+  name Dot13
+  xpos 809
+  ypos 883
+ }
+set N18dc4400 [stack 0]
+ Dot {
+  name Dot15
+  xpos 929
+  ypos 883
+ }
+ Dot {
+  name Dot16
+  xpos 929
+  ypos 1068
+ }
+push $N18dc4400
+ Add {
+  value {0 0 {((2*(parent.CameraMaster.near*parent.CameraMaster.far))/(parent.CameraMaster.far-parent.CameraMaster.near))*-1} 0}
+  name Add1
+  xpos 775
+  ypos 963
+ }
+ Copy {
+  inputs 2
+  from0 rgba.blue
+  to0 rgba.alpha
+  name Copy4
+  xpos 775
+  ypos 1058
+ }
+ Expression {
+  expr0 r/a
+  expr1 g/a
+  expr2 b/a
+  name Expression4
+  tile_color 0xffffff
+  label "division by alpha (w component == b channel)"
+  xpos 775
+  ypos 1136
+ }
+ Dot {
+  name Dot9
+  xpos 808
+  ypos 1213
+ }
+set N83a82800 [stack 0]
+ Dot {
+  name Dot17
+  xpos 1073
+  ypos 1213
+ }
+ Expression {
+  expr0 "(x+0.5) / width"
+  expr1 "(y+0.5) / height"
+  name Expression1
+  tile_color 0xdfff00ff
+  label "PURE STMAP"
+  xpos 1040
+  ypos 1286
+ }
+push $N83a82800
+ Expression {
+  expr0 (r+1)/2
+  expr1 (g+1)/2
+  expr2 0
+  name Expression5
+  tile_color 0xffff00ff
+  label "normalizing r and g channels\nzeroing b channel"
+  xpos 775
+  ypos 1281
+ }
+set N83a81c00 [stack 0]
+ FrameHold {
+  first_frame {{ref_frame}}
+  name FrameHold1
+  xpos 905
+  ypos 1286
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge1
+  xpos 968
+  ypos 1390
+ }
+push $N83a81c00
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge2
+  xpos 775
+  ypos 1390
+  disable {{!ref_frame_checkbox}}
+ }
+set N83a81400 [stack 0]
+push 0
+ Viewer {
+  inputs 2
+  frame_range 35-35
+  input_number 1
+  name Viewer1
+  xpos 800
+  ypos -1610
+ }
+ Input {
+  inputs 0
+  name sample
+  xpos 450
+  ypos 1544
+  number 2
+ }
+ Dot {
+  name Dot5
+  xpos 484
+  ypos 1648
+ }
+ BlackOutside {
+  name BlackOutside1
+  xpos 451
+  ypos 1690
+ }
+ Dot {
+  name Dot14
+  xpos 484
+  ypos 1782
+ }
+set N83a80400 [stack 0]
+ Shuffle {
+  in alpha
+  name Shuffle2
+  label "\[value in]"
+  xpos 451
+  ypos 2286
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.CameraMaster.world_matrix.2} {parent.CameraMaster.world_matrix.6} {parent.CameraMaster.world_matrix.10} {curve}}
+  name Constant3
+  xpos 1351
+  ypos 71
+ }
+ Reformat {
+  box_width 512
+  box_height 256
+  box_fixed true
+  name Reformat8
+  xpos 1351
+  ypos 214
+ }
+push $N18dc5800
+ Dot {
+  name Dot3
+  xpos 1575
+  ypos -246
+ }
+ Shuffle {
+  in none
+  name Shuffle19
+  label "\[value in]"
+  xpos 1541
+  ypos 24
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge6
+  xpos 1541
+  ypos 214
+ }
+ Saturation {
+  saturation 0
+  mode Maximum
+  name Saturation3
+  xpos 1541
+  ypos 358
+ }
+ Dot {
+  name Dot12
+  xpos 1575
+  ypos 2094
+ }
+ Clamp {
+  name Clamp2
+  xpos 1310
+  ypos 2084
+ }
+push $N83a81400
+ Shuffle {
+  blue black
+  alpha white
+  name Shuffle21
+  label "\[value in]"
+  xpos 775
+  ypos 1560
+ }
+ Blur {
+  channels rgba
+  name Blur1
+  label "(\[value channels])"
+  xpos 775
+  ypos 1644
+ }
+push $N83a80400
+ STMap {
+  inputs 2
+  uv rgb
+  name STMap4
+  xpos 775
+  ypos 1772
+ }
+ Clamp {
+  name Clamp1
+  xpos 775
+  ypos 1898
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge7
+  xpos 775
+  ypos 2090
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy5
+  xpos 775
+  ypos 2286
+ }
+ Premult {
+  name Premult2
+  xpos 775
+  ypos 2370
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle1
+  label R
+  xpos 775
+  ypos 2486
+  disable {{!parent.alpha}}
+ }
+ Output {
+  name Output1
+  xpos 775
+  ypos 2710
+ }
+end_group

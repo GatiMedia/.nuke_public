@@ -1,0 +1,66 @@
+
+Group {
+ name PA_LumaRatio
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -3106
+ ypos -59
+ addUserKnob {20 User}
+ addUserKnob {26 ROI_1 l ROI}
+ addUserKnob {41 ROI l "" +STARTLINE T CurveTool3.ROI}
+ addUserKnob {41 resetROI l "Reset ROI" -STARTLINE T CurveTool3.resetROI}
+ addUserKnob {26 ""}
+ addUserKnob {41 process l Calculate T LumaRatio1.process}
+ addUserKnob {26 ""}
+ addUserKnob {41 lumaanim l "Luma Animation" T CurveTool3.intensitydata}
+ addUserKnob {41 maxluma l "Maximum Luminance" T LumaRatio1.maxluma}
+ addUserKnob {41 max_frame l "@ Frame" -STARTLINE T LumaRatio1.max_frame}
+ addUserKnob {26 ""}
+ addUserKnob {41 lumaratio_1 l "Luma Ratio" T LumaRatio1.lumaratio}
+ addUserKnob {26 ""}
+ addUserKnob {26 Author l "" +STARTLINE T "Luma Ratio v1.2\nCreated by Pedro Andrade\n-2015-"}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/JoEqElh1UNE" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -689
+  ypos -170
+ }
+ Saturation {
+  saturation 0
+  name Saturation3
+  xpos -689
+  ypos -94
+ }
+ CurveTool {
+  ROI {0 0 1920 1080}
+  autocropdata {{parent.CurveTool3.ROI.x} {parent.CurveTool3.ROI.y} {parent.CurveTool3.ROI.r} {parent.CurveTool3.ROI.t}}
+  intensitydata {{curve}}
+  name CurveTool3
+  xpos -689
+  ypos -24
+ }
+set N10e93ac0 [stack 0]
+ Output {
+  name Output1
+  xpos -689
+  ypos 70
+ }
+push $N10e93ac0
+ NoOp {
+  name LumaRatio1
+  tile_color 0xff5f00ff
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos -518
+  ypos -24
+  addUserKnob {20 User}
+  addUserKnob {7 maxluma l "Maximum Luminance"}
+  addUserKnob {3 max_frame l "Maximum Frame"}
+  addUserKnob {26 ""}
+  addUserKnob {7 lumaratio l "Luma Ratio"}
+  lumaratio {{clamp(parent.CurveTool3.intensitydata/maxluma)}}
+  addUserKnob {22 process l Process T "nuke.execute(nuke.toNode('CurveTool3'))\n\n#########################\nknob = nuke.toNode('CurveTool3').knob('intensitydata')\n\nanimCurve = knob.animation( 1 ) \n\nframesList = \[]\nvaluesList = \[]    \nfor n in animCurve.keys():\n    xValue = n.x\n    yValue = n.y\n\n    framesList.append(xValue)\n    valuesList.append(yValue)\n\ndict = \{\}\nfor n in range(len(valuesList)):\n    dict\[valuesList\[n]] = framesList\[n]\n\nmaxLuma = max(valuesList)\nmaxFrame = int(dict\[maxLuma])\n\nnuke.thisNode().knob('maxluma').setValue(maxLuma)\nnuke.thisNode().knob('max_frame').setValue(maxFrame)\n\n" +STARTLINE}
+ }
+end_group

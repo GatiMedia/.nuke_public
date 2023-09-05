@@ -1,0 +1,60 @@
+
+Group {
+ name PA_QuickBlacksMatch
+ tile_color 0xff5f00ff
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -1506
+ ypos -59
+ mapsize {0.15 0.15}
+ addUserKnob {20 Main}
+ addUserKnob {26 ""}
+ addUserKnob {41 BlacksPickup T Constant2.color}
+ addUserKnob {26 ""}
+ addUserKnob {41 maskChannelMask l "Mask Enable" -STARTLINE T Merge2.maskChannelMask}
+ addUserKnob {26 ""}
+ addUserKnob {41 mix T Merge2.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 Author l "" +STARTLINE T "QuickBlacksMatch v1.0\nCreated by Pedro Andrade\n-2013-"}
+ addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/zIYFnWJKiBc')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name img_alpha
+  xpos 121
+  ypos 279
+  number 1
+ }
+ Shuffle {
+  in alpha
+  name Shuffle1
+  xpos 121
+  ypos 328
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  name Constant2
+  xpos -46
+  ypos 207
+ }
+ Input {
+  inputs 0
+  name img
+  xpos -201
+  ypos 328
+ }
+ Merge2 {
+  inputs 2+1
+  operation screen
+  maskChannelMask -rgba.alpha
+  name Merge2
+  xpos -46
+  ypos 328
+ }
+ Output {
+  name Output1
+  xpos -46
+  ypos 439
+ }
+end_group

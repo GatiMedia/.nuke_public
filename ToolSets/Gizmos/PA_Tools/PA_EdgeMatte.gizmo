@@ -1,0 +1,332 @@
+
+Group {
+ name PA_EdgeMatte2
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -1020
+ ypos 8518
+ addUserKnob {20 User}
+ addUserKnob {4 Style l Filter M {Blur Box Triangle Quadractic Gaussian ""}}
+ addUserKnob {26 ""}
+ addUserKnob {7 GrowOut l "Grow Out" R -100 -1}
+ GrowOut -1
+ addUserKnob {41 size l "Grow Out Blur" T Blur1.size}
+ addUserKnob {26 ""}
+ addUserKnob {7 GrowIn l "Grow In" R 1 100}
+ GrowIn 1
+ addUserKnob {41 size_1 l "Grow In Blur" T Blur2.size}
+ addUserKnob {26 ""}
+ addUserKnob {26 Author l "" +STARTLINE T "EdgeMatte v2.0\nCreated by Pedro Andrade\n-2014-"}
+ addUserKnob {26 ""}
+ addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/2dNT_Rasrek')" +STARTLINE}
+}
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  label blur
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos -932
+  ypos 588
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote2
+  label box
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos -576
+  ypos 588
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote3
+  label triangle
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos -136
+  ypos 588
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote4
+  label quadractic
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 291
+  ypos 588
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote5
+  label gaussian
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 680
+  ypos 588
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 694
+  ypos -416
+ }
+ Dot {
+  name Dot27
+  xpos 728
+  ypos -308
+ }
+ Dot {
+  name Dot26
+  xpos 740
+  ypos 12
+ }
+set N1f9dcfc0 [stack 0]
+ FilterErode {
+  size {{parent.Erode2.size}}
+  filter gaussian
+  name FilterErode9
+  label "\[value filter]"
+  xpos 779
+  ypos 162
+ }
+ Blur {
+  name Blur2
+  xpos 779
+  ypos 264
+ }
+ set C2808cf60 [stack 0]
+push $N1f9dcfc0
+ FilterErode {
+  size {{parent.Erode1.size}}
+  filter gaussian
+  name FilterErode10
+  label "\[value filter]"
+  xpos 624
+  ypos 162
+ }
+ Blur {
+  name Blur1
+  xpos 647
+  ypos 264
+ }
+ set C2463c1c0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge18
+  xpos 692
+  ypos 388
+ }
+ Shuffle {
+  in alpha
+  name Shuffle5
+  label "\[value in]"
+  xpos 692
+  ypos 502
+ }
+push $N1f9dcfc0
+ Dot {
+  name Dot25
+  xpos 338
+  ypos 12
+ }
+set Nd936850 [stack 0]
+ FilterErode {
+  size {{parent.Erode2.size}}
+  filter quadratic
+  name FilterErode7
+  label "\[value filter]"
+  xpos 383
+  ypos 178
+ }
+clone $C2808cf60 {
+  xpos 383
+  ypos 264
+  selected false
+ }
+push $Nd936850
+ FilterErode {
+  size {{parent.Erode1.size}}
+  filter quadratic
+  name FilterErode8
+  label "\[value filter]"
+  xpos 234
+  ypos 178
+ }
+clone $C2463c1c0 {
+  xpos 255
+  ypos 264
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge17
+  xpos 294
+  ypos 388
+ }
+ Shuffle {
+  in alpha
+  name Shuffle6
+  label "\[value in]"
+  xpos 294
+  ypos 502
+ }
+push $Nd936850
+ Dot {
+  name Dot22
+  xpos -100
+  ypos 12
+ }
+set Nd92dde0 [stack 0]
+ FilterErode {
+  size {{parent.Erode2.size}}
+  filter triangle
+  name FilterErode5
+  label "\[value filter]"
+  xpos -72
+  ypos 178
+ }
+clone $C2808cf60 {
+  xpos -72
+  ypos 264
+  selected false
+ }
+push $Nd92dde0
+ FilterErode {
+  size {{parent.Erode1.size}}
+  filter triangle
+  name FilterErode6
+  label "\[value filter]"
+  xpos -218
+  ypos 178
+ }
+clone $C2463c1c0 {
+  xpos -199
+  ypos 264
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge15
+  xpos -148
+  ypos 388
+ }
+ Shuffle {
+  in alpha
+  name Shuffle7
+  label "\[value in]"
+  xpos -148
+  ypos 502
+ }
+push $Nd92dde0
+ Dot {
+  name Dot24
+  xpos -524
+  ypos 12
+ }
+set Nd90f1a0 [stack 0]
+ FilterErode {
+  size {{parent.Erode2.size}}
+  name FilterErode4
+  label "\[value filter]"
+  xpos -489
+  ypos 178
+ }
+clone $C2808cf60 {
+  xpos -489
+  ypos 264
+  selected false
+ }
+push $Nd90f1a0
+ FilterErode {
+  size {{parent.Erode1.size}}
+  name FilterErode3
+  label "\[value filter]"
+  xpos -640
+  ypos 178
+ }
+clone $C2463c1c0 {
+  xpos -612
+  ypos 264
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge12
+  xpos -573
+  ypos 388
+ }
+ Shuffle {
+  in alpha
+  name Shuffle8
+  label "\[value in]"
+  xpos -573
+  ypos 502
+ }
+push $Nd90f1a0
+ Dot {
+  name Dot21
+  xpos -873
+  ypos 12
+ }
+set Nfa667b00 [stack 0]
+ Erode {
+  size {{parent.GrowIn}}
+  name Erode2
+  label blur
+  xpos -864
+  ypos 178
+ }
+clone $C2808cf60 {
+  xpos -864
+  ypos 264
+  selected false
+ }
+push $Nfa667b00
+ Erode {
+  size {{parent.GrowOut}}
+  name Erode1
+  label blur
+  xpos -1000
+  ypos 178
+ }
+clone $C2463c1c0 {
+  xpos -1000
+  ypos 264
+  selected false
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  name Merge11
+  xpos -932
+  ypos 388
+ }
+ Shuffle {
+  in alpha
+  name Shuffle4
+  label "\[value in]"
+  xpos -932
+  ypos 502
+ }
+ Switch {
+  inputs 5
+  which {{parent.Style}}
+  name Switch1
+  xpos -148
+  ypos 910
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop1
+  selected true
+  xpos -148
+  ypos 982
+ }
+ Output {
+  name Output1
+  xpos -148
+  ypos 1200
+ }
+end_group
+

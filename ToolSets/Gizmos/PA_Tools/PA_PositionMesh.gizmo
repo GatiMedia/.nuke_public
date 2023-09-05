@@ -1,0 +1,769 @@
+
+push $cut_paste_input
+add_layer {P P.red P.green P.blue P.alpha}
+Group {
+ name PA_PositionMesh
+ knobChanged "\n\n\nwith nuke.thisNode():\n#OVERWRITE Z\n\n    nuke.toNode('Card1').knob('z').setEnabled(False)\n\n    if nuke.thisNode().knob('overwrite').value()==0:\n        nuke.thisNode().knob('depth_increment').setVisible(False)\n\n    else:\n        nuke.thisNode().knob('depth_increment').setVisible(True)\n\n"
+ tile_color 0xff5f00ff
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos 7231
+ ypos 16141
+ addUserKnob {20 User}
+ addUserKnob {41 in_1 l "Position Channel" T PositionPass.in}
+ addUserKnob {26 ""}
+ addUserKnob {41 click l "Build Mesh" T MinValueExtractor1.click}
+ addUserKnob {6 no_projection l UnTextured -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 z l "Mesh Starting Depth" T Card1.z}
+ addUserKnob {6 overwrite l Overwrite -STARTLINE}
+ addUserKnob {7 depth_increment l "Depth Filter" +HIDDEN R -500 500}
+ addUserKnob {26 ""}
+ addUserKnob {7 mesh_resolution l "Mesh Resolution" R 1 10}
+ mesh_resolution 3
+ addUserKnob {7 mesh_filtering l "Mesh Filtering" R 0.1 10}
+ mesh_filtering 1
+ addUserKnob {26 ""}
+ addUserKnob {22 reset l "Reset Tool" T "with nuke.thisNode():\n    nuke.toNode('Card1').knob('reset_z').execute()\n    \n    nuke.thisNode().knob('overwrite').setValue(False)\n    nuke.thisNode().knob('depth_increment').setValue(0)\n    nuke.thisNode().knob('depth_increment').setValue(0)\n    nuke.thisNode().knob('mesh_resolution').setValue(3)\n    nuke.thisNode().knob('mesh_filtering').setValue(1)\n\n" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Position Mesh v1.0\nCreated by Pedro Andrade\n-2019-\n\n"}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/547kzziqahg" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x7171c600
+  label CAM
+  note_font_size 42
+  xpos 1955
+  ypos 49
+  bdwidth 167
+  bdheight 150
+ }
+ Input {
+  inputs 0
+  name cam
+  xpos 1965
+  ypos 147
+  number 1
+ }
+ Camera2 {
+  inputs 0
+  win_translate {{"film_offset + pan"} {"film_offset + pan"}}
+  win_scale {{pre_scale*zoom} {pre_scale*zoom}}
+  name Camera3
+  xpos 3144
+  ypos 1070
+  addUserKnob {20 cinesite_tab l Cinesite}
+  addUserKnob {26 cam_proj_mode_text l "<b>Projection Camera</b>"}
+  addUserKnob {6 proj_mode l "freeze all animation at frame" t "If checked, knobs with animation under the <i>Camera</i> and <i>Projection</i> tabs will be frozen at the specified frame." -STARTLINE}
+  addUserKnob {7 proj_frame l "" t "Freeze animation curves on this frame" -STARTLINE}
+  proj_frame 1
+  addUserKnob {32 set_frame l "set to current frame" t "Set projection frame to current frame in the timeline." -STARTLINE +DISABLED}
+  addUserKnob {4 method t "\n<b>Python callback</b>: Knobs with animation will be copied to hidden knobs and a callback function will set the Camera's knob values at the static projection frame. This method might be more robust than live expressions.\n\n<b>TCL expressions</b>: Knobs containing animation will be loaded with the expression: \"curve(proj_frame)\", which links back to the knob on the right.\n\nIf knobs with animation have an expression already set by the user, e.g. \"curve*2\", something a little more complicated happens to achieve the freezing. Internally, the python script will copy that animation data to hidden knobs of the same type, apply the same user-specified expression, then <i>link</i> the original knob back to the hidden one so that it can be locked.\n\nIn the same example, say \"curve*2\" is in the transform knobs; it will be copied to a hidden knob called \"transform_hidden\". Then, it'll be expression-linked to this hidden knob: \"this.transform_hidden(proj_frame)\"." +DISABLED M {"Python callback" "TCL expressions"}}
+  addUserKnob {6 disable_knobs l "set knobs to read only" t "If checked, knobs on cinesite tabs in this Camera node will be set to read only (dimmed) to prevent accidental changes while in projection mode.\n\nNote: as of Nuke6.2v4 there appears to be a bug where the \"transform order\" and \"rotation order\" knobs on the Camera tab don't accept the READ_ONLY flag." -STARTLINE +DISABLED}
+  disable_knobs true
+  addUserKnob {6 warn_on_knobChanged l "warn on knob changed" t "If this is a projection camera and you have unchecked <i>set knobs to read only</i>, pop up a warning on changing any of the knobs in the cinesite tabs that will break projection camera functionality." -STARTLINE +DISABLED}
+  warn_on_knobChanged true
+  addUserKnob {40 orig_tile_color -STARTLINE +HIDDEN}
+  addUserKnob {40 orig_gl_color -STARTLINE +HIDDEN}
+  addUserKnob {26 source_text l <b>Source</b> +HIDDEN}
+  addUserKnob {1 source_csm_string l "csm file" +HIDDEN}
+  addUserKnob {1 source_csp_string l "csp file" +HIDDEN}
+  addUserKnob {43 comment +DISABLED +INVISIBLE}
+  addUserKnob {1 status_ +HIDDEN}
+  addUserKnob {26 export_text l <b>Export</b>}
+  addUserKnob {4 create_camera_options l " " t tooltip. M {"Camera2 (linked)" "Camera2 (baked matrix)"}}
+  addUserKnob {32 create_cam l create -STARTLINE}
+  addUserKnob {20 CsProjection_tab l CsProjection}
+  addUserKnob {26 win_translate_title l "<b>Window Translate</b>"}
+  addUserKnob {30 film_offset l "Film Offset"}
+  addUserKnob {30 pan l Pan}
+  addUserKnob {26 win_scale_title l "<b>Window Scale</b>"}
+  addUserKnob {7 pre_scale l "Pre Scale" R 0 2}
+  pre_scale 1
+  addUserKnob {7 zoom l Zoom R 0 2}
+  zoom 1
+  addUserKnob {7 overscan l Overscan R 0 2}
+  overscan 1
+  addUserKnob {26 win_options_title l "<b>Window Options</b>"}
+  addUserKnob {6 pan_zoom_enabled l "Pan Zoom Enabled" -STARTLINE}
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+ ColorBars {
+  inputs 0
+  name ColorBars2
+  xpos 2994
+  ypos 597
+ }
+ Card2 {
+  rows 1
+  columns 1
+  z 1
+  lens_in_focal {{parent.Camera3.focal}}
+  lens_in_haperture {{parent.Camera3.haperture}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card9
+  xpos 2994
+  ypos 715
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 811
+  ypos -360
+ }
+ Dot {
+  name Dot12
+  xpos 845
+  ypos -192
+ }
+set N5c9e28a0 [stack 0]
+ Dot {
+  name Dot20
+  xpos 693
+  ypos -192
+ }
+ Shuffle {
+  in P
+  name PositionPass
+  label "\[value in]"
+  xpos 661
+  ypos 5
+ }
+set N5c95d570 [stack 0]
+push $N5c9e28a0
+ Remove {
+  operation keep
+  channels rgba
+  name Remove2
+  xpos 811
+  ypos -85
+ }
+ ShuffleCopy {
+  inputs 2
+  in2 {{{parent.PositionPass.in}}}
+  red red
+  green green
+  blue blue
+  out {{{parent.PositionPass.in}}}
+  name ShuffleCopy1
+  xpos 811
+  ypos 11
+ }
+ Dot {
+  name Dot1
+  xpos 845
+  ypos 153
+ }
+set N5c971f50 [stack 0]
+ Dot {
+  name Dot13
+  xpos 1229
+  ypos 153
+ }
+ Remove {
+  name Remove1
+  xpos 1195
+  ypos 212
+ }
+ Reformat {
+  type "to box"
+  box_width {{input.width}}
+  box_height {{input.height}}
+  box_fixed true
+  name Reformat1
+  xpos 1195
+  ypos 270
+ }
+set N601b8d80 [stack 0]
+ Dot {
+  name Dot15
+  xpos 1229
+  ypos 414
+ }
+ Dot {
+  name Dot18
+  xpos 2844
+  ypos 414
+ }
+ Dot {
+  name Dot19
+  xpos 2844
+  ypos 1090
+ }
+set N3ff52910 [stack 0]
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  shutteroffset centred
+  motion_vectors_type off
+  output_shader_vectors true
+  P_channel P
+  name ScanlineRender3
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos 2994
+  ypos 1078
+ }
+ Shuffle {
+  in P
+  name Shuffle2
+  label "\[value in]"
+  xpos 2994
+  ypos 1181
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle3
+  tile_color 0xffff
+  label B
+  xpos 2994
+  ypos 1297
+ }
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue none}
+  expr0 r/value
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 g/value
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 b/value
+  name Expression6
+  xpos 2994
+  ypos 1491
+  addUserKnob {20 User}
+  addUserKnob {7 value}
+  value {{parent.Expression3.value}}
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  avgframes 1
+  ROI {0 0 {input.width} {input.height}}
+  autocropdata {960 540 2880 1620}
+  intensitydata {{curve x1 -1.779021989 x26 -1.779021989 -1.779021989 -1.779021989} {curve x1 -1.779021989 x26 -1.779021989 -1.779021989 -1.779021989} {curve x1 -1.779021989 x26 -1.779021989 -1.779021989 -1.779021989} -1.779021989}
+  maxlumapixdata {{curve x1 0 x25 0 x26 0 x49 0 x51 0 x73 0 x76 0 x97 0 x101 0 x151 0 x1108 0} {curve x1 0 x25 0 x26 0 x49 0 x51 0 x73 0 x76 0 x97 0 x101 0 x151 0 x1108 0}}
+  maxlumapixvalue {{curve x1 0 x26 0 0 0 x151 0 x1108 0} {curve x1 0 x26 0 0 0 x151 0 x1108 0} 0}
+  minlumapixdata {{curve x1 0 x25 1316 x26 0 x49 1316 x51 0 x73 1316 x76 0 x97 1316 x101 1316 x151 0 x1108 0} {curve x1 0 x25 836 x26 0 x49 836 x51 0 x73 836 x76 0 x97 836 x101 836 x151 0 x1108 0}}
+  minlumapixvalue {{curve x151 -9.999999747e-05} {curve x151 -9.999999747e-05} -9.999999747e-05}
+  name CurveTool4
+  xpos 2994
+  ypos 1603
+ }
+push $N5c971f50
+ Dot {
+  name Dot14
+  xpos 659
+  ypos 153
+ }
+ Dot {
+  name Dot27
+  xpos 662
+  ypos 694
+ }
+set N28212eb0 [stack 0]
+ Dot {
+  name Dot28
+  xpos 662
+  ypos 968
+ }
+push $N28212eb0
+ Dot {
+  name Dot3
+  xpos 494
+  ypos 693
+ }
+ Shuffle {
+  in {{{parent.PositionPass.in}}}
+  name PositionPass1
+  label "\[value in]"
+  xpos 460
+  ypos 748
+ }
+ Dot {
+  name Dot4
+  xpos 494
+  ypos 819
+ }
+set N3c435810 [stack 0]
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle15
+  tile_color 0xffff
+  label B
+  xpos 460
+  ypos 887
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos 460
+  ypos 961
+ }
+ Dot {
+  name Dot48
+  xpos 494
+  ypos 1047
+ }
+set N4cd965f0 [stack 0]
+ Dot {
+  name Dot49
+  xpos 686
+  ypos 1047
+ }
+ Expression {
+  expr0 r/value
+  expr1 g/value
+  expr2 b/value
+  name Expression5
+  xpos 652
+  ypos 1091
+  addUserKnob {20 User}
+  addUserKnob {7 value}
+  value 10000
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  avgframes 1
+  ROI {0 0 {input.width} {input.height}}
+  autocropdata {480 270 1440 810}
+  maxlumapixdata {{curve x1 1012 x26 1710 1823 1919 493 x151 527} {curve x1 451 x26 331 6 103 0 x151 0}}
+  maxlumapixvalue {{curve x1 0.02339966223 x51 0.02240000851 0.01769321598 0.01795425639} {curve x1 0.02339966223 x51 0.02240000851 0.01769321598 0.01795425639} 0.01795425639}
+  minlumapixdata {{curve x1 0 x26 542 764 1104 1565 x151 395} {curve x1 0 x26 91 0 0 0 x151 134}}
+  minlumapixvalue {{curve x1 0 x26 0 0 0 0 x151 0} {curve x1 0 x26 0 0 0 0 x151 0} {curve x1 0 x26 0 0 0 0 x151 0}}
+  name CurveTool5
+  xpos 652
+  ypos 1144
+ }
+ Camera2 {
+  inputs 0
+  translate {{"\[topnode parent.input1].translate.x"} {"\[topnode parent.input1].translate.y"} {"\[topnode parent.input1].translate.z"}}
+  rotate {{"\[topnode parent.input1].rotate.x"} {"\[topnode parent.input1].rotate.y"} {"\[topnode parent.input1].rotate.z"}}
+  focal {{"\[topnode parent.input1].focal"}}
+  haperture {{"\[topnode parent.input1].haperture"}}
+  vaperture {{"\[topnode parent.input1].vaperture"}}
+  near {{"\[topnode parent.input1].near"}}
+  far {{"\[topnode parent.input1].far"}}
+  name CameraMaster
+  xpos 2052
+  ypos 129
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+ Dot {
+  name Dot2
+  xpos 2076
+  ypos 275
+ }
+set Ne47da590 [stack 0]
+ Dot {
+  name Dot17
+  xpos 2079
+  ypos 1093
+ }
+set Ne46200a0 [stack 0]
+ Card2 {
+  inputs 0
+  rows {{parent.mesh_resolution*10}}
+  columns {{rows}}
+  lens_in_focal {{parent.CameraMaster.focal}}
+  lens_in_haperture {{parent.CameraMaster.haperture}}
+  translate {{parent.CameraMaster.translate x51 -53.46565247} {parent.CameraMaster.translate x51 49.07961655} {parent.CameraMaster.translate x51 309.3341064}}
+  rotate {{parent.CameraMaster.rotate x1 -9.272500893 x43 -43.33264962} {parent.CameraMaster.rotate x1 -32.59999089 x43 -24.14045156} {parent.CameraMaster.rotate x1 -30.4354493 x43 35.92529581}}
+  control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+  name Card1
+  label AUTO
+  selected true
+  xpos 1487
+  ypos -213
+  disable true
+  addUserKnob {20 User}
+  addUserKnob {7 additional_depth l "Additional Depth" R 0 1000}
+  additional_depth {{parent.depth_increment}}
+  addUserKnob {22 reset_z l "reset z" T "nuke.thisNode().knob('z').clearAnimated()\nnuke.thisNode().knob('z').setValue(0)\n\nnuke.thisNode().knob('disable').setValue(True)\n\nnuke.toNode('DisplaceGeo2').knob('disable').setValue(True)" +STARTLINE}
+ }
+ Dot {
+  name Dot7
+  xpos 1521
+  ypos -51
+ }
+set N3c2f25d0 [stack 0]
+ Dot {
+  name Dot8
+  xpos 2247
+  ypos -52
+ }
+set N3c2f6460 [stack 0]
+ Dot {
+  name Dot16
+  xpos 2607
+  ypos -51
+ }
+push $N3ff52910
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  shutteroffset centred
+  motion_vectors_type off
+  MB_channel forward
+  output_shader_vectors true
+  P_channel P
+  name ScanlineRender2
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos 2573
+  ypos 1081
+ }
+ Shuffle {
+  in P
+  name Shuffle1
+  label "\[value in]"
+  xpos 2573
+  ypos 1176
+ }
+ Shuffle {
+  red blue
+  green blue
+  alpha blue
+  name Shuffle5
+  tile_color 0xffff
+  label B
+  xpos 2573
+  ypos 1287
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.CurveTool5.maxlumapixvalue.r} {parent.CurveTool5.maxlumapixvalue.g} {parent.CurveTool5.maxlumapixvalue.b} {curve}}
+  name Constant3
+  xpos 2760
+  ypos 1384
+ }
+ Merge2 {
+  inputs 2
+  name Merge8
+  xpos 2573
+  ypos 1408
+ }
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue none}
+  expr0 r/value
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 g/value
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 b/value
+  name Expression4
+  xpos 2573
+  ypos 1491
+  addUserKnob {20 User}
+  addUserKnob {7 value}
+  value {{parent.Expression3.value}}
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  avgframes 1
+  ROI {0 0 {input.width} {input.height}}
+  autocropdata {960 540 2880 1620}
+  intensitydata {{curve x1 8.560708611 x26 -26.11803431 -65.89649226 -106.3039402} {curve x1 8.560708611 x26 -26.11803431 -65.89649226 -106.3039402} {curve x1 8.560708611 x26 -26.11803431 -65.89649226 -106.3039402} 104.0936999}
+  maxlumapixdata {{curve x1 1919 x26 0 0 x151 0 x1108 4267} {curve x1 0 x26 0 0 x151 0 x1108 2399}}
+  maxlumapixvalue {{curve x151 0.001497784862} {curve x151 0.001497784862} 0.001497784862}
+  minlumapixdata {{curve x1 0 x26 0 0 x151 1919 x1108 0} {curve x1 1079 x26 0 1079 x151 1079 x1108 0}}
+  minlumapixvalue {{curve x1 -81.95744324 x26 0 -2582.809814 x151 -0.01077042148 x1108 -46.73973083} {curve x1 -81.95744324 x26 0 -2582.809814 x151 -0.01077042148 x1108 -46.73973083} -0.01077042148}
+  name CurveTool3
+  xpos 2573
+  ypos 1604
+ }
+ NoOp {
+  inputs 0
+  name depth_compensation
+  tile_color 0xff00ff
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 2826
+  ypos 1691
+  addUserKnob {20 User}
+  addUserKnob {7 depth_compensation l primary_depth_compensation}
+  depth_compensation {{"(parent.CurveTool3.maxlumapixvalue.r*parent.Expression4.value) - (parent.CurveTool4.minlumapixvalue.r*parent.Expression6.value)"}}
+ }
+push $N4cd965f0
+ Constant {
+  inputs 0
+  channels rgb
+  color {{parent.CurveTool5.maxlumapixvalue.r==0?parent.CurveTool5.minlumapixvalue.r:parent.CurveTool5.maxlumapixvalue.r} {parent.CurveTool5.maxlumapixvalue.g==0?parent.CurveTool5.minlumapixvalue.g:parent.CurveTool5.maxlumapixvalue.g} {parent.CurveTool5.maxlumapixvalue.b==0?parent.CurveTool5.minlumapixvalue.b:parent.CurveTool5.maxlumapixvalue.b} {curve}}
+  name Constant2
+  xpos 651
+  ypos 1220
+ }
+ Merge2 {
+  inputs 2
+  name Merge6
+  xpos 460
+  ypos 1244
+ }
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue none}
+  expr0 r/value
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 g/value
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 b/value
+  name Expression3
+  xpos 460
+  ypos 1294
+  addUserKnob {20 User}
+  addUserKnob {7 value}
+  value 10000
+ }
+ CurveTool {
+  operation "Max Luma Pixel"
+  avgframes 1
+  ROI {{curve} {curve} {input.width} {input.height}}
+  autocropdata {320 180 960 540}
+  intensitydata {{curve x1 0 x26 0 0 -148.8717572} {curve x1 0 x26 0 0 -148.8717572} {curve x1 0 x26 0 0 -148.8717572} 0.9720961256}
+  maxlumapixdata {{curve x1 1012 x22 0 x26 1710 x51 1823 1919 493 x151 527 x1001 3829 x1009 2281 x1042 2270 2282 2312} {curve x1 451 x22 0 x26 331 x51 6 103 0 x151 0 x1001 2089 x1009 1650 x1042 1692 1744 1966}}
+  maxlumapixvalue {{curve x1 0.02339966223 x22 1 x26 233.9967651 x51 0.02240000851 230.3513489 0.01769321598 x151 0.01795425639 x1001 224.0000458 x1009 72.818367 x1042 72.63994598 72.20144653 75.62488556} {curve x1 0.02339966223 x22 1 x26 233.9967651 x51 0.02240000851 230.3513489 0.01769321598 x151 0.01795425639 x1001 224.0000458 x1009 72.818367 x1042 72.63994598 72.20144653 75.62488556} {curve x1 0.02339966223 x22 1 x26 233.9967651 x51 0.02240000851 230.3513489 0.01769321598 x151 0.01795425639 x1001 224.0000458 x1009 72.818367 x1042 72.63994598 72.20144653 75.62488556}}
+  minlumapixdata {{curve x1 348 x22 0 x26 542 x51 881 1104 843 x151 805 x1001 3574 x1009 0 x1042 0 0 0} {curve x1 835 x22 604 x26 91 x51 597 0 791 x151 997 x1001 1192 x1009 817 x1042 844 869 893}}
+  minlumapixvalue {{curve x1 6.871288747e-07 x51 5.603920883e-08 2.041125668e-08 1.436468011e-08} {curve x1 6.871288747e-07 x51 5.603920883e-08 2.041125668e-08 1.436468011e-08} 1.436468011e-08}
+  name CurveTool1
+  xpos 460
+  ypos 1391
+ }
+ NoOp {
+  name MinValueExtractor1
+  tile_color 0xff00ff
+  xpos 313
+  ypos 1391
+  addUserKnob {20 User}
+  addUserKnob {22 click T "#POSITION MESH\n#CREATED BY PEDRO ANDRADE\n#2019\n\n\n#FRAMES AND INTERVALS\nfirstFrame = int(nuke.root().knob('first_frame').value())\nlastFrame = int(nuke.root().knob('last_frame').value())\nincrement = int(((lastFrame-firstFrame)+1)*25/100)\n\n\n#RUNNING CURVE TOOL\nnuke.toNode('CurveTool5').knob('maxlumapixvalue').clearAnimated()\nnuke.execute(nuke.toNode('CurveTool5'),firstFrame,lastFrame, increment)\n\nnuke.toNode('CurveTool1').knob('minlumapixvalue').clearAnimated()\nnuke.execute(nuke.toNode('CurveTool1'),firstFrame,lastFrame, increment)\n\n\n#EXTRATING ANIMATION VALUES\nknob = nuke.toNode('CurveTool1').knob('minlumapixvalue')\nanimCurve = knob.animation( 1 ) \n\nframesList = \[]\nvaluesList = \[]\nfor n in animCurve.keys():\n    xValue = n.x\n    yValue = n.y\n\n    framesList.append(xValue)\n    valuesList.append(yValue)\n\ndict = \{\}\nfor n in range(len(valuesList)):\n    dict\[valuesList\[n]] = framesList\[n]\n\n\n#EXTRACTION MIN LUMA PIXEL AND ITS FRAME\n\nminLuma = min(valuesList)\nprint 'minLuma: ' + str(minLuma)\nminFrame = int(dict\[minLuma])\nprint 'minFrame: ' + str(minFrame)\n\n\n\n##########################################################\n#COPY MIN LUMA VALUE TO COMPARISON CARD\nif not abs(minLuma) < 1:\n    nuke.toNode('Card9').knob('z').setValue(abs(minLuma))\nelse:\n    nuke.toNode('Card9').knob('z').setValue(1)\n##########################################################\n\n\n#COPY MAX VALUE TO CARD AND Z KNOB\ndivideMultiplierFactor = nuke.toNode('Expression3').knob('value').value()\ncamZ = abs(nuke.toNode('CameraMaster').knob('translate').getValueAt(minFrame)\[2])\nprint 'camZ @ minFrame: ' + str(camZ)\n\nzCardValue = camZ+(abs(minLuma)*divideMultiplierFactor)\nprint 'zCardValue: ' + str(zCardValue)\n\nnuke.toNode('Card1').knob('z').setExpression('1.15*(%s+additional_depth+parent.depth_compensation.depth_compensation(%s)-(CameraMaster.translate.z(%s)-CameraMaster.translate.z))' %(zCardValue,minFrame,minFrame))\n\n\n\n#ENABLING DISPLACE GEO AND CARD\n\nnuke.toNode('Card1').knob('disable').setValue(False)\nnuke.toNode('DisplaceGeo2').knob('disable').setValue(False)\n\n\n\n##########################################################\n#RUNNING COMPARISON CURVE TOOLS\nnuke.toNode('CurveTool3').knob('maxlumapixvalue').clearAnimated()\nnuke.toNode('CurveTool4').knob('minlumapixvalue').clearAnimated()\n\n\nnuke.execute(nuke.toNode('CurveTool3'),minFrame,minFrame)\nnuke.execute(nuke.toNode('CurveTool4'),minFrame,minFrame)\n\n##########################################################\n\n\n\n\n\n\n" +STARTLINE}
+ }
+push $N28212eb0
+ Dot {
+  name Dot10
+  xpos 1052
+  ypos 694
+ }
+set N5ca33eb0 [stack 0]
+push $N3c435810
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos 1018
+  ypos 812
+ }
+ Dot {
+  name Dot11
+  xpos 1052
+  ypos 1113
+ }
+push $N5ca33eb0
+push $Ne47da590
+push $N3c2f25d0
+push $N601b8d80
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  shutteroffset centred
+  motion_vectors_type off
+  MB_channel forward
+  output_shader_vectors true
+  P_channel P
+  name ScanlineRender1
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos 1490
+  ypos 263
+ }
+ Shuffle {
+  in P
+  name Shuffle8
+  label "\[value in]"
+  xpos 1490
+  ypos 595
+ }
+set Ndaf30a80 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy4
+  xpos 1490
+  ypos 687
+ }
+ FilterErode {
+  size {{100/(parent.mesh_filtering*-1)==-inf?0:100/(parent.mesh_filtering*-1)}}
+  name FilterErode2
+  xpos 1490
+  ypos 779
+ }
+ Premult {
+  name Premult4
+  xpos 1490
+  ypos 862
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Reformat1.box_width}}
+  box_height {{parent.Reformat1.box_height}}
+  box_fixed true
+  name Reformat2
+  xpos 1490
+  ypos 941
+ }
+push $Ndaf30a80
+ Crop {
+  box {{(width/2)+1} {(height/2)+1} {(width/2)+1} {(height/2)+1}}
+  reformat true
+  crop false
+  name Crop1
+  xpos 1679
+  ypos 599
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Reformat1.box_width}}
+  box_height {{parent.Reformat1.box_height}}
+  box_fixed true
+  name Reformat4
+  xpos 1679
+  ypos 1006
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 1490
+  ypos 1006
+ }
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos 1490
+  ypos 1110
+ }
+ Dot {
+  name Dot6
+  xpos 1524
+  ypos 1573
+ }
+push $Ne46200a0
+push $N5c971f50
+ Dot {
+  name Dot5
+  xpos 848
+  ypos 1273
+ }
+ Project3D2 {
+  inputs 2
+  name Project3D2
+  xpos 2045
+  ypos 1269
+ }
+push $N3c2f6460
+ Dot {
+  name Dot9
+  xpos 2250
+  ypos 1443
+ }
+ ApplyMaterial {
+  inputs 2
+  name ApplyMaterial1
+  xpos 2045
+  ypos 1441
+  disable {{parent.no_projection}}
+ }
+ DisplaceGeo {
+  inputs 2
+  source "rgb absolute"
+  scale 1
+  name DisplaceGeo2
+  xpos 2045
+  ypos 1569
+  disable true
+ }
+ Scene {
+  name Scene1
+  xpos 2056
+  ypos 1670
+ }
+set N93ff6ce0 [stack 0]
+ Output {
+  name Output1
+  xpos 2045
+  ypos 1841
+ }
+push $N93ff6ce0
+push $N5c95d570
+ Viewer {
+  inputs 2
+  frame_range 1-100
+  input_number 1
+  name Viewer1
+  xpos 1960
+  ypos -9
+ }
+end_group

@@ -1,0 +1,356 @@
+set cut_paste_input [stack 0]
+version 12.2 v8
+push $cut_paste_input
+Group {
+ name PA_SpacesConverter2
+ knobChanged "\n\nif nuke.thisNode().knob('ref_frame_checkbox').value() == True:\n    nuke.thisNode().knob('ref_frame').setEnabled(True)\n    nuke.thisNode().knob('current_frame').setEnabled(True)\n\nelse:\n    nuke.thisNode().knob('ref_frame').setEnabled(False)\n    nuke.thisNode().knob('current_frame').setEnabled(False)\n\nif nuke.thisNode().knob('space').value() == 'UV SPACE':\n    nuke.thisNode().knob('distortion_fix').setVisible(True)\nelse:\n    nuke.thisNode().knob('distortion_fix').setVisible(False)\n\n"
+ tile_color 0xff5f00ff
+ label "Space: \[value space]"
+ note_font "Bitstream Vera Sans Bold"
+ selected true
+ xpos 57644
+ ypos 16952
+ addUserKnob {20 User}
+ addUserKnob {6 ref_frame_checkbox l "Referece Frame" +STARTLINE}
+ addUserKnob {3 ref_frame l "" -STARTLINE +DISABLED}
+ addUserKnob {22 current_frame l "Current Frame" -STARTLINE +DISABLED T nuke.thisNode().knob('ref_frame').setValue(nuke.frame())}
+ addUserKnob {26 ""}
+ addUserKnob {4 space l "From WORLD SPACE to ->" M {"CAMERA / OBJECT SPACE" "NDC / PROJECTION SPACE" "UV SPACE" "" "" "" "" "" ""}}
+ space "UV SPACE"
+ addUserKnob {7 distortion_fix l "Distortion Easing" R 0 30}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Spaces Converter v3.0\nCreated by Pedro Andrade\n-2016-"}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/WYrgKWR6OM4" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x71c67100
+  label "WORLD TO OBJECT"
+  note_font_size 42
+  xpos 3992
+  ypos -1654
+  bdwidth 1257
+  bdheight 981
+  z_order -1
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode10
+  tile_color 0xd15271ff
+  label ROTATION
+  note_font_size 42
+  xpos 4659
+  ypos -1130
+  bdwidth 207
+  bdheight 144
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode11
+  tile_color 0x7171c600
+  label TRANSLATION
+  note_font_size 42
+  xpos 4659
+  ypos -1334
+  bdwidth 282
+  bdheight 137
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode12
+  tile_color 0x7171c600
+  label "PROJECTION \nTRANSFORM"
+  note_font_size 42
+  xpos 5881
+  ypos -250
+  bdwidth 722
+  bdheight 943
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0xaaaaaa00
+  label INPUT
+  note_font_size 42
+  xpos 2985
+  ypos -1911
+  bdwidth 153
+  bdheight 142
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode9
+  tile_color 0xaaaaaa00
+  label CAM
+  note_font_size 42
+  xpos 5017
+  ypos -1566
+  bdheight 110
+ }
+ Input {
+  inputs 0
+  name cam_axis
+  xpos 5023
+  ypos -1490
+  number 1
+ }
+ Camera2 {
+  inputs 0
+  translate {{"parent.ref_frame_checkbox==true ? \[topnode parent.input1].translate.x(parent.ref_frame):\[topnode parent.input1].translate.x"} {"parent.ref_frame_checkbox==true ? \[topnode parent.input1].translate.y(parent.ref_frame):\[topnode parent.input1].translate.y"} {"parent.ref_frame_checkbox==true ? \[topnode parent.input1].translate.z(parent.ref_frame):\[topnode parent.input1].translate.z"}}
+  rotate {{"parent.ref_frame_checkbox==true ? \[topnode parent.input1].rotate.x(parent.ref_frame):\[topnode parent.input1].rotate.x"} {"parent.ref_frame_checkbox==true ? \[topnode parent.input1].rotate.y(parent.ref_frame):\[topnode parent.input1].rotate.y"} {"parent.ref_frame_checkbox==true ? \[topnode parent.input1].rotate.z(parent.ref_frame):\[topnode parent.input1].rotate.z"}}
+  focal {{"\[topnode parent.input1].focal"}}
+  haperture {{"\[topnode parent.input1].haperture"}}
+  vaperture {{"\[topnode parent.input1].vaperture"}}
+  near {{"\[topnode parent.input1].near"}}
+  far {{"\[topnode parent.input1].far"}}
+  name CameraMaster
+  xpos 5040
+  ypos -1280
+ }
+ Input {
+  inputs 0
+  name position_pass
+  xpos 3013
+  ypos -1810
+ }
+ Dot {
+  name Dot3
+  xpos 3047
+  ypos -1726
+ }
+ Dot {
+  name Dot19
+  xpos 3047
+  ypos -1244
+ }
+set N9ca98c00 [stack 0]
+ Dot {
+  name Dot1
+  xpos 3047
+  ypos 993
+ }
+push $N9ca98c00
+ Dot {
+  name Dot2
+  xpos 4036
+  ypos -1244
+ }
+set Ncf59b800 [stack 0]
+ Add {
+  value {{parent.CameraMaster.matrix.3*-1} {parent.CameraMaster.matrix.7*-1} {parent.CameraMaster.matrix.11*-1} {curve}}
+  name Add2
+  xpos 4669
+  ypos -1254
+ }
+ ColorMatrix {
+  matrix {
+      {{parent.CameraMaster.world_matrix.0} {parent.CameraMaster.world_matrix.1} {parent.CameraMaster.world_matrix.2}}
+      {{parent.CameraMaster.world_matrix.4} {parent.CameraMaster.world_matrix.5} {parent.CameraMaster.world_matrix.6}}
+      {{parent.CameraMaster.world_matrix.8} {parent.CameraMaster.world_matrix.9} {parent.CameraMaster.world_matrix.10}}
+    }
+  invert true
+  name ColorMatrix1
+  xpos 4669
+  ypos -1050
+ }
+ Dot {
+  name Dot18
+  xpos 4703
+  ypos -784
+ }
+push $Ncf59b800
+add_layer {PObject PObject.x PObject.y PObject.z}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 PObject.x
+  from1 rgba.green
+  to1 PObject.y
+  from2 rgba.blue
+  to2 PObject.z
+  name Copy7
+  xpos 4002
+  ypos -801
+ }
+ Shuffle {
+  in PObject
+  alpha white
+  name Shuffle3
+  label "\[value in]"
+  xpos 4002
+  ypos -505
+ }
+set Ncf59a400 [stack 0]
+ Dot {
+  name Dot17
+  xpos 6000
+  ypos -495
+ }
+ NoOp {
+  name FOV1
+  tile_color 0xffffff
+  note_font "Bitstream Vera Sans Bold"
+  xpos 5966
+  ypos -124
+  addUserKnob {20 User}
+  addUserKnob {7 haperture l "h aperture" R 0 180}
+  haperture {{parent.CameraMaster.haperture}}
+  addUserKnob {7 vaperture l "v aperture" R 0 180}
+  vaperture {{parent.CameraMaster.vaperture}}
+  addUserKnob {7 focallenght l "focal lenght" R 0 180}
+  focallenght {{parent.CameraMaster.focal}}
+  addUserKnob {26 ""}
+  addUserKnob {7 v_fov l "calculated  vertical FOV (rad)"}
+  v_fov {{"(2 * atan(haperture / (2 * focallenght)))/2"}}
+  addUserKnob {7 h_fov l "calculated horizontal FOV (rad)"}
+  h_fov {{"(2 * atan(vaperture / (2 * focallenght)))/2"}}
+ }
+ ColorMatrix {
+  matrix {
+      {{1/tan(parent.FOV1.v_fov)} {curve} {curve}}
+      {{curve} {1/tan(parent.FOV1.h_fov)} {curve}}
+      {{curve} {curve} {((parent.CameraMaster.far+parent.CameraMaster.near)/(parent.CameraMaster.far-parent.CameraMaster.near))*-1}}
+    }
+  name ColorMatrix2
+  xpos 5966
+  ypos -63
+ }
+ Dot {
+  name Dot20
+  xpos 6000
+  ypos -6
+ }
+set Ncf599400 [stack 0]
+ Dot {
+  name Dot21
+  xpos 6120
+  ypos -6
+ }
+ Dot {
+  name Dot22
+  xpos 6120
+  ypos 179
+ }
+push $Ncf599400
+ Add {
+  value {0 0 {((2*(parent.CameraMaster.near*parent.CameraMaster.far))/(parent.CameraMaster.far-parent.CameraMaster.near))*-1} 0}
+  name Add4
+  xpos 5966
+  ypos 63
+ }
+ Copy {
+  inputs 2
+  from0 rgba.blue
+  to0 rgba.alpha
+  name Copy8
+  xpos 5966
+  ypos 169
+ }
+ Expression {
+  expr0 r/a
+  expr1 g/a
+  expr2 b/a
+  name Expression1
+  tile_color 0xffffff
+  label "division by alpha (w component == b channel)"
+  xpos 5966
+  ypos 310
+ }
+set Nd5b5bc00 [stack 0]
+ Dot {
+  name Dot4
+  xpos 6234
+  ypos 320
+ }
+ Dot {
+  name Dot9
+  xpos 6234
+  ypos 394
+ }
+set Nd5b5a400 [stack 0]
+ Dot {
+  name Dot8
+  xpos 6499
+  ypos 394
+ }
+ Expression {
+  expr0 "(x+0.5) / width"
+  expr1 "(y+0.5) / height"
+  name Expression3
+  tile_color 0xdfff00ff
+  label "PURE STMAP"
+  xpos 6466
+  ypos 467
+ }
+push $Nd5b5a400
+ Expression {
+  expr0 (r+1)/2
+  expr1 (g+1)/2
+  expr2 0
+  name Expression5
+  tile_color 0xffff00ff
+  label "normalizing r and g channels\nzeroing b channel"
+  xpos 6201
+  ypos 462
+ }
+set Nd5b59800 [stack 0]
+ FrameHold {
+  first_frame {{ref_frame}}
+  name FrameHold1
+  xpos 6331
+  ypos 467
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge1
+  xpos 6394
+  ypos 571
+ }
+push $Nd5b59800
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge2
+  xpos 6201
+  ypos 571
+  disable {{!ref_frame_checkbox}}
+ }
+ Blur {
+  channels rgba
+  size {{distortion_fix}}
+  name Blur1
+  label "(\[value channels])"
+  selected true
+  xpos 6201
+  ypos 636
+ }
+ Dot {
+  name Dot5
+  xpos 6234
+  ypos 848
+ }
+push $Nd5b5bc00
+push $Ncf59a400
+ Switch {
+  inputs 3
+  which {{space}}
+  name Switch1
+  xpos 4002
+  ypos 844
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 4002
+  ypos 986
+ }
+ Output {
+  name Output1
+  xpos 4002
+  ypos 1265
+ }
+end_group

@@ -1,0 +1,44 @@
+
+Group {
+ name PA_ChromaAberration
+ tile_color 0xff5f00ff
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -4106
+ ypos -59
+ addUserKnob {20 User}
+ addUserKnob {7 AberrationAmount l "Horizontal Aberration" R 0 10}
+ addUserKnob {7 VerticalAberrationAmount l "Vertical Aberration" R 0 10}
+ addUserKnob {26 ""}
+ addUserKnob {26 Author l "" +STARTLINE T "ChromaAberration v1.0\nCreated by PedroAndrade\n-2013-"}
+ addUserKnob {26 ""}
+ addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/-l2v0XzaITs')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name img
+  xpos -99
+  ypos -186
+ }
+ TransformMasked {
+  channels {rgba.red -rgba.green -rgba.blue none}
+  translate {{parent.AberrationAmount i} {parent.VerticalAberrationAmount i}}
+  center {960 540}
+  name Master1
+  xpos -99
+  ypos -134
+ }
+ TransformMasked {
+  channels {-rgba.red -rgba.green rgba.blue none}
+  translate {{parent.Master1.translate.x*-1 i} {parent.Master1.translate.y*-1 i}}
+  center {960 540}
+  name Slave1
+  xpos -99
+  ypos -76
+ }
+ Output {
+  name Output1
+  xpos -99
+  ypos 24
+ }
+end_group

@@ -1,0 +1,161 @@
+
+Group {
+ name PA_PositionBreakup
+ tile_color 0xff5f00ff
+ label "Type: \[value mode]"
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -1806
+ ypos -65
+ addUserKnob {20 User}
+ addUserKnob {41 mode l Type T controller.mode}
+ addUserKnob {6 truncated l Truncated -STARTLINE}
+ addUserKnob {6 Clamp -STARTLINE}
+ Clamp true
+ addUserKnob {26 ""}
+ addUserKnob {41 octaves l Octaves T controller.octaves}
+ addUserKnob {41 lucanarity l Lucanarity T controller.lucanarity}
+ addUserKnob {41 gain l Gain T controller.gain}
+ addUserKnob {41 scale l Scale T controller.scale}
+ addUserKnob {41 z l Seed T controller.z}
+ addUserKnob {26 ""}
+ addUserKnob {7 flickeringreduction l "Flickering Reduction" R 1 5}
+ flickeringreduction 1
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Position Breakup v1.1\nCreated by Pedro Andrade\n-2016-"}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/I46ueBOQC8c" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name position_pass
+  xpos -908
+  ypos -810
+ }
+set N1202a260 [stack 0]
+ Transform {
+  scale {{flickeringreduction}}
+  center {{input.width/2} {input.height/2}}
+  black_outside false
+  name Transform1
+  xpos -908
+  ypos -730
+ }
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue none}
+  expr0 trunc(r)
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  expr1 trunc(g)
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  expr2 trunc(b)
+  name Expression1
+  xpos -908
+  ypos -633
+  disable {{!truncated}}
+ }
+ Grade {
+  multiply {{1/(parent.controller.scale)}}
+  add {{parent.controller.z}}
+  black_clamp false
+  name Grade4
+  xpos -908
+  ypos -530
+ }
+set N1204b480 [stack 0]
+ Expression {
+  temp_name0 octaves
+  temp_expr0 parent.controller.octaves
+  temp_name1 lucanarity
+  temp_expr1 parent.controller.lucanarity
+  temp_name2 gain
+  temp_expr2 parent.controller.gain
+  channel0 rgba
+  expr0 "abs(fBm(r, g, b, octaves, lucanarity, gain))"
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  name Expression5
+  label turbulence
+  xpos -810
+  ypos -456
+ }
+push $N1204b480
+ Expression {
+  temp_name0 octaves
+  temp_expr0 parent.controller.octaves
+  temp_name1 lucanarity
+  temp_expr1 parent.controller.lucanarity
+  temp_name2 gain
+  temp_expr2 parent.controller.gain
+  channel0 rgba
+  expr0 "fBm(r, g, b, octaves, lucanarity, gain)"
+  channel1 {-rgba.red rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green rgba.blue none}
+  name Expression6
+  label fBm
+  xpos -1000
+  ypos -456
+ }
+ Switch {
+  inputs 2
+  which {{parent.controller.mode}}
+  name Switch2
+  xpos -907
+  ypos -210
+ }
+ BlackOutside {
+  name BlackOutside1
+  xpos -907
+  ypos -130
+ }
+ Clamp {
+  name Clamp1
+  xpos -907
+  ypos -88
+  disable {{!Clamp}}
+ }
+ Transform {
+  scale {{1/parent.Transform1.scale}}
+  center {{input.width/2} {input.height/2}}
+  black_outside false
+  name Transform2
+  xpos -907
+  ypos -10
+ }
+ Output {
+  name Output1
+  xpos -907
+  ypos 110
+ }
+ NoOp {
+  inputs 0
+  name controller
+  tile_color 0xff00ff
+  xpos -349
+  ypos -210
+  hide_input true
+  addUserKnob {20 User}
+  addUserKnob {4 mode l Mode M {fBm Turbulence}}
+  addUserKnob {26 ""}
+  addUserKnob {7 octaves l Octaves R 1 5}
+  octaves 5
+  addUserKnob {7 lucanarity l Lucanarity R 1 5}
+  lucanarity 5
+  addUserKnob {7 gain l Gain R 1 5}
+  gain 1
+  addUserKnob {7 scale l Scale R 1 5}
+  scale 1
+  addUserKnob {7 z l Seed R 1 10}
+  z 1
+ }
+push $N1202a260
+push 0
+ Viewer {
+  inputs 2
+  frame 1055
+  frame_range 1001-1078
+  fps 25
+  input_number 1
+  name Viewer1
+  xpos -1360
+  ypos -210
+ }
+end_group

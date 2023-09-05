@@ -1,0 +1,758 @@
+
+Group {
+ name PA_ExpGlow
+ knobChanged "\n\nif nuke.thisNode().knob('freqfilterbypass').value() == True:\n    nuke.thisNode().knob('highendfilter').setEnabled(False)\n    nuke.thisNode().knob('lowendfilter').setEnabled(False)\n\nelse:\n    nuke.thisNode().knob('highendfilter').setEnabled(True)\n    nuke.thisNode().knob('lowendfilter').setEnabled(True)\n    \n\n"
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -3306
+ ypos -59
+ addUserKnob {20 user l User}
+ addUserKnob {4 viewer l Viewer M {"Filtered Input" "Final Result" ""}}
+ viewer "Final Result"
+ addUserKnob {6 effectonly l "Effect Only" +STARTLINE}
+ addUserKnob {6 freqfilterbypass l "Freq Filter Bypass" -STARTLINE}
+ freqfilterbypass true
+ addUserKnob {6 crop l Crop -STARTLINE}
+ crop true
+ addUserKnob {26 ""}
+ addUserKnob {7 highendfilter l "High End Filter" +DISABLED}
+ addUserKnob {7 lowendfilter l "Low End Filter" +DISABLED}
+ lowendfilter 1
+ addUserKnob {26 ""}
+ addUserKnob {7 Amount}
+ addUserKnob {7 brightness l Brightness R 0 3}
+ addUserKnob {7 tolerance l Fluorescence}
+ addUserKnob {41 white l Color T Grade1.white}
+ addUserKnob {26 ""}
+ addUserKnob {7 falloff l Falloff R -1 1}
+ addUserKnob {7 saturation l Saturation}
+ saturation 1
+ addUserKnob {41 mode l "    Math" -STARTLINE T Saturation2.mode}
+ addUserKnob {7 aspect_ratio l "Aspect Ratio" R 0 300}
+ addUserKnob {26 ""}
+ addUserKnob {7 mix l Mix}
+ mix 1
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Exp Glow v4.0\nCreated by Pedro Andrade\n-2016-"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x2a5b8eff
+  label VIEWER
+  note_font_size 42
+  xpos 3631
+  ypos 4870
+  bdwidth 181
+  bdheight 151
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode10
+  tile_color 0xaa7256ff
+  label ANAM
+  note_font_size 42
+  xpos 2439
+  ypos 1324
+  bdwidth 261
+  bdheight 163
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode11
+  tile_color 0xc353c6ff
+  label CENTRAL
+  note_font_size 42
+  xpos 2131
+  ypos 1624
+  bdwidth 256
+  bdheight 151
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode12
+  tile_color 0x7192c6ff
+  label BRIGHTNESS
+  note_font_size 42
+  xpos 3239
+  ypos 3504
+  bdwidth 290
+  bdheight 157
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode13
+  tile_color 0x376c8eff
+  label "EFFECT ONLY"
+  note_font_size 42
+  xpos 3631
+  ypos 4605
+  bdwidth 283
+  bdheight 149
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode14
+  tile_color 0x8e378aff
+  label SATURATION
+  note_font_size 42
+  xpos 2742
+  ypos 3764
+  bdwidth 277
+  bdheight 151
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode15
+  tile_color 0x7c8e37ff
+  label COLOR
+  note_font_size 42
+  xpos 3239
+  ypos 3190
+  bdwidth 222
+  bdheight 145
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode16
+  tile_color 0x7c8e37ff
+  label COLOR
+  note_font_size 42
+  xpos 2759
+  ypos 3190
+  bdwidth 222
+  bdheight 145
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x8e8e3800
+  label "FINAL MIX"
+  note_font_size 42
+  xpos 2706
+  ypos 4445
+  bdwidth 231
+  bdheight 150
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x7192c6ff
+  label BRIGHTNESS
+  note_font_size 42
+  xpos 2759
+  ypos 3504
+  bdwidth 290
+  bdheight 157
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x71c67100
+  label MASTER
+  note_font_size 42
+  xpos 1875
+  ypos 1328
+  bdwidth 208
+  bdheight 169
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x71c67100
+  label "FALL OFF"
+  note_font_size 42
+  xpos 1087
+  ypos 1670
+  bdwidth 253
+  bdheight 152
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x8e8e3800
+  label "LUMA SELECTION"
+  note_font_size 42
+  xpos 884
+  ypos 844
+  bdwidth 406
+  bdheight 348
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode7
+  tile_color 0x8e8e3800
+  label "FINAL MIX"
+  note_font_size 42
+  xpos 3631
+  ypos 4344
+  bdwidth 231
+  bdheight 150
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode8
+  tile_color 0x8e378aff
+  label SATURATION
+  note_font_size 42
+  xpos 3222
+  ypos 3764
+  bdwidth 277
+  bdheight 151
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode9
+  tile_color 0x717cc6ff
+  label MULTIPLIER
+  note_font_size 42
+  xpos 2121
+  ypos 1324
+  bdwidth 244
+  bdheight 170
+ }
+ Blur {
+  inputs 0
+  size {{parent.Amount}}
+  crop false
+  name Blur29
+  xpos 1931
+  ypos 1404
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos 1144
+  ypos 230
+ }
+ Dot {
+  name Dot32
+  xpos 1178
+  ypos 440
+ }
+set N16e4ca70 [stack 0]
+ Dot {
+  name Dot42
+  xpos 1178
+  ypos 720
+ }
+set N16e51330 [stack 0]
+ Dot {
+  name Dot43
+  xpos 1434
+  ypos 720
+ }
+ Dot {
+  name Dot44
+  xpos 1434
+  ypos 1320
+ }
+push $N16e51330
+ Dot {
+  name Dot35
+  xpos 1178
+  ypos 934
+ }
+set N16e5ef40 [stack 0]
+ Keyer {
+  operation "luminance key"
+  range {{parent.highendfilter} {parent.lowendfilter} 1 1}
+  name Keyer11
+  xpos 894
+  ypos 924
+ }
+ Dot {
+  name Dot36
+  xpos 928
+  ypos 1054
+ }
+set N16e6dca0 [stack 0]
+push $N16e5ef40
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy14
+  xpos 1144
+  ypos 1044
+ }
+ Premult {
+  name Premult11
+  xpos 1144
+  ypos 1130
+ }
+ Switch {
+  inputs 2
+  which {{parent.freqfilterbypass}}
+  name Switch1
+  xpos 1145
+  ypos 1316
+ }
+ Grade {
+  blackpoint {{parent.tolerance}}
+  whitepoint {{(blackpoint+falloff*-1+1)}}
+  name Grade34
+  xpos 1145
+  ypos 1750
+ }
+ Dot {
+  name Dot22
+  xpos 1179
+  ypos 2160
+ }
+set N16e9fd50 [stack 0]
+ Dot {
+  name Dot40
+  xpos 1374
+  ypos 2160
+ }
+set N16ea4840 [stack 0]
+ Dot {
+  name Dot24
+  xpos 1572
+  ypos 2160
+ }
+set N16ea9160 [stack 0]
+ Dot {
+  name Dot25
+  xpos 1751
+  ypos 2160
+ }
+set N16ead790 [stack 0]
+ Dot {
+  name Dot26
+  xpos 1904
+  ypos 2160
+ }
+set N16eb22f0 [stack 0]
+ Dot {
+  name Dot27
+  xpos 2065
+  ypos 2160
+ }
+set N16eb6ce0 [stack 0]
+ Dot {
+  name Dot28
+  xpos 2225
+  ypos 2160
+ }
+set N16ebb390 [stack 0]
+ Dot {
+  name Dot29
+  xpos 2369
+  ypos 2160
+ }
+set N16ebfe90 [stack 0]
+ Dot {
+  name Dot30
+  xpos 2522
+  ypos 2160
+ }
+set N16ec4780 [stack 0]
+ Dot {
+  name Dot31
+  xpos 2683
+  ypos 2160
+ }
+set N16ec8df0 [stack 0]
+ Dot {
+  name Dot23
+  xpos 2831
+  ypos 2160
+ }
+set N16ecd6a0 [stack 0]
+ Dot {
+  name Dot41
+  xpos 2968
+  ypos 2160
+ }
+set N16ed21f0 [stack 0]
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur31
+  label 512
+  xpos 2934
+  ypos 2304
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop12
+  xpos 2934
+  ypos 2370
+  disable {{!parent.crop}}
+ }
+push $N16e9fd50
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur20
+  label "0.25\n\n\n"
+  xpos 1145
+  ypos 2298
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop1
+  xpos 1145
+  ypos 2364
+  disable {{!parent.crop}}
+ }
+push $N16eb22f0
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur22
+  label 4
+  xpos 1870
+  ypos 2304
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop5
+  xpos 1870
+  ypos 2370
+  disable {{!parent.crop}}
+ }
+push $N16eb6ce0
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur23
+  label 8
+  xpos 2031
+  ypos 2304
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop6
+  xpos 2031
+  ypos 2370
+  disable {{!parent.crop}}
+ }
+push $N16ebb390
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur24
+  label 16
+  xpos 2191
+  ypos 2304
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop7
+  xpos 2191
+  ypos 2370
+  disable {{!parent.crop}}
+ }
+push $N16ebfe90
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur25
+  label 32
+  xpos 2335
+  ypos 2304
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop8
+  xpos 2335
+  ypos 2370
+  disable {{!parent.crop}}
+ }
+push $N16ec4780
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur26
+  label 64
+  xpos 2488
+  ypos 2304
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop9
+  xpos 2488
+  ypos 2370
+  disable {{!parent.crop}}
+ }
+push $N16ecd6a0
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur18
+  label 256
+  xpos 2797
+  ypos 2298
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop11
+  xpos 2797
+  ypos 2364
+  disable {{!parent.crop}}
+ }
+push $N16ec8df0
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur27
+  label 128
+  xpos 2649
+  ypos 2304
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop10
+  xpos 2649
+  ypos 2370
+  disable {{!parent.crop}}
+ }
+push $N16ead790
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur21
+  label 2
+  xpos 1717
+  ypos 2304
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop4
+  xpos 1717
+  ypos 2370
+  disable {{!parent.crop}}
+ }
+push 0
+push $N16ea9160
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur19
+  label 1
+  xpos 1538
+  ypos 2304
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop3
+  xpos 1538
+  ypos 2370
+  disable {{!parent.crop}}
+ }
+push $N16ea4840
+ Blur {
+  size {{"parent.Blur28.size*\[value label]"} {"parent.Blur28.size*\[value label]"}}
+  crop false
+  name Blur30
+  label "0.5\n\n\n\n"
+  xpos 1340
+  ypos 2304
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  name Crop2
+  xpos 1340
+  ypos 2370
+  disable {{!parent.crop}}
+ }
+ Merge2 {
+  inputs 12+1
+  operation plus
+  name Merge43
+  xpos 2191
+  ypos 2876
+ }
+ Dot {
+  name Dot4
+  xpos 2659
+  ypos 2880
+ }
+ Dot {
+  name Dot5
+  xpos 2803
+  ypos 2880
+ }
+set N1700ae80 [stack 0]
+ Grade {
+  white {{parent.Grade1.white} {parent.Grade1.white} {parent.Grade1.white} {parent.Grade1.white}}
+  name Grade2
+  xpos 2769
+  ypos 3270
+ }
+ Multiply {
+  value {{parent.Multiply8.value}}
+  name Multiply2
+  xpos 2769
+  ypos 3584
+ }
+ Saturation {
+  saturation {{parent.Saturation2.saturation}}
+  name Saturation1
+  xpos 2769
+  ypos 3870
+ }
+ Multiply {
+  value {{parent.Dissolve2.which}}
+  name Multiply1
+  xpos 2769
+  ypos 4504
+ }
+ Dot {
+  name Dot47
+  xpos 2803
+  ypos 4689
+ }
+push $N1700ae80
+push $N16ed21f0
+ Dot {
+  name Dot34
+  xpos 3283
+  ypos 2160
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge44
+  xpos 3249
+  ypos 2876
+ }
+ Grade {
+  white {1 1 1 1}
+  name Grade1
+  xpos 3249
+  ypos 3270
+ }
+ Multiply {
+  value {{parent.brightness}}
+  name Multiply8
+  xpos 3249
+  ypos 3584
+ }
+ Saturation {
+  saturation {{parent.saturation}}
+  name Saturation2
+  xpos 3249
+  ypos 3870
+ }
+ Dot {
+  name Dot37
+  xpos 3283
+  ypos 4160
+ }
+ Dot {
+  name Dot38
+  xpos 3462
+  ypos 4160
+ }
+push $N16e4ca70
+ Dot {
+  name Dot33
+  xpos 3675
+  ypos 440
+ }
+ Dot {
+  name Dot39
+  xpos 3675
+  ypos 3760
+ }
+set N17090780 [stack 0]
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge54
+  xpos 3641
+  ypos 4156
+ }
+push $N17090780
+ Dot {
+  name Dot45
+  xpos 4026
+  ypos 3760
+ }
+ Dot {
+  name Dot46
+  xpos 4026
+  ypos 4434
+ }
+ Dissolve {
+  inputs 2
+  which {{parent.mix}}
+  name Dissolve2
+  xpos 3641
+  ypos 4424
+ }
+ Switch {
+  inputs 2
+  which {{parent.effectonly}}
+  name Switch2
+  xpos 3641
+  ypos 4685
+ }
+push $N16e6dca0
+ Dot {
+  name Dot3
+  xpos 928
+  ypos 1514
+ }
+push $N16e51330
+ Dot {
+  name Dot2
+  xpos 429
+  ypos 720
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 395
+  ypos 1504
+ }
+ Premult {
+  name Premult1
+  xpos 395
+  ypos 1630
+ }
+ Dot {
+  name Dot1
+  xpos 429
+  ypos 4954
+ }
+ Switch {
+  inputs 2
+  which {{viewer}}
+  name Switch3
+  xpos 3641
+  ypos 4950
+ }
+ Output {
+  name Output1
+  xpos 3641
+  ypos 5390
+ }
+ Multiply {
+  inputs 0
+  value {{parent.aspect_ratio}}
+  name Multiply7
+  xpos 2459
+  ypos 1404
+ }
+ Multiply {
+  inputs 0
+  name Multiply6
+  xpos 2170
+  ypos 1405
+ }
+ Blur {
+  inputs 0
+  size {{parent.Blur29.size.w*parent.Multiply6.value+parent.Multiply7.value} {parent.Blur29.size.w*parent.Multiply6.value}}
+  name Blur28
+  xpos 2202
+  ypos 1704
+ }
+end_group

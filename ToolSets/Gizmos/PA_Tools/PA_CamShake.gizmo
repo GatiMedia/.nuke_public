@@ -1,0 +1,60 @@
+
+push $cut_paste_input
+Group {
+ name PA_CamShake
+ tile_color 0xff5f00ff
+ label "\[if \{\[value motionblur]>0\} \{return \"W/ MOBLUR\"\} \{return \"WO/ MOBLUR\"\}]\n\[if \{\[value invert_matrix]==true\} \{return \"INVERTED\"\} \{return \"\"\}]\t"
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos 60
+ ypos -263
+ mapsize {0.15 0.15}
+ addUserKnob {20 User}
+ addUserKnob {7 xScale R -100 100}
+ addUserKnob {7 xSpeed R -1 1}
+ addUserKnob {7 xSeed R -100 100}
+ addUserKnob {7 xOffset R -100 100}
+ addUserKnob {26 ""}
+ addUserKnob {7 yScale R -100 100}
+ addUserKnob {7 ySpeed R -1 1}
+ addUserKnob {7 ySeed R -100 100}
+ addUserKnob {7 yOffset R -100 100}
+ addUserKnob {26 ""}
+ addUserKnob {7 rScale R -1 1}
+ addUserKnob {7 rSpeed R -1 1}
+ addUserKnob {7 rSeed R -100 100}
+ addUserKnob {7 rOffset R -100 100}
+ addUserKnob {26 ""}
+ addUserKnob {41 motionblur T Transform1.motionblur}
+ addUserKnob {41 shutter T Transform1.shutter}
+ addUserKnob {26 ""}
+ addUserKnob {41 invert_matrix l Inverted T Transform1.invert_matrix}
+ addUserKnob {26 ""}
+ addUserKnob {26 warning l "" -STARTLINE T "DO NOT TWEAK THIS VALUES  ->  "}
+ addUserKnob {41 CamShakeResult l "" -STARTLINE T Transform1.translate}
+ addUserKnob {3 r -STARTLINE}
+ r {{Transform1.rotate}}
+ addUserKnob {26 ""}
+ addUserKnob {26 Author l "" +STARTLINE T "CamShake v2.2\nCreated by Pedro Andrade\n-2014-"}
+ addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/DjVsacV_p08')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 17
+  ypos -133
+ }
+ Transform {
+  translate {{xScale*random(frame*xSpeed+xSeed)+xOffset} {yScale*random(frame*ySpeed+ySeed)+yOffset}}
+  rotate {{rScale*random(frame*rSpeed+rSeed)+rOffset}}
+  center {960 542}
+  name Transform1
+  xpos 17
+  ypos -90
+ }
+ Output {
+  name Output1
+  xpos 17
+  ypos 7
+ }
+end_group

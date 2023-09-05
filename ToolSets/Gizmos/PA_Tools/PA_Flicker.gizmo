@@ -1,0 +1,217 @@
+
+push $cut_paste_input
+Group {
+ name PA_Flicker
+ knobChanged "\n\n\n\nif nuke.thisNode().knob('mode').value() == 'Random':\n    nuke.thisNode().knob('random').setVisible(True)\n    nuke.thisNode().knob('noise').setVisible(False)\n    nuke.thisNode().knob('random_on_off').setVisible(False)\n    nuke.thisNode().knob('sinusoid').setVisible(False)\n    nuke.thisNode().knob('sinusoid_clamped').setVisible(False)\n    nuke.thisNode().knob('on_off').setVisible(False)\n\n\n\nif nuke.thisNode().knob('mode').value() == 'Noise':\n    nuke.thisNode().knob('random').setVisible(False)\n    nuke.thisNode().knob('noise').setVisible(True)\n    nuke.thisNode().knob('random_on_off').setVisible(False)\n    nuke.thisNode().knob('sinusoid').setVisible(False)\n    nuke.thisNode().knob('sinusoid_clamped').setVisible(False)\n    nuke.thisNode().knob('on_off').setVisible(False)\n\n\n\nif nuke.thisNode().knob('mode').value() == 'Random On/Off':\n    nuke.thisNode().knob('random').setVisible(False)\n    nuke.thisNode().knob('noise').setVisible(False)\n    nuke.thisNode().knob('random_on_off').setVisible(True)\n    nuke.thisNode().knob('sinusoid').setVisible(False)\n    nuke.thisNode().knob('sinusoid_clamped').setVisible(False)\n    nuke.thisNode().knob('on_off').setVisible(False)\n\n\n\nif nuke.thisNode().knob('mode').value() == 'Sinusoid':\n    nuke.thisNode().knob('random').setVisible(False)\n    nuke.thisNode().knob('noise').setVisible(False)\n    nuke.thisNode().knob('random_on_off').setVisible(False)\n    nuke.thisNode().knob('sinusoid').setVisible(True)\n    nuke.thisNode().knob('sinusoid_clamped').setVisible(False)\n    nuke.thisNode().knob('on_off').setVisible(False)\n\n\n\nif nuke.thisNode().knob('mode').value() == 'Sinusoid Clamped':\n    nuke.thisNode().knob('random').setVisible(False)\n    nuke.thisNode().knob('noise').setVisible(False)\n    nuke.thisNode().knob('random_on_off').setVisible(False)\n    nuke.thisNode().knob('sinusoid').setVisible(False)\n    nuke.thisNode().knob('sinusoid_clamped').setVisible(True)\n    nuke.thisNode().knob('on_off').setVisible(False)\n    nuke.thisNode().knob('triangle').setVisible(False)\n\nif nuke.thisNode().knob('mode').value() == 'Constant On/Off':\n    nuke.thisNode().knob('random').setVisible(False)\n    nuke.thisNode().knob('noise').setVisible(False)\n    nuke.thisNode().knob('random_on_off').setVisible(False)\n    nuke.thisNode().knob('sinusoid').setVisible(False)\n    nuke.thisNode().knob('sinusoid_clamped').setVisible(False)\n    nuke.thisNode().knob('on_off').setVisible(True)\n\nif nuke.thisNode().knob('mode').value() == 'Triangle':\n    nuke.thisNode().knob('random').setVisible(False)\n    nuke.thisNode().knob('noise').setVisible(False)\n    nuke.thisNode().knob('random_on_off').setVisible(False)\n    nuke.thisNode().knob('sinusoid').setVisible(False)\n    nuke.thisNode().knob('sinusoid_clamped').setVisible(False)\n    nuke.thisNode().knob('on_off').setVisible(False)\n\n\n\n"
+ tile_color 0xff5f00ff
+ label "MODE: \[value mode]\n\n"
+ note_font "Verdana Bold"
+ selected true
+ xpos 36177
+ ypos 26284
+ addUserKnob {20 User}
+ addUserKnob {4 mode l Mode M {Random Noise "Random On/Off" Sinusoid "Sinusoid Clamped" "Constant On/Off" "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {41 minVal l "Minimum Value" T RANDOM.minVal}
+ addUserKnob {41 maxVal l "Maximum Value" T RANDOM.maxVal}
+ addUserKnob {41 freqVal l Frequency T RANDOM.freqVal}
+ addUserKnob {26 ""}
+ addUserKnob {41 seed l Seed T RANDOM.seed}
+ addUserKnob {41 offset l Offset T RANDOM.offset}
+ addUserKnob {26 ""}
+ addUserKnob {20 animations l Animations n 1}
+ addUserKnob {7 random l Random R 0 5}
+ random {{maxVal-(random(frame*freqVal+seed)*(maxVal-minVal)+offset)}}
+ addUserKnob {7 noise l Noise +HIDDEN R 0 5}
+ noise {{"(noise((frame+offset)*freqVal-seed)+1)/2 * (maxVal-minVal) + minVal"}}
+ addUserKnob {7 random_on_off l "Random On / Off" +HIDDEN}
+ random_on_off {{"floor(random(frame*freqVal+seed)*(maxVal-minVal+1)+1)+offset-1\n"}}
+ addUserKnob {7 sinusoid l Sinusoid +HIDDEN R -1 1}
+ sinusoid {{"(sin(2*pi*(frame+offset)*(-freqVal+seed))+1)/2 * (maxVal-minVal) + minVal"}}
+ addUserKnob {7 sinusoid_clamped l "Sinusoid Clamped" +HIDDEN}
+ sinusoid_clamped {{"clamp((sin(2*pi*(frame+offset)*(freqVal-seed))+1)/2 * (maxVal-minVal) + minVal)+seed\n"}}
+ addUserKnob {7 on_off l "On / Off" +HIDDEN}
+ on_off {{"floor(sin(frame*freqVal+seed)*(maxVal-minVal))+1 +offset\n"}}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Flicker v1.2\nCreated by Pedro Andrade\n-2015-"}
+ addUserKnob {26 ""}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/V8gQuiY3xO4" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x675db7ff
+  label "CONSTANT\nON / OFF"
+  note_font_size 42
+  xpos -9
+  ypos -93
+  bdwidth 210
+  bdheight 151
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x682bb5ff
+  label "RANDOM\n"
+  note_font_size 42
+  xpos -754
+  ypos -95
+  bdwidth 189
+  bdheight 141
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0xc07071ff
+  label "SINUSOID\nCLAMPED"
+  note_font_size 42
+  xpos -255
+  ypos -94
+  bdwidth 210
+  bdheight 151
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0xaaaaaa00
+  label "RANDOM\n"
+  note_font_size 42
+  xpos -977
+  ypos -85
+  bdwidth 189
+  bdheight 141
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x71c67100
+  label SINUSOID
+  note_font_size 42
+  xpos -499
+  ypos -92
+  bdwidth 192
+  bdheight 143
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -433
+  ypos -409
+ }
+set N3e195400 [stack 0]
+ Multiply {
+  value {{"floor(sin(frame*freqVal+seed)*(maxVal-minVal))+1 +offset\n"}}
+  name ON_OFF
+  label "CONSTANT\nON / OFF"
+  note_font "Verdana Bold"
+  xpos 32
+  ypos -27
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value" R -1 1}
+  minVal {{parent.RANDOM.minVal}}
+  addUserKnob {7 maxVal l "Maximum Value" R -1 1}
+  maxVal {{parent.RANDOM.maxVal}}
+  addUserKnob {7 freqVal l Frequency R 0.01 1}
+  freqVal {{parent.RANDOM.freqVal}}
+  addUserKnob {26 ""}
+  addUserKnob {7 seed l Seed R -50 50}
+  seed {{parent.RANDOM.seed}}
+  addUserKnob {7 offset l Offset R -1 1}
+  offset {{parent.RANDOM.offset}}
+ }
+push $N3e195400
+ Multiply {
+  value {{"clamp(sin(frame*freqVal+seed)*(maxVal-minVal)+offset)\n"}}
+  name SINUSOID_CLAMPED
+  label "SINUSOID\nCLAMPED"
+  note_font "Verdana Bold"
+  xpos -200
+  ypos -28
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value" R -1 1}
+  minVal {{parent.RANDOM.minVal}}
+  addUserKnob {7 maxVal l "Maximum Value" R -1 1}
+  maxVal {{parent.RANDOM.maxVal}}
+  addUserKnob {7 freqVal l Frequency R 0.01 1}
+  freqVal {{parent.RANDOM.freqVal}}
+  addUserKnob {26 ""}
+  addUserKnob {7 seed l Seed R -50 50}
+  seed {{parent.RANDOM.seed}}
+  addUserKnob {7 offset l Offset R -1 1}
+  offset {{parent.RANDOM.offset}}
+ }
+push $N3e195400
+ Multiply {
+  value {{"sin(frame*freqVal+seed)*(maxVal-minVal)+offset\n"}}
+  name SINUSOID
+  label SINUSOID
+  note_font "Verdana Bold"
+  xpos -433
+  ypos -22
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value" R -1 1}
+  minVal {{parent.RANDOM.minVal}}
+  addUserKnob {7 maxVal l "Maximum Value" R -1 1}
+  maxVal {{parent.RANDOM.maxVal}}
+  addUserKnob {7 freqVal l Frequency R 0.01 1}
+  freqVal {{parent.RANDOM.freqVal}}
+  addUserKnob {26 ""}
+  addUserKnob {7 seed l Seed R -50 50}
+  seed {{parent.RANDOM.seed}}
+  addUserKnob {7 offset l Offset R -1 1}
+  offset {{parent.RANDOM.offset}}
+ }
+push $N3e195400
+ Multiply {
+  value {{"floor(random(frame*freqVal+seed)*(maxVal-minVal+1)+1)+offset-1\n"}}
+  name RANDOM_ON_OFF
+  label "RANDOM\nON/OFF"
+  note_font "Verdana Bold"
+  xpos -697
+  ypos -28
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value" R -1 1}
+  minVal {{parent.RANDOM.minVal}}
+  addUserKnob {7 maxVal l "Maximum Value" R -1 1}
+  maxVal {{parent.RANDOM.maxVal}}
+  addUserKnob {7 freqVal l Frequency R 0.01 1}
+  freqVal {{parent.RANDOM.freqVal}}
+  addUserKnob {26 ""}
+  addUserKnob {7 seed l Seed R -50 50}
+  seed {{parent.RANDOM.seed}}
+  addUserKnob {7 offset l Offset R -1 1}
+  offset {{parent.RANDOM.offset}}
+ }
+push $N3e195400
+ Multiply {
+  value {{maxVal-(random(frame*freqVal+seed)*(maxVal-minVal)+offset)}}
+  name RANDOM
+  label RANDOM
+  note_font "Verdana Bold"
+  xpos -928
+  ypos -22
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value" R -1 1}
+  addUserKnob {7 maxVal l "Maximum Value" R -1 1}
+  maxVal 1
+  addUserKnob {7 freqVal l Frequency R 0.01 1}
+  freqVal 0.1
+  addUserKnob {26 ""}
+  addUserKnob {7 seed l Seed R -50 50}
+  seed 3
+  addUserKnob {7 offset l Offset R -1 1}
+ }
+ Switch {
+  inputs 5
+  which {{mode}}
+  name Switch2
+  xpos -433
+  ypos 291
+ }
+ Output {
+  name Output1
+  xpos -433
+  ypos 469
+ }
+end_group

@@ -1,0 +1,278 @@
+
+push $cut_paste_input
+add_layer {P P.red P.green P.blue P.alpha}
+add_layer {N N.red N.green N.blue N.alpha}
+Group {
+ name PA_Sticker
+ tile_color 0xff5f00ff
+ note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos 7360
+ ypos 16141
+ addUserKnob {20 User}
+ addUserKnob {4 viewer l Viewer M {Combined Solo}}
+ addUserKnob {41 in l "Position Pass" T Shuffle3.in}
+ addUserKnob {41 in_1 l "Normals Pass" T Shuffle4.in}
+ addUserKnob {26 ""}
+ addUserKnob {6 position_only l "Position Only" +STARTLINE}
+ addUserKnob {41 position_1 l "Place at:" T PositionPicker1.position}
+ addUserKnob {22 calculate l Stick -STARTLINE T "with nuke.thisNode():\n\n    nuke.toNode('TransformGeo2').knob('translate').setValue(nuke.toNode('PositionPicker1').knob('extracted_value').value())\n    nuke.toNode('Axis1').knob('translate').setValue(nuke.toNode('PositionPicker3').knob('extracted_value').value())\n\n"}
+ addUserKnob {26 ""}
+ addUserKnob {22 export l Export T "nodeName = str(nuke.thisNode().knob('name').value())\n\nwith nuke.thisNode():\n    for n in nuke.allNodes():\n        n.knob('selected').setValue(False)\n        \n        if n.knob('label').value() == 'export':\n            n.knob('selected').setValue(True)\n\n        if nuke.thisNode().knob('position_only').value() == True:\n            nuke.toNode('TransformGeo1').knob('selected').setValue(False)\n            nuke.toNode('Axis1').knob('selected').setValue(False)\n\n        else:\n            nuke.toNode('TransformGeo1').knob('selected').setValue(True)\n            nuke.toNode('Axis1').knob('selected').setValue(True)\n\n            nuke.toNode('Axis1').knob('translate').clearAnimated()\n            nuke.toNode('TransformGeo2').knob('translate').clearAnimated()\n\n               \n    nuke.nodeCopy('%clipboard%')\n\n\n\nfor n in nuke.allNodes():\n    n.knob('selected').setValue(False)\n\nnuke.nodePaste('%clipboard%')\n\nfor n in nuke.selectedNodes():    \n    n.knob('label').setValue('')\n\nif nuke.selectedNodes():\n    backDrop = nukescripts.autoBackdrop()\n    backDropYPos = backDrop.knob('ypos').value()\n    backDrop.knob('ypos').setValue(backDropYPos + 30)\n    backDrop.knob('label').setValue('From ' + nodeName)\n    backDrop.knob('selected').setValue(True)\n\nfor n in nuke.selectedNodes():\n    n.knob('ypos').setValue(n.knob('ypos').value() + 200)\n" +STARTLINE}
+ addUserKnob {22 reset l Reset -STARTLINE T "with nuke.thisNode():\n\n    nuke.toNode('TransformGeo2').knob('translate').setValue(0)\n    nuke.toNode('Axis1').knob('translate').setValue(0)\n\n"}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Sticker v1.0\nCreated by Pedro Andrade\n-2019-"}
+ addUserKnob {32 howitoworks l "How It Works" T "start https://youtu.be/sybL4dFI4LI" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x8e8e3800
+  label EXPORTS
+  note_font_size 42
+  xpos 149
+  ypos 657
+  bdwidth 298
+  bdheight 558
+  z_order -1
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x7171c600
+  label ROTATION
+  note_font_size 42
+  xpos 159
+  ypos 800
+  bdwidth 260
+  bdheight 183
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0xaaaaaa00
+  label POSITION
+  note_font_size 42
+  xpos 164
+  ypos 1047
+  bdwidth 273
+  bdheight 157
+ }
+ Input {
+  inputs 0
+  name cam
+  xpos -209
+  ypos 1024
+  number 1
+ }
+ Dot {
+  name Dot3
+  xpos -175
+  ypos 1124
+ }
+ Axis2 {
+  inputs 0
+  name Axis1
+  label export
+  selected true
+  xpos 321
+  ypos 900
+  addUserKnob {20 Ivy}
+  addUserKnob {22 ivy_documentation l "Ivy Documentation" t "Open IvyTab documentation page in your web browser" T "__import__('dnnuke.utils.asst.common', fromlist=\['openDocsName']).openDocsName('IvyTab')" +STARTLINE}
+  addUserKnob {26 divider4 l "" +STARTLINE}
+  addUserKnob {1 _ivyVals l "" +STARTLINE +HIDDEN}
+  _ivyVals "\{'ivy_job': '', 'ivy_usemanualuri': False, 'leafname': '', 'ivy_vnum': 0, 'ivy_twignametags': \{\}, 'ivy_shot': '', 'ivy_regex': False, 'ivy_type': '', 'ivy_versionquery': '', 'spider_uri': ''\}"
+  addUserKnob {52 ivyTab l "" -STARTLINE T "__import__('nukescripts').panels.WidgetKnob(__import__('dnnuke.core.ivy.tab.widget.query', fromlist=\['getBoundKnob']).getBoundKnob(nuke.thisNode()))"}
+  addUserKnob {1 _ivyFile l "" +STARTLINE +HIDDEN +INVISIBLE}
+  addUserKnob {78 _expressions l "" -STARTLINE +HIDDEN +INVISIBLE n 1}
+  _expressions {{curve}}
+  addUserKnob {26 divider0 l "" +STARTLINE}
+  addUserKnob {20 dbinfo l "DB Info" n 1}
+  dbinfo 0
+  addUserKnob {1 twig_dnuuid l "Twig Id"}
+  addUserKnob {1 stalk_dnuuid l "Stalk Id"}
+  addUserKnob {1 twigtype_dnuuid l "Twig Type Id"}
+  addUserKnob {1 leaf_dnuuid l "Leaf Id"}
+  addUserKnob {26 divider1 l "" +STARTLINE}
+  addUserKnob {1 twigtype l "Twig Type"}
+  addUserKnob {1 leaf_label l Leaf}
+  addUserKnob {1 ivy_version l Version}
+  addUserKnob {43 ivy_notes l Notes}
+  addUserKnob {26 divider2 l "" +STARTLINE}
+  addUserKnob {1 build_label l "Build Label"}
+  addUserKnob {20 dbinfoEndGroup l "DB Info" n -1}
+ }
+push 0
+ Input {
+  inputs 0
+  name geo_element
+  xpos 186
+  ypos 510
+  number 2
+ }
+ Dot {
+  name Dot8
+  xpos 220
+  ypos 594
+ }
+ TransformGeo {
+  inputs 3
+  name TransformGeo1
+  label export
+  selected true
+  xpos 186
+  ypos 917
+  disable {{parent.position_only}}
+ }
+ TransformGeo {
+  name TransformGeo2
+  label export
+  selected true
+  xpos 186
+  ypos 1117
+ }
+ Input {
+  inputs 0
+  name img
+  xpos -400
+  ypos 391
+ }
+ Dot {
+  name Dot1
+  xpos -366
+  ypos 494
+ }
+set N488e5a0 [stack 0]
+ Dot {
+  name Dot2
+  xpos -57
+  ypos 494
+ }
+ Remove {
+  name Remove1
+  xpos -91
+  ypos 937
+ }
+ ScanlineRender {
+  inputs 3
+  conservative_shader_sampling false
+  motion_vectors_type distance
+  name ScanlineRender1
+  label "\[value projection_mode]\noverscan: : \[value overscan]"
+  xpos -91
+  ypos 1112
+ }
+ Dot {
+  name Dot4
+  xpos -57
+  ypos 1244
+ }
+set N6123b300 [stack 0]
+ Dot {
+  name Dot7
+  xpos -57
+  ypos 1394
+ }
+push $N6123b300
+push $N488e5a0
+ Dot {
+  name Dot5
+  xpos -647
+  ypos 494
+ }
+set N61244860 [stack 0]
+ Dot {
+  name Dot6
+  xpos -815
+  ypos 494
+ }
+ Shuffle {
+  in P
+  name Shuffle3
+  label "\[value in]"
+  xpos -849
+  ypos 587
+ }
+ NoOp {
+  name PositionPicker1
+  label Position
+  xpos -849
+  ypos 685
+  addUserKnob {20 User}
+  addUserKnob {12 position l Centre}
+  position {200 200}
+  addUserKnob {18 extracted_value l "Extracted Value"}
+  extracted_value {{"\[sample this red position.x position.y]"} {"\[sample this green position.x position.y]"} {"\[sample this blue position.x position.y]"}}
+  addUserKnob {6 extracted_value_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {6 extracted_value_panelDropped_1_1 l "panel dropped state" -STARTLINE +HIDDEN}
+  addUserKnob {26 ""}
+ }
+ Dot {
+  name Dot11
+  xpos -815
+  ypos 865
+ }
+push $N61244860
+ Shuffle {
+  in N
+  name Shuffle4
+  label "\[value in]"
+  xpos -681
+  ypos 587
+ }
+ NoOp {
+  name PositionPicker3
+  label Normals
+  xpos -681
+  ypos 685
+  addUserKnob {20 User}
+  addUserKnob {12 position l "Place in:"}
+  position {{parent.PositionPicker1.position} {parent.PositionPicker1.position}}
+  addUserKnob {26 ""}
+  addUserKnob {13 extracted_value l "Extracted Value"}
+  extracted_value {{"\[sample this red position.x position.y]"} {"\[sample this green position.x position.y]"} {"\[sample this blue position.x position.y]"}}
+ }
+ Dot {
+  name Dot12
+  xpos -647
+  ypos 765
+ }
+push $N488e5a0
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression3
+  xpos -400
+  ypos 762
+ }
+ MergeExpression {
+  inputs 2
+  expr0 Ar+Br-Ar
+  expr1 Ag+Bg-Ag
+  expr2 Ab+Bb-Ab
+  name MergeExpression4
+  xpos -400
+  ypos 862
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -400
+  ypos 1241
+ }
+ Switch {
+  inputs 2
+  which {{parent.viewer}}
+  name Switch1
+  xpos -400
+  ypos 1391
+ }
+ Output {
+  name Output1
+  xpos -400
+  ypos 1591
+ }
+end_group

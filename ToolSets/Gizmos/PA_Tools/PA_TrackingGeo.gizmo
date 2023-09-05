@@ -1,0 +1,151 @@
+
+Group {
+ name PA_TrackingGeo
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -906
+ ypos -59
+ addUserKnob {20 User}
+ addUserKnob {4 geo l Geo M {Cone "Half Sphere"}}
+ addUserKnob {41 uniform_scale l "Geo Scale" T TransformGeo2.uniform_scale}
+ addUserKnob {26 ""}
+ addUserKnob {4 texture l Texture M {Checkerboard Constant "Coloured Checkerboard"}}
+ addUserKnob {41 scale l "Texture Scale" T Transform3.scale}
+ addUserKnob {41 color l "Constant Color" T Constant3.color}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Tracking Geo v1.0\nCreated by Pedro Andrade\n-2015-"}
+}
+ Input {
+  inputs 0
+  name axis
+  xpos 936
+  ypos 486
+ }
+ CheckerBoard2 {
+  inputs 0
+  centerlinewidth 0
+  name CheckerBoard2
+  xpos 1155
+  ypos -497
+ }
+ Transform {
+  center {960 540}
+  name Transform3
+  xpos 1155
+  ypos -354
+ }
+set N12920990 [stack 0]
+ Dot {
+  name Dot1
+  xpos 1591
+  ypos -350
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle7
+  label R
+  xpos 1557
+  ypos -291
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color_panelDropped true
+  name Constant3
+  xpos 1338
+  ypos -217
+ }
+set N12942e70 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos 1557
+  ypos -200
+ }
+ Premult {
+  name Premult3
+  xpos 1557
+  ypos -114
+ }
+ Shuffle {
+  alpha white
+  name Shuffle8
+  label "\[value in]"
+  xpos 1557
+  ypos -20
+ }
+push $N12942e70
+push $N12920990
+ Switch {
+  inputs 3
+  which {{parent.texture}}
+  name Switch3
+  xpos 1155
+  ypos -14
+ }
+set N12971160 [stack 0]
+ Sphere {
+  name Sphere1
+  xpos 1271
+  ypos 166
+ }
+ CrosstalkGeo {
+  crossover {x {}
+    y {curve C 0 s-0.05000000075 1}
+    z {}
+    x->y {}
+    x->z {}
+    y->x {}
+    y->z {}
+    z->x {}
+    z->y {}}
+  name CrosstalkGeo2
+  xpos 1271
+  ypos 208
+ }
+push $N12971160
+ Cylinder {
+  close_top true
+  translate {0 1 0}
+  name Cylinder2
+  xpos 1076
+  ypos 145
+ }
+ Trilinear {
+  selectable false
+  p0 {0 0 0}
+  p1 {-0.5 1 -0.5}
+  p2 {0.5 1 -0.5}
+  p3 {0 0 0}
+  p4 {0 0 0}
+  p5 {-0.5 1 0.5}
+  p6 {0.5 1 0.5}
+  p7 {0 0 0}
+  name Trilinear2
+  xpos 1076
+  ypos 206
+ }
+ Switch {
+  inputs 2
+  which {{parent.geo}}
+  name Switch4
+  xpos 1159
+  ypos 366
+ }
+ TransformGeo {
+  inputs 2
+  name TransformGeo2
+  xpos 1159
+  ypos 486
+ }
+ Output {
+  name Output1
+  xpos 1160
+  ypos 750
+ }
+end_group

@@ -1,0 +1,162 @@
+
+Group {
+ name PA_DepthFromDeep
+ tile_color 0xff5f00ff
+ label "\[value premul_unpremult]\n\nNear / Far: \[value zmap.A] / \[value zmap.B]"
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos 12527
+ ypos 5299
+ addUserKnob {20 User}
+ addUserKnob {4 premul_unpremult l "" +STARTLINE M {Premulted Unpremulted}}
+ premul_unpremult Unpremulted
+ addUserKnob {26 ""}
+ addUserKnob {41 near_sample l Near T DeepSample1.near_sample}
+ addUserKnob {41 far_sample l Far T DeepSample2.far_sample}
+ addUserKnob {22 set_all l Set T "with nuke.thisNode():\n\n    for n in nuke.allNodes():\n        if n.name().startswith('DeepSample'):\n            n.knob('set').execute()\n\n\n" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 zmap T DeepColorCorrect2.zmap}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Depth From Deep v1.0\nCreated by Pedro Andrade\n-2018-"}
+}
+ Input {
+  inputs 0
+  name color
+  xpos 1075
+  ypos 340
+  number 1
+ }
+ Dot {
+  name Dot3
+  xpos 1109
+  ypos 548
+ }
+ Input {
+  inputs 0
+  name deep_data
+  xpos 839
+  ypos 340
+ }
+ DeepRecolor {
+  inputs 2
+  name DeepRecolor1
+  xpos 839
+  ypos 544
+ }
+set N6fde04a0 [stack 0]
+ DeepToImage {
+  name DeepToImage2
+  xpos 612
+  ypos 544
+ }
+ Shuffle {
+  red white
+  green white
+  blue white
+  alpha white
+  name Shuffle3
+  label "\[value in]"
+  xpos 612
+  ypos 712
+ }
+push $N6fde04a0
+ DeepRecolor {
+  inputs 2
+  name DeepRecolor2
+  xpos 839
+  ypos 716
+ }
+ Dot {
+  name Dot21
+  xpos 873
+  ypos 879
+ }
+set Ncfb6f030 [stack 0]
+ DeepColorCorrect2 {
+  gain 0
+  zmap {0 0 0 0}
+  limit_z true
+  name DeepColorCorrect2
+  xpos 839
+  ypos 1016
+ }
+ DeepToImage {
+  name DeepToImage1
+  xpos 839
+  ypos 1110
+ }
+ Unpremult {
+  name Unpremult2
+  xpos 839
+  ypos 1205
+  disable {{!premul_unpremult}}
+ }
+ Invert {
+  name Invert3
+  xpos 839
+  ypos 1277
+ }
+ Shuffle {
+  green red
+  blue red
+  alpha red
+  name Shuffle4
+  label R
+  xpos 839
+  ypos 1378
+ }
+ Output {
+  name Output1
+  xpos 839
+  ypos 1680
+ }
+push $Ncfb6f030
+ Dot {
+  name Dot2
+  xpos 1344
+  ypos 879
+ }
+set Nd09b20d0 [stack 0]
+ DeepSample {
+  pos {{near_sample} {near_sample}}
+  name DeepSample1
+  label near
+  xpos 1310
+  ypos 1005
+  addUserKnob {20 User}
+  addUserKnob {12 near_sample}
+  near_sample {100 0}
+  addUserKnob {7 near}
+  near {{((minz+maxz)/2)*-50}}
+  addUserKnob {22 set T "nuke.toNode('DeepColorCorrect2').knob('zmap').setValue(nuke.thisNode().knob('near').value(), (0))" +STARTLINE}
+ }
+push 0
+ Viewer {
+  inputs 2
+  frame_range 1-200
+  input_number 1
+  name Viewer1
+  xpos 939
+  ypos 544
+ }
+push $Nd09b20d0
+ Dot {
+  name Dot1
+  xpos 1494
+  ypos 879
+ }
+ DeepSample {
+  pos {{far_sample} {far_sample}}
+  name DeepSample2
+  label far
+  selected true
+  xpos 1460
+  ypos 1004
+  addUserKnob {20 User}
+  addUserKnob {12 far_sample}
+  far_sample {200 0}
+  addUserKnob {7 far}
+  far {{((minz+maxz)/2)*2}}
+  addUserKnob {22 set T "nuke.toNode('DeepColorCorrect2').knob('zmap').setValue(nuke.thisNode().knob('far').value(), (1))" +STARTLINE}
+ }
+end_group

@@ -1,0 +1,177 @@
+
+Group {
+ name PA_DynDistortion
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -3406
+ ypos -59
+ addUserKnob {20 User}
+ addUserKnob {6 alpha_distorted l "Alpha Distorted" -STARTLINE}
+ addUserKnob {6 invert_1 l "Invert Direction" -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {41 size l Blur T Blur2.size}
+ addUserKnob {7 distamount l "Distortion Amount" R 1 5000}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "DynDistortion v1.1\nCreated by Pedro Andrade\n-2015-"}
+ addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/o1Zmn6ftAwM')" +STARTLINE}
+}
+ Input {
+  inputs 0
+  name alphaToDistort
+  xpos 840
+  ypos 350
+ }
+ Shuffle {
+  in alpha
+  name Shuffle1
+  label "\[value in]"
+  xpos 840
+  ypos 504
+ }
+set N10dca2c0 [stack 0]
+ Dot {
+  name Dot3
+  xpos 874
+  ypos 634
+ }
+set N10dda660 [stack 0]
+ Matrix {
+  channels rgb
+  matrix {
+      {0 0 0}
+      {0 -1 1}
+      {0 0 0}
+    }
+  name Matrix5
+  xpos 930
+  ypos 692
+ }
+push $N10dda660
+ Matrix {
+  channels rgb
+  matrix {
+      {0 1 0}
+      {0 -1 0}
+      {0 0 0}
+    }
+  name Matrix6
+  xpos 764
+  ypos 692
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  from1 rgba.blue
+  to1 rgba.blue
+  name Copy5
+  xpos 839
+  ypos 769
+ }
+push $N10dca2c0
+ Input {
+  inputs 0
+  name img
+  xpos 594
+  ypos 350
+  number 1
+ }
+ Dot {
+  name Dot1
+  xpos 628
+  ypos 434
+ }
+set N10e06c60 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 594
+  ypos 504
+ }
+push $N10e06c60
+ Dot {
+  name Dot2
+  xpos 508
+  ypos 434
+ }
+ Dot {
+  name Dot4
+  xpos 508
+  ypos 634
+ }
+set N10e1d5c0 [stack 0]
+ Switch {
+  inputs 2
+  which {{parent.alpha_distorted}}
+  name Switch2
+  xpos 594
+  ypos 630
+ }
+ Dot {
+  name Dot6
+  xpos 628
+  ypos 917
+ }
+add_layer {matrixToDist matrixToDist.u matrixToDist.v}
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 matrixToDist.u
+  from1 rgba.green
+  to1 matrixToDist.v
+  name Copy6
+  xpos 839
+  ypos 901
+ }
+ Blur {
+  channels matrixToDist
+  name Blur2
+  xpos 839
+  ypos 1049
+ }
+set N10e3c070 [stack 0]
+ IDistort {
+  uv matrixToDist
+  uv_scale {{parent.IDistort2.uv_scale*-1}}
+  name IDistort1
+  label inverted
+  xpos 920
+  ypos 1138
+ }
+push $N10e3c070
+ IDistort {
+  uv matrixToDist
+  uv_scale {{parent.distamount}}
+  name IDistort2
+  xpos 749
+  ypos 1144
+ }
+ Switch {
+  inputs 2
+  which {{parent.invert_1}}
+  name Switch1
+  xpos 830
+  ypos 1230
+ }
+push $N10e1d5c0
+ Dot {
+  name Dot5
+  xpos 508
+  ypos 1354
+ }
+ Switch {
+  inputs 2
+  which {{!parent.disable}}
+  name Switch3
+  xpos 830
+  ypos 1350
+ }
+ Output {
+  name Output1
+  xpos 830
+  ypos 1430
+ }
+end_group

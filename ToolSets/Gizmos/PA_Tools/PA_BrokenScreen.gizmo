@@ -1,0 +1,705 @@
+
+Group {
+ name PA_BrokenScreen1
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -116
+ ypos 341
+ addUserKnob {20 User}
+ addUserKnob {6 glitchDistortion l "Glitch Distortion" +STARTLINE}
+ glitchDistortion true
+ addUserKnob {4 switchTo l "Switch To" M {Effect "Distortion 1" "Distortion 2" "" "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {20 LinesControls l "Lines Controls" n 1}
+ LinesControls 0
+ addUserKnob {41 minVal l "Minimum Number of Lines" T FlickerNode_Lines.minVal}
+ addUserKnob {41 maxVal_6 l "Maximum Number of Lines" T FlickerNode_Lines.maxVal}
+ addUserKnob {41 freqVal_8 l "Lines Number Frequency" T FlickerNode_Lines.freqVal}
+ addUserKnob {20 endGroup_3 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 BasicColorControls l "Basic Color Controls" n 1}
+ BasicColorControls 0
+ addUserKnob {41 maxVal l "Maximum Value" T FlickerNode_BasicColors2.maxVal}
+ addUserKnob {41 freqVal l Frequency T FlickerNode_BasicColors2.freqVal}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 OperarationsControls l "Operarations Controls" n 1}
+ OperarationsControls 0
+ addUserKnob {41 maxVal_1 l "Maximum Value" T FlickerNode_Glitches2.maxVal}
+ addUserKnob {41 freqVal_1 l Frequency T FlickerNode_Glitches2.freqVal}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 LinesChromaAberr l "Lines Chroma Aberration" n 1}
+ LinesChromaAberr 0
+ addUserKnob {41 maxVal_2 l "Vertical Maximum Value" T FlickerNode_LinesVertChromaAberr1.maxVal}
+ addUserKnob {41 freqVal_2 l "Vertical Frequency" T FlickerNode_LinesVertChromaAberr1.freqVal}
+ addUserKnob {26 ""}
+ addUserKnob {41 maxVal_3 l "Horizontal - Maximum Value" T FlickerNode_LinesHorizChromaAberr2.maxVal}
+ addUserKnob {41 freqVal_3 l "Horizontal - Frequency" T FlickerNode_LinesHorizChromaAberr2.freqVal}
+ addUserKnob {20 endGroup_2 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 distortPatternsControls l "Distort Patterns Controls" n 1}
+ distortPatternsControls 0
+ addUserKnob {7 distAmount1 l "Distort Amount 1" R -300 300}
+ distAmount1 145
+ addUserKnob {7 distAmount2 l "Distort Amount 2" R -300 300}
+ distAmount2 -100
+ addUserKnob {41 freqVal_4 l "Distortions Frequency" T FlickerNode_DistortPatterns2.freqVal}
+ addUserKnob {41 freqVal_7 l "On/Off Frequency" T FlickerNode_FinalSwitch1.freqVal}
+ addUserKnob {20 endGroup_4 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 FinalChromAberration l "Final Chroma Aberration" n 1}
+ FinalChromAberration 0
+ addUserKnob {41 maxVal_4 l "Vertical Maximum Value" T FlickerNode_FinalVertChromaAberr1.maxVal}
+ addUserKnob {41 freqVal_5 l "Vertical Frequency" T FlickerNode_FinalVertChromaAberr1.freqVal}
+ addUserKnob {26 ""}
+ addUserKnob {41 maxVal_5 l "Horizontal Maximum Value" T FlickerNode_FinalChromaAberr2.maxVal}
+ addUserKnob {41 freqVal_6 l "Horizontal Frequency" T FlickerNode_FinalChromaAberr2.freqVal}
+ addUserKnob {20 endGroup_5 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 Author l "" +STARTLINE T "BrokenScreen v1.1\nCreated by Pedro Andrade\n-2014-"}
+ addUserKnob {26 ""}
+ addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/PkE0SdxirJg')" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0xaaaaaa00
+  label "LINES CONTROLS"
+  note_font_size 42
+  xpos 1652
+  ypos 179
+  bdheight 122
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode20
+  tile_color 0x7171c600
+  label "CHROMA ABERR CONTROL"
+  note_font_size 42
+  xpos 824
+  ypos 392
+  bdwidth 109
+  bdheight 210
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode21
+  tile_color 0x7171c600
+  label "BASIC COLOR CONTROLS"
+  note_font_size 42
+  xpos 953
+  ypos -253
+  bdheight 122
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode22
+  tile_color 0xaaaaaa00
+  label "DISTORT CONTROL"
+  note_font_size 42
+  xpos 1718
+  ypos 1144
+  bdwidth 139
+  bdheight 135
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode23
+  tile_color 0x71c67100
+  label "FINAL SWITCH CONTROL"
+  note_font_size 42
+  xpos 925
+  ypos 1155
+  bdheight 122
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode25
+  tile_color 0x71c67100
+  label "FINAL CHROMA ABERR CONTROL"
+  note_font_size 42
+  xpos 899
+  ypos 1384
+  bdwidth 237
+  bdheight 238
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode26
+  tile_color 0xaaaaaa00
+  label "OPERATIONS CONTROLS"
+  note_font_size 42
+  xpos 833
+  ypos 104
+  bdheight 122
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode_BasicColors2
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 963
+  ypos -173
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  addUserKnob {7 maxVal l "Maximum Value"}
+  addUserKnob {7 freqVal l Frequency}
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/h07umu20920')" +STARTLINE}
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode_Glitches2
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 843
+  ypos 184
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  addUserKnob {7 maxVal l "Maximum Value"}
+  maxVal 7
+  addUserKnob {7 freqVal l Frequency}
+  freqVal 0.11
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/h07umu20920')" +STARTLINE}
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode_LinesHorizChromaAberr2
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 834
+  ypos 552
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  addUserKnob {7 maxVal l "Maximum Value"}
+  maxVal 10
+  addUserKnob {7 freqVal l Frequency}
+  freqVal 0.01
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/h07umu20920')" +STARTLINE}
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode_LinesVertChromaAberr1
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 833
+  ypos 475
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  addUserKnob {7 maxVal l "Maximum Value"}
+  maxVal 7
+  addUserKnob {7 freqVal l Frequency}
+  freqVal 0.675
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/h07umu20920')" +STARTLINE}
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode_FinalVertChromaAberr1
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 908
+  ypos 1464
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  addUserKnob {7 maxVal l "Maximum Value"}
+  maxVal 20
+  addUserKnob {7 freqVal l Frequency}
+  freqVal 0.14
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/h07umu20920')" +STARTLINE}
+ }
+ Input {
+  inputs 0
+  name GlitchSample
+  xpos 1867
+  ypos -370
+  number 1
+ }
+ Dot {
+  name Dot32
+  xpos 1901
+  ypos -221
+ }
+ Dot {
+  name Dot33
+  xpos 1901
+  ypos -52
+ }
+set N62018ee0 [stack 0]
+ Keyer {
+  operation "luminance key"
+  range {0.06571285011 1 1 1}
+  name Keyer3
+  xpos 1858
+  ypos 915
+ }
+ Grid {
+  inputs 0
+  number {0 {parent.FlickerNode_Lines.value}}
+  name Grid3
+  xpos 1532
+  ypos 230
+ }
+set N6201da80 [stack 0]
+ Dot {
+  name Dot26
+  xpos 1566
+  ypos 592
+ }
+set N620239d0 [stack 0]
+ Dot {
+  name Dot31
+  xpos 1566
+  ypos 714
+ }
+push $N620239d0
+push $N6201da80
+push $N62018ee0
+ Input {
+  inputs 0
+  name img
+  xpos 1313
+  ypos -570
+ }
+ Dot {
+  name Dot34
+  xpos 1347
+  ypos -443
+ }
+set N6202a9d0 [stack 0]
+ Colorspace {
+  colorspace_out CIE-LCH
+  mix 0.32
+  name Colorspace7
+  xpos 1477
+  ypos -367
+ }
+push 0
+push $N6202a9d0
+ Colorspace {
+  colorspace_out HSV
+  mix 0.15
+  name Colorspace8
+  xpos 1313
+  ypos -367
+ }
+push $N6202a9d0
+ Colorspace {
+  name Colorspace9
+  xpos 1166
+  ypos -367
+ }
+ Dissolve {
+  inputs 3+1
+  which {{parent.FlickerNode_BasicColors2.value}}
+  name Dissolve7
+  xpos 1313
+  ypos -173
+ }
+set N62042920 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge14
+  xpos 1634
+  ypos -56
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  mix 0.3
+  name Merge15
+  xpos 1634
+  ypos 24
+ }
+set N6204dd80 [stack 0]
+push $N6201da80
+push $N62042920
+ Merge2 {
+  inputs 2
+  operation stencil
+  mix 0.3
+  name Merge16
+  xpos 1513
+  ypos 20
+ }
+set N620541c0 [stack 0]
+push $N6201da80
+push $N62042920
+ Merge2 {
+  inputs 2
+  operation color-burn
+  mix 0.3
+  name Merge17
+  xpos 1404
+  ypos 20
+ }
+set N6205a4b0 [stack 0]
+push $N6201da80
+push $N62042920
+ Merge2 {
+  inputs 2
+  operation color-dodge
+  mix 0.3
+  name Merge18
+  xpos 1295
+  ypos 20
+ }
+set N62060a00 [stack 0]
+push 0
+push $N6201da80
+push $N62042920
+ Merge2 {
+  inputs 2
+  operation multiply
+  mix 0.3
+  name Merge19
+  xpos 1055
+  ypos 20
+ }
+set N62066e40 [stack 0]
+push $N6201da80
+push $N62042920
+ Merge2 {
+  inputs 2
+  operation soft-light
+  mix 0.3
+  name Merge20
+  xpos 1175
+  ypos 20
+ }
+set N6206d080 [stack 0]
+ Dissolve {
+  inputs 6+1
+  which {{parent.FlickerNode_Glitches2.value}}
+  name Dissolve8
+  xpos 1092
+  ypos 187
+ }
+push $N6204dd80
+push $N620541c0
+push $N6205a4b0
+push $N62060a00
+push $N6206d080
+push $N62066e40
+ Switch {
+  inputs 6
+  which {{parent.Dissolve8.which}}
+  name Switch10
+  xpos 1332
+  ypos 193
+ }
+ Dissolve {
+  inputs 2
+  which 0.495
+  name Dissolve9
+  xpos 1203
+  ypos 475
+ }
+set N6207c750 [stack 0]
+ Group {
+  name PA_ChromaAberration3
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 990
+  ypos 481
+  addUserKnob {20 User}
+  addUserKnob {7 AberrationAmount l "Horizontal Aberration" R 0 10}
+  AberrationAmount {{parent.FlickerNode_LinesVertChromaAberr1.value}}
+  addUserKnob {7 VerticalAberrationAmount l "Vertical Aberration" R 0 10}
+  VerticalAberrationAmount {{parent.FlickerNode_LinesHorizChromaAberr2.value}}
+  addUserKnob {26 ""}
+  addUserKnob {26 Author l "" +STARTLINE T "ChromaAberration v1.0\nCreated by PedroAndrade\n-2013-"}
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/-l2v0XzaITs')" +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name img
+   xpos -99
+   ypos -186
+  }
+  TransformMasked {
+   channels {rgba.red -rgba.green -rgba.blue none}
+   translate {{parent.AberrationAmount i} {parent.VerticalAberrationAmount i}}
+   center {960 540}
+   name Master1
+   xpos -99
+   ypos -134
+  }
+  TransformMasked {
+   channels {-rgba.red -rgba.green rgba.blue none}
+   translate {{parent.Master1.translate.x*-1 i} {parent.Master1.translate.y*-1 i}}
+   center {960 540}
+   name Slave1
+   xpos -99
+   ypos -76
+  }
+  Output {
+   name Output1
+   xpos -99
+   ypos 24
+  }
+ end_group
+ Dot {
+  name Dot35
+  xpos 1024
+  ypos 592
+ }
+push $N6207c750
+ Keymix {
+  inputs 3
+  name Keymix3
+  xpos 1203
+  ypos 582
+ }
+ Soften {
+  inputs 1+1
+  size 5
+  name Soften3
+  xpos 1203
+  ypos 704
+ }
+ Dot {
+  name Dot36
+  xpos 1237
+  ypos 805
+ }
+set N5e883040 [stack 0]
+ Dot {
+  name Dot37
+  xpos 1437
+  ypos 805
+ }
+add_layer {glitch_distort glitch_distort.u}
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 glitch_distort.u
+  name Copy5
+  xpos 1403
+  ypos 915
+ }
+push $N5e883040
+ Switch {
+  inputs 2
+  which {{parent.glitchDistortion}}
+  name Switch2
+  xpos 1203
+  ypos 919
+ }
+ Dot {
+  name Dot38
+  xpos 1237
+  ypos 1045
+ }
+set N5e891240 [stack 0]
+ Dot {
+  name Dot39
+  xpos 1450
+  ypos 1045
+ }
+set N5e8937e0 [stack 0]
+ Dot {
+  name Dot40
+  xpos 1626
+  ypos 1045
+ }
+ IDistort {
+  uv glitch_distort
+  uv_scale {{parent.distAmount2}}
+  name IDistort5
+  xpos 1592
+  ypos 1115
+ }
+set N5e898430 [stack 0]
+ Dot {
+  name Dot2
+  xpos 1626
+  ypos 1633
+ }
+push $N5e8937e0
+ IDistort {
+  uv glitch_distort
+  uv_scale {{parent.distAmount1}}
+  name IDistort6
+  xpos 1416
+  ypos 1115
+ }
+set N5e89fef0 [stack 0]
+ Dot {
+  name Dot1
+  xpos 1450
+  ypos 1633
+ }
+push $N5e898430
+push $N5e89fef0
+ Switch {
+  inputs 2
+  which {{parent.FlickerNode_DistortPatterns2.value}}
+  name Switch12
+  xpos 1500
+  ypos 1241
+ }
+push $N5e891240
+ Switch {
+  inputs 2
+  which {{parent.FlickerNode_FinalSwitch1.value}}
+  name Switch13
+  xpos 1203
+  ypos 1241
+ }
+ Group {
+  name PA_ChromaAberration4
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 1203
+  ypos 1470
+  addUserKnob {20 User}
+  addUserKnob {7 AberrationAmount l "Horizontal Aberration" R 0 10}
+  AberrationAmount {{parent.FlickerNode_FinalVertChromaAberr1.value}}
+  addUserKnob {7 VerticalAberrationAmount l "Vertical Aberration" R 0 10}
+  VerticalAberrationAmount {{parent.FlickerNode_FinalChromaAberr2.value}}
+  addUserKnob {26 ""}
+  addUserKnob {26 Author l "" +STARTLINE T "ChromaAberration v1.0\nCreated by PedroAndrade\n-2013-"}
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/-l2v0XzaITs')" +STARTLINE}
+ }
+  Input {
+   inputs 0
+   name img
+   xpos -99
+   ypos -186
+  }
+  TransformMasked {
+   channels {rgba.red -rgba.green -rgba.blue none}
+   translate {{parent.AberrationAmount i} {parent.VerticalAberrationAmount i}}
+   center {960 540}
+   name Master1
+   xpos -99
+   ypos -134
+  }
+  TransformMasked {
+   channels {-rgba.red -rgba.green rgba.blue none}
+   translate {{parent.Master1.translate.x*-1 i} {parent.Master1.translate.y*-1 i}}
+   center {960 540}
+   name Slave1
+   xpos -99
+   ypos -76
+  }
+  Output {
+   name Output1
+   xpos -99
+   ypos 24
+  }
+ end_group
+ Switch {
+  inputs 3
+  which {{parent.switchTo}}
+  name Switch1
+  xpos 1203
+  ypos 1630
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop1
+  selected true
+  xpos 1203
+  ypos 1758
+ }
+ Output {
+  name Output1
+  xpos 1203
+  ypos 1870
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode_FinalSwitch1
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 935
+  ypos 1235
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  addUserKnob {7 maxVal l "Maximum Value"}
+  maxVal 2
+  addUserKnob {7 freqVal l Frequency}
+  freqVal 0.075
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/h07umu20920')" +STARTLINE}
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode_FinalChromaAberr2
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 920
+  ypos 1544
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  addUserKnob {7 maxVal l "Maximum Value"}
+  maxVal 10
+  addUserKnob {7 freqVal l Frequency}
+  freqVal 0.145
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/h07umu20920')" +STARTLINE}
+ }
+push $N6202a9d0
+push 0
+ Viewer {
+  inputs 2
+  frame 79
+  input_number 1
+  input_process false
+  name Viewer1
+  xpos 1760
+  ypos 270
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode_DistortPatterns2
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 1728
+  ypos 1224
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  addUserKnob {7 maxVal l "Maximum Value"}
+  maxVal 2
+  addUserKnob {7 freqVal l Frequency}
+  freqVal 0.08
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/h07umu20920')" +STARTLINE}
+ }
+ Multiply {
+  inputs 0
+  value {{maxVal-(random(frame*freqVal)*(maxVal-minVal)) x1082 1.01}}
+  name FlickerNode_Lines
+  tile_color 0xff5f00ff
+  note_font "Verdana Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos 1662
+  ypos 259
+  addUserKnob {20 User}
+  addUserKnob {7 minVal l "Minimum Value"}
+  minVal 200
+  addUserKnob {7 maxVal l "Maximum Value"}
+  maxVal 500
+  addUserKnob {7 freqVal l Frequency}
+  freqVal 0.1
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/h07umu20920')" +STARTLINE}
+ }
+end_group

@@ -1,0 +1,63 @@
+
+Group {
+ inputs 0
+ name PA_Ramp
+ tile_color 0xff5f00ff
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+ selected true
+ xpos -1406
+ ypos -59
+ addUserKnob {20 User}
+ addUserKnob {41 format l Format T Reformat1.format}
+ addUserKnob {4 direction l Direction M {Vertical Horizontal}}
+ addUserKnob {41 disable_1 l Invert -STARTLINE T Invert1.disable}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Ramp v1.0\nCreated by Pedro Andrade\n-2016-"}
+}
+ Reformat {
+  inputs 0
+  name Reformat1
+  xpos 772
+  ypos -637
+ }
+ Dot {
+  name Dot1
+  xpos 806
+  ypos -583
+ }
+set N123e32b0 [stack 0]
+ Expression {
+  channel3 rgba
+  expr3 x/width
+  name Expression2
+  label horizontal
+  xpos 838
+  ypos -505
+ }
+push $N123e32b0
+ Expression {
+  channel3 rgba
+  expr3 y/height
+  name Expression1
+  label vertical
+  xpos 712
+  ypos -505
+ }
+ Switch {
+  inputs 2
+  which {{direction}}
+  name Switch1
+  xpos 770
+  ypos -419
+ }
+ Invert {
+  name Invert1
+  xpos 770
+  ypos -345
+ }
+ Output {
+  name Output1
+  xpos 770
+  ypos -245
+ }
+end_group

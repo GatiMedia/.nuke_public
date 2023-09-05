@@ -1,0 +1,623 @@
+
+Group {
+ name PA_ReGrain
+ inputs 4
+ tile_color 0xff5f00ff
+ label BETA
+ note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold"
+ addUserKnob {20 User}
+ addUserKnob {4 viewer l Viewer M {"Final Result" "Grain Normalization" "Grain Check" "" "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {18 pixel_fix l "Pixels Fix"}
+ pixel_fix 0.015
+ addUserKnob {6 pixel_fix_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {18 noise_normalization l "Grain Normalization" R 0 4}
+ noise_normalization 2.2
+ addUserKnob {6 noise_normalization_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+ addUserKnob {26 ""}
+ addUserKnob {7 mix l Mix}
+ mix 1
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "ReGrain v1.0\nCreated by Pedro Andrade\n-2019-\n"}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos -739
+  ypos 1670
+  number 3
+ }
+ Invert {
+  name Invert1
+  xpos -739
+  ypos 1742
+ }
+ Input {
+  inputs 0
+  name comp
+  xpos -1318
+  ypos 760
+  number 2
+ }
+ Dot {
+  name Dot1
+  xpos -1284
+  ypos 1093
+ }
+set N2f793390 [stack 0]
+ Dot {
+  name Dot2
+  xpos -1284
+  ypos 1752
+ }
+push $N2f793390
+ Log2Lin {
+  operation lin2log
+  name Log2Lin1
+  xpos -1000
+  ypos 1089
+ }
+ Grade {
+  black {{parent.Grade14.black.r} {parent.Grade14.black.g} {parent.Grade14.black.b} {parent.Grade14.black}}
+  black_clamp false
+  name Grade2
+  xpos -1000
+  ypos 1152
+ }
+ Log2Lin {
+  name Log2Lin2
+  xpos -1000
+  ypos 1224
+ }
+set N2f7a3820 [stack 0]
+ Gamma {
+  value {{parent.Gamma8.value}}
+  name Gamma7
+  xpos -722
+  ypos 1218
+ }
+ Input {
+  inputs 0
+  name plate
+  xpos -509
+  ypos 550
+  number 1
+ }
+ Log2Lin {
+  operation lin2log
+  name Log2Lin7
+  xpos -509
+  ypos 663
+ }
+ Grade {
+  black {{parent.Grade14.black.r} {parent.Grade14.black.g} {parent.Grade14.black.b} {parent.Grade14.black}}
+  black_clamp false
+  name Grade15
+  xpos -509
+  ypos 726
+ }
+ Log2Lin {
+  name Log2Lin10
+  xpos -509
+  ypos 796
+ }
+ Dot {
+  name Dot10
+  xpos -475
+  ypos 868
+ }
+ Input {
+  inputs 0
+  name plate_denoised
+  xpos -1000
+  ypos 550
+ }
+ Log2Lin {
+  operation lin2log
+  name Log2Lin8
+  xpos -1000
+  ypos 656
+ }
+ Grade {
+  black {{parent.pixel_fix.r} {parent.pixel_fix.g} {parent.pixel_fix.b} 0}
+  black_clamp false
+  name Grade14
+  xpos -1000
+  ypos 719
+ }
+ Log2Lin {
+  name Log2Lin9
+  xpos -1000
+  ypos 791
+ }
+ Dot {
+  name Dot24
+  xpos -966
+  ypos 936
+ }
+ Dot {
+  name Dot25
+  xpos -689
+  ypos 936
+ }
+set N2f7d99a0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge2
+  xpos -509
+  ypos 932
+ }
+push $N2f7d99a0
+ Gamma {
+  value {{parent.noise_normalization.r} {parent.noise_normalization.g} {parent.noise_normalization.b} {parent.seams_fix}}
+  name Gamma8
+  xpos -723
+  ypos 1054
+ }
+ Merge2 {
+  inputs 2
+  operation divide
+  name Merge15
+  xpos -509
+  ypos 1060
+ }
+ Dot {
+  name Dot4
+  xpos -475
+  ypos 1132
+ }
+set N1514a0 [stack 0]
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge16
+  xpos -509
+  ypos 1224
+ }
+ Dot {
+  name Dot26
+  xpos -475
+  ypos 1390
+ }
+ Multiply {
+  value {{parent.mix}}
+  name Multiply1
+  xpos -725
+  ypos 1380
+ }
+push $N2f7a3820
+ Merge2 {
+  inputs 2
+  operation plus
+  name Merge17
+  xpos -1000
+  ypos 1386
+ }
+ Log2Lin {
+  operation lin2log
+  name Log2Lin11
+  xpos -1000
+  ypos 1458
+ }
+ Grade {
+  black {{parent.Grade14.black.r} {parent.Grade14.black.g} {parent.Grade14.black.b} {parent.Grade14.black}}
+  reverse true
+  black_clamp false
+  name Grade1
+  xpos -1000
+  ypos 1530
+ }
+ Log2Lin {
+  name Log2Lin12
+  xpos -1000
+  ypos 1598
+ }
+ Keymix {
+  inputs 3
+  name Keymix1
+  xpos -1000
+  ypos 1742
+ }
+ Dot {
+  name Dot3
+  xpos -966
+  ypos 1954
+ }
+set N17cf60 [stack 0]
+ Group {
+  name PA_TechChecker
+  knobChanged "\n\nviewModeKnobs = \['Original Plate', 'Comp']\n\nif nuke.thisNode().knob('viewmode').value() in viewModeKnobs:\n    nuke.thisNode().knob('mode').setVisible(False)\n    nuke.thisNode().knob('strenght').setVisible(False)\n    nuke.thisNode().knob('colorvariation').setVisible(False)\n\nelse:\n    nuke.thisNode().knob('mode').setVisible(True)\n    nuke.thisNode().knob('strenght').setVisible(True)\n    nuke.thisNode().knob('colorvariation').setVisible(True)\n\n\nif nuke.thisNode().knob('viewmode').value() == 'Tech Checker' and nuke.thisNode().knob('mode').value() == 'Comped Areas':\n    nuke.thisNode().knob('colorvariation').setVisible(True)\n\nelse:\n    nuke.thisNode().knob('colorvariation').setVisible(False)\n    \n\n"
+  tile_color 0xff5f00ff
+  note_font "Bitstream Vera Sans Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold Bold"
+  xpos -1171
+  ypos 1950
+  addUserKnob {20 User}
+  addUserKnob {4 viewmode l "View Mode" M {"Tech Checker" "Original Plate" Comp ""}}
+  addUserKnob {4 mode l "Tech Check Mode" -STARTLINE M {Grain "Pixel Quality" "Comped Areas" "" "" "" "" "" "" ""}}
+  addUserKnob {6 lintolog l "Lin to Log" +STARTLINE}
+  addUserKnob {26 ""}
+  addUserKnob {7 strenght l Strenght R 0 5}
+  strenght 1
+  addUserKnob {7 colorvariation l "Color Variation" +HIDDEN R 0 2}
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "Tech Checker v2.2\nCreated by Pedro Andrade\n-2015-"}
+  addUserKnob {26 ""}
+  addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/KzDlsSvhRUs" +STARTLINE}
+ }
+  BackdropNode {
+   inputs 0
+   name BackdropNode10
+   tile_color 0xaaaaaa00
+   label "PIXEL QUALITY"
+   note_font_size 42
+   xpos 1457
+   ypos 304
+   bdwidth 282
+   bdheight 379
+  }
+  BackdropNode {
+   inputs 0
+   name BackdropNode6
+   tile_color 0x71c67100
+   label GRAIN
+   note_font_size 42
+   xpos -251
+   ypos 301
+   bdwidth 354
+   bdheight 449
+  }
+  BackdropNode {
+   inputs 0
+   name BackdropNode9
+   tile_color 0x8e388e00
+   label "COMPED AREAS"
+   note_font_size 42
+   xpos 340
+   ypos 306
+   bdwidth 845
+   bdheight 908
+  }
+  Input {
+   inputs 0
+   name original_plate
+   xpos 819
+   ypos -92
+   number 1
+  }
+  Dot {
+   name Dot3
+   xpos 853
+   ypos 72
+  }
+set N2f7e7ae0 [stack 0]
+  Dot {
+   name Dot1
+   xpos 853
+   ypos 368
+  }
+set N2f7ea080 [stack 0]
+  Input {
+   inputs 0
+   name comp
+   xpos -152
+   ypos -90
+  }
+  Dot {
+   name Dot2
+   xpos -118
+   ypos 74
+  }
+set N2f7eebc0 [stack 0]
+  Dot {
+   name Dot4
+   xpos -118
+   ypos 250
+  }
+set N2f7f1160 [stack 0]
+  Dot {
+   name Dot5
+   xpos 586
+   ypos 248
+  }
+set N2f7f3700 [stack 0]
+  Dot {
+   name Dot23
+   xpos 586
+   ypos 454
+  }
+  Merge2 {
+   inputs 2
+   operation difference
+   name Merge6
+   xpos 819
+   ypos 450
+  }
+  Shuffle {
+   green red
+   blue red
+   alpha red
+   name Shuffle1
+   xpos 819
+   ypos 522
+  }
+  Expression {
+   expr3 a>0.001/multiplier?1:0
+   name Expression1
+   xpos 819
+   ypos 590
+   addUserKnob {20 User}
+   addUserKnob {7 multiplier R 1 5}
+   multiplier {{(strenght*100000)-99999<0?1:(strenght*100000)-99999}}
+  }
+  Multiply {
+   value {{parent.strenght}}
+   name Multiply1
+   xpos 819
+   ypos 664
+  }
+set N2f74afc0 [stack 0]
+push 0
+  Viewer {
+   inputs 2
+   frame_range 1-88
+   fps 25
+   input_number 1
+   translate {-0.34799999 -0.1299999952}
+   name Viewer1
+   xpos -605
+   ypos 347
+  }
+push $N2f7eebc0
+  Dot {
+   name Dot8
+   xpos -313
+   ypos 74
+  }
+  Dot {
+   name Dot9
+   xpos -313
+   ypos 1658
+  }
+  Log2Lin {
+   operation lin2log
+   name Log2Lin1
+   xpos 200
+   ypos 1654
+   disable {{!parent.lintolog}}
+  }
+push $N2f7e7ae0
+  Dot {
+   name Dot6
+   xpos 1794
+   ypos 72
+  }
+  Dot {
+   name Dot7
+   xpos 1794
+   ypos 1656
+  }
+  Log2Lin {
+   operation lin2log
+   name Log2Lin3
+   xpos 800
+   ypos 1652
+   disable {{!parent.lintolog}}
+  }
+push $N2f74afc0
+  Dot {
+   name Dot10
+   xpos 853
+   ypos 786
+  }
+  Constant {
+   inputs 0
+   channels rgb
+   color {0 0 1 0}
+   color_panelDropped true
+   name Constant2
+   xpos 603
+   ypos 512
+  }
+push 0
+  Constant {
+   inputs 0
+   channels rgb
+   color {0 1 0 0}
+   color_panelDropped true
+   name Constant3
+   xpos 494
+   ypos 517
+  }
+  Constant {
+   inputs 0
+   channels rgb
+   color {1 0 0 0}
+   color_panelDropped true
+   name Constant1
+   xpos 374
+   ypos 517
+  }
+  Dissolve {
+   inputs 3+1
+   which {{parent.colorvariation}}
+   name Dissolve1
+   xpos 494
+   ypos 654
+  }
+  Copy {
+   inputs 2
+   from0 rgba.alpha
+   to0 rgba.alpha
+   name Copy1
+   xpos 494
+   ypos 776
+  }
+  Premult {
+   name Premult21
+   xpos 494
+   ypos 868
+  }
+  Grade {
+   white {{parent.strenght}}
+   name Grade3
+   xpos 494
+   ypos 930
+  }
+push $N2f7ea080
+  Dot {
+   name Dot21
+   xpos 727
+   ypos 368
+  }
+  Dot {
+   name Dot11
+   xpos 727
+   ypos 1056
+  }
+  Merge2 {
+   inputs 2
+   name Merge2
+   xpos 494
+   ypos 1052
+  }
+push $N2f7ea080
+push $N2f7f3700
+  Dot {
+   name Dot19
+   xpos 1546
+   ypos 248
+  }
+  Merge2 {
+   inputs 2
+   operation difference
+   name Merge1
+   xpos 1512
+   ypos 364
+  }
+  Grade {
+   white {{300*parent.strenght}}
+   name Grade1
+   xpos 1512
+   ypos 510
+  }
+  Dot {
+   name Dot20
+   xpos 1546
+   ypos 1432
+  }
+push $N2f7f1160
+  Dot {
+   name Dot24
+   xpos -118
+   ypos 381
+  }
+set N30bcb650 [stack 0]
+  Dot {
+   name Dot25
+   xpos -207
+   ypos 381
+  }
+  Blur {
+   channels rgba
+   size 1
+   name Blur2
+   xpos -241
+   ypos 415
+  }
+  Dot {
+   name Dot26
+   xpos -207
+   ypos 490
+  }
+push $N30bcb650
+  Merge2 {
+   inputs 2
+   operation from
+   bbox B
+   output rgb
+   name Merge7
+   xpos -152
+   ypos 486
+  }
+  Grade {
+   white {{300*parent.strenght}}
+   name Grade2
+   xpos -152
+   ypos 549
+  }
+  Dot {
+   name Dot27
+   xpos -118
+   ypos 649
+  }
+push $N30bcb650
+  Dot {
+   name Dot28
+   xpos -26
+   ypos 381
+  }
+  Merge2 {
+   inputs 2
+   operation plus
+   bbox B
+   output rgb
+   name Merge8
+   xpos -60
+   ypos 645
+  }
+  Dot {
+   name Dot30
+   xpos -26
+   ypos 1434
+  }
+  Switch {
+   inputs 3
+   which {{parent.mode}}
+   name Switch4
+   xpos 494
+   ypos 1428
+  }
+  Switch {
+   inputs 3
+   which {{parent.viewmode}}
+   name Switch1
+   xpos 494
+   ypos 1652
+  }
+  Output {
+   name Output1
+   xpos 494
+   ypos 1950
+  }
+ end_group
+ Dot {
+  name Dot7
+  xpos -1137
+  ypos 2166
+ }
+push $N1514a0
+ Dot {
+  name Dot5
+  xpos -306
+  ypos 1132
+ }
+ Dot {
+  name Dot6
+  xpos -306
+  ypos 2166
+ }
+push $N17cf60
+ Switch {
+  inputs 3
+  which {{parent.viewer}}
+  name Switch1
+  xpos -1000
+  ypos 2162
+ }
+ Output {
+  name Output1
+  xpos -1000
+  ypos 2720
+ }
+end_group

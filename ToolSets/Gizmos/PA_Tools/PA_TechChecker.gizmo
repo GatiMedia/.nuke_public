@@ -1,0 +1,2704 @@
+
+push $cut_paste_input
+Group {
+ name PA_TechChecker2
+ knobChanged " \n\n\n\nif not nuke.thisNode().knob('mode').value() == 'NaNs' or nuke.thisNode().knob('mode').value() == 'Infs':\n    nuke.thisNode().knob('grow_areas').setVisible(False)\n\n\nif nuke.thisNode().knob('mode').value() == 'NaNs' or nuke.thisNode().knob('mode').value() == 'Infs':\n    nuke.thisNode().knob('grow_areas').setVisible(True)\n    nuke.thisNode().knob('disable_roi').setVisible(False)\n    nuke.thisNode().knob('strenght').setVisible(False)\n    nuke.thisNode().knob('switch_view').setVisible(False)\n\n\nelse:\n\n    nuke.thisNode().knob('strenght').setVisible(True)\n\n\n    if nuke.thisNode().knob('mode').value() == 'Plate vs Comp':\n        nuke.thisNode().knob('switch_view').setVisible(True)\n    \n        nuke.thisNode().knob('disable_text').setValue(False)\n        nuke.thisNode().knob('disable_text').setVisible(False)\n    \n        nuke.thisNode().knob('disable_roi').setValue(False)\n        nuke.thisNode().knob('disable_roi').setVisible(False)\n    \n    \n    if nuke.thisNode().knob('mode').value() == 'Comped Areas':\n        nuke.thisNode().knob('switch_view').setValue(False)\n        nuke.thisNode().knob('switch_view').setVisible(False)\n    \n        nuke.thisNode().knob('disable_text').setValue(False)\n        nuke.thisNode().knob('disable_text').setVisible(False)\n    \n        nuke.thisNode().knob('disable_roi').setValue(False)\n        nuke.thisNode().knob('disable_roi').setVisible(False)\n    \n    if nuke.thisNode().knob('mode').value() == 'Grain':\n    \n        nuke.thisNode().knob('switch_view').setVisible(True)\n    \n    \n        nuke.thisNode().knob('disable_text').setVisible(True)\n    \n    \n        nuke.thisNode().knob('disable_roi').setVisible(True)\n    \n    if nuke.thisNode().knob('mode').value() == 'Corners':\n        nuke.thisNode().knob('switch_view').setValue(False)\n        nuke.thisNode().knob('switch_view').setVisible(False)\n    \n    \n        nuke.thisNode().knob('disable_text').setVisible(True)\n    \n        nuke.thisNode().knob('disable_roi').setValue(False)\n        nuke.thisNode().knob('disable_roi').setVisible(False)\n\n\n\n\n\n\n"
+ tile_color 0xff5f00ff
+ label "mode: \[value mode]"
+ note_font "Bitstream Vera Sans Bold"
+ selected true
+ xpos 156656
+ ypos 10906
+ addUserKnob {20 User}
+ addUserKnob {4 mode l "Tech Check Mode" -STARTLINE M {"Plate vs Comp" "Comped Areas" Grain Corners NaNs Infs "" "" "" "" "" "" "" "" "" "" ""}}
+ addUserKnob {6 switch_view l "Plate vs Comp" -STARTLINE}
+ addUserKnob {6 disable_text l "Disable Text" +HIDDEN +STARTLINE}
+ addUserKnob {6 disable_roi l "Disable ROI" -STARTLINE +HIDDEN}
+ addUserKnob {26 ""}
+ addUserKnob {7 strenght l "Dim Strenght"}
+ addUserKnob {7 grow_areas l "Grow Areas" +HIDDEN R 1 50}
+ grow_areas 1
+ addUserKnob {7 colorvariation l "Color Variation" R 0 2}
+ addUserKnob {26 ""}
+ addUserKnob {26 author l "" +STARTLINE T "Tech Checker v4.0\nCreated by Pedro Andrade\n-2015-"}
+ addUserKnob {26 ""}
+ addUserKnob {32 howitworks l "How It Works" T "start https://youtu.be/KzDlsSvhRUs" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x71c67100
+  label "GRAIN PLATE"
+  note_font_size 42
+  xpos -831
+  ypos 327
+  bdwidth 354
+  bdheight 449
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode10
+  tile_color 0xaaaaaa00
+  label CORNERS
+  note_font_size 42
+  xpos 1859
+  ypos 110
+  bdwidth 2163
+  bdheight 1421
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x388e8e00
+  label "PLATE VS COMP"
+  note_font_size 42
+  xpos 5
+  ypos 1605
+  bdwidth 232
+  bdheight 261
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode4
+  tile_color 0x8e388e00
+  label NAN
+  note_font_size 42
+  xpos 5020
+  ypos 394
+  bdheight 274
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode5
+  tile_color 0x8e388e00
+  label INF
+  note_font_size 42
+  xpos 5265
+  ypos 394
+  bdheight 274
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode6
+  tile_color 0x71c67100
+  label "GRAIN COMP"
+  note_font_size 42
+  xpos -1520
+  ypos 292
+  bdwidth 376
+  bdheight 496
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode9
+  tile_color 0x8e388e00
+  label "COMPED AREAS"
+  note_font_size 42
+  xpos 628
+  ypos 306
+  bdwidth 859
+  bdheight 1122
+ }
+ Input {
+  inputs 0
+  name original_plate
+  xpos -1421
+  ypos -15
+  number 1
+ }
+ Dot {
+  name Dot4
+  xpos -1387
+  ypos 241
+ }
+set N57e85800 [stack 0]
+ Dot {
+  name Dot32
+  xpos -1111
+  ypos 242
+ }
+ Dot {
+  name Dot50
+  xpos 49
+  ypos 242
+ }
+set N57e84800 [stack 0]
+ Dot {
+  name Dot5
+  xpos 874
+  ypos 248
+ }
+set Nd021c400 [stack 0]
+ Dot {
+  name Dot41
+  xpos 2374
+  ypos 256
+ }
+set Nd021cc00 [stack 0]
+ Dot {
+  name Dot40
+  xpos 2767
+  ypos 256
+ }
+set N41e23000 [stack 0]
+ Dot {
+  name Dot65
+  xpos 2767
+  ypos 194
+ }
+ Dot {
+  name Dot64
+  xpos 3194
+  ypos 194
+ }
+set N41e23400 [stack 0]
+ Dot {
+  name Dot42
+  xpos 3194
+  ypos 256
+ }
+set N41e22c00 [stack 0]
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  reformat true
+  crop false
+  name Crop4
+  xpos 3160
+  ypos 300
+ }
+push $N41e23400
+ Dot {
+  name Dot66
+  xpos 4154
+  ypos 194
+ }
+ Dot {
+  name Dot68
+  xpos 4154
+  ypos 1794
+ }
+set N6520a400 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 1 0}
+  color_panelDropped true
+  name Constant12
+  xpos 4869
+  ypos 612
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fill
+  black_outside true
+  name Reformat16
+  xpos 4869
+  ypos 710
+ }
+push 0
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 1 0 0}
+  color_panelDropped true
+  name Constant13
+  xpos 4760
+  ypos 617
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fill
+  black_outside true
+  name Reformat17
+  xpos 4760
+  ypos 715
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 0 0}
+  color_panelDropped true
+  name Constant14
+  xpos 4640
+  ypos 617
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fill
+  black_outside true
+  name Reformat18
+  xpos 4640
+  ypos 715
+ }
+ Dissolve {
+  inputs 3+1
+  which {{parent.colorvariation}}
+  name Dissolve2
+  xpos 4760
+  ypos 754
+ }
+set Na84dbc00 [stack 0]
+ Dot {
+  name Dot59
+  xpos 4794
+  ypos 939
+ }
+set Na8de7000 [stack 0]
+ HueShift {
+  hue_rotation -78
+  name HueShift1
+  xpos 4760
+  ypos 1064
+ }
+set Na8de7400 [stack 0]
+ Dot {
+  name Dot61
+  xpos 5454
+  ypos 1067
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Constant16
+  xpos 5680
+  ypos 1162
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message Inf
+  old_message {{73 110 102}
+    }
+  box {0 0 2040 2040}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 0 150}
+    }
+  cursor_position 3
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text4
+  xpos 5680
+  ypos 1260
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat20
+  xpos 5680
+  ypos 1310
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge19
+  xpos 5420
+  ypos 1310
+ }
+push $Na8de7000
+ Input {
+  inputs 0
+  name comp
+  xpos 1307
+  ypos -537
+ }
+ Dot {
+  name Dot3
+  xpos 1341
+  ypos -56
+ }
+set Nda7a9400 [stack 0]
+ Dot {
+  name Dot60
+  xpos 4284
+  ypos -56
+ }
+set Nda7a8c00 [stack 0]
+ Dot {
+  name Dot58
+  xpos 5064
+  ypos -56
+ }
+ Dot {
+  name Dot9
+  xpos 5064
+  ypos 304
+ }
+set N396f4000 [stack 0]
+ Dot {
+  name Dot33
+  xpos 5309
+  ypos 304
+ }
+ Expression {
+  channel3 alpha
+  expr3 "r==inf?1:0 || g==inf?1:0 || b==inf?1:0"
+  name Expression10
+  xpos 5275
+  ypos 474
+ }
+ Blur {
+  channels rgba
+  size 24.5
+  name Blur11
+  label "(\[value channels])"
+  xpos 5275
+  ypos 524
+ }
+ Expression {
+  expr3 a>0?1:0
+  name Expression9
+  xpos 5275
+  ypos 582
+ }
+ Shuffle {
+  in alpha
+  name Shuffle11
+  label "\[value in]"
+  xpos 5275
+  ypos 632
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge14
+  xpos 5275
+  ypos 936
+ }
+ Merge2 {
+  inputs 2
+  name Merge16
+  xpos 5275
+  ypos 1310
+  disable {{parent.disable_text}}
+ }
+ Expression {
+  expr3 clamp(r+g+b)
+  name Expression2
+  xpos 5275
+  ypos 1441
+ }
+push $Nda7a8c00
+ Dot {
+  name Dot63
+  xpos 4284
+  ypos 1544
+ }
+set N96d20c00 [stack 0]
+ Merge2 {
+  inputs 2
+  name Merge20
+  xpos 5275
+  ypos 1541
+ }
+ Switch {
+  inputs 2
+  which {{"\[value Switch2.which]"}}
+  name Switch7
+  label "plate vs comp"
+  selected true
+  xpos 5275
+  ypos 1787
+ }
+ Dot {
+  name Dot34
+  xpos 5309
+  ypos 2339
+ }
+push $N6520a400
+ Dot {
+  name Dot67
+  xpos 4154
+  ypos 1894
+ }
+push $Na8de7400
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Constant15
+  xpos 4640
+  ypos 1162
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message NaN
+  old_message {{78 97 78}
+    }
+  box {0 0 2040 2040}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 0 150}
+    }
+  font {{ Utopia : Bold : UtopiaBold.pfa : 0 }}
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text3
+  xpos 4640
+  ypos 1260
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat19
+  xpos 4640
+  ypos 1310
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge18
+  xpos 4760
+  ypos 1310
+ }
+push $Na84dbc00
+push $N396f4000
+ Expression {
+  expr0 isnan(r)?1:0
+  expr1 isnan(g)?1:0
+  expr2 isnan(b)?1:0
+  channel3 rgba
+  expr3 isnan(a)?1:0
+  name Expression4
+  xpos 5030
+  ypos 474
+ }
+ Blur {
+  channels rgba
+  size {{parent.grow_areas}}
+  name Blur10
+  label "(\[value channels])"
+  xpos 5030
+  ypos 524
+ }
+ Expression {
+  expr3 a>0?1:0
+  name Expression6
+  xpos 5030
+  ypos 582
+ }
+ Shuffle {
+  in alpha
+  name Shuffle9
+  label "\[value in]"
+  xpos 5030
+  ypos 632
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  name Merge13
+  xpos 5030
+  ypos 758
+ }
+ Merge2 {
+  inputs 2
+  name Merge15
+  xpos 5030
+  ypos 1310
+  disable {{parent.disable_text}}
+ }
+ Expression {
+  expr3 clamp(r+g+b)
+  name Expression1
+  xpos 5030
+  ypos 1441
+ }
+push $N96d20c00
+ Dot {
+  name Dot62
+  xpos 4284
+  ypos 1644
+ }
+ Merge2 {
+  inputs 2
+  name Merge17
+  xpos 5030
+  ypos 1641
+ }
+ Switch {
+  inputs 2
+  which {{"\[value Switch2.which]"}}
+  name Switch1
+  label "plate vs comp"
+  xpos 5030
+  ypos 1887
+ }
+ Dot {
+  name Dot57
+  xpos 5064
+  ypos 2089
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Constant10
+  xpos 3160
+  ypos 461
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message LEFT
+  old_message {{76 69 70 84}
+    }
+  box {0 0 2040 2040}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 0 110}
+    }
+  cursor_position 4
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text13
+  xpos 3160
+  ypos 559
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat14
+  xpos 3160
+  ypos 609
+ }
+ Transform {
+  scale {1 0.2}
+  center {{input.width/2} 0}
+  shutteroffset centred
+  name Transform4
+  xpos 3160
+  ypos 659
+ }
+push $Nd021c400
+ Dot {
+  name Dot23
+  xpos 874
+  ypos 454
+ }
+ Dot {
+  name Dot45
+  xpos 1135
+  ypos 454
+ }
+set N9c38b800 [stack 0]
+ Dot {
+  name Dot13
+  xpos 1216
+  ypos 454
+ }
+push $Nda7a9400
+ Dot {
+  name Dot1
+  xpos 1341
+  ypos 368
+ }
+set N962de400 [stack 0]
+ Dot {
+  name Dot12
+  xpos 1341
+  ypos 694
+ }
+set N962dfc00 [stack 0]
+ Group {
+  inputs 2
+  name PA_AlphaDifference
+  tile_color 0xff5f00ff
+  note_font "Bitstream Vera Sans Bold"
+  xpos 1182
+  ypos 691
+  addUserKnob {20 User}
+  addUserKnob {41 factor l Range T Expression3.factor}
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "Alpha Difference v1.0\nCreated by Pedro Andrade\n-2019-"}
+ }
+  Input {
+   inputs 0
+   name A
+   xpos 710
+   ypos -254
+  }
+  Input {
+   inputs 0
+   name B
+   xpos 930
+   ypos -260
+   number 1
+  }
+  Difference {
+   inputs 2
+   name Difference2
+   xpos 839
+   ypos -147
+  }
+  Expression {
+   expr3 a>factor?1:0
+   name Expression3
+   xpos 839
+   ypos -63
+   addUserKnob {20 User}
+   addUserKnob {7 factor R 0 0.01}
+   factor {{(parent.parent.strenght/100)+0.000001}}
+  }
+  Shuffle {
+   in alpha
+   name Shuffle2
+   label "\[value in]"
+   xpos 839
+   ypos 9
+  }
+  Output {
+   name Output1
+   xpos 839
+   ypos 109
+  }
+ end_group
+ Dot {
+  name Dot10
+  xpos 1216
+  ypos 785
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 0 1 0}
+  color_panelDropped true
+  name Constant2
+  xpos 891
+  ypos 512
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fill
+  black_outside true
+  name Reformat11
+  xpos 891
+  ypos 610
+ }
+push 0
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 1 0 0}
+  color_panelDropped true
+  name Constant3
+  xpos 782
+  ypos 517
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fill
+  black_outside true
+  name Reformat10
+  xpos 782
+  ypos 615
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {1 0 0 0}
+  color_panelDropped true
+  name Constant1
+  xpos 662
+  ypos 517
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fill
+  black_outside true
+  name Reformat9
+  xpos 662
+  ypos 615
+ }
+ Dissolve {
+  inputs 3+1
+  which {{parent.colorvariation}}
+  name Dissolve1
+  xpos 782
+  ypos 654
+ }
+ Dot {
+  name Dot47
+  xpos 815
+  ypos 725
+ }
+set N763bc00 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos 782
+  ypos 776
+ }
+ Dot {
+  name Dot36
+  xpos 816
+  ypos 894
+ }
+set N40a92c00 [stack 0]
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy5
+  xpos 3160
+  ypos 885
+ }
+ Premult {
+  name Premult4
+  xpos 3160
+  ypos 947
+ }
+push $N41e22c00
+ Reformat {
+  format "4096 4096 0 0 4096 4096 1 square_4K"
+  resize distort
+  pbb true
+  name Reformat2
+  xpos 3302
+  ypos 247
+ }
+ Dot {
+  name Dot43
+  xpos 3336
+  ypos 309
+ }
+set N40a92000 [stack 0]
+ Transform {
+  rotate -90
+  center {2048 2048}
+  shutteroffset centred
+  name Transform3
+  xpos 3302
+  ypos 385
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop4.box.r}}
+  box_height {{parent.Crop4.box.t}}
+  box_fixed true
+  resize distort
+  pbb true
+  name Reformat1
+  xpos 3302
+  ypos 441
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  reformat true
+  crop false
+  name Crop5
+  xpos 3302
+  ypos 491
+ }
+ Crop {
+  box {0 {input.height/1.1} {input.width} {input.height}}
+  reformat true
+  crop false
+  name Crop3
+  label top
+  xpos 3302
+  ypos 541
+ }
+ Remove {
+  channels alpha
+  name Remove5
+  xpos 3302
+  ypos 603
+ }
+ Merge2 {
+  inputs 2
+  name Merge10
+  xpos 3302
+  ypos 947
+  disable {{parent.Merge5.disable}}
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  reformat true
+  crop false
+  name Crop9
+  xpos 3302
+  ypos 997
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Constant11
+  xpos 3560
+  ypos 467
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message RIGHT
+  old_message {{82 73 71 72 84}
+    }
+  box {0 0 2040 2040}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 0 110}
+    }
+  cursor_position 5
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text14
+  xpos 3560
+  ypos 565
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat15
+  xpos 3560
+  ypos 615
+ }
+ Transform {
+  scale {1 0.2}
+  center {{input.width/2} 0}
+  shutteroffset centred
+  name Transform2
+  xpos 3560
+  ypos 665
+ }
+push $N40a92c00
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy6
+  xpos 3560
+  ypos 885
+ }
+ Premult {
+  name Premult5
+  xpos 3560
+  ypos 947
+ }
+push $N40a92000
+ Dot {
+  name Dot44
+  xpos 3706
+  ypos 309
+ }
+ Transform {
+  rotate -90
+  center {2048 2048}
+  shutteroffset centred
+  name Transform1
+  xpos 3672
+  ypos 391
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop4.box.r}}
+  box_height {{parent.Crop4.box.t}}
+  box_fixed true
+  resize distort
+  pbb true
+  name Reformat3
+  xpos 3672
+  ypos 447
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  reformat true
+  crop false
+  name Crop6
+  xpos 3672
+  ypos 497
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height-input.height/1.1}}
+  reformat true
+  crop false
+  name Crop8
+  label "right\n"
+  xpos 3672
+  ypos 547
+ }
+ Remove {
+  channels alpha
+  name Remove6
+  xpos 3672
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge11
+  xpos 3672
+  ypos 947
+  disable {{parent.Merge5.disable}}
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  reformat true
+  crop false
+  name Crop7
+  xpos 3672
+  ypos 997
+ }
+ Group {
+  inputs 2
+  name PA_SideBySide1
+  tile_color 0xff5f00ff
+  note_font "Bitstream Vera Sans Bold"
+  xpos 3502
+  ypos 1141
+  addUserKnob {20 User}
+  addUserKnob {4 orientation l "Inputs Orientation" M {Horizontal Vertical "" ""}}
+  orientation Vertical
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "Side by Side v1.0\nCreated by Pedro Andrade\n-2017-"}
+ }
+  Input {
+   inputs 0
+   name input1
+   selected true
+   xpos -1892
+   ypos 827
+  }
+  Dot {
+   name Dot160
+   xpos -1858
+   ypos 980
+  }
+set Nabd54c00 [stack 0]
+  BlackOutside {
+   name BlackOutside1
+   xpos -1892
+   ypos 1691
+  }
+set Nabd55c00 [stack 0]
+  Crop {
+   box {0 0 {input.width} {input.height*2}}
+   reformat true
+   name Crop4
+   xpos -1775
+   ypos 1810
+  }
+  Input {
+   inputs 0
+   name input2
+   xpos -875
+   ypos 867
+   number 1
+  }
+  Crop {
+   box {{parent.Crop7.box} {parent.Crop7.box} {parent.Crop7.box} {parent.Crop7.box}}
+   reformat true
+   crop false
+   name Crop8
+   xpos -842
+   ypos 970
+  }
+  BlackOutside {
+   name BlackOutside2
+   xpos -842
+   ypos 1708
+  }
+set N6a0d8400 [stack 0]
+  Crop {
+   box {0 0 {input.width} {input.height*2}}
+   reformat true
+   name Crop5
+   xpos -744
+   ypos 1796
+  }
+  Transform {
+   translate {0 {center.y}}
+   center {{input.width/2} {input.height/2}}
+   shutteroffset centred
+   name Transform1
+   xpos -744
+   ypos 1868
+  }
+  Merge2 {
+   inputs 2
+   name Merge3
+   xpos -1090
+   ypos 2064
+  }
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   crop false
+   name Crop6
+   xpos -1090
+   ypos 2136
+  }
+push $Nabd55c00
+  Crop {
+   box {0 0 {input.width*2} {input.height}}
+   reformat true
+   name Crop1
+   xpos -1990
+   ypos 1809
+  }
+push $N6a0d8400
+  Crop {
+   box {0 0 {input.width*2} {input.height}}
+   reformat true
+   name Crop2
+   xpos -1021
+   ypos 1782
+  }
+  Transform {
+   translate {{center.x} 0}
+   center {{input.width/2} {input.height/2}}
+   shutteroffset centred
+   name Transform4
+   xpos -1021
+   ypos 1854
+  }
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -1625
+   ypos 2064
+  }
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   crop false
+   name Crop3
+   xpos -1625
+   ypos 2136
+  }
+  Switch {
+   inputs 2
+   which {{parent.orientation}}
+   name Switch1
+   xpos -1332
+   ypos 2274
+  }
+  Output {
+   name Output1
+   xpos -1332
+   ypos 2440
+  }
+push $Nabd54c00
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   crop false
+   name Crop7
+   xpos -1690
+   ypos 976
+  }
+ end_group
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Constant8
+  xpos 2095
+  ypos 467
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message TOP
+  old_message {{84 79 80}
+    }
+  box {0 0 2040 2040}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 0 110}
+    }
+  font_size 150
+  scale {1 1}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text9
+  xpos 2095
+  ypos 565
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat12
+  xpos 2095
+  ypos 615
+ }
+ Transform {
+  scale {1 0.2}
+  center {{input.width/2} 0}
+  shutteroffset centred
+  name Transform5
+  xpos 2095
+  ypos 665
+ }
+push $N40a92c00
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy3
+  xpos 2095
+  ypos 885
+ }
+ Premult {
+  name Premult2
+  xpos 2095
+  ypos 947
+ }
+push $Nd021cc00
+ Crop {
+  box {0 {input.height/1.1} {input.width} {input.height}}
+  reformat true
+  crop false
+  name Crop1
+  label top
+  xpos 2340
+  ypos 547
+ }
+ Remove {
+  channels alpha
+  name Remove3
+  xpos 2340
+  ypos 609
+ }
+ Merge2 {
+  inputs 2
+  name Merge6
+  xpos 2340
+  ypos 947
+  disable {{parent.Merge5.disable}}
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  reformat true
+  crop false
+  name Crop11
+  xpos 2340
+  ypos 997
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Constant9
+  xpos 2560
+  ypos 467
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message BOTTOM
+  old_message {{66 79 84 84 79 77}
+    }
+  box {0 0 2040 2040}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 5 150 0 110}
+    }
+  cursor_position 6
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text11
+  xpos 2560
+  ypos 565
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat13
+  xpos 2560
+  ypos 615
+ }
+ Transform {
+  scale {1 0.2}
+  center {{input.width/2} 0}
+  shutteroffset centred
+  name Transform7
+  xpos 2560
+  ypos 668
+ }
+push $N40a92c00
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy4
+  xpos 2560
+  ypos 885
+ }
+ Premult {
+  name Premult3
+  xpos 2560
+  ypos 947
+ }
+push $N41e23000
+ Crop {
+  box {{curve} {curve} {input.width} {input.height-input.height/1.1}}
+  reformat true
+  crop false
+  name Crop2
+  label "bottom\n"
+  xpos 2733
+  ypos 550
+ }
+ Remove {
+  channels alpha
+  name Remove4
+  xpos 2733
+  ypos 612
+ }
+ Merge2 {
+  inputs 2
+  name Merge9
+  xpos 2733
+  ypos 947
+  disable {{parent.Merge5.disable}}
+ }
+ Crop {
+  box {{curve} {curve} {input.width} {input.height}}
+  reformat true
+  crop false
+  name Crop10
+  xpos 2733
+  ypos 997
+ }
+ Group {
+  inputs 2
+  name PA_SideBySide
+  tile_color 0xff5f00ff
+  note_font "Bitstream Vera Sans Bold"
+  xpos 2560
+  ypos 1241
+  addUserKnob {20 User}
+  addUserKnob {4 orientation l "Inputs Orientation" M {Horizontal Vertical "" ""}}
+  orientation Vertical
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "Side by Side v1.0\nCreated by Pedro Andrade\n-2017-"}
+ }
+  Input {
+   inputs 0
+   name input1
+   selected true
+   xpos -1892
+   ypos 827
+  }
+  Dot {
+   name Dot160
+   xpos -1858
+   ypos 980
+  }
+set N6c50bc00 [stack 0]
+  BlackOutside {
+   name BlackOutside1
+   xpos -1892
+   ypos 1691
+  }
+set N6c50b800 [stack 0]
+  Crop {
+   box {0 0 {input.width} {input.height*2}}
+   reformat true
+   name Crop4
+   xpos -1775
+   ypos 1810
+  }
+  Input {
+   inputs 0
+   name input2
+   xpos -875
+   ypos 867
+   number 1
+  }
+  Crop {
+   box {{parent.Crop7.box} {parent.Crop7.box} {parent.Crop7.box} {parent.Crop7.box}}
+   reformat true
+   crop false
+   name Crop8
+   xpos -842
+   ypos 970
+  }
+  BlackOutside {
+   name BlackOutside2
+   xpos -842
+   ypos 1708
+  }
+set N6c64f000 [stack 0]
+  Crop {
+   box {0 0 {input.width} {input.height*2}}
+   reformat true
+   name Crop5
+   xpos -744
+   ypos 1796
+  }
+  Transform {
+   translate {0 {center.y}}
+   center {{input.width/2} {input.height/2}}
+   shutteroffset centred
+   name Transform1
+   xpos -744
+   ypos 1868
+  }
+  Merge2 {
+   inputs 2
+   name Merge3
+   xpos -1090
+   ypos 2064
+  }
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   crop false
+   name Crop6
+   xpos -1090
+   ypos 2136
+  }
+push $N6c50b800
+  Crop {
+   box {0 0 {input.width*2} {input.height}}
+   reformat true
+   name Crop1
+   xpos -1990
+   ypos 1809
+  }
+push $N6c64f000
+  Crop {
+   box {0 0 {input.width*2} {input.height}}
+   reformat true
+   name Crop2
+   xpos -1021
+   ypos 1782
+  }
+  Transform {
+   translate {{center.x} 0}
+   center {{input.width/2} {input.height/2}}
+   shutteroffset centred
+   name Transform4
+   xpos -1021
+   ypos 1854
+  }
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -1625
+   ypos 2064
+  }
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   crop false
+   name Crop3
+   xpos -1625
+   ypos 2136
+  }
+  Switch {
+   inputs 2
+   which {{parent.orientation}}
+   name Switch1
+   xpos -1332
+   ypos 2274
+  }
+  Output {
+   name Output1
+   xpos -1332
+   ypos 2440
+  }
+push $N6c50bc00
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   crop false
+   name Crop7
+   xpos -1690
+   ypos 976
+  }
+ end_group
+ Group {
+  inputs 2
+  name PA_SideBySide2
+  tile_color 0xff5f00ff
+  note_font "Bitstream Vera Sans Bold"
+  xpos 3048
+  ypos 1391
+  addUserKnob {20 User}
+  addUserKnob {4 orientation l "Inputs Orientation" M {Horizontal Vertical "" ""}}
+  orientation Vertical
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "Side by Side v1.0\nCreated by Pedro Andrade\n-2017-"}
+ }
+  Input {
+   inputs 0
+   name input1
+   selected true
+   xpos -1892
+   ypos 827
+  }
+  Dot {
+   name Dot160
+   xpos -1858
+   ypos 980
+  }
+set Na08dfc00 [stack 0]
+  BlackOutside {
+   name BlackOutside1
+   xpos -1892
+   ypos 1691
+  }
+set Na08df000 [stack 0]
+  Crop {
+   box {0 0 {input.width} {input.height*2}}
+   reformat true
+   name Crop4
+   xpos -1775
+   ypos 1810
+  }
+  Input {
+   inputs 0
+   name input2
+   xpos -875
+   ypos 867
+   number 1
+  }
+  Crop {
+   box {{parent.Crop7.box} {parent.Crop7.box} {parent.Crop7.box} {parent.Crop7.box}}
+   reformat true
+   crop false
+   name Crop8
+   xpos -842
+   ypos 970
+  }
+  BlackOutside {
+   name BlackOutside2
+   xpos -842
+   ypos 1708
+  }
+set Nfd374c00 [stack 0]
+  Crop {
+   box {0 0 {input.width} {input.height*2}}
+   reformat true
+   name Crop5
+   xpos -744
+   ypos 1796
+  }
+  Transform {
+   translate {0 {center.y}}
+   center {{input.width/2} {input.height/2}}
+   shutteroffset centred
+   name Transform1
+   xpos -744
+   ypos 1868
+  }
+  Merge2 {
+   inputs 2
+   name Merge3
+   xpos -1090
+   ypos 2064
+  }
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   crop false
+   name Crop6
+   xpos -1090
+   ypos 2136
+  }
+push $Na08df000
+  Crop {
+   box {0 0 {input.width*2} {input.height}}
+   reformat true
+   name Crop1
+   xpos -1990
+   ypos 1809
+  }
+push $Nfd374c00
+  Crop {
+   box {0 0 {input.width*2} {input.height}}
+   reformat true
+   name Crop2
+   xpos -1021
+   ypos 1782
+  }
+  Transform {
+   translate {{center.x} 0}
+   center {{input.width/2} {input.height/2}}
+   shutteroffset centred
+   name Transform4
+   xpos -1021
+   ypos 1854
+  }
+  Merge2 {
+   inputs 2
+   name Merge1
+   xpos -1625
+   ypos 2064
+  }
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   crop false
+   name Crop3
+   xpos -1625
+   ypos 2136
+  }
+  Switch {
+   inputs 2
+   which {{parent.orientation}}
+   name Switch1
+   xpos -1332
+   ypos 2274
+  }
+  Output {
+   name Output1
+   xpos -1332
+   ypos 2440
+  }
+push $Na08dfc00
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   crop false
+   name Crop7
+   xpos -1690
+   ypos 976
+  }
+ end_group
+ Reformat {
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  resize distort
+  pbb true
+  name Reformat4
+  xpos 3048
+  ypos 1441
+ }
+ Dot {
+  name Dot20
+  xpos 3082
+  ypos 2045
+ }
+push $N9c38b800
+ Dot {
+  name Dot2
+  xpos 1135
+  ypos 963
+ }
+push $N962dfc00
+ Dot {
+  name Dot46
+  xpos 1341
+  ypos 1044
+ }
+ Group {
+  inputs 2
+  name PA_AlphaDifference1
+  tile_color 0xff5f00ff
+  note_font "Bitstream Vera Sans Bold"
+  xpos 1101
+  ypos 1041
+  addUserKnob {20 User}
+  addUserKnob {41 factor l Range T Expression3.factor}
+  addUserKnob {26 ""}
+  addUserKnob {26 author l "" +STARTLINE T "Alpha Difference v1.0\nCreated by Pedro Andrade\n-2019-"}
+ }
+  Input {
+   inputs 0
+   name A
+   xpos 710
+   ypos -254
+  }
+  Input {
+   inputs 0
+   name B
+   xpos 930
+   ypos -260
+   number 1
+  }
+  Difference {
+   inputs 2
+   name Difference2
+   xpos 839
+   ypos -147
+  }
+  Expression {
+   expr3 a>factor?1:0
+   name Expression3
+   xpos 839
+   ypos -63
+   addUserKnob {20 User}
+   addUserKnob {7 factor R 0 0.01}
+   factor 1e-06
+  }
+  Shuffle {
+   in alpha
+   name Shuffle2
+   label "\[value in]"
+   xpos 839
+   ypos 9
+  }
+  Output {
+   name Output1
+   xpos 839
+   ypos 109
+  }
+ end_group
+push $N763bc00
+ Dot {
+  name Dot48
+  xpos 943
+  ypos 725
+ }
+ Dot {
+  name Dot49
+  xpos 943
+  ypos 1238
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy8
+  xpos 1101
+  ypos 1229
+ }
+ Premult {
+  name Premult7
+  xpos 1101
+  ypos 1291
+ }
+ Dot {
+  name Dot7
+  xpos -290
+  ypos 1288
+ }
+ Clamp {
+  channels alpha
+  name Clamp1
+  xpos -324
+  ypos 1329
+ }
+ Unpremult {
+  name Unpremult1
+  xpos -324
+  ypos 1387
+ }
+ Blur {
+  channels rgba
+  size 1
+  name Blur3
+  label "(\[value channels])"
+  xpos -324
+  ypos 1435
+ }
+ Expression {
+  expr3 a>factor?1:0
+  name Alpha_Crank
+  tile_color 0xff00ffff
+  note_font "Bitstream Vera Sans Bold"
+  xpos -324
+  ypos 1485
+  addUserKnob {20 User}
+  addUserKnob {7 factor l "" +STARTLINE R 1e-05 0.1}
+  factor 1e-05
+ }
+ Group {
+  name PA_EdgeMatte2
+  tile_color 0xff5f00ff
+  note_font "Bitstream Vera Sans Bold"
+  xpos -324
+  ypos 1529
+  addUserKnob {20 User}
+  addUserKnob {4 Style l Filter M {Blur Box Triangle Quadractic Gaussian ""}}
+  Style Box
+  addUserKnob {26 ""}
+  addUserKnob {7 GrowOut l "Grow Out" R -100 -1}
+  GrowOut -2
+  addUserKnob {41 size l "Grow Out Blur" T Blur1.size}
+  addUserKnob {26 ""}
+  addUserKnob {7 GrowIn l "Grow In" R 1 100}
+  GrowIn 1
+  addUserKnob {41 size_1 l "Grow In Blur" T Blur2.size}
+  addUserKnob {26 ""}
+  addUserKnob {26 Author l "" +STARTLINE T "EdgeMatte v2.0\nCreated by Pedro Andrade\n-2014-"}
+  addUserKnob {26 ""}
+  addUserKnob {22 Link l "How It Works" T "import os\nimport sys\n\ntry:\n    import subprocess\n    def _run(cmd, shell, wait):\n        opener = subprocess.Popen(cmd, shell=shell)\n        if wait:\n            opener.wait()\n        return opener.pid\nexcept ImportError:\n    import popen2\n    def _run(cmd, shell, wait):\n        opener = popen2.Popen3(cmd)\n        if wait:\n            opener.wait()\n        return opener.pid\n\ndef _open(url, wait=0):\n    if sys.platform == \"darwin\":\n        cmd = \[\"open\", url]\n    elif hasattr(os, \"startfile\"):\n        return os.startfile(url)\n    elif os.environ.has_key(\"KDE_FULL_SESSION\") or os.environ.has_key(\"KDE_MULTIHEAD\") or \\\n        os.environ.has_key(\"GNOME_DESKTOP_SESSION_ID\") or os.environ.has_key(\"GNOME_KEYRING_SOCKET\"):\n        cmd = \[\"xdg-open\", url]\n    else:\n        raise OSError, \"Desktop not supported.\"\n\n    return _run(cmd, 0, wait)\n\n_open('http://youtu.be/2dNT_Rasrek')" +STARTLINE}
+ }
+  StickyNote {
+   inputs 0
+   name StickyNote1
+   label blur
+   note_font "Bitstream Vera Sans Bold"
+   xpos -932
+   ypos 588
+  }
+  StickyNote {
+   inputs 0
+   name StickyNote2
+   label box
+   note_font "Bitstream Vera Sans Bold"
+   xpos -576
+   ypos 588
+  }
+  StickyNote {
+   inputs 0
+   name StickyNote3
+   label triangle
+   note_font "Bitstream Vera Sans Bold"
+   xpos -136
+   ypos 588
+  }
+  StickyNote {
+   inputs 0
+   name StickyNote4
+   label quadractic
+   note_font "Bitstream Vera Sans Bold"
+   xpos 291
+   ypos 588
+  }
+  StickyNote {
+   inputs 0
+   name StickyNote5
+   label gaussian
+   note_font "Bitstream Vera Sans Bold"
+   xpos 680
+   ypos 588
+  }
+  Input {
+   inputs 0
+   name img
+   xpos 694
+   ypos -416
+  }
+  Dot {
+   name Dot27
+   xpos 728
+   ypos -308
+  }
+  Dot {
+   name Dot26
+   xpos 740
+   ypos 12
+  }
+set N5914ec00 [stack 0]
+  FilterErode {
+   size {{parent.Erode2.size}}
+   filter gaussian
+   name FilterErode9
+   label "\[value filter]"
+   xpos 779
+   ypos 162
+  }
+  Blur {
+   name Blur2
+   xpos 779
+   ypos 264
+  }
+  set C5914e800 [stack 0]
+push $N5914ec00
+  FilterErode {
+   size {{parent.Erode1.size}}
+   filter gaussian
+   name FilterErode10
+   label "\[value filter]"
+   xpos 624
+   ypos 162
+  }
+  Blur {
+   name Blur1
+   xpos 647
+   ypos 264
+  }
+  set C6c64ec00 [stack 0]
+  Merge2 {
+   inputs 2
+   operation stencil
+   name Merge18
+   xpos 692
+   ypos 388
+  }
+  Shuffle {
+   in alpha
+   name Shuffle5
+   label "\[value in]"
+   xpos 692
+   ypos 502
+  }
+push $N5914ec00
+  Dot {
+   name Dot25
+   xpos 338
+   ypos 12
+  }
+set N6c12e000 [stack 0]
+  FilterErode {
+   size {{parent.Erode2.size}}
+   filter quadratic
+   name FilterErode7
+   label "\[value filter]"
+   xpos 383
+   ypos 178
+  }
+clone $C5914e800 {
+   xpos 383
+   ypos 264
+   selected false
+  }
+push $N6c12e000
+  FilterErode {
+   size {{parent.Erode1.size}}
+   filter quadratic
+   name FilterErode8
+   label "\[value filter]"
+   xpos 234
+   ypos 178
+  }
+clone $C6c64ec00 {
+   xpos 255
+   ypos 264
+   selected false
+  }
+  Merge2 {
+   inputs 2
+   operation stencil
+   name Merge17
+   xpos 294
+   ypos 388
+  }
+  Shuffle {
+   in alpha
+   name Shuffle6
+   label "\[value in]"
+   xpos 294
+   ypos 502
+  }
+push $N6c12e000
+  Dot {
+   name Dot22
+   xpos -100
+   ypos 12
+  }
+set N7d0e3800 [stack 0]
+  FilterErode {
+   size {{parent.Erode2.size}}
+   filter triangle
+   name FilterErode5
+   label "\[value filter]"
+   xpos -72
+   ypos 178
+  }
+clone $C5914e800 {
+   xpos -72
+   ypos 264
+   selected false
+  }
+push $N7d0e3800
+  FilterErode {
+   size {{parent.Erode1.size}}
+   filter triangle
+   name FilterErode6
+   label "\[value filter]"
+   xpos -218
+   ypos 178
+  }
+clone $C6c64ec00 {
+   xpos -199
+   ypos 264
+   selected false
+  }
+  Merge2 {
+   inputs 2
+   operation stencil
+   name Merge15
+   xpos -148
+   ypos 388
+  }
+  Shuffle {
+   in alpha
+   name Shuffle7
+   label "\[value in]"
+   xpos -148
+   ypos 502
+  }
+push $N7d0e3800
+  Dot {
+   name Dot24
+   xpos -524
+   ypos 12
+  }
+set Naf7d0800 [stack 0]
+  FilterErode {
+   size {{parent.Erode2.size}}
+   name FilterErode4
+   label "\[value filter]"
+   xpos -489
+   ypos 178
+  }
+clone $C5914e800 {
+   xpos -489
+   ypos 264
+   selected false
+  }
+push $Naf7d0800
+  FilterErode {
+   size {{parent.Erode1.size}}
+   name FilterErode3
+   label "\[value filter]"
+   xpos -640
+   ypos 178
+  }
+clone $C6c64ec00 {
+   xpos -612
+   ypos 264
+   selected false
+  }
+  Merge2 {
+   inputs 2
+   operation stencil
+   name Merge12
+   xpos -573
+   ypos 388
+  }
+  Shuffle {
+   in alpha
+   name Shuffle8
+   label "\[value in]"
+   xpos -573
+   ypos 502
+  }
+push $Naf7d0800
+  Dot {
+   name Dot21
+   xpos -873
+   ypos 12
+  }
+set Nc47a2400 [stack 0]
+  Erode {
+   size {{parent.GrowIn}}
+   name Erode2
+   label blur
+   xpos -864
+   ypos 178
+  }
+clone $C5914e800 {
+   xpos -864
+   ypos 264
+   selected false
+  }
+push $Nc47a2400
+  Erode {
+   size {{parent.GrowOut}}
+   name Erode1
+   label blur
+   xpos -1000
+   ypos 178
+  }
+clone $C6c64ec00 {
+   xpos -1000
+   ypos 264
+   selected false
+  }
+  Merge2 {
+   inputs 2
+   operation stencil
+   name Merge11
+   xpos -932
+   ypos 388
+  }
+  Shuffle {
+   in alpha
+   name Shuffle4
+   label "\[value in]"
+   xpos -932
+   ypos 502
+  }
+  Switch {
+   inputs 5
+   which {{parent.Style}}
+   name Switch1
+   xpos -148
+   ypos 910
+  }
+  Crop {
+   box {0 0 {input.width} {input.height}}
+   name Crop1
+   selected true
+   xpos -148
+   ypos 982
+  }
+  Output {
+   name Output1
+   xpos -148
+   ypos 1200
+  }
+ end_group
+push $N40a92c00
+ Dot {
+  name Dot52
+  xpos 594
+  ypos 894
+ }
+set Naef8f800 [stack 0]
+ Dot {
+  name Dot38
+  xpos -451
+  ypos 888
+ }
+ Dot {
+  name Dot37
+  xpos -451
+  ypos 1138
+ }
+set Naef8f400 [stack 0]
+ Dot {
+  name Dot19
+  xpos -451
+  ypos 1588
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy7
+  xpos -324
+  ypos 1579
+ }
+ Premult {
+  name Premult6
+  xpos -324
+  ypos 1629
+ }
+ Dot {
+  name Dot8
+  xpos -290
+  ypos 1732
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Constant6
+  xpos -1125
+  ypos 643
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message GRAIN
+  old_message {{71 82 65 73 78}
+    }
+  box {0 0 2040 2040}
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 0 150}
+    }
+  cursor_position 5
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text10
+  xpos -1125
+  ypos 741
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message PLATE
+  old_message {{80 76 65 84 69}
+    }
+  box {0 0 2040 2040}
+  xjustify right
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 0 150 1 150 2 150 3 150 4 150}
+    }
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text1
+  xpos -1125
+  ypos 791
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat7
+  xpos -1125
+  ypos 841
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Constant7
+  xpos -980
+  ypos 643
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message GRAIN
+  old_message {{71 82 65 73 78}
+    }
+  box {0 0 2040 2040}
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 0 150}
+    }
+  cursor_position 5
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text2
+  xpos -980
+  ypos 741
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message COMP
+  old_message {{67 79 77 80}
+    }
+  box {0 0 2040 2040}
+  xjustify right
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 0 150}
+    }
+  cursor_position 4
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text12
+  xpos -980
+  ypos 791
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat8
+  xpos -980
+  ypos 841
+ }
+ Dot {
+  name Dot39
+  xpos -946
+  ypos 1088
+ }
+ Switch {
+  inputs 2
+  which {{parent.Switch2.which}}
+  name Switch3
+  label "plate vs comp"
+  xpos -1125
+  ypos 1079
+ }
+push $Naef8f400
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos -1125
+  ypos 1129
+ }
+ Premult {
+  name Premult1
+  xpos -1125
+  ypos 1191
+ }
+ Dot {
+  name Dot35
+  xpos -1091
+  ypos 1294
+ }
+push $N57e85800
+ Dot {
+  name Dot24
+  xpos -1387
+  ypos 372
+ }
+set Naa676400 [stack 0]
+ Dot {
+  name Dot25
+  xpos -1476
+  ypos 372
+ }
+ Blur {
+  channels rgba
+  size 1
+  name Blur2
+  xpos -1510
+  ypos 406
+ }
+ Dot {
+  name Dot26
+  xpos -1476
+  ypos 481
+ }
+push $Naa676400
+ Merge2 {
+  inputs 2
+  operation from
+  bbox B
+  output rgb
+  name Merge7
+  xpos -1421
+  ypos 477
+ }
+ Grade {
+  white {{300*(parent.strenght*-1)+300}}
+  name Grade2
+  xpos -1421
+  ypos 535
+ }
+ Dot {
+  name Dot27
+  xpos -1387
+  ypos 640
+ }
+push $Naa676400
+ Dot {
+  name Dot28
+  xpos -1295
+  ypos 372
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox B
+  output rgb
+  name Merge8
+  xpos -1329
+  ypos 637
+ }
+push $Nda7a9400
+ Dot {
+  name Dot51
+  xpos 194
+  ypos -56
+ }
+set N6c12e800 [stack 0]
+ Dot {
+  name Dot29
+  xpos -698
+  ypos -62
+ }
+ Dot {
+  name Dot14
+  xpos -698
+  ypos 276
+ }
+ Dot {
+  name Dot15
+  xpos -698
+  ypos 407
+ }
+set N5b4ae000 [stack 0]
+ Dot {
+  name Dot16
+  xpos -787
+  ypos 407
+ }
+ Blur {
+  channels rgba
+  size 1
+  name Blur1
+  xpos -821
+  ypos 441
+ }
+ Dot {
+  name Dot17
+  xpos -787
+  ypos 516
+ }
+push $N5b4ae000
+ Merge2 {
+  inputs 2
+  operation from
+  bbox B
+  output rgb
+  name Merge3
+  xpos -732
+  ypos 513
+ }
+ Grade {
+  white {{300*(parent.strenght*-1)+300}}
+  name Grade3
+  xpos -732
+  ypos 563
+ }
+ Dot {
+  name Dot18
+  xpos -698
+  ypos 639
+ }
+push $N5b4ae000
+ Dot {
+  name Dot22
+  xpos -606
+  ypos 407
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  bbox B
+  output rgb
+  name Merge4
+  xpos -640
+  ypos 635
+ }
+ Dot {
+  name Dot31
+  xpos -606
+  ypos 1038
+ }
+ Switch {
+  inputs 2
+  which {{parent.switch_view}}
+  name Switch2
+  label "plate vs comp"
+  xpos -1329
+  ypos 1029
+ }
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos -1329
+  ypos 1291
+  disable {{parent.disable_text}}
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -1329
+  ypos 1729
+  disable {{parent.disable_roi}}
+ }
+ Dot {
+  name Dot30
+  xpos -1295
+  ypos 2038
+ }
+push $N40a92c00
+ Premult {
+  name Premult21
+  xpos 782
+  ypos 991
+ }
+ Dot {
+  name Dot6
+  xpos 816
+  ypos 1041
+ }
+push $N962de400
+ Dot {
+  name Dot21
+  xpos 1015
+  ypos 368
+ }
+ Dot {
+  name Dot11
+  xpos 1015
+  ypos 1144
+ }
+ Merge2 {
+  inputs 2
+  name Merge2
+  xpos 782
+  ypos 1140
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Constant5
+  xpos 281
+  ypos 1367
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message PLATE
+  old_message {{80 76 65 84 69}
+    }
+  box {0 0 2040 2040}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 4 150 0 150 1 150 2 150 3 150 4 150}
+    }
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text8
+  xpos 281
+  ypos 1465
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat6
+  xpos 281
+  ypos 1515
+ }
+ Dot {
+  name Dot56
+  xpos 315
+  ypos 1648
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "2048 2048 0 0 2048 2048 1 square_2K"
+  name Constant4
+  xpos 408
+  ypos 1367
+ }
+ Text2 {
+  font_size_toolbar 150
+  font_width_toolbar 100
+  font_height_toolbar 100
+  message COMP
+  old_message {{67 79 77 80}
+    }
+  box {0 0 2040 2040}
+  yjustify bottom
+  transforms {{0 2}
+    }
+  font_size_values {{0 150 1 150 2 150 3 150 0 110 1 110 2 110 3 110}
+    }
+  font_size 150
+  center {1024 1024}
+  cursor_initialised true
+  autofit_bbox false
+  initial_cursor_position {{0 2048}
+    }
+  group_animations {{0} imported: 0 selected: items: "root transform/"}
+  animation_layers {{1 11 1024 1024 0 0 1 1 0 0 0 0}
+    }
+  name Text7
+  xpos 408
+  ypos 1465
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.Crop13.box.r}}
+  box_height {{parent.Crop13.box.t}}
+  box_fixed true
+  resize fit
+  black_outside true
+  name Reformat5
+  xpos 408
+  ypos 1515
+ }
+ Switch {
+  inputs 2
+  which {{"\[value Switch2.which]"}}
+  name Switch5
+  label "plate vs comp"
+  xpos 408
+  ypos 1641
+ }
+push $Naef8f800
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy9
+  xpos 560
+  ypos 1641
+ }
+ Premult {
+  name Premult8
+  xpos 560
+  ypos 1791
+ }
+push $N57e84800
+ Dot {
+  name Dot54
+  xpos 49
+  ypos 1344
+ }
+push $N6c12e800
+ Dot {
+  name Dot53
+  xpos 194
+  ypos 1194
+ }
+set Naef8e400 [stack 0]
+ Dot {
+  name Dot55
+  xpos 194
+  ypos 1694
+ }
+ Switch {
+  inputs 2
+  which {{"\[value Switch2.which]"}}
+  name Switch6
+  label "plate vs comp"
+  xpos 15
+  ypos 1687
+ }
+ Merge2 {
+  inputs 2
+  name Merge12
+  xpos 15
+  ypos 1791
+  disable {{parent.disable_text}}
+ }
+ Switch {
+  inputs 6
+  which {{parent.mode}}
+  name Switch4
+  xpos 782
+  ypos 2391
+ }
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop12
+  xpos 782
+  ypos 2441
+ }
+ Output {
+  name Output1
+  xpos 782
+  ypos 2791
+ }
+push $Naef8e400
+ Crop {
+  box {0 0 {input.width} {input.height}}
+  name Crop13
+  xpos 350
+  ypos 1191
+ }
+end_group
