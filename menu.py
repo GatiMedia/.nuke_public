@@ -286,6 +286,12 @@ try:
 except:
     pass
 
+try:
+    import layer_shuffle
+    utilitiesMenu.addCommand('Lighting Layer Template', 'layer_shuffle.colorLayerSetup()')
+except:
+    pass
+
 ####-----------####
 #### TextFixer ####
 ####-----------####
