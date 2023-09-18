@@ -287,8 +287,8 @@ except:
     pass
 
 try:
-    import layer_shuffle
-    utilitiesMenu.addCommand('Lighting Layer Template', 'layer_shuffle.colorLayerSetup()')
+    import color_layer_setup
+    utilitiesMenu.addCommand('Lighting Layer Template', 'color_layer_setup.colorLayerSetup()')
 except:
     pass
 
