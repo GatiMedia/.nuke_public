@@ -250,6 +250,21 @@ except:
     pass
 
 try:
+    import move_selected
+    ms_menu = utilitiesMenu.addMenu('Move Selected Nodes', icon='Transform.png')
+    ms_menu.addCommand('Move 1 ▲', 'move_selected.move_up_one()', shortcut='ctrl+Up')
+    ms_menu.addCommand('Move 1 ▼', 'move_selected.move_down_one()', shortcut='ctrl+Down')
+    ms_menu.addCommand('Move 1 ◄', 'move_selected.move_left_one()', shortcut='ctrl+Left')
+    ms_menu.addCommand('Move 1 ►', 'move_selected.move_right_one()', shortcut='ctrl+Right')
+    ms_menu.addSeparator()
+    ms_menu.addCommand('Move 10 ▲', 'move_selected.move_up_ten()', shortcut='ctrl+shift+Up')
+    ms_menu.addCommand('Move 10 ▼', 'move_selected.move_down_ten()', shortcut='ctrl+shift+Down')
+    ms_menu.addCommand('Move 10 ◄', 'move_selected.move_left_ten()', shortcut='ctrl+shift+Left')
+    ms_menu.addCommand('Move 10 ►', 'move_selected.move_right_ten()', shortcut='ctrl+shift+Right')
+except:
+    pass
+
+try:
     import close
     utilitiesMenu.addCommand('Close', 'close.close()', 'shift+d')
 except:
