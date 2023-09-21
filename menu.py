@@ -228,7 +228,7 @@ nuke.menu('Nodes').addMenu('Filter').addCommand('SharpenSandwhich', 'SharpenSand
 utilitiesMenu = nuke.menu('Nuke').addMenu('GM Menu')
 
 # --------------------------------------------------------------
-#  USEFUL MENU ITEMS :::::::::::::::::::::::::::::::::::::::::::
+#   MENU ITEMS :::::::::::::::::::::::::::::::::::::::::::::::::
 # --------------------------------------------------------------
 
 def open_gatimedia_site():
@@ -266,7 +266,7 @@ except:
 
 try:
     import close
-    utilitiesMenu.addCommand('Close', 'close.close()', 'shift+d')
+    utilitiesMenu.addCommand('Close Properties', 'close.close()', 'shift+d', icon='Tile.png')
 except:
     pass
 
@@ -284,13 +284,13 @@ except:
 
 try:
     import change_channels
-    utilitiesMenu.addCommand('Change Channels', 'change_channels.changeChannels()', 'shift+a')
+    utilitiesMenu.addCommand('Change Channels', 'change_channels.changeChannels()', 'shift+a', icon='ChannelMerge.png')
 except:
     pass
 
 try:
     import add_retime
-    utilitiesMenu.addCommand('Add Retime', 'add_retime.addRetime()')
+    utilitiesMenu.addCommand('Add Retime', 'add_retime.addRetime()', icon='Retime.png')
 except:
     pass
 
@@ -302,13 +302,7 @@ except:
 
 try:
     import open_folder
-    utilitiesMenu.addCommand('Open Folder in file browser', 'open_folder.openFolder()', 'ctrl+f')
-except:
-    pass
-
-try:
-    import clean_droppedknobs
-    utilitiesMenu.addCommand('Clean DroppedKnobs', 'clean_droppedknobs.cleanDroppedKnobs()')
+    utilitiesMenu.addCommand('Open Folder in file browser', 'open_folder.openFolder()', 'ctrl+f', icon='Read.png')
 except:
     pass
 
