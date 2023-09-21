@@ -1,10 +1,9 @@
 import nuke
+import platform
+import subprocess
+import os
 
 def openFolder():
-    import platform
-    import subprocess
-    import os
-
     multipleNodes = nuke.selectedNodes()
 
     if len(multipleNodes) == 0 or len(multipleNodes) > 1:
