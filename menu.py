@@ -307,6 +307,12 @@ except:
     pass
 
 try:
+    import clean_droppedknobs
+    utilitiesMenu.addCommand('Clean DroppedKnobs', 'clean_droppedknobs.cleanDroppedKnobs()')
+except:
+    pass
+
+try:
     import color_layer_setup
     utilitiesMenu.addCommand('Lighting Layer Template', 'color_layer_setup.colorLayerSetup()')
 except:
