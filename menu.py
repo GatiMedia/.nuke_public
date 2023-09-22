@@ -13,7 +13,7 @@ import nuke
 import platform
 import os
 import glob, os
-
+import webbrowser
 
 # --------------------------------------------------------------
 #  PYCHARM CHEAT SHEET :::::::::::::::::::::::::::::::::::::::::
@@ -235,6 +235,30 @@ def open_gatimedia_site():
     webbrowser.open('https://www.gatimedia.co.uk/tutorials', new=2)
 
 utilitiesMenu.addCommand('Open GatiMedia', 'open_gatimedia_site()')
+
+utilitiesMenu.addSeparator()
+
+us_menu = utilitiesMenu.addMenu('Useful Sites')
+
+def open_ben_mcewan_site():
+    webbrowser.open('https://benmcewan.com/blog', new=2)
+us_menu.addCommand('Ben McEwan', 'open_ben_mcewan_site()')
+
+def open_chris_fryer_site():
+    webbrowser.open('https://www.chrisfryer.co.uk/blog', new=2)
+us_menu.addCommand('Chris Fryer', 'open_chris_fryer_site()')
+
+def open_erwan_leroy_site():
+    webbrowser.open('https://erwanleroy.com/blog', new=2)
+us_menu.addCommand('Erwan Leroy', 'open_erwan_leroy_site()')
+
+def open_kenn_hedin_kalvik_site():
+    webbrowser.open('https://www.keheka.com/', new=2)
+us_menu.addCommand('Kenn Hedin Kalvik', 'open_kenn_hedin_kalvik_site()')
+
+def open_cameron_carson_site():
+    webbrowser.open('https://www.cameroncarson.com/nuke-wave-expressions', new=2)
+us_menu.addCommand('Cameron Carson - Wave Expressions', 'open_cameron_carson_site()')
 
 utilitiesMenu.addSeparator()
 
