@@ -7,10 +7,10 @@ BackdropNode {
  note_font "MS Shell Dlg 2"
  note_font_size 82
  selected true
- xpos 1950
- ypos -1179
- bdwidth 1380
- bdheight 918
+ xpos 1943
+ ypos -1188
+ bdwidth 1395
+ bdheight 983
  addUserKnob {20 User}
  addUserKnob {22 cover l "<big><font color=yellow>Cover Selected Area</big></font>" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.coverSelectedArea()" +STARTLINE}
  addUserKnob {26 _1 l "" -STARTLINE T "   "}
@@ -125,31 +125,53 @@ BackdropNode {
  addUserKnob {22 downright500_2 l "<font color=LightSkyBlue><big>↖" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downright500_2()"}
  addUserKnob {20 endGroup n -1}
  addUserKnob {26 ""}
- addUserKnob {26 TEXT l "" -STARTLINE T "<font color=#808080 size=\"5\" >1.9 (beta) version</font>"}
+ addUserKnob {26 TEXT l "" -STARTLINE T "<font color=#808080 size=\"5\" >1.9 version</font>"}
  addUserKnob {26 _2 l "" -STARTLINE T "   "}
  addUserKnob {22 info l Tutorial/Info -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.openWebsite()"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">Backdrop_Adjust by Attila Gasparetz</font>"}
+}
+push $cut_paste_input
+NoOp {
+ name SpeedControl
+ label "speed: \[value speed]"
+ selected true
+ xpos 2270
+ ypos -975
+ addUserKnob {20 User}
+ addUserKnob {7 speed l Speed R 0 200}
+ speed 100
+}
+StickyNote {
+ inputs 0
+ name StickyNote1
+ label "-------------------------------\nANIM FRAMES:\n1001 - 1040\n-------------------------------"
+ note_font "Verdana Bold"
+ selected true
+ xpos 2340
+ ypos -459
 }
 Camera3 {
  inputs 0
  translate {0 0 {curve x1001 1.5 x1040 0.5}}
  name Camera1
+ label "Z: \[value translate.z]"
  selected true
  xpos 2390
  ypos -534
 }
 set N694a4800 [stack 0]
 push $N694a4800
-push $cut_paste_input
 Noise {
- size 320
- zoffset {{t/100}}
- gamma 0.14
+ inputs 0
+ size 400
+ zoffset {{t/SpeedControl.speed}}
+ gamma 0.25
  center {1024 778}
  name Noise1
+ label "Size: \[value size]\nLac.: \[value lacunarity]\nGain: \[value gain]\nGamma: \[value gamma]"
  selected true
  xpos 2160
- ypos -969
+ ypos -993
 }
 Dot {
  name Dot1
@@ -159,7 +181,7 @@ Dot {
 }
 set N73dee800 [stack 0]
 TimeOffset {
- time_offset 100
+ time_offset {{SpeedControl.speed}}
  time ""
  name TimeOffset1
  label "Value: \[value time_offset]"
@@ -169,79 +191,79 @@ TimeOffset {
 }
 set N69496b00 [stack 0]
 TimeOffset {
- time_offset 100
+ time_offset {{SpeedControl.speed}}
  time ""
- name TimeOffset2
+ name TimeOffset10
  label "Value: \[value time_offset]"
  selected true
  xpos 2380
  ypos -855
 }
-set N69496580 [stack 0]
+set N69499700 [stack 0]
 TimeOffset {
- time_offset 100
+ time_offset {{SpeedControl.speed}}
  time ""
- name TimeOffset3
+ name TimeOffset2
  label "Value: \[value time_offset]"
  selected true
  xpos 2490
  ypos -855
 }
-set N69497080 [stack 0]
+set N4c2f2000 [stack 0]
 TimeOffset {
- time_offset 100
+ time_offset {{SpeedControl.speed}}
  time ""
- name TimeOffset4
+ name TimeOffset11
  label "Value: \[value time_offset]"
  selected true
  xpos 2600
  ypos -855
 }
-set N69497600 [stack 0]
+set N4c2f2580 [stack 0]
 TimeOffset {
- time_offset 100
+ time_offset {{SpeedControl.speed}}
  time ""
- name TimeOffset5
+ name TimeOffset12
  label "Value: \[value time_offset]"
  selected true
  xpos 2710
  ypos -855
 }
-set N69497b80 [stack 0]
+set N4c2f2b00 [stack 0]
 TimeOffset {
- time_offset 100
+ time_offset {{SpeedControl.speed}}
  time ""
- name TimeOffset6
+ name TimeOffset13
  label "Value: \[value time_offset]"
  selected true
  xpos 2820
  ypos -855
 }
-set N69498100 [stack 0]
+set N4c2f3080 [stack 0]
 TimeOffset {
- time_offset 100
+ time_offset {{SpeedControl.speed}}
  time ""
- name TimeOffset7
+ name TimeOffset14
  label "Value: \[value time_offset]"
  selected true
  xpos 2930
  ypos -855
 }
-set N69498680 [stack 0]
+set N4c2f3600 [stack 0]
 TimeOffset {
- time_offset 100
+ time_offset {{SpeedControl.speed}}
  time ""
- name TimeOffset8
+ name TimeOffset15
  label "Value: \[value time_offset]"
  selected true
  xpos 3040
  ypos -855
 }
-set N69498c00 [stack 0]
+set N4c2f3b80 [stack 0]
 TimeOffset {
- time_offset 100
+ time_offset {{SpeedControl.speed}}
  time ""
- name TimeOffset9
+ name TimeOffset16
  label "Value: \[value time_offset]"
  selected true
  xpos 3150
@@ -267,7 +289,7 @@ Card2 {
  xpos 3150
  ypos -795
 }
-push $N69498c00
+push $N4c2f3b80
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*8)"}}
  uniform_scale 2
@@ -288,7 +310,7 @@ Card2 {
  xpos 3040
  ypos -795
 }
-push $N69498680
+push $N4c2f3600
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*7)"}}
  uniform_scale 2
@@ -309,7 +331,7 @@ Card2 {
  xpos 2930
  ypos -795
 }
-push $N69498100
+push $N4c2f3080
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*6)"}}
  uniform_scale 2
@@ -330,7 +352,7 @@ Card2 {
  xpos 2820
  ypos -795
 }
-push $N69497b80
+push $N4c2f2b00
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*5)"}}
  uniform_scale 2
@@ -351,7 +373,7 @@ Card2 {
  xpos 2710
  ypos -795
 }
-push $N69497600
+push $N4c2f2580
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*4)"}}
  uniform_scale 2
@@ -372,7 +394,7 @@ Card2 {
  xpos 2600
  ypos -795
 }
-push $N69497080
+push $N4c2f2000
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*3)"}}
  uniform_scale 2
@@ -393,7 +415,7 @@ Card2 {
  xpos 2490
  ypos -795
 }
-push $N69496580
+push $N69499700
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*2)"}}
  uniform_scale 2
@@ -481,9 +503,10 @@ DeepExpression {
  deep.front "deep.front - \[value soft]"
  deep.back "deep.back + \[value soft]"
  name DeepExpression1
+ label "Soft: \[value soft]"
  selected true
  xpos 2600
- ypos -417
+ ypos -423
  addUserKnob {20 User}
  addUserKnob {7 soft l Soft R 0 100}
  soft 10
@@ -502,12 +525,13 @@ DeepExpression {
 NoOp {
  inputs 0
  name CardControl
+ label "Start: \[value start]\nDistance: \[value dist]"
  selected true
  xpos 2050
- ypos -777
+ ypos -789
  addUserKnob {20 User}
  addUserKnob {7 start l "Start Pos" R -10 10}
- start 0.9
+ start 1.2
  addUserKnob {7 dist l Distance R -10 10}
- dist -0.25
+ dist -0.13
 }
