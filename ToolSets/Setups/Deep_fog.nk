@@ -1,0 +1,513 @@
+BackdropNode {
+ inputs 0
+ name Backdrop_Adjust3
+ knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nkn = k.name()\nif kn == 'appearance_custom':\n    if n\['appearance_custom'].value() == 'Fill':\n        n\['appearance'].setValue('Fill')\n    else:\n        n\['appearance'].setValue('Border')\n"
+ tile_color 0x485c6000
+ label "<p align=\"\[value align]\"><font color=\[value note_color]> \[if \{\[value bold]==true\} \{return <b>\} \{return \"\"\}] \[if \{\[value italian]==true\} \{return <i>\} \{return \"\"\}] \[if \{\[value under]==true\} \{return <u>\} \{return \"\"\}] \[if \{\[value strike]==true\} \{return <s>\} \{return \"\"\}] \[value note]"
+ note_font "MS Shell Dlg 2"
+ note_font_size 82
+ selected true
+ xpos 1950
+ ypos -1179
+ bdwidth 1380
+ bdheight 918
+ addUserKnob {20 User}
+ addUserKnob {22 cover l "<big><font color=yellow>Cover Selected Area</big></font>" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.coverSelectedArea()" +STARTLINE}
+ addUserKnob {26 _1 l "" -STARTLINE T "   "}
+ addUserKnob {22 extend l "<big><font color=yellow>Extend to Selected Area</big></font>" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.extendSelectedArea()"}
+ addUserKnob {26 label_1 l <b>Label</b>}
+ addUserKnob {43 note l Note}
+ note "DEEP FOG"
+ addUserKnob {4 note_color l "Note Color" M {Orange White Silver Gray Black Red Maroon Yellow Olive Lime Green Aqua Teal Blue Navy Fuchsia Purple}}
+ note_color Aqua
+ addUserKnob {4 align l Align -STARTLINE M {Center Left Right "" "" ""}}
+ addUserKnob {6 bold l "<b>&nbsp;&nbsp;T" +STARTLINE}
+ bold true
+ addUserKnob {6 italian l "&nbsp;&nbsp;<i>T" -STARTLINE}
+ addUserKnob {6 under l "&nbsp;&nbsp;<u>T" -STARTLINE}
+ addUserKnob {6 strike l "&nbsp;&nbsp;<s>T" -STARTLINE}
+ addUserKnob {26 font_size l "Note size"}
+ addUserKnob {22 size_plus_10 l "<font color=orange>▲ 10</font>" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.fontPlusTen()"}
+ addUserKnob {22 size_min_10 l "<font color=aqua>▼ 10</font>" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.fontMinusTen()"}
+ addUserKnob {26 tasks l <b>Tasks</b>}
+ addUserKnob {22 plate l "<big><font style=\"background-color:#559d63;\">&nbsp;<font color=black>Plate</font>&nbsp;" T "# plate\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1436110080)\nbd\['note'].setValue('PLATE')\nbd\['note_font_size'].setValue(102)\nbd\['note_color'].setValue('Black')" +STARTLINE}
+ addUserKnob {22 denoise l "<big><font style=\"background-color:#85994d;\">&nbsp;<font color=black>Denoise</font>&nbsp;" -STARTLINE T "# denoise\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(2241416448)\nbd\['note'].setValue('DENOISE')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')"}
+ addUserKnob {22 reference l "<big><font style=\"background-color:#4d9976;\">&nbsp;<font color=black>Reference</font>&nbsp;" -STARTLINE T "# reference\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1301902848)\nbd\['note'].setValue('REF')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')"}
+ addUserKnob {22 precomp l "<big><font style=\"background-color:#994d63;\">&nbsp;<font color=black>Precomp</font>&nbsp;" T "# precomp\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(2571985664)\nbd\['note'].setValue('PRECOMP')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')" +STARTLINE}
+ addUserKnob {22 merge l "<big><font style=\"background-color:#4d8c99;\">&nbsp;<font color=black>Merge</font>&nbsp;" -STARTLINE T "# merge\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1301059840)\nbd\['note'].setValue('MERGE')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')"}
+ addUserKnob {22 output l "<big><font style=\"background-color:#997d4d;\">&nbsp;<font color=black>Output</font>&nbsp;" -STARTLINE T "# output\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(2575125760)\nbd\['note'].setValue('OUTPUT')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')"}
+ addUserKnob {22 Foreground l "<big><font style=\"background-color:#777777;\">&nbsp;<font color=black>FG</font>&nbsp;" T "# fg\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1717987071)\nbd\['note'].setValue('FG')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')\n" +STARTLINE}
+ addUserKnob {22 background l "<big><font style=\"background-color:#777777;\">&nbsp;<font color=black>BG</font>&nbsp;" -STARTLINE T "# background\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1717987071)\nbd\['note'].setValue('BG')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 versions l "<big><font style=\"background-color:#777777;\">&nbsp;<font color=black>Versions</font>&nbsp;" -STARTLINE T "# versions\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1717987071)\nbd\['note'].setValue('VERSIONS')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')"}
+ addUserKnob {22 threed l "<big><font style=\"background-color:#806069;\">&nbsp;<font color=black>3D</font>&nbsp;" T "# 3d\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(2153801984)\nbd\['note'].setValue('3D')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')\n" +STARTLINE}
+ addUserKnob {22 camera l "<big><font style=\"background-color:#806060;\">&nbsp;<font color=black>Camera</font>&nbsp;" -STARTLINE T "# camera\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(2153799680)\nbd\['note'].setValue('CAMERA')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 track l "<big><font style=\"background-color:#80607d;\">&nbsp;<font color=black>Track</font>&nbsp;" -STARTLINE T "# track\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(2153807104)\nbd\['note'].setValue('TRACK')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 matte l "<big><font style=\"background-color:#807460;\">&nbsp;<font color=black>DMP</font>&nbsp;" T "# matte\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(2155110400)\nbd\['note'].setValue('DMP')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')" +STARTLINE}
+ addUserKnob {22 grade l "<big><font style=\"background-color:#607a80;\">&nbsp;<font color=black>Grade</font>&nbsp;" -STARTLINE T "# grade\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(1618640896)\nbd\['note'].setValue('GRADE')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')\n"}
+ addUserKnob {22 lens_effect l "<big><font style=\"background-color:#6d6080;\">&nbsp;<font color=black>Lens Effect</font>&nbsp;" -STARTLINE T "# lens effect\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(1835040768)\nbd\['note'].setValue('LENS\\nEFFECT')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 key l "<big><font style=\"background-color:#608071;\">&nbsp;<font color=black>Key</font>&nbsp;" T "# key\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(1619030272)\nbd\['note'].setValue('KEY')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')" +STARTLINE}
+ addUserKnob {22 roto l "<big><font style=\"background-color:#638060;\">&nbsp;<font color=black>Roto</font>&nbsp;" -STARTLINE T "# roto\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(1669357568)\nbd\['note'].setValue('ROTO')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 prep l "<big><font style=\"background-color:#778060;\">&nbsp;<font color=black>Prep</font>&nbsp;" -STARTLINE T "# prep\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(2004901888)\nbd\['note'].setValue('PREP')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 grain l "<big><font style=\"background-color:#AAAAAA;\">&nbsp;<font color=black>Grain</font>&nbsp;" -STARTLINE T "# grain\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(2576980479)\nbd\['note'].setValue('GRAIN')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('White')"}
+ addUserKnob {26 node_color l "<b>Node Color</b>"}
+ addUserKnob {4 appearance_custom l Appearance M {Fill Border "" ""}}
+ addUserKnob {22 change_colors l "<big><font style=\"background-color:#806060;\">D<font style=\"background-color:#807460;\">u<font style=\"background-color:#778060;\">l<font style=\"background-color:#608071;\">l<font style=\"background-color:#607a80;\"> <font style=\"background-color:#606680;\">C<font style=\"background-color:#606680;\">o<font style=\"background-color:#6d6080;\">l<font style=\"background-color:#80607d;\">o<font style=\"background-color:#806069;\">r<font style=\"background-color:#806060;\">s" t "By clicking on it can toggle between the \"Dull Colors\" and the \"Vivid Colors\" palettes" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.dullVividColor()" +STARTLINE}
+ addUserKnob {22 darken l "<big><font style=\"background-color:#333333;\">&nbsp;<font color=#cccccc>Darken</font>&nbsp;" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.darkenTileColor()"}
+ addUserKnob {22 brighten l "<big><font style=\"background-color:#aaaaaa;\">&nbsp;<font color=black>Brighten</font>&nbsp;" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.brightenTileColor()"}
+ addUserKnob {22 color_0 l "<font color=#806060><big>█</big></font>" T "nuke.thisNode()\['tile_color'].setValue(2153799680)" +STARTLINE}
+ addUserKnob {22 color_1 l "<font color=#807460><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(2155110400)"}
+ addUserKnob {22 color_2 l "<font color=#778060><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(2004901888)"}
+ addUserKnob {22 color_3 l "<font color=#638060><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1669357568)"}
+ addUserKnob {22 color_4 l "<font color=#608071><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1619030272)"}
+ addUserKnob {22 color_5 l "<font color=#607a80><big>█</big></font>" T "nuke.thisNode()\['tile_color'].setValue(1618640896)" +STARTLINE}
+ addUserKnob {22 color_6 l "<font color=#606680><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1617330176)"}
+ addUserKnob {22 color_7 l "<font color=#6d6080><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1835040768)"}
+ addUserKnob {22 color_8 l "<font color=#80607d><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(2153807104)"}
+ addUserKnob {22 color_9 l "<font color=#806069><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(2153801984)"}
+ addUserKnob {22 grey_1 l "<font color=#DDDDDD><big>█</big></font>" T "nuke.thisNode()\['tile_color'].setValue(3149642751)" +STARTLINE}
+ addUserKnob {22 grey_2 l "<font color=#AAAAAA><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(2576980479)"}
+ addUserKnob {22 grey_3 l "<font color=#777777><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1717987071)"}
+ addUserKnob {22 grey_4 l "<font color=#333333><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1145324799)"}
+ addUserKnob {22 grey_5 l "<font color=#222222><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(572662527)"}
+ addUserKnob {20 re_size l "Re Size" n 1}
+ re_size 0
+ addUserKnob {26 upscale l Upscale}
+ addUserKnob {22 upleft500 l "<font color=yellow><big>↖" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upleft500()" +STARTLINE}
+ addUserKnob {22 space1 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 up500 l "<font color=yellow><h3>▲" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.up500()"}
+ addUserKnob {22 space1_1 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 upright500 l "<font color=yellow><big>↗" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upright500()"}
+ addUserKnob {22 space2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" +STARTLINE}
+ addUserKnob {22 upleft100 l "<font color=orange><big>↖" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upleft100()"}
+ addUserKnob {22 up100 l "<font color=orange><big>▲" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.up100()"}
+ addUserKnob {22 upright100 l "<font color=orange><big>↗" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upright100()"}
+ addUserKnob {22 space2_1 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 left500 l "<font color=yellow><big>&nbsp;◄" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.left500()" +STARTLINE}
+ addUserKnob {22 left100 l "<font color=orange><big>◄" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.left100()"}
+ addUserKnob {22 center1 l "<font color=crimson><big>⦿" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.center()"}
+ addUserKnob {22 right100 l "<font color=orange><big>►" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.right100()"}
+ addUserKnob {22 right500 l "<font color=yellow><big>►&nbsp;" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.right500()"}
+ addUserKnob {22 space3 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" +STARTLINE}
+ addUserKnob {22 downleft100 l "<font color=orange><big>↙" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downleft100()"}
+ addUserKnob {22 down100 l "<font color=orange><big>▼" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.down100()"}
+ addUserKnob {22 downright100 l "<font color=orange><big>↘" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downright100()"}
+ addUserKnob {22 space3_1 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 downleft500 l "<font color=yellow><big>↙" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downleft500()" +STARTLINE}
+ addUserKnob {22 space4 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 down500 l "<font color=yellow><big>▼" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.down500()"}
+ addUserKnob {22 space4_1 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 downright500 l "<font color=yellow><big>↘" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downright500()"}
+ addUserKnob {26 downscale l Downscale}
+ addUserKnob {22 upleft500_2 l "<font color=LightSkyBlue><big>↘" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upleft500_2()" +STARTLINE}
+ addUserKnob {22 space1_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 up500_2 l "<font color=LightSkyBlue><h3>▼" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.up500_2()"}
+ addUserKnob {22 space1_1_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 upright500_2 l "<font color=LightSkyBlue><big>↙" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upright500_2()"}
+ addUserKnob {22 space2_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" +STARTLINE}
+ addUserKnob {22 upleft100_2 l "<font color=SteelBlue><big>↘" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upleft100_2()"}
+ addUserKnob {22 up100_2 l "<font color=SteelBlue><big>▼" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.up100_2()"}
+ addUserKnob {22 upright100_2 l "<font color=SteelBlue><big>↙" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upright100_2()"}
+ addUserKnob {22 space2_1_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 left500_2 l "<font color=LightSkyBlue><big>&nbsp;►" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.left500_2()" +STARTLINE}
+ addUserKnob {22 left100_2 l "<font color=SteelBlue><big>►" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.left100_2()"}
+ addUserKnob {22 center1_2 l "<font color=blue><big>⦿" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.center_2()"}
+ addUserKnob {22 right100_2 l "<font color=SteelBlue><big>◄" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.right100_2()"}
+ addUserKnob {22 right500_2 l "<font color=LightSkyBlue><big>◄&nbsp;" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.right500_2()"}
+ addUserKnob {22 space3_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" +STARTLINE}
+ addUserKnob {22 downleft100_2 l "<font color=SteelBlue><big>↗" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downleft100_2()"}
+ addUserKnob {22 down100_2 l "<font color=SteelBlue><big>▲" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.down100_2()"}
+ addUserKnob {22 downright100_2 l "<font color=SteelBlue><big>↖" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downright100_2()"}
+ addUserKnob {22 space3_1_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 downleft500_2 l "<font color=LightSkyBlue><big>↗" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downleft500_2()" +STARTLINE}
+ addUserKnob {22 space4_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 down500_2 l "<font color=LightSkyBlue><big>▲" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.down500_2()"}
+ addUserKnob {22 space4_1_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 downright500_2 l "<font color=LightSkyBlue><big>↖" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downright500_2()"}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" -STARTLINE T "<font color=#808080 size=\"5\" >1.9 (beta) version</font>"}
+ addUserKnob {26 _2 l "" -STARTLINE T "   "}
+ addUserKnob {22 info l Tutorial/Info -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.openWebsite()"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">Backdrop_Adjust by Attila Gasparetz</font>"}
+}
+Camera3 {
+ inputs 0
+ translate {0 0 {curve x1001 1.5 x1040 0.5}}
+ name Camera1
+ selected true
+ xpos 2390
+ ypos -534
+}
+set N694a4800 [stack 0]
+push $N694a4800
+push $cut_paste_input
+Noise {
+ size 320
+ zoffset {{t/100}}
+ gamma 0.14
+ center {1024 778}
+ name Noise1
+ selected true
+ xpos 2160
+ ypos -969
+}
+Dot {
+ name Dot1
+ selected true
+ xpos 2194
+ ypos -846
+}
+set N73dee800 [stack 0]
+TimeOffset {
+ time_offset 100
+ time ""
+ name TimeOffset1
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 2270
+ ypos -855
+}
+set N69496b00 [stack 0]
+TimeOffset {
+ time_offset 100
+ time ""
+ name TimeOffset2
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 2380
+ ypos -855
+}
+set N69496580 [stack 0]
+TimeOffset {
+ time_offset 100
+ time ""
+ name TimeOffset3
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 2490
+ ypos -855
+}
+set N69497080 [stack 0]
+TimeOffset {
+ time_offset 100
+ time ""
+ name TimeOffset4
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 2600
+ ypos -855
+}
+set N69497600 [stack 0]
+TimeOffset {
+ time_offset 100
+ time ""
+ name TimeOffset5
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 2710
+ ypos -855
+}
+set N69497b80 [stack 0]
+TimeOffset {
+ time_offset 100
+ time ""
+ name TimeOffset6
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 2820
+ ypos -855
+}
+set N69498100 [stack 0]
+TimeOffset {
+ time_offset 100
+ time ""
+ name TimeOffset7
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 2930
+ ypos -855
+}
+set N69498680 [stack 0]
+TimeOffset {
+ time_offset 100
+ time ""
+ name TimeOffset8
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 3040
+ ypos -855
+}
+set N69498c00 [stack 0]
+TimeOffset {
+ time_offset 100
+ time ""
+ name TimeOffset9
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 3150
+ ypos -855
+}
+Card2 {
+ translate {0 0 {"CardControl.start + (CardControl.dist*9)"}}
+ uniform_scale 2
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card10
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
+ selected true
+ xpos 3150
+ ypos -795
+}
+push $N69498c00
+Card2 {
+ translate {0 0 {"CardControl.start + (CardControl.dist*8)"}}
+ uniform_scale 2
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card9
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
+ selected true
+ xpos 3040
+ ypos -795
+}
+push $N69498680
+Card2 {
+ translate {0 0 {"CardControl.start + (CardControl.dist*7)"}}
+ uniform_scale 2
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card8
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
+ selected true
+ xpos 2930
+ ypos -795
+}
+push $N69498100
+Card2 {
+ translate {0 0 {"CardControl.start + (CardControl.dist*6)"}}
+ uniform_scale 2
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card7
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
+ selected true
+ xpos 2820
+ ypos -795
+}
+push $N69497b80
+Card2 {
+ translate {0 0 {"CardControl.start + (CardControl.dist*5)"}}
+ uniform_scale 2
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card6
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
+ selected true
+ xpos 2710
+ ypos -795
+}
+push $N69497600
+Card2 {
+ translate {0 0 {"CardControl.start + (CardControl.dist*4)"}}
+ uniform_scale 2
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card5
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
+ selected true
+ xpos 2600
+ ypos -795
+}
+push $N69497080
+Card2 {
+ translate {0 0 {"CardControl.start + (CardControl.dist*3)"}}
+ uniform_scale 2
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card4
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
+ selected true
+ xpos 2490
+ ypos -795
+}
+push $N69496580
+Card2 {
+ translate {0 0 {"CardControl.start + (CardControl.dist*2)"}}
+ uniform_scale 2
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card3
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
+ selected true
+ xpos 2380
+ ypos -795
+}
+push $N69496b00
+Card2 {
+ translate {0 0 {"CardControl.start + (CardControl.dist*1)"}}
+ uniform_scale 2
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card2
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
+ selected true
+ xpos 2270
+ ypos -795
+}
+push $N73dee800
+Card2 {
+ translate {0 0 {CardControl.start}}
+ uniform_scale 2
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card1
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
+ selected true
+ xpos 2160
+ ypos -795
+}
+Scene {
+ inputs 11
+ name Scene1
+ label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]"
+ selected true
+ xpos 2610
+ ypos -654
+}
+push 0
+ScanlineRender {
+ inputs 3
+ conservative_shader_sampling false
+ shutteroffset centred
+ motion_vectors_type distance
+ name ScanlineRender1
+ selected true
+ xpos 2600
+ ypos -513
+}
+DeepExpression {
+ chans1 deep
+ rgba.alpha rgba.alpha*0.999999
+ deep.front "deep.front - \[value soft]"
+ deep.back "deep.back + \[value soft]"
+ name DeepExpression1
+ selected true
+ xpos 2600
+ ypos -417
+ addUserKnob {20 User}
+ addUserKnob {7 soft l Soft R 0 100}
+ soft 10
+}
+DeepExpression {
+ chans1 deep
+ rgba.red rgba.red*(1-(-deep.front/deep.back))
+ rgba.green rgba.green*(1-(-deep.front/deep.back))
+ rgba.blue rgba.blue*(1-(-deep.front/deep.back))
+ rgba.alpha rgba.alpha*(1-(-deep.front/deep.back))
+ name DeepExpression2
+ selected true
+ xpos 2600
+ ypos -369
+}
+NoOp {
+ inputs 0
+ name CardControl
+ selected true
+ xpos 2050
+ ypos -777
+ addUserKnob {20 User}
+ addUserKnob {7 start l "Start Pos" R -10 10}
+ start 0.9
+ addUserKnob {7 dist l Distance R -10 10}
+ dist -0.25
+}
