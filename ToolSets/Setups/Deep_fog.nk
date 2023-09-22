@@ -1,3 +1,5 @@
+set cut_paste_input [stack 0]
+version 14.0 v2
 BackdropNode {
  inputs 0
  name Backdrop_Adjust3
@@ -150,17 +152,17 @@ StickyNote {
  xpos 2340
  ypos -459
 }
-Camera3 {
+Camera2 {
  inputs 0
  translate {0 0 {curve x1001 1.5 x1040 0.5}}
- name Camera1
+ name Camera2
  label "Z: \[value translate.z]"
  selected true
  xpos 2390
  ypos -534
 }
-set N694a4800 [stack 0]
-push $N694a4800
+set N306e4c00 [stack 0]
+push $N306e4c00
 Noise {
  inputs 0
  size 400
