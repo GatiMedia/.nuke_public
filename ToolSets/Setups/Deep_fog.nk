@@ -1,5 +1,5 @@
 set cut_paste_input [stack 0]
-version 14.0 v2
+version 12.2 v7
 BackdropNode {
  inputs 0
  name Backdrop_Adjust3
@@ -9,8 +9,8 @@ BackdropNode {
  note_font "MS Shell Dlg 2"
  note_font_size 82
  selected true
- xpos 1943
- ypos -1188
+ xpos 5793
+ ypos -12612
  bdwidth 1395
  bdheight 983
  addUserKnob {20 User}
@@ -137,32 +137,23 @@ NoOp {
  name SpeedControl
  label "speed: \[value speed]"
  selected true
- xpos 2270
- ypos -975
+ xpos 6120
+ ypos -12400
  addUserKnob {20 User}
  addUserKnob {7 speed l Speed R 0 200}
  speed 100
 }
-StickyNote {
- inputs 0
- name StickyNote1
- label "-------------------------------\nANIM FRAMES:\n1001 - 1040\n-------------------------------"
- note_font "Verdana Bold"
- selected true
- xpos 2340
- ypos -459
-}
 Camera2 {
  inputs 0
- translate {0 0 {curve x1001 1.5 x1040 0.5}}
- name Camera2
+ translate {0 0 {curve x1001 1.5 x1050 0}}
+ name Camera1
  label "Z: \[value translate.z]"
  selected true
- xpos 2390
- ypos -534
+ xpos 6240
+ ypos -11958
 }
-set N306e4c00 [stack 0]
-push $N306e4c00
+set Nb637f900 [stack 0]
+push $Nb637f900
 Noise {
  inputs 0
  size 400
@@ -172,104 +163,104 @@ Noise {
  name Noise1
  label "Size: \[value size]\nLac.: \[value lacunarity]\nGain: \[value gain]\nGamma: \[value gamma]"
  selected true
- xpos 2160
- ypos -993
+ xpos 6010
+ ypos -12418
 }
 Dot {
  name Dot1
  selected true
- xpos 2194
- ypos -846
+ xpos 6044
+ ypos -12270
 }
-set N73dee800 [stack 0]
-TimeOffset {
- time_offset {{SpeedControl.speed}}
- time ""
- name TimeOffset1
- label "Value: \[value time_offset]"
- selected true
- xpos 2270
- ypos -855
-}
-set N69496b00 [stack 0]
-TimeOffset {
- time_offset {{SpeedControl.speed}}
- time ""
- name TimeOffset10
- label "Value: \[value time_offset]"
- selected true
- xpos 2380
- ypos -855
-}
-set N69499700 [stack 0]
+set Nb6387900 [stack 0]
 TimeOffset {
  time_offset {{SpeedControl.speed}}
  time ""
  name TimeOffset2
  label "Value: \[value time_offset]"
  selected true
- xpos 2490
- ypos -855
+ xpos 6120
+ ypos -12280
 }
-set N4c2f2000 [stack 0]
+set Nb6384100 [stack 0]
+TimeOffset {
+ time_offset {{SpeedControl.speed}}
+ time ""
+ name TimeOffset10
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 6230
+ ypos -12280
+}
+set Nb6384f00 [stack 0]
+TimeOffset {
+ time_offset {{SpeedControl.speed}}
+ time ""
+ name TimeOffset3
+ label "Value: \[value time_offset]"
+ selected true
+ xpos 6340
+ ypos -12280
+}
+set Nb6385600 [stack 0]
 TimeOffset {
  time_offset {{SpeedControl.speed}}
  time ""
  name TimeOffset11
  label "Value: \[value time_offset]"
  selected true
- xpos 2600
- ypos -855
+ xpos 6450
+ ypos -12280
 }
-set N4c2f2580 [stack 0]
+set Nb6385d00 [stack 0]
 TimeOffset {
  time_offset {{SpeedControl.speed}}
  time ""
  name TimeOffset12
  label "Value: \[value time_offset]"
  selected true
- xpos 2710
- ypos -855
+ xpos 6560
+ ypos -12280
 }
-set N4c2f2b00 [stack 0]
+set Nb6386400 [stack 0]
 TimeOffset {
  time_offset {{SpeedControl.speed}}
  time ""
  name TimeOffset13
  label "Value: \[value time_offset]"
  selected true
- xpos 2820
- ypos -855
+ xpos 6670
+ ypos -12280
 }
-set N4c2f3080 [stack 0]
+set Nb6384800 [stack 0]
 TimeOffset {
  time_offset {{SpeedControl.speed}}
  time ""
  name TimeOffset14
  label "Value: \[value time_offset]"
  selected true
- xpos 2930
- ypos -855
+ xpos 6780
+ ypos -12280
 }
-set N4c2f3600 [stack 0]
+set Nb63a0100 [stack 0]
 TimeOffset {
  time_offset {{SpeedControl.speed}}
  time ""
  name TimeOffset15
  label "Value: \[value time_offset]"
  selected true
- xpos 3040
- ypos -855
+ xpos 6890
+ ypos -12280
 }
-set N4c2f3b80 [stack 0]
+set Nb63a0800 [stack 0]
 TimeOffset {
  time_offset {{SpeedControl.speed}}
  time ""
  name TimeOffset16
  label "Value: \[value time_offset]"
  selected true
- xpos 3150
- ypos -855
+ xpos 7000
+ ypos -12280
 }
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*9)"}}
@@ -285,13 +276,13 @@ Card2 {
 1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
 1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
 1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
- name Card10
+ name Card5
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
  selected true
- xpos 3150
- ypos -795
+ xpos 7000
+ ypos -12220
 }
-push $N4c2f3b80
+push $Nb63a0800
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*8)"}}
  uniform_scale 2
@@ -306,13 +297,13 @@ Card2 {
 1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
 1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
 1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
- name Card9
+ name Card11
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
  selected true
- xpos 3040
- ypos -795
+ xpos 6890
+ ypos -12220
 }
-push $N4c2f3600
+push $Nb63a0100
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*7)"}}
  uniform_scale 2
@@ -327,13 +318,13 @@ Card2 {
 1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
 1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
 1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
- name Card8
+ name Card12
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
  selected true
- xpos 2930
- ypos -795
+ xpos 6780
+ ypos -12220
 }
-push $N4c2f3080
+push $Nb6384800
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*6)"}}
  uniform_scale 2
@@ -348,13 +339,13 @@ Card2 {
 1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
 1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
 1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
- name Card7
+ name Card13
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
  selected true
- xpos 2820
- ypos -795
+ xpos 6670
+ ypos -12220
 }
-push $N4c2f2b00
+push $Nb6386400
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*5)"}}
  uniform_scale 2
@@ -369,13 +360,13 @@ Card2 {
 1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
 1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
 1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
- name Card6
+ name Card14
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
  selected true
- xpos 2710
- ypos -795
+ xpos 6560
+ ypos -12220
 }
-push $N4c2f2580
+push $Nb6385d00
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*4)"}}
  uniform_scale 2
@@ -390,13 +381,13 @@ Card2 {
 1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
 1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
 1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
- name Card5
+ name Card15
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
  selected true
- xpos 2600
- ypos -795
+ xpos 6450
+ ypos -12220
 }
-push $N4c2f2000
+push $Nb6385600
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*3)"}}
  uniform_scale 2
@@ -411,13 +402,13 @@ Card2 {
 1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
 1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
 1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
- name Card4
+ name Card16
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
  selected true
- xpos 2490
- ypos -795
+ xpos 6340
+ ypos -12220
 }
-push $N69499700
+push $Nb6384f00
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*2)"}}
  uniform_scale 2
@@ -432,13 +423,13 @@ Card2 {
 1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
 1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
 1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
- name Card3
+ name Card17
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
  selected true
- xpos 2380
- ypos -795
+ xpos 6230
+ ypos -12220
 }
-push $N69496b00
+push $Nb6384100
 Card2 {
  translate {0 0 {"CardControl.start + (CardControl.dist*1)"}}
  uniform_scale 2
@@ -453,13 +444,13 @@ Card2 {
 1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
 1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
 1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
- name Card2
+ name Card18
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
  selected true
- xpos 2270
- ypos -795
+ xpos 6120
+ ypos -12220
 }
-push $N73dee800
+push $Nb6387900
 Card2 {
  translate {0 0 {CardControl.start}}
  uniform_scale 2
@@ -474,19 +465,19 @@ Card2 {
 1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
 1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
 1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
- name Card1
+ name Card19
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]\nZ: \[value translate.z]"
  selected true
- xpos 2160
- ypos -795
+ xpos 6010
+ ypos -12220
 }
 Scene {
  inputs 11
  name Scene1
  label "Display: \[string toupper \[value display]]\nRender: \[string toupper \[value render_mode]]"
  selected true
- xpos 2610
- ypos -654
+ xpos 6460
+ ypos -12078
 }
 push 0
 ScanlineRender {
@@ -494,10 +485,10 @@ ScanlineRender {
  conservative_shader_sampling false
  shutteroffset centred
  motion_vectors_type distance
- name ScanlineRender1
+ name ScanlineRender5
  selected true
- xpos 2600
- ypos -513
+ xpos 6450
+ ypos -11938
 }
 DeepExpression {
  chans1 deep
@@ -507,8 +498,8 @@ DeepExpression {
  name DeepExpression1
  label "Soft: \[value soft]"
  selected true
- xpos 2600
- ypos -423
+ xpos 6450
+ ypos -11872
  addUserKnob {20 User}
  addUserKnob {7 soft l Soft R 0 100}
  soft 10
@@ -521,19 +512,42 @@ DeepExpression {
  rgba.alpha rgba.alpha*(1-(-deep.front/deep.back))
  name DeepExpression2
  selected true
- xpos 2600
- ypos -369
+ xpos 6450
+ ypos -11818
+}
+DeepToImage2 {
+ name DeepToImage1
+ selected true
+ xpos 6450
+ ypos -11770
+}
+Reformat {
+ format "1920 1080 0 0 1920 1080 1 HD_1080"
+ name Reformat3
+ label "\[if \{\[value this.type]==\"scale\"\} \{return \"Scale: \[value this.scale]\"\} \{return \"\"\}]"
+ selected true
+ xpos 6450
+ ypos -11710
 }
 NoOp {
  inputs 0
  name CardControl
  label "Start: \[value start]\nDistance: \[value dist]"
  selected true
- xpos 2050
- ypos -789
+ xpos 5900
+ ypos -12214
  addUserKnob {20 User}
  addUserKnob {7 start l "Start Pos" R -10 10}
  start 1.2
  addUserKnob {7 dist l Distance R -10 10}
- dist -0.13
+ dist -0.15
+}
+StickyNote {
+ inputs 0
+ name StickyNote1
+ label "-------------------------------\nANIM FRAMES:\n1001 - 1050\n-------------------------------"
+ note_font "Verdana Bold"
+ selected true
+ xpos 6193
+ ypos -11884
 }
