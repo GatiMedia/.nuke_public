@@ -260,6 +260,23 @@ def open_cameron_carson_site():
     webbrowser.open('https://www.cameroncarson.com/nuke-wave-expressions', new=2)
 us_menu.addCommand('Cameron Carson - Wave Expressions', 'open_cameron_carson_site()')
 
+
+useful_sites = {
+  "Ben McEwan": "https://benmcewan.com/blog/",
+  "Chris Fryer": "https://www.chrisfryer.co.uk/blog",
+  "Erwan Leroy": "https://erwanleroy.com/blog/",
+  "Kenn Hedin Kalvik": "https://www.keheka.com/",
+  "Cameron Carson - Wave Expressions": "https://www.cameroncarson.com/nuke-wave-expressions",
+  "Mads Hagbarth": "https://hagbarth.net/blog/"
+}
+
+def open_website(url):
+    return lambda: webbrowser.open(url, new=2)
+
+for name, url in useful_sites.items():
+    us_menu.addCommand(name, lambda: open_website(url))
+
+
 utilitiesMenu.addSeparator()
 
 try:
