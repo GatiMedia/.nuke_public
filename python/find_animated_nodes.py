@@ -1,3 +1,9 @@
+# --------------------------------------------------------------
+#  find_animated_nodes.py
+#  Last Updated by: Attila Gasparetz
+#  Last Updated: 26/09/2023
+# --------------------------------------------------------------
+
 ## Imports
 import nuke
 import nukescripts
