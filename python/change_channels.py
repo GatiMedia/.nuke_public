@@ -1,3 +1,9 @@
+# --------------------------------------------------------------
+#  change_channels.py
+#  Last Updated by: Attila Gasparetz
+#  Last Updated: 26/09/2023
+# --------------------------------------------------------------
+
 import nuke
 
 def changeChannels():
@@ -5,6 +11,8 @@ def changeChannels():
     if len(sel_nodes) > 0:
         ok_channels = ['all', 'none', 'rgba', 'rgb', 'alpha']
         ok_channels_shuffle = ['none', 'rgba', 'rgb', 'alpha']
+        ok_operation_merge = ['max', 'min', 'multiply', 'over', 'plus', 'screen', 'stencil']
+        ok_operation_channelmerge = ['max', 'min', 'multiply', 'plus', 'stencil', 'union']
 
         for sel_node in sel_nodes:
             
@@ -18,14 +26,15 @@ def changeChannels():
 
             # setting up for output knob
             if sel_node.knob('output'):
-                try:
-                    if not sel_node['output'].value() == "alpha" and sel_node.knob('output').value() in ok_channels:
-                        channel_index = ok_channels.index(sel_node['output'].value())
-                        sel_node['output'].setValue(ok_channels[channel_index + 1])
-                    else:
-                        sel_node['output'].setValue('all')
-                except:
-                    pass
+                if not sel_node.Class() == "Merge2":
+                    try:
+                        if not sel_node['output'].value() == "alpha" and sel_node.knob('output').value() in ok_channels:
+                            channel_index = ok_channels.index(sel_node['output'].value())
+                            sel_node['output'].setValue(ok_channels[channel_index + 1])
+                        else:
+                            sel_node['output'].setValue('all')
+                    except:
+                        pass
 
             # setting up for retimedChannels knob
             if sel_node.knob('retimedChannels'):
@@ -34,6 +43,24 @@ def changeChannels():
                     sel_node['retimedChannels'].setValue(ok_channels[channel_index + 1])
                 else:
                     sel_node['retimedChannels'].setValue('all')
+
+            # setting up for operation knob on Merge
+            if sel_node.knob('operation'):
+                if sel_node.Class() == 'Merge2':
+                    if not sel_node['operation'].value() == "stencil":
+                        channel_index = ok_operation_merge.index(sel_node['operation'].value())
+                        sel_node['operation'].setValue(ok_operation_merge[channel_index + 1])
+                    else:
+                        sel_node['operation'].setValue('max')
+
+            # setting up for operation knob on ChannelMerge
+            if sel_node.knob('operation'):
+                if sel_node.Class() == 'ChannelMerge':
+                    if not sel_node['operation'].value() == "union":
+                        channel_index = ok_operation_channelmerge.index(sel_node['operation'].value())
+                        sel_node['operation'].setValue(ok_operation_channelmerge[channel_index + 1])
+                    else:
+                        sel_node['operation'].setValue('max')
 
             # setting up for old shuffle node
             if sel_node.knob('in'):
@@ -74,4 +101,4 @@ def changeChannels():
                 if sel_node['in1'].value() == "alpha":
                     sel_node['mappings'].setValue([(-1, 'black', 'rgba.red'), (-1, 'black', 'rgba.green'), (-1, 'black', 'rgba.blue'), (0, 'rgba.alpha', 'rgba.alpha')])
     else:
-        nuke.message('<center><b>Select a node/nodes first.\nThis shortcut iterates through the following channels:</b>\n<i>all, none, rgba, rgb, alpha</i></center>')
+        nuke.message('<center><b>Select a node/nodes first.\nThis shortcut iterates through the following channels:</b>\n<i>all, none, rgba, rgb, alpha</i>\n\n<b>And the following operations for Merge:</b>\n<i>max, min, multiply, over, plus, screen, stencil</i>\n\n<b>And the following operations for ChannelMerge:</b>\n<i>max, min, multiply, plus, stencil, union</i></center>')
