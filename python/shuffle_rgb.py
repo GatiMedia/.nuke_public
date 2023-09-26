@@ -1,3 +1,9 @@
+# --------------------------------------------------------------
+#  shuffle_rgb.py
+#  Last Updated by: Attila Gasparetz
+#  Last Updated: 26/09/2023
+# --------------------------------------------------------------
+
 import nuke
 
 def shuffleRGB():
