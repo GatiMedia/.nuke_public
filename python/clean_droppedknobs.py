@@ -4,6 +4,8 @@
 #  Last Updated: 26/09/2023
 # --------------------------------------------------------------
 
+# based on code on this thread https://community.foundry.com/discuss/topic/152473/paneldropped
+
 import nuke
 
 def cleanDroppedKnobs():
