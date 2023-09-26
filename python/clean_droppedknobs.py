@@ -1,5 +1,5 @@
 # --------------------------------------------------------------
-#  move_selected.py
+#  clean_droppedknobs.py
 #  Last Updated by: Attila Gasparetz
 #  Last Updated: 26/09/2023
 # --------------------------------------------------------------
