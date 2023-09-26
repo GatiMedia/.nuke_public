@@ -15,7 +15,7 @@ def changeChannels():
         ok_operation_channelmerge = ['max', 'min', 'multiply', 'plus', 'stencil', 'union']
 
         for sel_node in sel_nodes:
-            
+
             # setting up for channels knob
             if sel_node.knob('channels'):
                 if not sel_node['channels'].value() == "alpha" and sel_node.knob('channels').value() in ok_channels:
@@ -54,7 +54,6 @@ def changeChannels():
                         sel_node['operation'].setValue('max')
 
             # setting up for operation knob on ChannelMerge
-            if sel_node.knob('operation'):
                 if sel_node.Class() == 'ChannelMerge':
                     if not sel_node['operation'].value() == "union":
                         channel_index = ok_operation_channelmerge.index(sel_node['operation'].value())
