@@ -1,3 +1,9 @@
+# --------------------------------------------------------------
+#  color_layer_setup.py
+#  Last Updated by: Attila Gasparetz
+#  Last Updated: 26/09/2023
+# --------------------------------------------------------------
+
 import nuke
 
 COLOR_LAYER_PREFIX = 'C_'
