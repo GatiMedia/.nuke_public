@@ -2,7 +2,7 @@
 #### TextFixer ####
 ####-----------####
 ## by Attila Gasparetz
-## Version: 1.0.02
+## Version: 1.0
 ## Last Updated: 02/03/2021
 ## For more info: https://www.gatimedia.co.uk/oldtext2newtext
 
