@@ -101,4 +101,4 @@ def changeChannels():
                 if sel_node['in1'].value() == "alpha":
                     sel_node['mappings'].setValue([(-1, 'black', 'rgba.red'), (-1, 'black', 'rgba.green'), (-1, 'black', 'rgba.blue'), (0, 'rgba.alpha', 'rgba.alpha')])
     else:
-        nuke.message('<center><b>Select a node/nodes first.\nThis shortcut iterates through the following channels:</b>\n<i>all, none, rgba, rgb, alpha</i>\n\n<b>And the following operations for Merge:</b>\n<i>max, min, multiply, over, plus, screen, stencil</i>\n\n<b>And the following operations for ChannelMerge:</b>\n<i>max, min, multiply, plus, stencil, union</i></center>')
+        nuke.message('<center><b>Select a node/nodes first!</b>\n\n<b>This function iterates through the following channels:</b>\n<i>all, none, rgba, rgb, alpha</i>\n\n<b>And the following channels for Shuffle:</b>\n<i>none, rgba, rgb, alpha</i>\n\n\n\n<b>And the following operations for Merge:</b>\n<i>max, min, multiply, over, plus, screen, stencil</i>\n\n<b>And the following operations for ChannelMerge:</b>\n<i>max, min, multiply, plus, stencil, union</i></center>')
