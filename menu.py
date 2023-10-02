@@ -312,6 +312,12 @@ except:
     pass
 
 try:
+    import gm_autoplace
+    utilitiesMenu.addCommand('GM_Autoplace', 'gm_autoplace.gm_autoplace()', 'l', icon="Group.png", shortcutContext=dagContext)
+except:
+    pass
+
+try:
     import shuffle_rgb
     utilitiesMenu.addCommand('Shuffle RGB', 'shuffle_rgb.shuffleRGB()', 'ctrl+h', icon='CopyNode.png')
 except:
