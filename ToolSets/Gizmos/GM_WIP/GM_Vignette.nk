@@ -2,9 +2,11 @@ Group {
  name GM_Vignette1
  tile_color 0xaa55ffff
  selected true
- xpos -7306
- ypos -19570
+ xpos 2270
+ ypos 327
  addUserKnob {20 User}
+ addUserKnob {4 output l Output M {Result Mask}}
+ addUserKnob {26 "" +STARTLINE}
  addUserKnob {41 ringsize l "Ring Size" T AdjustVignette.ringsize}
  addUserKnob {41 ringwide l "Ring Wide" T AdjustVignette.ringwide}
  addUserKnob {41 softness l Softness T RadialVignette.softness}
@@ -23,10 +25,9 @@ Group {
   inputs 0
   name AdjustVignette
   xpos 950
-  ypos 446
+  ypos 447
   addUserKnob {20 User}
   addUserKnob {7 ringsize l "Ring Size" R -500 500}
-  ringsize 200
   addUserKnob {7 ringwide l "Ring Wide" R -500 500}
   addUserKnob {26 ""}
  }
@@ -34,7 +35,7 @@ Group {
   inputs 0
   name Input
   xpos 400
-  ypos 182
+  ypos 183
  }
  Dot {
   name Dot168
@@ -42,14 +43,14 @@ Group {
   xpos 434
   ypos 258
  }
-set N32233820 [stack 0]
+set N27e506a0 [stack 0]
  Dot {
   name Dot4
   note_font_size 22
   xpos 324
   ypos 258
  }
-set N32238750 [stack 0]
+set Nf1790ac0 [stack 0]
  Dot {
   name Dot2
   note_font_size 22
@@ -60,51 +61,27 @@ set N32238750 [stack 0]
   name Dot1
   note_font_size 22
   xpos 104
-  ypos 786
+  ypos 906
  }
- Input {
-  inputs 0
-  name mask
-  xpos -40
-  ypos 686
-  number 1
- }
-push $N32238750
- Expression {
-  channel3 alpha
-  expr3 1
-  name Expression1
-  xpos 290
-  ypos 422
- }
- ChannelMerge {
-  inputs 2
-  operation multiply
-  name ChannelMerge1
-  xpos 290
-  ypos 674
-  disable {{"!\[exists parent.input1]"}}
- }
-push $N32233820
+push $N27e506a0
  Remove {
   name RemoveVignette
   xpos 840
-  ypos 248
+  ypos 249
  }
  Crop {
   box {{input.width-input.width} {input.height-input.height} {input.width} {input.height}}
   name CropVignette1
   label "Box: x:\[value box.x]  y:\[value box.y] r:\[value box.r] t:\[value box.t]"
   xpos 840
-  ypos 320
+  ypos 321
  }
  Radial {
   area {{input.box.x+(-AdjustVignette.ringsize)+(-AdjustVignette.ringwide)} {input.box.y+(-AdjustVignette.ringsize)} {input.box.r+AdjustVignette.ringsize+AdjustVignette.ringwide} {input.box.t+AdjustVignette.ringsize}}
   softness 0.7
   name RadialVignette
-  selected true
   xpos 840
-  ypos 446
+  ypos 447
  }
  Shuffle2 {
   fromInput1 {{0} B}
@@ -113,61 +90,104 @@ push $N32233820
   name ShuffleVignette
   label "\[string toupper \[value in1]]"
   xpos 840
-  ypos 512
+  ypos 513
  }
  Invert {
   channels alpha
   name InvertVignette
   xpos 840
-  ypos 608
+  ypos 609
  }
  Crop {
   box {{input.width-input.width} {input.height-input.height} {input.width} {input.height}}
   name CropVignette2
   label "Box: x:\[value box.x]  y:\[value box.y] r:\[value box.r] t:\[value box.t]"
   xpos 730
-  ypos 608
+  ypos 609
  }
-set N3229e370 [stack 0]
-push $N3229e370
-push $N32233820
+set Nadc87740 [stack 0]
+ Shuffle2 {
+  fromInput1 {{0} B}
+  fromInput2 {{0} B}
+  mappings "4 rgba.alpha 0 3 rgba.red 0 0 rgba.alpha 0 3 rgba.green 0 1 rgba.alpha 0 3 rgba.blue 0 2 rgba.alpha 0 3 rgba.alpha 0 3"
+  name ShuffleVignette2
+  label "\[value in1]"
+  xpos 730
+  ypos 777
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos -40
+  ypos 687
+  number 1
+ }
+push $Nf1790ac0
+ Expression {
+  channel3 alpha
+  expr3 1
+  name Expression1
+  xpos 290
+  ypos 423
+ }
+ ChannelMerge {
+  inputs 2
+  operation multiply
+  name ChannelMerge1
+  xpos 290
+  ypos 675
+  disable {{"!\[exists parent.input1]"}}
+ }
+push $Nadc87740
+push $Nadc87740
+push $N27e506a0
  Dot {
   name Dot3
   note_font_size 22
   xpos 434
   ypos 522
  }
-set N322a9230 [stack 0]
+set Nadc88280 [stack 0]
  Grade {
   inputs 1+1
-  gamma 0.8
+  gamma 0.7
   black_clamp false
   name GradeVignette
   xpos 620
-  ypos 614
+  ypos 615
  }
  Saturation {
   inputs 1+1
   name SaturationVignette
   xpos 620
-  ypos 686
+  ypos 687
  }
-push $N322a9230
+push $Nadc88280
  Keymix {
   inputs 3
+  channels rgb
   name Keymix1
   xpos 400
-  ypos 680
+  ypos 687
+ }
+ Copy {
+  inputs 2
+  channels rgba
+  name Copy1
+  selected true
+  xpos 400
+  ypos 771
+  disable {{!output}}
  }
  CopyBBox {
   inputs 2
   name CopyBBox1
   xpos 400
-  ypos 782
+  ypos 903
  }
  Output {
   name Output1
   xpos 400
-  ypos 854
+  ypos 975
  }
 end_group
