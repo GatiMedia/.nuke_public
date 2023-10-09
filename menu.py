@@ -306,8 +306,8 @@ except:
     pass
 
 try:
-    import close
-    utilitiesMenu.addCommand('Close Properties', 'close.close()', 'shift+d', icon='Tile.png')
+    import close_properties
+    utilitiesMenu.addCommand('Close Properties', 'close_properties.close()', 'shift+d', icon='Tile.png')
 except:
     pass
 
