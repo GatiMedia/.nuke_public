@@ -1,43 +1,79 @@
 Group {
-name GM_Crop1
-tile_color 0xaa55ffff
-label "Box: x:\[value this.Crop_GM.box.x]  y:\[value this.Crop_GM.box.y]  r:\[value this.Crop_GM.box.r]  t:\[value this.Crop_GM.box.t]  "
-selected true
-xpos -2240
-ypos 5912
-addUserKnob {20 User}
-addUserKnob {7 CropInc l "All Direction" R -1000 1000}
-addUserKnob {26 ""}
-addUserKnob {7 vertical l Vertical R -1000 1000}
-addUserKnob {7 horizontal l Horizontal R -1000 1000}
-addUserKnob {26 ""}
-addUserKnob {7 left l Left R -1000 1000}
-addUserKnob {7 right l Right R -1000 1000}
-addUserKnob {7 top l Top R -1000 1000}
-addUserKnob {7 bottom l Bottom R -1000 1000}
-addUserKnob {26 ""}
-addUserKnob {41 reformat T Crop_GM.reformat}
-addUserKnob {41 intersect -STARTLINE T Crop_GM.intersect}
-addUserKnob {41 crop l "black outside" -STARTLINE T Crop_GM.crop}
-addUserKnob {26 ""}
-addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
-addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Crop© by Attila Gasparetz</font>"}
+ name GM_Crop1
+ knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nkn = k.name()\npixel_knobs = \['all_dir','vertical','horizontal','left','right','top','bottom']\npercentage_knobs = \['all_dir_perc','vertical_perc','horizontal_perc','left_perc','right_perc','top_perc','bottom_perc']\nif kn == 'calculate':\n    if n\['calculate'].value() == 'Pixel values':\n        for knob in pixel_knobs:\n            n\[knob].setVisible(True)\n        for knob in percentage_knobs:\n            n\[knob].setVisible(False)\n    else:\n        for knob in pixel_knobs:\n            n\[knob].setVisible(False)\n        for knob in percentage_knobs:\n            n\[knob].setVisible(True)"
+ tile_color 0xaa55ffff
+ label "Box: x:\[value this.Crop_GM.box.x]  y:\[value this.Crop_GM.box.y]  r:\[value this.Crop_GM.box.r]  t:\[value this.Crop_GM.box.t]  "
+ selected true
+ addUserKnob {20 User}
+ addUserKnob {4 calculate l Use: M {"Pixel values" Percentage}}
+ addUserKnob {26 ""}
+ addUserKnob {7 all_dir l "All Direction" R -1000 1000}
+ addUserKnob {7 all_dir_perc l "All Direction" +HIDDEN R 0 200}
+ all_dir_perc 100
+ addUserKnob {26 ""}
+ addUserKnob {7 vertical l Vertical R -1000 1000}
+ addUserKnob {7 vertical_perc l Vertical +HIDDEN R 0 200}
+ vertical_perc 100
+ addUserKnob {7 horizontal l Horizontal R -1000 1000}
+ addUserKnob {7 horizontal_perc l Horizontal +HIDDEN R 0 200}
+ horizontal_perc 100
+ addUserKnob {26 ""}
+ addUserKnob {7 left l Left R -1000 1000}
+ addUserKnob {7 left_perc l Left +HIDDEN R 0 200}
+ left_perc 100
+ addUserKnob {7 right l Right R -1000 1000}
+ addUserKnob {7 right_perc l Right +HIDDEN R 0 200}
+ right_perc 100
+ addUserKnob {7 top l Top R -1000 1000}
+ addUserKnob {7 top_perc l Top +HIDDEN R 0 200}
+ top_perc 100
+ addUserKnob {7 bottom l Bottom R -1000 1000}
+ addUserKnob {7 bottom_perc l Bottom +HIDDEN R 0 200}
+ bottom_perc 100
+ addUserKnob {26 ""}
+ addUserKnob {41 reformat T Crop_GM.reformat}
+ addUserKnob {41 intersect -STARTLINE T Crop_GM.intersect}
+ addUserKnob {41 crop l "black outside" -STARTLINE T Crop_GM.crop}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Crop© by Attila Gasparetz</font>"}
 }
-Input {
-inputs 0
-name Input
-xpos 510
-ypos 302
-}
-Crop {
-box {{"-(((input.format.r + CropInc) + horizontal + left) - input.format.r )"} {"-(((input.format.t + CropInc) + vertical + bottom) - input.format.t )"} {"(input.format.r + CropInc) + horizontal + right"} {"(input.format.t + CropInc) + vertical + top"}}
-name Crop_GM
-xpos 510
-ypos 326
-}
-Output {
-name Output1
-xpos 510
-ypos 350
-}
+ Input {
+  inputs 0
+  name Input
+  xpos 510
+  ypos 279
+ }
+set N139361e0 [stack 0]
+ Crop {
+  box {{"-((((((((all_dir_perc * input.format.r)/100 \n+(horizontal_perc * input.format.r) /100\n+(left_perc * input.format.r) /100) /3)\n-input.format.r) *3)+input.format.r))\n-(input.format.r))"} {"-(((((((all_dir_perc * input.format.t)/100 \n+(vertical_perc * input.format.t) /100\n+(bottom_perc * input.format.t) /100) /3)\n-input.format.t) *3)+input.format.t )\n-input.format.t)"} {"(((((all_dir_perc * input.format.r)/100 \n+(horizontal_perc * input.format.r) /100\n+(right_perc * input.format.r) /100) /3)\n-input.format.r) *3)+input.format.r"} {"(((((all_dir_perc * input.format.t)/100 \n+(vertical_perc * input.format.t) /100\n+(top_perc * input.format.t) /100) /3)\n-input.format.t) *3)+input.format.t\n"}}
+  reformat {{Crop_GM.reformat}}
+  intersect {{Crop_GM.intersect}}
+  crop {{Crop_GM.crop}}
+  name Crop_GM1
+  label percentage
+  xpos 620
+  ypos 321
+ }
+push $N139361e0
+ Crop {
+  box {{"-(((input.format.r + all_dir) + horizontal + left) - input.format.r )"} {"-(((input.format.t + all_dir) + vertical + bottom) - input.format.t )"} {"(input.format.r + all_dir) + horizontal + right"} {"(input.format.t + all_dir) + vertical + top"}}
+  name Crop_GM
+  label pixel
+  xpos 400
+  ypos 321
+ }
+ Switch {
+  inputs 2
+  which {{calculate}}
+  name Switch_Crop
+  label "Which: \[value which]"
+  xpos 510
+  ypos 321
+ }
+ Output {
+  name Output1
+  xpos 510
+  ypos 375
+ }
 end_group
