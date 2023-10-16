@@ -1,7 +1,7 @@
 # --------------------------------------------------------------
 #  layer_shuffle.py
 #  Last Updated by: Attila Gasparetz
-#  Last Updated: 26/09/2023
+#  Last Updated: 16/10/2023
 # --------------------------------------------------------------
 
 import nuke
