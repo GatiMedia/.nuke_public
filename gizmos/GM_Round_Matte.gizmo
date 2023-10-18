@@ -2,8 +2,6 @@ Group {
  name GM_Round_Matte
  tile_color 0xffbb56ff
  selected true
- xpos 26360
- ypos 2126
  addUserKnob {20 User}
  addUserKnob {7 round1 l Roundness R 0 200}
  round1 40
