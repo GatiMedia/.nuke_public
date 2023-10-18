@@ -1,0 +1,669 @@
+Group {
+ name GF_RimLight1
+ knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nif k.name() == \"image\":\n if k.name() == \"image\" and k.value() == 1:\n  n\[\"noise_size\"].setEnabled(False)\n else:\n  n\[\"noise_size\"].setEnabled(True)"
+ autolabel "nuke.thisNode().name() + \"\\n\"   + '(' + str(nuke.thisNode()\['channels'].value()) + ')' "
+ tile_color 0xff5f00ff
+ gl_color 0xff5f00ff
+ selected true
+ addUserKnob {20 User l RimLight}
+ addUserKnob {41 channels T Matrix2.channels}
+ addUserKnob {7 angle l Angle t "Adjust the angle of the rim light" R 0 360}
+ addUserKnob {26 extend l "Adjust Edge"}
+ addUserKnob {7 extend_inside l "Extend Inside" t "Extend rim edge inwards (based on alpha channel)" R 0 100}
+ addUserKnob {7 blur_in l "Blur Inside" R 0 100}
+ addUserKnob {7 extend_outside l "Extend Outside" t "Extend rim edge outwards (based on alpha channel)" R 0 100}
+ addUserKnob {7 blur_out l "Blur Outside" R 0 100}
+ addUserKnob {4 filter l Filter t "Choose how edge gets extended. Radial smooths edge/details and Box extends uniformly." M {Radial Box "" ""}}
+ addUserKnob {26 _1 l "Edge Distortion"}
+ addUserKnob {6 image l "Image based" t "If selected uses rgba channels to distort edge along plate details. Works well with clothing or high contrast plates.\n\nIf turned off a fbm noise will be used to distort edge." +STARTLINE}
+ image true
+ addUserKnob {14 noise_size l "Noise Size" t "Change size of noise used to distort edge" +DISABLED R 0 1000}
+ noise_size 350
+ addUserKnob {7 strength_distort l Strength t "Strength of edge distortion"}
+ addUserKnob {41 size_1 l Pre-Blur t "Pre-blur edge distortion matte to smooth out high frequency detail" T Blur3.size}
+ addUserKnob {26 ""}
+ addUserKnob {41 maskChannel l "mask channel" T Keymix1.maskChannel}
+ addUserKnob {41 invertMask l invert -STARTLINE T Keymix1.invertMask}
+ addUserKnob {41 mix T Keymix1.mix}
+ addUserKnob {26 ""}
+ addUserKnob {26 _2 l "" +STARTLINE T "Guy Frutiger 2023\nguyfrutiger.com\n"}
+}
+ BackdropNode {
+  inputs 0
+  name BackdropNode1
+  tile_color 0x71c67100
+  label "Extend Inside"
+  note_font "Bitstream Vera Sans Bold"
+  note_font_size 42
+  xpos 373
+  ypos -556
+  bdwidth 276
+  bdheight 877
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode2
+  tile_color 0x388e8e00
+  label "Extend Outside"
+  note_font "Bitstream Vera Sans Bold"
+  note_font_size 42
+  xpos 14
+  ypos -548
+  bdwidth 290
+  bdheight 804
+ }
+ BackdropNode {
+  inputs 0
+  name BackdropNode3
+  tile_color 0x388e8e00
+  label "Edge distortion"
+  note_font "Bitstream Vera Sans Bold"
+  note_font_size 42
+  xpos 950
+  ypos -780
+  bdwidth 1027
+  bdheight 1003
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos 841
+  ypos 657
+  number 1
+  addUserKnob {20 User}
+  addUserKnob {6 check_input l "check input" +STARTLINE}
+  check_input {{"\[exists input1]"}}
+ }
+ Dot {
+  name Dot31
+  xpos 875
+  ypos 716
+ }
+ Constant {
+  inputs 0
+  channels {{{parent.Keymix1.maskChannel}}}
+  color 1
+  name Constant1
+  xpos 641
+  ypos 562
+ }
+ Switch {
+  inputs 2
+  which {{parent.mask.check_input}}
+  name Switch1
+  xpos 641
+  ypos 712
+ }
+ Dot {
+  name Dot12
+  xpos 675
+  ypos 767
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 308
+  ypos -870
+ }
+ Dot {
+  name Dot2
+  xpos 342
+  ypos -700
+ }
+set Nf1f97800 [stack 0]
+ Dot {
+  name Dot3
+  xpos -166
+  ypos -700
+ }
+ Dot {
+  name Dot6
+  xpos -166
+  ypos 343
+ }
+set Nf1fb8000 [stack 0]
+push $Nf1f97800
+ Matrix {
+  matrix {
+      {{-matrix.8} {-matrix.7} {-matrix.6}}
+      {{-matrix.5} 0 {"( angle > 157.5 ?  angle > 337.5 ? clamp((-(angle-360)/22.5), -1, 1) : clamp(((angle-180)/22.5), -1, 1) : clamp((-angle/22.5), -1, 1) )\n\n"}}
+      {{"( angle_135 > 157.5 ?  angle_135 > 337.5 ? clamp((-(angle_135-360)/22.5), -1, 1) : clamp(((angle_135-180)/22.5), -1, 1) : clamp((-angle_135/22.5), -1, 1) ) \n\n"} {"( angle_90 > 157.5 ?  angle_90 > 337.5 ? clamp((-(angle_90-360)/22.5), -1, 1) : clamp(((angle_90-180)/22.5), -1, 1) : clamp((-angle_90/22.5), -1, 1) ) \n\n"} {"( angle_45 > 157.5 ?  angle_45 > 337.5 ? clamp((-(angle_45-360)/22.5), -1, 1) : clamp(((angle_45-180)/22.5), -1, 1) : clamp((-angle_45/22.5), -1, 1) ) \n\n"}}
+    }
+  name Matrix2
+  xpos 308
+  ypos -616
+  addUserKnob {20 User}
+  addUserKnob {7 angle_135 l "angle for 135"}
+  angle_135 {{angle-135}}
+  addUserKnob {7 angle_90 l "angle for 90"}
+  angle_90 {{angle-90}}
+  addUserKnob {7 angle_45 l "angle for 45"}
+  angle_45 {{angle-45}}
+  addUserKnob {7 angle l "Absolute Angle"}
+  angle {{abs(angle2)}}
+  addUserKnob {7 angle2 l angle R -180 180}
+  angle2 {{"(parent.angle-((parent.angle/360)-(fmod((parent.angle/360), 1)))*360)"}}
+ }
+ Dot {
+  name Dot4
+  xpos 342
+  ypos -461
+ }
+set Nf1fb8800 [stack 0]
+ Dot {
+  name Dot9
+  xpos 199
+  ypos -461
+ }
+ FilterErode {
+  channels {{{parent.Matrix2.channels}}}
+  size {{"parent.filter == 1 ? parent.Erode1.size*2 : parent.Erode1.size"}}
+  name FilterErode1
+  xpos 165
+  ypos -403
+ }
+ Erode {
+  channels {{{parent.Matrix2.channels}}}
+  size {{-parent.extend_outside-0.1}}
+  name Erode1
+  xpos 165
+  ypos -335
+  disable {{parent.filter}}
+ }
+ Blur {
+  channels {{{parent.Matrix2.channels}}}
+  size {{parent.blur_out}}
+  name Blur2
+  xpos 165
+  ypos -276
+ }
+ Clamp {
+  channels {{{parent.Matrix2.channels}}}
+  maximum_enable false
+  name Clamp1
+  xpos 165
+  ypos -186
+ }
+ Dot {
+  name Dot30
+  xpos 199
+  ypos -25
+ }
+set Nf1ff2000 [stack 0]
+ Dot {
+  name Dot28
+  xpos 52
+  ypos -25
+ }
+ Grade {
+  channels alpha
+  whitepoint 0
+  white_clamp true
+  name Grade2
+  xpos 18
+  ypos 67
+ }
+ Expression {
+  expr3 1
+  name Expression7
+  xpos 18
+  ypos 131
+  disable {{"\[string first \".alpha\" \[channels \[input this 0]]]>-1"}}
+ }
+ Dot {
+  name Dot29
+  xpos 52
+  ypos 196
+ }
+push $Nf1f97800
+ Dot {
+  name Dot32
+  xpos 1106
+  ypos -700
+ }
+ Dot {
+  name Dot18
+  xpos 1106
+  ypos -461
+ }
+set Nf1ff3800 [stack 0]
+ Noise {
+  replace true
+  size {{parent.noise_size}}
+  center {1024 778}
+  name Noise2
+  xpos 1275
+  ypos -465
+  disable {{parent.image}}
+ }
+ Dot {
+  name Dot33
+  xpos 1309
+  ypos -408
+ }
+set Nf2022000 [stack 0]
+ Dot {
+  name Dot23
+  xpos 1750
+  ypos -408
+ }
+ EdgeExtend {
+  channels rgba
+  matte "Source Inverted Alpha"
+  detailAmount 0
+  premultiply false
+  name EdgeExtend2
+  xpos 1716
+  ypos -367
+  disable {{"\[string first \".alpha\" \[channels \[input this 0]]]>-1 == 0 ? 1 : 1-parent.image"}}
+ }
+ Blur {
+  channels rgba
+  size {{parent.Blur3.size}}
+  name Blur4
+  xpos 1716
+  ypos -326
+ }
+ Dot {
+  name Dot19
+  xpos 1750
+  ypos -139
+ }
+set Nf2023400 [stack 0]
+ Dot {
+  name Dot20
+  xpos 1921
+  ypos -139
+ }
+ Matrix {
+  channels rgba
+  matrix {
+      {{-matrix.8} {-matrix.7} {-matrix.6}}
+      {{-matrix.5} 0 {"( angle > 157.5 ?  angle > 337.5 ? clamp((-(angle-360)/22.5), -1, 1) : clamp(((angle-180)/22.5), -1, 1) : clamp((-angle/22.5), -1, 1) )\n\n"}}
+      {{"( angle_135 > 157.5 ?  angle_135 > 337.5 ? clamp((-(angle_135-360)/22.5), -1, 1) : clamp(((angle_135-180)/22.5), -1, 1) : clamp((-angle_135/22.5), -1, 1) ) \n\n"} {"( angle_90 > 157.5 ?  angle_90 > 337.5 ? clamp((-(angle_90-360)/22.5), -1, 1) : clamp(((angle_90-180)/22.5), -1, 1) : clamp((-angle_90/22.5), -1, 1) ) \n\n"} {"( angle_45 > 157.5 ?  angle_45 > 337.5 ? clamp((-(angle_45-360)/22.5), -1, 1) : clamp(((angle_45-180)/22.5), -1, 1) : clamp((-angle_45/22.5), -1, 1) ) \n\n"}}
+    }
+  name Matrix4
+  xpos 1887
+  ypos -66
+  addUserKnob {20 User}
+  addUserKnob {7 angle_135 l "angle for 135"}
+  angle_135 {{angle-135}}
+  addUserKnob {7 angle_90 l "angle for 90"}
+  angle_90 {{angle-90}}
+  addUserKnob {7 angle_45 l "angle for 45"}
+  angle_45 {{angle-45}}
+  addUserKnob {7 angle l "Absolute Angle"}
+  angle {{abs(angle2)}}
+  addUserKnob {7 angle2 l angle R -180 180}
+  angle2 {{"(orig_angle-((orig_angle/360)-(fmod((orig_angle/360), 1)))*360)"}}
+  addUserKnob {7 orig_angle}
+  orig_angle {{parent.Matrix3.angle+180}}
+ }
+ Expression {
+  expr0 0
+  expr2 0
+  name Expression4
+  xpos 1887
+  ypos -30
+ }
+ Dot {
+  name Dot21
+  xpos 1921
+  ypos 36
+ }
+push $Nf2023400
+ Matrix {
+  channels rgba
+  matrix {
+      {{-matrix.8} {-matrix.7} {-matrix.6}}
+      {{-matrix.5} 0 {"( angle > 157.5 ?  angle > 337.5 ? clamp((-(angle-360)/22.5), -1, 1) : clamp(((angle-180)/22.5), -1, 1) : clamp((-angle/22.5), -1, 1) )\n\n"}}
+      {{"( angle_135 > 157.5 ?  angle_135 > 337.5 ? clamp((-(angle_135-360)/22.5), -1, 1) : clamp(((angle_135-180)/22.5), -1, 1) : clamp((-angle_135/22.5), -1, 1) ) \n\n"} {"( angle_90 > 157.5 ?  angle_90 > 337.5 ? clamp((-(angle_90-360)/22.5), -1, 1) : clamp(((angle_90-180)/22.5), -1, 1) : clamp((-angle_90/22.5), -1, 1) ) \n\n"} {"( angle_45 > 157.5 ?  angle_45 > 337.5 ? clamp((-(angle_45-360)/22.5), -1, 1) : clamp(((angle_45-180)/22.5), -1, 1) : clamp((-angle_45/22.5), -1, 1) ) \n\n"}}
+    }
+  name Matrix5
+  xpos 1716
+  ypos -85
+  addUserKnob {20 User}
+  addUserKnob {7 angle_135 l "angle for 135"}
+  angle_135 {{angle-135}}
+  addUserKnob {7 angle_90 l "angle for 90"}
+  angle_90 {{angle-90}}
+  addUserKnob {7 angle_45 l "angle for 45"}
+  angle_45 {{angle-45}}
+  addUserKnob {7 angle l "Absolute Angle"}
+  angle {{abs(angle2)}}
+  addUserKnob {7 angle2 l angle R -180 180}
+  angle2 {{"(orig_angle-((orig_angle/360)-(fmod((orig_angle/360), 1)))*360)"}}
+  addUserKnob {7 orig_angle}
+  orig_angle {{parent.GF_Rimlight5.angle+90}}
+ }
+ Expression {
+  expr1 0
+  expr2 0
+  name Expression5
+  xpos 1716
+  ypos -33
+ }
+ Dot {
+  name Dot22
+  xpos 1750
+  ypos 36
+ }
+ Merge2 {
+  inputs 2
+  name Merge6
+  xpos 1811
+  ypos 33
+ }
+ Dot {
+  name Dot25
+  xpos 1845
+  ypos 196
+ }
+push $Nf1ff3800
+ Expression {
+  expr0 (x+0.5)/width
+  expr1 (y+0.5)/height
+  expr2 0
+  name Expression1
+  xpos 1072
+  ypos -179
+ }
+set Nf3015c00 [stack 0]
+ Dot {
+  name Dot24
+  xpos 994
+  ypos -176
+ }
+ Merge2 {
+  inputs 2
+  mix {{"abs(parent.extend_outside + parent.blur_out) == 0  ? 0 : parent.strength_distort"}}
+  name Merge7
+  xpos 960
+  ypos 193
+ }
+push $Nf1ff2000
+ STMap {
+  inputs 2+1
+  channels {{{parent.Matrix2.channels}}}
+  uv rgb
+  name STMap2
+  xpos 165
+  ypos 187
+ }
+ Merge2 {
+  inputs 2
+  operation stencil
+  Bchannels none
+  output none
+  also_merge {{{parent.Matrix2.channels}}}
+  name Merge1
+  xpos 164
+  ypos 334
+ }
+ Dot {
+  name Dot10
+  xpos 198
+  ypos 570
+ }
+push $Nf1fb8000
+ Dot {
+  name Dot7
+  xpos -166
+  ypos 461
+ }
+set Nf304d400 [stack 0]
+ Expression {
+  channel0 {{{parent.Matrix2.channels}}}
+  expr0 a
+  channel1 none
+  channel2 none
+  name Expression6
+  xpos 73
+  ypos 457
+ }
+push $Nf1fb8800
+ Dot {
+  name Dot5
+  xpos 517
+  ypos -462
+ }
+ FilterErode {
+  channels {{{parent.Matrix2.channels}}}
+  size {{"parent.filter == 1 ? parent.Erode2.size*2 : parent.Erode2.size"}}
+  name FilterErode3
+  xpos 483
+  ypos -324
+ }
+ Erode {
+  channels {{{parent.Matrix2.channels}}}
+  size {{-parent.extend_inside-0.1}}
+  name Erode2
+  xpos 483
+  ypos -259
+  disable {{parent.filter}}
+ }
+ Blur {
+  channels {{{parent.Matrix2.channels}}}
+  size {{parent.blur_in}}
+  name Blur1
+  xpos 483
+  ypos -209
+ }
+ Clamp {
+  channels {{{parent.Matrix2.channels}}}
+  maximum_enable false
+  name Clamp2
+  xpos 483
+  ypos -140
+ }
+set Nf307ac00 [stack 0]
+ Dot {
+  name Dot27
+  xpos 407
+  ypos -130
+ }
+ Grade {
+  channels alpha
+  whitepoint 0
+  white_clamp true
+  name Grade1
+  xpos 373
+  ypos -58
+ }
+ Expression {
+  expr3 1
+  name Expression8
+  xpos 373
+  ypos -5
+  disable {{"\[string first \".alpha\" \[channels \[input this 0]]]>-1"}}
+ }
+ Dot {
+  name Dot26
+  xpos 407
+  ypos 67
+ }
+push $Nf2022000
+ EdgeExtend {
+  channels rgba
+  detailAmount 0
+  premultiply false
+  name EdgeExtend1
+  xpos 1275
+  ypos -372
+  disable {{"\[string first \".alpha\" \[channels \[input this 0]]]>-1 == 0 ? 1 : 1-parent.image" x1 1}}
+ }
+ Blur {
+  channels rgba
+  name Blur3
+  xpos 1275
+  ypos -326
+ }
+ Dot {
+  name Dot1
+  xpos 1309
+  ypos -240
+ }
+set Nf30b8c00 [stack 0]
+ Dot {
+  name Dot13
+  xpos 1480
+  ypos -240
+ }
+ Matrix {
+  channels rgba
+  matrix {
+      {{-matrix.8} {-matrix.7} {-matrix.6}}
+      {{-matrix.5} 0 {"( angle > 157.5 ?  angle > 337.5 ? clamp((-(angle-360)/22.5), -1, 1) : clamp(((angle-180)/22.5), -1, 1) : clamp((-angle/22.5), -1, 1) )\n\n"}}
+      {{"( angle_135 > 157.5 ?  angle_135 > 337.5 ? clamp((-(angle_135-360)/22.5), -1, 1) : clamp(((angle_135-180)/22.5), -1, 1) : clamp((-angle_135/22.5), -1, 1) ) \n\n"} {"( angle_90 > 157.5 ?  angle_90 > 337.5 ? clamp((-(angle_90-360)/22.5), -1, 1) : clamp(((angle_90-180)/22.5), -1, 1) : clamp((-angle_90/22.5), -1, 1) ) \n\n"} {"( angle_45 > 157.5 ?  angle_45 > 337.5 ? clamp((-(angle_45-360)/22.5), -1, 1) : clamp(((angle_45-180)/22.5), -1, 1) : clamp((-angle_45/22.5), -1, 1) ) \n\n"}}
+    }
+  name Matrix3
+  xpos 1446
+  ypos -167
+  addUserKnob {20 User}
+  addUserKnob {7 angle_135 l "angle for 135"}
+  angle_135 {{angle-135}}
+  addUserKnob {7 angle_90 l "angle for 90"}
+  angle_90 {{angle-90}}
+  addUserKnob {7 angle_45 l "angle for 45"}
+  angle_45 {{angle-45}}
+  addUserKnob {7 angle l "Absolute Angle"}
+  angle {{abs(angle2)}}
+  addUserKnob {7 angle2 l angle R -180 180}
+  angle2 {{"(orig_angle-((orig_angle/360)-(fmod((orig_angle/360), 1)))*360)"}}
+  addUserKnob {7 orig_angle}
+  orig_angle {{parent.angle}}
+ }
+ Expression {
+  expr0 0
+  expr2 0
+  name Expression3
+  xpos 1446
+  ypos -131
+ }
+ Dot {
+  name Dot14
+  xpos 1480
+  ypos -65
+ }
+push $Nf30b8c00
+ Matrix {
+  channels rgba
+  matrix {
+      {{-matrix.8} {-matrix.7} {-matrix.6}}
+      {{-matrix.5} 0 {"( angle > 157.5 ?  angle > 337.5 ? clamp((-(angle-360)/22.5), -1, 1) : clamp(((angle-180)/22.5), -1, 1) : clamp((-angle/22.5), -1, 1) )\n\n"}}
+      {{"( angle_135 > 157.5 ?  angle_135 > 337.5 ? clamp((-(angle_135-360)/22.5), -1, 1) : clamp(((angle_135-180)/22.5), -1, 1) : clamp((-angle_135/22.5), -1, 1) ) \n\n"} {"( angle_90 > 157.5 ?  angle_90 > 337.5 ? clamp((-(angle_90-360)/22.5), -1, 1) : clamp(((angle_90-180)/22.5), -1, 1) : clamp((-angle_90/22.5), -1, 1) ) \n\n"} {"( angle_45 > 157.5 ?  angle_45 > 337.5 ? clamp((-(angle_45-360)/22.5), -1, 1) : clamp(((angle_45-180)/22.5), -1, 1) : clamp((-angle_45/22.5), -1, 1) ) \n\n"}}
+    }
+  name Matrix1
+  xpos 1275
+  ypos -184
+  addUserKnob {20 User}
+  addUserKnob {7 angle_135 l "angle for 135"}
+  angle_135 {{angle-135}}
+  addUserKnob {7 angle_90 l "angle for 90"}
+  angle_90 {{angle-90}}
+  addUserKnob {7 angle_45 l "angle for 45"}
+  angle_45 {{angle-45}}
+  addUserKnob {7 angle l "Absolute Angle"}
+  angle {{abs(angle2)}}
+  addUserKnob {7 angle2 l angle R -180 180}
+  angle2 {{"(orig_angle-((orig_angle/360)-(fmod((orig_angle/360), 1)))*360)"}}
+  addUserKnob {7 orig_angle}
+  orig_angle {{parent.Matrix3.angle+90}}
+ }
+ Expression {
+  expr1 0
+  expr2 0
+  name Expression2
+  xpos 1275
+  ypos -134
+ }
+ Dot {
+  name Dot15
+  xpos 1309
+  ypos -65
+ }
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos 1370
+  ypos -68
+ }
+ Dot {
+  name Dot16
+  xpos 1404
+  ypos -5
+ }
+push $Nf3015c00
+ Merge2 {
+  inputs 2
+  mix {{"abs(parent.extend_inside + parent.blur_in) == 0  ? 0 : parent.strength_distort"}}
+  name Merge5
+  xpos 1072
+  ypos -8
+ }
+ Dot {
+  name Dot17
+  xpos 1106
+  ypos 68
+ }
+push $Nf307ac00
+ STMap {
+  inputs 2+1
+  channels {{{parent.Matrix2.channels}}}
+  uv rgb
+  name STMap1
+  xpos 483
+  ypos 58
+ }
+ Merge2 {
+  inputs 2
+  operation multiply
+  Bchannels none
+  output none
+  also_merge {{{parent.Matrix2.channels}}}
+  name Merge2
+  xpos 483
+  ypos 450
+ }
+ Dot {
+  name Dot8
+  xpos 517
+  ypos 569
+ }
+ Merge2 {
+  inputs 2
+  operation plus
+  Achannels none
+  Bchannels none
+  output none
+  also_merge {{{parent.Matrix2.channels}}}
+  name Merge3
+  xpos 308
+  ypos 560
+ }
+push $Nf304d400
+ Dot {
+  name Dot11
+  xpos -166
+  ypos 767
+ }
+ Remove {
+  channels {{{parent.Matrix2.channels}}}
+  name Remove1
+  xpos 14
+  ypos 757
+ }
+ Keymix {
+  inputs 3
+  channels {{{parent.Matrix2.channels}}}
+  bbox B
+  name Keymix1
+  xpos 308
+  ypos 757
+ }
+ Output {
+  name Output1
+  xpos 308
+  ypos 1056
+ }
+end_group
