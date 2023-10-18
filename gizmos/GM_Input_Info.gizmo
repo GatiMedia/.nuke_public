@@ -2,8 +2,6 @@ Group {
  name GM_Input_Info1
  tile_color 0xff9455ff
  selected true
- xpos 26470
- ypos 1766
  addUserKnob {20 User}
  addUserKnob {41 text_pos l "Text Position" T proxy.text_pos}
  addUserKnob {26 ""}
