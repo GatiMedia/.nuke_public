@@ -3,8 +3,6 @@ Group {
  tile_color 0xe8f57dff
  note_font "DejaVu Sans"
  selected true
- xpos 26360
- ypos 1929
  addUserKnob {20 User}
  addUserKnob {4 output l Output M {"Pattern Only" "Pattern Over Image" "Distorted Image" STMap ""}}
  output "Pattern Over Image"
