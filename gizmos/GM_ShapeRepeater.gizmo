@@ -2,8 +2,6 @@ Group {
  name GM_ShapeRepeater
  tile_color 0xf25400ff
  selected true
- xpos 26360
- ypos 2261
  addUserKnob {20 User}
  addUserKnob {4 output l Output M {"Pattern Only" "Pattern Over Image"}}
  addUserKnob {26 shape l "<b>S H A P E"}
