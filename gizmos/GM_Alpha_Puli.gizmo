@@ -2,8 +2,6 @@ Group {
  name GM_Alpha_Puli
  tile_color 0xffae53ff
  selected true
- xpos 26375
- ypos 1508
  addUserKnob {20 checker l Checker}
  addUserKnob {4 over l Mode t "Choose between the preferred visibility modes to test your matte. For `Overlay` you can choose between colors. " M {Overlay Grey Black White Checkerboard "" "" "" "" "" "" "" "" ""}}
  addUserKnob {4 overlay l Overlay t "Choose between the colors to see the edges better when the Mode is on `Overlay`." M {Pink Blue Yellow Green Red "" "" "" "" "" "" ""}}
