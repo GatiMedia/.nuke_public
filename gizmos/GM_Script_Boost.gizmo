@@ -3,8 +3,6 @@ Group {
  name GM_Script_Boost1
  tile_color 0xff9455ff
  selected true
- xpos 26360
- ypos 2198
  addUserKnob {20 User l Script_Boost}
  addUserKnob {26 postage l "<b><font color=#FFFFFF size=\"4\" >Postage Stamp</font><b>"}
  addUserKnob {22 postage_dis l "Disable Postage Stamp" t "Allows you to disable the Postage Stamp on all nodes in the script." -STARTLINE T "nodes_classes = \[\"Read\", \"PostageStamp\", \"Constant\", \"ColorBars\", \"CheckerBoard2\", \"ColorWheel\"]\n\nfor node in nuke.allNodes(group=nuke.root()):\n    if node.Class() in nodes_classes:\n        try:\n            node\[\"postage_stamp\"].setValue(False)\n        except Exception:\n            pass\n"}
