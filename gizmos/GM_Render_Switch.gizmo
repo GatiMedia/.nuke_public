@@ -2,8 +2,6 @@ Group {
  name GM_Render_Switch
  tile_color 0xbbbbbbff
  selected true
- xpos 26360
- ypos 2006
  addUserKnob {20 User}
  addUserKnob {26 info1 l "<font size=5><b>Switch this node"}
  addUserKnob {6 r_s_tick l "Show 1" +STARTLINE}
