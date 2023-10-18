@@ -2,8 +2,6 @@ Group {
  name GM_Liquid_Distortion1
  tile_color 0x55ffbfff
  selected true
- xpos 26360
- ypos 1838
  addUserKnob {20 User l Liquid}
  addUserKnob {7 contrast_liq l Contrast R 1 4}
  contrast_liq 3
