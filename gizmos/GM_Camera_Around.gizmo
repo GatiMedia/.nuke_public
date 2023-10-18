@@ -3,8 +3,6 @@ Group {
  name GM_Camera_Around
  tile_color 0xea6827ff
  selected true
- xpos 26360
- ypos 1550
  addUserKnob {20 User l Settings}
  addUserKnob {41 translate l Center t "Allows you to adjust the center point." T ca1.translate}
  addUserKnob {7 dis_cam l Distance t "Allows you to adjust the camera`s distance from the center point." R 0 100}
