@@ -5,8 +5,6 @@ Group {
  note_font "Bitstream Vera Sans Bold"
  note_font_size 13
  selected true
- xpos 26360
- ypos 2328
  addUserKnob {20 User}
  addUserKnob {41 which_highlight l which T Switch1.which}
  addUserKnob {26 ""}
