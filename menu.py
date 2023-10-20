@@ -2,7 +2,7 @@
 # --------------------------------------------------------------
 #  menu.py
 #  Last Updated by: Attila Gasparetz
-#  Last Updated: 05/09/2023
+#  Last Updated: 20/10/2023
 # --------------------------------------------------------------
 
 # --------------------------------------------------------------
@@ -360,7 +360,12 @@ except:
     pass
 
 try:
-    import color_layer_setup
-    utilitiesMenu.addCommand('Lighting Layer Template', 'color_layer_setup.colorLayerSetup()')
+    import cg_grade_lighting
+    import cg_grade_material
+    import cg_grade_all
+    cg_grade_menu = utilitiesMenu.addMenu('Dynamic CG Grade Setups (BETA)', icon='Geometry.png')
+    cg_grade_menu.addCommand('Lighting Setup', 'cg_grade_lighting.colorLayerSetup()', icon='Geometry.png')
+    cg_grade_menu.addCommand('Material Setup', 'cg_grade_material.materialLayerSetup()', icon='Geometry.png')
+    cg_grade_menu.addCommand('Full Setup', 'cg_grade_all.cgGradeSetup()', icon='Geometry.png')
 except:
     pass
