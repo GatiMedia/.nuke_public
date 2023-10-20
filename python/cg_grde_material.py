@@ -1,3 +1,9 @@
+# --------------------------------------------------------------
+#  cg_grade_material.py
+#  Last Updated by: Attila Gasparetz
+#  Last Updated: 20/10/2023
+# --------------------------------------------------------------
+
 import nuke
 
 MATERIAL_LAYER_PREFIX = 'M_'
