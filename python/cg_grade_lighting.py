@@ -3,6 +3,7 @@
 #  Last Updated by: Attila Gasparetz
 #  Last Updated: 20/10/2023
 # --------------------------------------------------------------
+# This tool is based on an AOV naming customization where Color ( Lighting ), Material and Texture groups gets prefixes, respectively "C_", "M_" and "T_"
 
 import nuke
 
