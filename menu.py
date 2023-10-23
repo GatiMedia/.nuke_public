@@ -2,8 +2,10 @@
 # --------------------------------------------------------------
 #  menu.py
 #  Last Updated by: Attila Gasparetz
-#  Last Updated: 20/10/2023
+#  Last Updated: 23/10/2023
 # --------------------------------------------------------------
+
+nuke.tprint(f'Running {__file__}')
 
 # --------------------------------------------------------------
 #  GLOBAL IMPORTS ::::::::::::::::::::::::::::::::::::::::::::::
@@ -328,7 +330,12 @@ try:
     utilitiesMenu.addCommand('LayerShuffle', 'layer_shuffle.layerShuffle()', icon='Shuffle.png')
 except:
     pass
-
+try:
+    import utility_shuffle
+    utilitiesMenu.addCommand('Utility Shuffle + Stamps', 'utility_shuffle.utilityShuffle()', icon='Shuffle.png')
+except:
+    pass
+    
 try:
     import change_channels
     utilitiesMenu.addCommand('Change Channels', 'change_channels.changeChannels()', 'shift+a', icon='ChannelMerge.png')
@@ -369,3 +376,5 @@ try:
     cg_grade_menu.addCommand('Full Setup', 'cg_grade_all.cgGradeSetup()', icon='Geometry.png')
 except:
     pass
+
+nuke.tprint(f'End of {__file__}')
