@@ -1,9 +1,8 @@
 # --------------------------------------------------------------
 #  cg_grade_all.py
 #  Last Updated by: Attila Gasparetz
-#  Last Updated: 20/10/2023
+#  Last Updated: 23/10/2023
 # --------------------------------------------------------------
-# This tool is based on an AOV naming customization where Color ( Lighting ), Material and Texture groups gets prefixes, respectively "C_", "M_" and "T_"
 
 import nuke
 
@@ -367,9 +366,12 @@ def cgGradeSetup():
                     materialGroup.append(c)
                 else:
                     continue
-            if "M_specular_direct" in materialGroup:
+
+            # Removing passes that would make combined beauty brighter
+            if any((match := substring) in "M_specular_direct" for substring in materialGroup):
                 materialGroup.remove("M_specular")
-            if "M_diffuse_direct" in materialGroup:
+
+            if any((match := substring) in "M_diffuse_direct" for substring in materialGroup):
                 materialGroup.remove("M_diffuse")
 
             # create dotMain
@@ -756,3 +758,4 @@ def cgGradeSetup():
             merge_w_lighting.setSelected(SELECT_VAL)
             merge_w_lighting.setInput(1, copyNode)
             merge_w_lighting.setInput(0, merge_divide_bty)
+
