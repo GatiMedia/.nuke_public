@@ -34,10 +34,12 @@ def materialLayerSetup():
                 continue
         noteVal = '' + '\n'.join(channelLayers)
 
-        if "M_specular_direct" in colorGroup:
-            colorGroup.remove("M_specular")
-        if "M_diffuse_direct" in colorGroup:
-            colorGroup.remove("M_diffuse")
+        # Removing passes that would make combined beauty brighter
+        if any((match := substring) in "M_specular_direct" for substring in materialGroup):
+            materialGroup.remove("M_specular")
+
+        if any((match := substring) in "M_diffuse_direct" for substring in materialGroup):
+             materialGroup.remove("M_diffuse")
 
         if not colorGroup:
             nuke.alert('<font color=orange><h3><center>No color passes found!\n\nAvailable layers are:\n\n<font color=yellow><h4>' + ',\n'.join(channelLayers))
