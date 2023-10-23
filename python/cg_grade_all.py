@@ -759,4 +759,3 @@ def cgGradeSetup():
             merge_w_lighting.setSelected(SELECT_VAL)
             merge_w_lighting.setInput(1, copyNode)
             merge_w_lighting.setInput(0, merge_divide_bty)
-
