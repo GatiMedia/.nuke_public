@@ -1,7 +1,7 @@
 # --------------------------------------------------------------
 #  cg_grade_material.py
 #  Last Updated by: Attila Gasparetz
-#  Last Updated: 20/10/2023
+#  Last Updated: 23/10/2023
 # --------------------------------------------------------------
 # This tool is based on an AOV naming customization where Color ( Lighting ), Material and Texture groups gets prefixes, respectively "C_", "M_" and "T_"
 
@@ -35,11 +35,11 @@ def materialLayerSetup():
         noteVal = '' + '\n'.join(channelLayers)
 
         # Removing passes that would make combined beauty brighter
-        if any((match := substring) in "M_specular_direct" for substring in materialGroup):
-            materialGroup.remove("M_specular")
+        if any((match := substring) in "M_specular_direct" for substring in colorGroup):
+            colorGroup.remove("M_specular")
 
-        if any((match := substring) in "M_diffuse_direct" for substring in materialGroup):
-             materialGroup.remove("M_diffuse")
+        if any((match := substring) in "M_diffuse_direct" for substring in colorGroup):
+            colorGroup.remove("M_diffuse")
 
         if not colorGroup:
             nuke.alert('<font color=orange><h3><center>No color passes found!\n\nAvailable layers are:\n\n<font color=yellow><h4>' + ',\n'.join(channelLayers))
