@@ -1,0 +1,572 @@
+set cut_paste_input [stack 0]
+version 14.0 v6
+BackdropNode {
+ inputs 0
+ name Backdrop_Adjust9
+ knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nkn = k.name()\nif kn == 'appearance_custom':\n    if n\['appearance_custom'].value() == 'Fill':\n        n\['appearance'].setValue('Fill')\n    else:\n        n\['appearance'].setValue('Border')\n"
+ tile_color 0x3c4d5000
+ label "<p align=\"\[value align]\"><font color=\[value note_color]> \[if \{\[value bold]==true\} \{return <b>\} \{return \"\"\}] \[if \{\[value italian]==true\} \{return <i>\} \{return \"\"\}] \[if \{\[value under]==true\} \{return <u>\} \{return \"\"\}] \[if \{\[value strike]==true\} \{return <s>\} \{return \"\"\}] \[value note]"
+ note_font "MS Shell Dlg 2"
+ note_font_size 162
+ selected true
+ xpos 12039
+ ypos 7427
+ bdwidth 2233
+ bdheight 1723
+ addUserKnob {20 User}
+ addUserKnob {22 cover l "<big><font color=yellow>Cover Selected Area</big></font>" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.coverSelectedArea()" +STARTLINE}
+ addUserKnob {26 _1 l "" -STARTLINE T "   "}
+ addUserKnob {22 extend l "<big><font color=yellow>Extend to Selected Area</big></font>" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.extendSelectedArea()"}
+ addUserKnob {26 label_1 l <b>Label</b>}
+ addUserKnob {43 note l Note}
+ note "FLY PARTICLE SETUP\n"
+ addUserKnob {4 note_color l "Note Color" M {Orange White Silver Gray Black Red Maroon Yellow Olive Lime Green Aqua Teal Blue Navy Fuchsia Purple}}
+ note_color Aqua
+ addUserKnob {4 align l Align -STARTLINE M {Center Left Right "" "" ""}}
+ addUserKnob {6 bold l "<b>&nbsp;&nbsp;T" +STARTLINE}
+ bold true
+ addUserKnob {6 italian l "&nbsp;&nbsp;<i>T" -STARTLINE}
+ addUserKnob {6 under l "&nbsp;&nbsp;<u>T" -STARTLINE}
+ addUserKnob {6 strike l "&nbsp;&nbsp;<s>T" -STARTLINE}
+ addUserKnob {26 font_size l "Note size"}
+ addUserKnob {22 size_plus_10 l "<font color=orange>▲ 10</font>" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.fontPlusTen()"}
+ addUserKnob {22 size_min_10 l "<font color=aqua>▼ 10</font>" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.fontMinusTen()"}
+ addUserKnob {26 tasks l <b>Tasks</b>}
+ addUserKnob {22 plate l "<big><font style=\"background-color:#559d63;\">&nbsp;<font color=black>Plate</font>&nbsp;" T "# plate\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1436110080)\nbd\['note'].setValue('PLATE')\nbd\['note_font_size'].setValue(102)\nbd\['note_color'].setValue('Black')" +STARTLINE}
+ addUserKnob {22 denoise l "<big><font style=\"background-color:#85994d;\">&nbsp;<font color=black>Denoise</font>&nbsp;" -STARTLINE T "# denoise\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(2241416448)\nbd\['note'].setValue('DENOISE')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')"}
+ addUserKnob {22 reference l "<big><font style=\"background-color:#4d9976;\">&nbsp;<font color=black>Reference</font>&nbsp;" -STARTLINE T "# reference\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1301902848)\nbd\['note'].setValue('REF')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')"}
+ addUserKnob {22 precomp l "<big><font style=\"background-color:#994d63;\">&nbsp;<font color=black>Precomp</font>&nbsp;" T "# precomp\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(2571985664)\nbd\['note'].setValue('PRECOMP')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')" +STARTLINE}
+ addUserKnob {22 merge l "<big><font style=\"background-color:#4d8c99;\">&nbsp;<font color=black>Merge</font>&nbsp;" -STARTLINE T "# merge\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1301059840)\nbd\['note'].setValue('MERGE')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')"}
+ addUserKnob {22 output l "<big><font style=\"background-color:#997d4d;\">&nbsp;<font color=black>Output</font>&nbsp;" -STARTLINE T "# output\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(2575125760)\nbd\['note'].setValue('OUTPUT')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')"}
+ addUserKnob {22 Foreground l "<big><font style=\"background-color:#777777;\">&nbsp;<font color=black>FG</font>&nbsp;" T "# fg\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1717987071)\nbd\['note'].setValue('FG')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')\n" +STARTLINE}
+ addUserKnob {22 background l "<big><font style=\"background-color:#777777;\">&nbsp;<font color=black>BG</font>&nbsp;" -STARTLINE T "# background\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1717987071)\nbd\['note'].setValue('BG')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 versions l "<big><font style=\"background-color:#777777;\">&nbsp;<font color=black>Versions</font>&nbsp;" -STARTLINE T "# versions\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(1717987071)\nbd\['note'].setValue('VERSIONS')\nbd\['note_font_size'].setValue(82)\nbd\['note_color'].setValue('Black')"}
+ addUserKnob {22 threed l "<big><font style=\"background-color:#806069;\">&nbsp;<font color=black>3D</font>&nbsp;" T "# 3d\n\nbd = nuke.thisNode()\nbd\['tile_color'].setValue(2153801984)\nbd\['note'].setValue('3D')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')\n" +STARTLINE}
+ addUserKnob {22 camera l "<big><font style=\"background-color:#806060;\">&nbsp;<font color=black>Camera</font>&nbsp;" -STARTLINE T "# camera\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(2153799680)\nbd\['note'].setValue('CAMERA')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 track l "<big><font style=\"background-color:#80607d;\">&nbsp;<font color=black>Track</font>&nbsp;" -STARTLINE T "# track\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(2153807104)\nbd\['note'].setValue('TRACK')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 matte l "<big><font style=\"background-color:#807460;\">&nbsp;<font color=black>DMP</font>&nbsp;" T "# matte\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(2155110400)\nbd\['note'].setValue('DMP')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')" +STARTLINE}
+ addUserKnob {22 grade l "<big><font style=\"background-color:#607a80;\">&nbsp;<font color=black>Grade</font>&nbsp;" -STARTLINE T "# grade\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(1618640896)\nbd\['note'].setValue('GRADE')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')\n"}
+ addUserKnob {22 lens_effect l "<big><font style=\"background-color:#6d6080;\">&nbsp;<font color=black>Lens Effect</font>&nbsp;" -STARTLINE T "# lens effect\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(1835040768)\nbd\['note'].setValue('LENS\\nEFFECT')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 key l "<big><font style=\"background-color:#608071;\">&nbsp;<font color=black>Key</font>&nbsp;" T "# key\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(1619030272)\nbd\['note'].setValue('KEY')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')" +STARTLINE}
+ addUserKnob {22 roto l "<big><font style=\"background-color:#638060;\">&nbsp;<font color=black>Roto</font>&nbsp;" -STARTLINE T "# roto\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(1669357568)\nbd\['note'].setValue('ROTO')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 prep l "<big><font style=\"background-color:#778060;\">&nbsp;<font color=black>Prep</font>&nbsp;" -STARTLINE T "# prep\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(2004901888)\nbd\['note'].setValue('PREP')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('Silver')"}
+ addUserKnob {22 grain l "<big><font style=\"background-color:#AAAAAA;\">&nbsp;<font color=black>Grain</font>&nbsp;" -STARTLINE T "# grain\n\nbd = nuke.thisNode()\n\nbd\['tile_color'].setValue(2576980479)\nbd\['note'].setValue('GRAIN')\nbd\['note_font_size'].setValue(72)\nbd\['note_color'].setValue('White')"}
+ addUserKnob {26 node_color l "<b>Node Color</b>"}
+ addUserKnob {4 appearance_custom l Appearance M {Fill Border "" ""}}
+ addUserKnob {22 change_colors l "<big><font style=\"background-color:#806060;\">D<font style=\"background-color:#807460;\">u<font style=\"background-color:#778060;\">l<font style=\"background-color:#608071;\">l<font style=\"background-color:#607a80;\"> <font style=\"background-color:#606680;\">C<font style=\"background-color:#606680;\">o<font style=\"background-color:#6d6080;\">l<font style=\"background-color:#80607d;\">o<font style=\"background-color:#806069;\">r<font style=\"background-color:#806060;\">s" t "By clicking on it can toggle between the \"Dull Colors\" and the \"Vivid Colors\" palettes" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.dullVividColor()" +STARTLINE}
+ addUserKnob {22 darken l "<big><font style=\"background-color:#333333;\">&nbsp;<font color=#cccccc>Darken</font>&nbsp;" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.darkenTileColor()"}
+ addUserKnob {22 brighten l "<big><font style=\"background-color:#aaaaaa;\">&nbsp;<font color=black>Brighten</font>&nbsp;" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.brightenTileColor()"}
+ addUserKnob {22 color_0 l "<font color=#806060><big>█</big></font>" T "nuke.thisNode()\['tile_color'].setValue(2153799680)" +STARTLINE}
+ addUserKnob {22 color_1 l "<font color=#807460><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(2155110400)"}
+ addUserKnob {22 color_2 l "<font color=#778060><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(2004901888)"}
+ addUserKnob {22 color_3 l "<font color=#638060><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1669357568)"}
+ addUserKnob {22 color_4 l "<font color=#608071><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1619030272)"}
+ addUserKnob {22 color_5 l "<font color=#607a80><big>█</big></font>" T "nuke.thisNode()\['tile_color'].setValue(1618640896)" +STARTLINE}
+ addUserKnob {22 color_6 l "<font color=#606680><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1617330176)"}
+ addUserKnob {22 color_7 l "<font color=#6d6080><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1835040768)"}
+ addUserKnob {22 color_8 l "<font color=#80607d><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(2153807104)"}
+ addUserKnob {22 color_9 l "<font color=#806069><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(2153801984)"}
+ addUserKnob {22 grey_1 l "<font color=#DDDDDD><big>█</big></font>" T "nuke.thisNode()\['tile_color'].setValue(3149642751)" +STARTLINE}
+ addUserKnob {22 grey_2 l "<font color=#AAAAAA><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(2576980479)"}
+ addUserKnob {22 grey_3 l "<font color=#777777><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1717987071)"}
+ addUserKnob {22 grey_4 l "<font color=#333333><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(1145324799)"}
+ addUserKnob {22 grey_5 l "<font color=#222222><big>█</big></font>" -STARTLINE T "nuke.thisNode()\['tile_color'].setValue(572662527)"}
+ addUserKnob {20 re_size l "Re Size" n 1}
+ re_size 0
+ addUserKnob {26 upscale l Upscale}
+ addUserKnob {22 upleft500 l "<font color=yellow><big>↖" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upleft500()" +STARTLINE}
+ addUserKnob {22 space1 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 up500 l "<font color=yellow><h3>▲" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.up500()"}
+ addUserKnob {22 space1_1 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 upright500 l "<font color=yellow><big>↗" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upright500()"}
+ addUserKnob {22 space2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" +STARTLINE}
+ addUserKnob {22 upleft100 l "<font color=orange><big>↖" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upleft100()"}
+ addUserKnob {22 up100 l "<font color=orange><big>▲" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.up100()"}
+ addUserKnob {22 upright100 l "<font color=orange><big>↗" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upright100()"}
+ addUserKnob {22 space2_1 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 left500 l "<font color=yellow><big>&nbsp;◄" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.left500()" +STARTLINE}
+ addUserKnob {22 left100 l "<font color=orange><big>◄" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.left100()"}
+ addUserKnob {22 center1 l "<font color=crimson><big>⦿" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.center()"}
+ addUserKnob {22 right100 l "<font color=orange><big>►" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.right100()"}
+ addUserKnob {22 right500 l "<font color=yellow><big>►&nbsp;" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.right500()"}
+ addUserKnob {22 space3 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" +STARTLINE}
+ addUserKnob {22 downleft100 l "<font color=orange><big>↙" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downleft100()"}
+ addUserKnob {22 down100 l "<font color=orange><big>▼" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.down100()"}
+ addUserKnob {22 downright100 l "<font color=orange><big>↘" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downright100()"}
+ addUserKnob {22 space3_1 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 downleft500 l "<font color=yellow><big>↙" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downleft500()" +STARTLINE}
+ addUserKnob {22 space4 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 down500 l "<font color=yellow><big>▼" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.down500()"}
+ addUserKnob {22 space4_1 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 downright500 l "<font color=yellow><big>↘" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downright500()"}
+ addUserKnob {26 downscale l Downscale}
+ addUserKnob {22 upleft500_2 l "<font color=LightSkyBlue><big>↘" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upleft500_2()" +STARTLINE}
+ addUserKnob {22 space1_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 up500_2 l "<font color=LightSkyBlue><h3>▼" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.up500_2()"}
+ addUserKnob {22 space1_1_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 upright500_2 l "<font color=LightSkyBlue><big>↙" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upright500_2()"}
+ addUserKnob {22 space2_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" +STARTLINE}
+ addUserKnob {22 upleft100_2 l "<font color=SteelBlue><big>↘" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upleft100_2()"}
+ addUserKnob {22 up100_2 l "<font color=SteelBlue><big>▼" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.up100_2()"}
+ addUserKnob {22 upright100_2 l "<font color=SteelBlue><big>↙" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.upright100_2()"}
+ addUserKnob {22 space2_1_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 left500_2 l "<font color=LightSkyBlue><big>&nbsp;►" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.left500_2()" +STARTLINE}
+ addUserKnob {22 left100_2 l "<font color=SteelBlue><big>►" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.left100_2()"}
+ addUserKnob {22 center1_2 l "<font color=blue><big>⦿" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.center_2()"}
+ addUserKnob {22 right100_2 l "<font color=SteelBlue><big>◄" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.right100_2()"}
+ addUserKnob {22 right500_2 l "<font color=LightSkyBlue><big>◄&nbsp;" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.right500_2()"}
+ addUserKnob {22 space3_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" +STARTLINE}
+ addUserKnob {22 downleft100_2 l "<font color=SteelBlue><big>↗" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downleft100_2()"}
+ addUserKnob {22 down100_2 l "<font color=SteelBlue><big>▲" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.down100_2()"}
+ addUserKnob {22 downright100_2 l "<font color=SteelBlue><big>↖" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downright100_2()"}
+ addUserKnob {22 space3_1_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 downleft500_2 l "<font color=LightSkyBlue><big>↗" T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downleft500_2()" +STARTLINE}
+ addUserKnob {22 space4_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 down500_2 l "<font color=LightSkyBlue><big>▲" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.down500_2()"}
+ addUserKnob {22 space4_1_2 l "<big>&nbsp;&nbsp;&nbsp;&nbsp;" -STARTLINE}
+ addUserKnob {22 downright500_2 l "<font color=LightSkyBlue><big>↖" -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.downright500_2()"}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" -STARTLINE T "<font color=#808080 size=\"5\" >1.9 (beta) version</font>"}
+ addUserKnob {26 _2 l "" -STARTLINE T "   "}
+ addUserKnob {22 info l Tutorial/Info -STARTLINE T "import Backdrop_Adjust_utils\n\nBackdrop_Adjust_utils.openWebsite()"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">Backdrop_Adjust by Attila Gasparetz</font>"}
+}
+StickyNote {
+ inputs 0
+ name StickyNote5
+ label __FAR__
+ note_font "Open Sans Bold"
+ note_font_size 42
+ selected true
+ xpos 13745
+ ypos 8259
+}
+StickyNote {
+ inputs 0
+ name StickyNote7
+ label __MIDDLE__
+ note_font "Open Sans Bold"
+ note_font_size 42
+ selected true
+ xpos 13157
+ ypos 8259
+}
+StickyNote {
+ inputs 0
+ name StickyNote10
+ label __CLOSEST_
+ note_font "Open Sans Bold"
+ note_font_size 42
+ selected true
+ xpos 12498
+ ypos 8259
+}
+Camera2 {
+ inputs 0
+ read_from_file true
+ translate {{curve x991 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868 -261.9327868} {curve x991 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304 117.7795304} {curve x991 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851 866.6639851}}
+ rotate {{curve x991 6.240414994 6.240377125 6.240339701 6.240302722 6.24026619 6.240230105 6.240194468 6.24015928 6.240124543 6.240090257 6.240056423 6.240023042 6.241426491 6.245098265 6.250131046 6.255617516 6.260257637 6.262917842 6.262940561 6.257695892 6.247014194 6.233928005 6.221469673 6.212613689 6.210030231 6.213328168 6.219553106 6.227432528 6.235458172 6.242506022 6.247876713 6.250495889 6.258133175 6.275065824 6.294981016 6.311615859 6.320710364 6.325680498 6.33152148 6.336417706 6.338560956 6.338646176 6.338643719 6.338640748 6.338637264 6.338633267 6.338628759 6.33862374 6.338618212 6.338612176 6.338605632 6.338598581 6.338591025 6.338582964 6.338574399 6.338565332 6.338555763 6.338545694 6.338545694} {curve x991 -16.33829336 -16.33830981 -16.33832598 -16.33834187 -16.33835748 -16.33837282 -16.33838787 -16.33840265 -16.33841714 -16.33843135 -16.33844528 -16.33845893 -16.33851315 -16.33863158 -16.33878846 -16.33895796 -16.33860188 -16.33739771 -16.33564265 -16.33357654 -16.33150903 -16.32984293 -16.32898287 -16.33529864 -16.35084773 -16.36947997 -16.38497099 -16.39114569 -16.39014688 -16.38815556 -16.38505445 -16.38086562 -16.37585932 -16.37020688 -16.36378316 -16.35466134 -16.34127793 -16.32512756 -16.30881165 -16.29474294 -16.28533645 -16.28205612 -16.28205626 -16.2820567 -16.28205745 -16.28205851 -16.28205988 -16.28206156 -16.28206355 -16.28206584 -16.28206845 -16.28207135 -16.28207456 -16.28207808 -16.2820819 -16.28208602 -16.28209045 -16.28209518 -16.28209518} {curve x991 -1.618002641 -1.618117011 -1.618231313 -1.618345549 -1.618459717 -1.618573816 -1.618687848 -1.61880181 -1.618915704 -1.619029528 -1.619143282 -1.619256966 -1.61937502 -1.61950002 -1.619629171 -1.619759669 -1.6213062 -1.625083274 -1.63018776 -1.63571025 -1.640748917 -1.644412023 -1.645807936 -1.643605221 -1.638001534 -1.630389455 -1.622152749 -1.614679266 -1.609287247 -1.605550731 -1.602240817 -1.599411264 -1.597142894 -1.59550588 -1.59453812 -1.59429216 -1.587831502 -1.572240836 -1.553605555 -1.537992822 -1.531472234 -1.531497998 -1.531498441 -1.531499182 -1.531500219 -1.531501552 -1.531503181 -1.531505106 -1.531507326 -1.53150984 -1.53151265 -1.531515753 -1.53151915 -1.53152284 -1.531526823 -1.531531099 -1.531535667 -1.531540526 -1.531540526}}
+ scaling {{curve x991 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {curve x991 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {curve x991 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+ uniform_scale {{curve x991 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+ skew {{curve x991 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {curve x991 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {curve x991 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+ pivot_translate {{curve x991 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {curve x991 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {curve x991 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+ focal {{curve x991 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308 120.5662308}}
+ haperture {{curve x991 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752 35.99992752}}
+ vaperture {{curve x991 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041 23.99995041}}
+ near {{curve x991 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10}}
+ far {{curve x991 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000 10000}}
+ win_translate {{curve x991 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0} {curve x991 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0}}
+ win_scale {{curve x991 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1} {curve x991 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1}}
+ focal_point {{curve x991 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800 800}}
+ fstop {{curve x991 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008 4.681818008}}
+ file /milk/jobs/surv/SURV_SIZ/SURV_SIZ_OCT/SURV_SIZ_OCT_1010/anim/published/alembic_camera/PRIMARY/v002/SURV_SIZ_OCT_1010_anim_camera_RENDERCAMERA_PRIMARY_v002.abc
+ name Camera7
+ selected true
+ xpos 12135
+ ypos 8883
+}
+Dot {
+ name Dot332
+ note_font_size 22
+ selected true
+ xpos 12379
+ ypos 8907
+}
+set N227a9090 [stack 0]
+Constant {
+ inputs 0
+ channels rgb
+ color 0.67
+ name Constant4
+ selected true
+ xpos 13775
+ ypos 7704
+}
+set N220b8550 [stack 0]
+Noise {
+ center {1920 1080}
+ name Noise1
+ selected true
+ xpos 13885
+ ypos 7800
+}
+push $N220b8550
+Grade {
+ inputs 1+1
+ white 0.62
+ multiply 0.05
+ name Grade28
+ selected true
+ xpos 13775
+ ypos 7800
+}
+Grade {
+ white 0.66
+ multiply {0.86 0.78 0.55 0.59}
+ multiply_panelDropped true
+ name Grade29
+ selected true
+ xpos 13775
+ ypos 7872
+}
+set N22cb94e0 [stack 0]
+Card2 {
+ translate {-0.52252007 0 0.04682113}
+ rotate {0 {-(random(1,frame*3)*30)} 0}
+ scaling {0.5 1.5 1}
+ uniform_scale 2
+ pivot_translate {0.5 0 0}
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card2
+ selected true
+ xpos 13665
+ ypos 7968
+}
+push $N22cb94e0
+Card2 {
+ translate {0.52252007 0 0.04682113}
+ rotate {0 {random(1,frame*3)*30} 0}
+ scaling {0.5 1.5 1}
+ uniform_scale 2
+ pivot_translate {-0.5 0 0}
+ control_points {3 3 3 6 
+
+1 {-0.5 -0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0 0 0} 
+1 {0 -0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {0.5 0 0} 
+1 {0.5 -0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666865 0} 0 {0 0 0} 0 {1 0 0} 
+1 {-0.5 0 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0 0.5 0} 
+1 {0 0 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {0.5 0.5 0} 
+1 {0.5 0 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0.1666666716 0} 0 {0 -0.1666666716 0} 0 {1 0.5 0} 
+1 {-0.5 0.5 0} 0 {0.1666666865 0 0} 0 {0 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0 1 0} 
+1 {0 0.5 0} 0 {0.1666666716 0 0} 0 {-0.1666666716 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {0.5 1 0} 
+1 {0.5 0.5 0} 0 {0 0 0} 0 {-0.1666666865 0 0} 0 {0 0 0} 0 {0 -0.1666666865 0} 0 {1 1 0} }
+ name Card3
+ selected true
+ xpos 13885
+ ypos 7968
+}
+push $N22cb94e0
+Sphere {
+ scaling {0.1 2 0.1}
+ name Sphere2
+ selected true
+ xpos 13775
+ ypos 7968
+}
+MergeGeo {
+ inputs 3
+ name MergeGeo1
+ selected true
+ xpos 13775
+ ypos 8040
+}
+TransformGeo {
+ rotate {90 0 0}
+ name TransformGeo2
+ selected true
+ xpos 13775
+ ypos 8136
+}
+set N22d483d0 [stack 0]
+Dot {
+ name Dot338
+ note_font_size 22
+ selected true
+ xpos 13259
+ ypos 8139
+}
+set N22ca9f20 [stack 0]
+Dot {
+ name Dot339
+ note_font_size 22
+ selected true
+ xpos 12599
+ ypos 8139
+}
+Sphere {
+ inputs 0
+ display wireframe
+ translate {-234 128.2003937 763.500061}
+ uniform_scale 22
+ name Sphere7
+ selected true
+ xpos 12455
+ ypos 8424
+}
+push 0
+ParticleEmitter {
+ inputs 3
+ start_frame 960
+ emit_from bbox
+ rate {{frame==Fly_Control.closest_start_frame?Fly_Control.closest_emmision_rate:0}}
+ lifetime 1000
+ velocity 0.7
+ rotation_velocity 0.5
+ size 0.16
+ mass 0.4
+ name ParticleEmitter3
+ label "Lifetime: \[value lifetime]"
+ selected true
+ xpos 12565
+ ypos 8418
+}
+ParticleTurbulence {
+ strength {0.3 0.3 0.2}
+ name ParticleTurbulence3
+ selected true
+ xpos 12565
+ ypos 8562
+}
+ParticleDrag2 {
+ drag 0.08
+ rotationalDrag 0.2
+ name ParticleDrag3
+ selected true
+ xpos 12565
+ ypos 8634
+}
+ParticleMotionAlign {
+ name ParticleMotionAlign3
+ selected true
+ xpos 12565
+ ypos 8682
+}
+push $cut_paste_input
+Reformat {
+ format "1920 1080 0 0 1920 1080 1 HD_1080"
+ name Reformat4
+ selected true
+ xpos 12345
+ ypos 8826
+}
+Dot {
+ name Dot335
+ note_font_size 22
+ selected true
+ xpos 12489
+ ypos 8835
+}
+set N22cbbe30 [stack 0]
+ScanlineRender {
+ inputs 3
+ conservative_shader_sampling false
+ antialiasing low
+ samples 15
+ shutteroffset centred
+ motion_vectors_type distance
+ name ScanlineRender4
+ label "\[value projection_mode]"
+ selected true
+ xpos 12565
+ ypos 8970
+}
+push $N227a9090
+Dot {
+ name Dot333
+ note_font_size 22
+ selected true
+ xpos 13039
+ ypos 8907
+}
+set N2293c0f0 [stack 0]
+push $N22ca9f20
+Sphere {
+ inputs 0
+ display off
+ translate {-188 147 682}
+ uniform_scale 22
+ name Sphere3
+ selected true
+ xpos 13115
+ ypos 8424
+}
+push 0
+ParticleEmitter {
+ inputs 3
+ start_frame 960
+ emit_from bbox
+ rate {{frame==Fly_Control.middle_start_frame?Fly_Control.middle_emmision_rate:0}}
+ lifetime 1000
+ velocity 0.7
+ rotation_velocity 0.5
+ mass 0.4
+ name ParticleEmitter2
+ label "Lifetime: \[value lifetime]"
+ selected true
+ xpos 13225
+ ypos 8418
+}
+ParticleTurbulence {
+ strength {0.2 0.3 0.2}
+ name ParticleTurbulence2
+ selected true
+ xpos 13225
+ ypos 8538
+}
+ParticleDrag2 {
+ drag 0.08
+ rotationalDrag 0.2
+ name ParticleDrag2
+ selected true
+ xpos 13225
+ ypos 8610
+}
+ParticleMotionAlign {
+ name ParticleMotionAlign2
+ selected true
+ xpos 13225
+ ypos 8682
+}
+push $N22cbbe30
+Dot {
+ name Dot336
+ note_font_size 22
+ selected true
+ xpos 13149
+ ypos 8835
+}
+set N228d0b90 [stack 0]
+ScanlineRender {
+ inputs 3
+ conservative_shader_sampling false
+ samples 15
+ shutteroffset centred
+ motion_vectors_type distance
+ name ScanlineRender5
+ label "\[value projection_mode]"
+ selected true
+ xpos 13225
+ ypos 8970
+}
+push $N2293c0f0
+Dot {
+ name Dot334
+ note_font_size 22
+ selected true
+ xpos 13589
+ ypos 8907
+}
+push $N22d483d0
+Cube {
+ inputs 0
+ display off
+ cube {-0.5 -8.800000191 -2.299999952 38.20000076 11.10000038 42.79999924}
+ translate {-525 166 -24}
+ uniform_scale 20
+ name Cube1
+ selected true
+ xpos 13665
+ ypos 8400
+}
+push 0
+ParticleEmitter {
+ inputs 3
+ start_frame 960
+ emit_from bbox
+ rate {{frame==Fly_Control.far_start_frame?Fly_Control.far_emmision_rate:0}}
+ lifetime 1000
+ velocity 0.7
+ rotation_velocity 0.5
+ size 0.15
+ mass 0.4
+ name ParticleEmitter1
+ label "Lifetime: \[value lifetime]"
+ selected true
+ xpos 13775
+ ypos 8394
+}
+ParticleTurbulence {
+ strength {0.2 0.3 0.2}
+ name ParticleTurbulence1
+ selected true
+ xpos 13775
+ ypos 8538
+}
+ParticleDrag2 {
+ drag 0.08
+ rotationalDrag 0.2
+ name ParticleDrag1
+ selected true
+ xpos 13775
+ ypos 8610
+}
+ParticleMotionAlign {
+ name ParticleMotionAlign1
+ selected true
+ xpos 13775
+ ypos 8658
+}
+push $N228d0b90
+Dot {
+ name Dot337
+ note_font_size 22
+ selected true
+ xpos 13699
+ ypos 8835
+}
+ScanlineRender {
+ inputs 3
+ conservative_shader_sampling false
+ samples 15
+ shutteroffset centred
+ motion_vectors_type distance
+ name ScanlineRender3
+ label "\[value projection_mode]"
+ selected true
+ xpos 13775
+ ypos 8970
+}
+NoOp {
+ inputs 0
+ name Fly_Control
+ selected true
+ xpos 13225
+ ypos 8040
+ addUserKnob {20 User}
+ addUserKnob {26 far l <b>FAR}
+ addUserKnob {3 far_start_frame l "Emmit frame"}
+ far_start_frame 980
+ addUserKnob {7 far_emmision_rate l "Emmision Rate" R 0 200}
+ far_emmision_rate 130
+ addUserKnob {26 middle l <b>MIDDLE}
+ addUserKnob {3 middle_start_frame l "Emmit Frame"}
+ middle_start_frame 980
+ addUserKnob {7 middle_emmision_rate l "Emmision Rate" R 0 200}
+ middle_emmision_rate 20
+ addUserKnob {26 closest l <b>CLOSEST}
+ addUserKnob {3 closest_start_frame l "Emmit frame"}
+ closest_start_frame 980
+ addUserKnob {7 closest_emmision_rate l "Emmision Rate" R 0 200}
+ closest_emmision_rate 40
+}
