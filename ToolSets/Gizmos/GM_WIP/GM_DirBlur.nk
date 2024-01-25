@@ -2,11 +2,13 @@ Group {
  name GM_DirBlur1
  tile_color 0xff9455ff
  selected true
- xpos -7300
- ypos -19906
+ xpos 12426
+ ypos -189
  addUserKnob {20 User}
+ addUserKnob {41 channels l Channels T Blur12.channels}
  addUserKnob {41 rotate l Rotate T Transform_MAIN.rotate}
  addUserKnob {41 size l Size T proxy.size}
+ addUserKnob {41 perpendicular_size l "Perpendicular Size" T proxy.perpendicular_size}
  addUserKnob {6 blurCrop l Crop +STARTLINE}
  blurCrop true
  addUserKnob {6 BlurMask +STARTLINE}
@@ -18,12 +20,11 @@ Group {
  Input {
   inputs 0
   name mask
-  selected true
   xpos -260
   ypos -249
   number 1
  }
-set N31877060 [stack 0]
+set N7cb43450 [stack 0]
  Transform {
   rotate -31
   center {2048 1425}
@@ -48,7 +49,7 @@ set N31877060 [stack 0]
   xpos -150
   ypos -9
  }
-push $N31877060
+push $N7cb43450
  Switch {
   inputs 2
   which {{BlurMask}}
@@ -71,7 +72,7 @@ push $N31877060
   xpos -556
   ypos -246
  }
-set N318b3050 [stack 0]
+set N819a0f70 [stack 0]
  Dot {
   name Dot2
   tile_color 0x949494ff
@@ -80,7 +81,7 @@ set N318b3050 [stack 0]
   xpos -446
   ypos -246
  }
-set N318b7f50 [stack 0]
+set N753ec8a0 [stack 0]
  Shuffle {
   red black
   green black
@@ -99,8 +100,9 @@ set N318b7f50 [stack 0]
   ypos -22
   disable {{"!\[exists parent.input1]"}}
  }
-push $N318b3050
+push $N819a0f70
  Transform {
+  rotate 90
   center {2048 1425}
   shutteroffset centred
   name Transform_MAIN
@@ -108,11 +110,11 @@ push $N318b3050
   ypos -153
  }
  Blur {
-  size {{parent.proxy.size} 0}
+  size {{parent.proxy.size} {parent.proxy.perpendicular_size}}
   name Blur12
   label "Size: \[value size]"
   xpos -590
-  ypos -94
+  ypos -93
  }
  Transform {
   rotate {{-Transform_MAIN.rotate}}
@@ -122,7 +124,7 @@ push $N318b3050
   xpos -590
   ypos -9
  }
-push $N318b7f50
+push $N753ec8a0
  Keymix {
   inputs 3
   name Keymix1
@@ -145,9 +147,11 @@ push $N318b7f50
  NoOp {
   inputs 0
   name proxy
+  selected true
   xpos -700
   ypos -81
   addUserKnob {20 User}
   addUserKnob {7 size l Size R 0 100}
+  addUserKnob {7 perpendicular_size l "Perpendicular Size" R 0 100}
  }
 end_group
