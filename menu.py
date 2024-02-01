@@ -123,10 +123,11 @@ nuke.knobDefault('Project3D.crop', "false")
 
 
 #other
-
 nuke.knobDefault('Dot.note_font_size', "22")
 nuke.knobDefault('BackdropNode.note_font_size', "22")
 nuke.knobDefault('StickyNote.note_font_size', "22")
+nuke.knobDefault('LayerContactSheet.showLayerNames', "true")
+
 
 # --------------------------------------------------------------
 #  SHORTCUTS ::::::::::::::::::::::::::::::::::::::::::::::::::
