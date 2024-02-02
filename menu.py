@@ -368,13 +368,11 @@ except:
     pass
 
 try:
-    import cg_grade_lighting
-    import cg_grade_material
-    import cg_grade_all
+    import cg_grade_setup
     cg_grade_menu = utilitiesMenu.addMenu('Dynamic CG Grade Setups (BETA)', icon='Geometry.png')
-    cg_grade_menu.addCommand('Lighting Setup', 'cg_grade_lighting.colorLayerSetup()', icon='Geometry.png')
-    cg_grade_menu.addCommand('Material Setup', 'cg_grade_material.materialLayerSetup()', icon='Geometry.png')
-    cg_grade_menu.addCommand('Full Setup', 'cg_grade_all.cgGradeSetup()', icon='Geometry.png')
+    utilitiesMenu.addCommand('CG_Lighting_new', 'cg_grade_setup.main("lighting")')
+    utilitiesMenu.addCommand('CG_Material_new', 'cg_grade_setup.main("material")')
+    utilitiesMenu.addCommand('CG_Full_new', 'cg_grade_setup.main("full_setup")'))
 except:
     pass
 
