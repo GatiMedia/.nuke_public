@@ -1,7 +1,7 @@
 # --------------------------------------------------------------
 #  cg_grade_setup.py
-#  Version: 1.0
-#  Last Updated: 02/02/2024
+#  Version: 2.0
+#  Last Updated: 07/02/2024
 #  Last updated by: Attila Gasparetz
 # --------------------------------------------------------------
 # This tool is based on an AOV naming customization where Color ( Lighting ), Material and Texture groups gets prefixes, respectively "C_", "M_" and "T_"
@@ -10,6 +10,7 @@ import nuke
 
 COLOR_LAYER_PREFIX = 'C_'
 MATERIAL_LAYER_PREFIX = 'M_'
+TEXTURE_LAYER_PREFIX = 'T_'
 X_DIST = 1000
 Y_DIST = 200
 GRADE_DIST = 2500
@@ -19,7 +20,7 @@ SELECT_VAL = True
 
 #TODO - ADD UNPREMULT BEFORE SHUFFLE ( ON ALL ) AND PREMULT BEFORE COPY
 
-#TODO - ADD NEW ALBEDO IF STATEMENTS
+#TODO - MAKE XPOS/YPOS CHANGES BETWEEN DOT AND OTHER NODE SIZES MORE ELEGANT
 
 def get_layers():
     sel_node_for_layers = nuke.selectedNode()
@@ -73,10 +74,13 @@ def get_material_layers(channel_layers):
 def get_texture_layer(channel_layers):
     texture_group = []
     for c in channel_layers:
-        if c == "T_albedo":
+        if c.startswith(TEXTURE_LAYER_PREFIX):
             texture_group.append(c)
         else:
             continue
+    if "T_diffuse_albedo" in texture_group:
+        if "T_albedo" in texture_group:
+            texture_group.remove("T_albedo")
     return texture_group
 
 def top_part(channel_layers):
@@ -116,9 +120,7 @@ def top_part(channel_layers):
 
     return dotMain, middle_dot
 
-def loop_part(choosen_group, dotMain, choosen_type):
-    # print("choosen_group name in loop_part start is: " + str(choosen_group) + "\n")
-    # print("choosen_type name in loop_part start is: " + str(choosen_type) + "\n")
+def loop_part(choosen_group, dotMain, choosen_type, texture_group):
 
     # create dot
     dot = connectDot = nuke.nodes.Dot()
@@ -184,6 +186,9 @@ def loop_part(choosen_group, dotMain, choosen_type):
         mergeFrom['xpos'].setValue(int(connectDot['xpos'].value()) - (len(choosen_group) + 1) * X_DIST)
         mergeFrom['ypos'].setValue(int(dotshuf['ypos'].value()) - (mergeFrom.screenHeight() / 2))
         mergeFrom['operation'].setValue('from')
+        mergeFrom['Achannels'].setValue('rgb')
+        mergeFrom['Bchannels'].setValue('rgb')
+        mergeFrom['output'].setValue('rgb')
         mergeFrom['label'].setValue(n)
         mergeFrom.setSelected(SELECT_VAL)
         mergeFrom.setInput(1, dotshuf)
@@ -220,59 +225,67 @@ def loop_part(choosen_group, dotMain, choosen_type):
         unprem.setSelected(SELECT_VAL)
         unprem.setInput(0, dotgrade)
 
-        if choosen_type == "material":
-            ### START OF MERGE DIVIDE / MULTIPLY SECTION ON MAIN PIPE
+        if choosen_type == "material" or choosen_type == "full_setup":
+            if texture_group:
+                ### START OF MERGE DIVIDE / MULTIPLY SECTION ON MAIN PIPE
 
-            # creating dot_divide
-            dot_divide = nuke.nodes.Dot()
-            dot_divide['xpos'].setValue(int(dotgrade['xpos'].value()) - 120)
-            dot_divide['ypos'].setValue(int(unprem['ypos'].value()) + 100)
-            dot_divide.setSelected(SELECT_VAL)
-            if index == 0:
-                old_dot_divide = dot_divide
-            else:
-                old_dot_divide.setInput(0, dot_divide)
-                old_dot_divide = dot_divide
+                # creating dot_divide
+                dot_divide = nuke.nodes.Dot()
+                dot_divide['xpos'].setValue(int(dotgrade['xpos'].value()) - 120)
+                dot_divide['ypos'].setValue(int(unprem['ypos'].value()) + 100)
+                dot_divide.setSelected(SELECT_VAL)
+                if index == 0:
+                    old_dot_divide = dot_divide
+                else:
+                    old_dot_divide.setInput(0, dot_divide)
+                    old_dot_divide = dot_divide
 
-            # creating merge_divide
-            merge_divide = nuke.nodes.Merge2()
-            merge_divide['xpos'].setValue(int(unprem['xpos'].value()))
-            merge_divide['ypos'].setValue(int(unprem['ypos'].value()) + 200)
-            merge_divide['operation'].setValue('divide')
-            merge_divide.setSelected(SELECT_VAL)
-            merge_divide.setInput(0, old_dot_divide)
-            merge_divide.setInput(1, unprem)
+                # creating merge_divide
+                merge_divide = nuke.nodes.Merge2()
+                merge_divide['xpos'].setValue(int(unprem['xpos'].value()))
+                merge_divide['ypos'].setValue(int(unprem['ypos'].value()) + 200)
+                merge_divide['operation'].setValue('divide')
+                merge_divide['Achannels'].setValue('rgb')
+                merge_divide['Bchannels'].setValue('rgb')
+                merge_divide['output'].setValue('rgb')
+                merge_divide.setSelected(SELECT_VAL)
+                merge_divide.setInput(0, old_dot_divide)
+                merge_divide.setInput(1, unprem)
 
-            # creating dot_multiply
-            dot_multiply = nuke.nodes.Dot()
-            dot_multiply['xpos'].setValue(int(dot_divide['xpos'].value()))
-            dot_multiply['ypos'].setValue(int(dotgrade['ypos'].value()) + GRADE_DIST - 300)
-            dot_multiply.setSelected(SELECT_VAL)
-            if index == 0:
-                old_dot_multiply = dot_multiply
-            else:
-                old_dot_multiply.setInput(0, dot_multiply)
-                old_dot_multiply = dot_multiply
+                # creating dot_multiply
+                dot_multiply = nuke.nodes.Dot()
+                dot_multiply['xpos'].setValue(int(dot_divide['xpos'].value()))
+                dot_multiply['ypos'].setValue(int(dotgrade['ypos'].value()) + GRADE_DIST - 300)
+                dot_multiply.setSelected(SELECT_VAL)
+                if index == 0:
+                    old_dot_multiply = dot_multiply
+                else:
+                    old_dot_multiply.setInput(0, dot_multiply)
+                    old_dot_multiply = dot_multiply
 
-            # creating merge_mult
-            merge_mult = nuke.nodes.Merge2()
-            merge_mult['xpos'].setValue(int(merge_divide['xpos'].value()))
-            merge_mult['ypos'].setValue(int(dotgrade['ypos'].value()) + GRADE_DIST - 200)
-            merge_mult['operation'].setValue('multiply')
-            merge_mult.setSelected(SELECT_VAL)
-            merge_mult.setInput(0, merge_divide)
-            merge_mult.setInput(1, old_dot_multiply)
+                # creating merge_mult
+                merge_mult = nuke.nodes.Merge2()
+                merge_mult['xpos'].setValue(int(merge_divide['xpos'].value()))
+                merge_mult['ypos'].setValue(int(dotgrade['ypos'].value()) + GRADE_DIST - 200)
+                merge_mult['operation'].setValue('multiply')
+                merge_mult['Achannels'].setValue('rgb')
+                merge_mult['Bchannels'].setValue('rgb')
+                merge_mult['output'].setValue('rgb')
+                merge_mult.setSelected(SELECT_VAL)
+                merge_mult.setInput(0, merge_divide)
+                merge_mult.setInput(1, old_dot_multiply)
 
-            ### END OF MERGE DIVIDE / MULTIPLY SECTION ON MAIN PIPE
+                ### END OF MERGE DIVIDE / MULTIPLY SECTION ON MAIN PIPE
 
         # creating prem
         prem = nuke.nodes.Premult()
         prem['xpos'].setValue(int(shuffle['xpos'].value()))
         prem['ypos'].setValue(int(dotgrade['ypos'].value()) + GRADE_DIST - 100)
         prem.setSelected(SELECT_VAL)
-        if choosen_type == "material":
-            prem.setInput(0, merge_mult)
-        else:
+        if choosen_type == "material" or choosen_type == "full_setup":
+            if texture_group:
+                prem.setInput(0, merge_mult)
+        if not texture_group:
             prem.setInput(0, unprem)
 
         # creating dotgrade2
@@ -284,27 +297,21 @@ def loop_part(choosen_group, dotMain, choosen_type):
         dotgrade2.setSelected(SELECT_VAL)
         dotgrade2.setInput(0, prem)
 
-        # creating expAlpha
-        expAlpha = nuke.nodes.Expression()
-        expAlpha['channel0'].setValue('alpha')
-        expAlpha['expr0'].setValue('clamp(r+g+b)')
-        expAlpha['xpos'].setValue(int(shuffle['xpos'].value()))
-        expAlpha['ypos'].setValue(int(dotgrade2['ypos'].value()) + 200)
-        expAlpha.setSelected(SELECT_VAL)
-        expAlpha.setInput(0, dotgrade2)
-
         # creating dotExpr
         dotExpr = nuke.nodes.Dot()
         dotExpr['xpos'].setValue(int(dotgrade['xpos'].value()))
-        dotExpr['ypos'].setValue(int(expAlpha['ypos'].value()) + int(index * Y_DIST) + 250)
+        dotExpr['ypos'].setValue(int(dotgrade2['ypos'].value()) + int(index * Y_DIST) + 450)
         dotExpr.setSelected(SELECT_VAL)
-        dotExpr.setInput(0, expAlpha)
+        dotExpr.setInput(0, dotgrade2)
 
         # creating mergePlus
         mergePlus = nuke.nodes.Merge2()
         mergePlus['xpos'].setValue(int(removeN['xpos'].value()))
         mergePlus['ypos'].setValue(int(dotExpr['ypos'].value()) - int(mergePlus.screenHeight()/2) + int(dotExpr.screenHeight()/2))
         mergePlus['operation'].setValue('plus')
+        mergePlus['Achannels'].setValue('rgb')
+        mergePlus['Bchannels'].setValue('rgb')
+        mergePlus['output'].setValue('rgb')
         mergePlus['label'].setValue(n)
         mergePlus.setSelected(SELECT_VAL)
         mergePlus.setInput(1, dotExpr)
@@ -336,10 +343,7 @@ def loop_part(choosen_group, dotMain, choosen_type):
     dot_leftover = nuke.nodes.Dot()
     dot_leftover['xpos'].setValue(int(dotUpCorner['xpos'].value()))
     dot_leftover['ypos'].setValue(int(dotgrade['ypos'].value()))
-    if choosen_group == "material":
-        dot_leftover['label'].setValue("  <h1>M_Left_Over</h1>")
-    else:
-        dot_leftover['label'].setValue("  <h1>C_Left_Over</h1>")
+    dot_leftover['label'].setValue("  <h1>Left_Over</h1>")
     dot_leftover['note_font_size'].setValue(30)
     dot_leftover.setSelected(SELECT_VAL)
     dot_leftover.setInput(0, clamp)
@@ -351,127 +355,123 @@ def loop_part(choosen_group, dotMain, choosen_type):
     unprem_extra.setSelected(SELECT_VAL)
     unprem_extra.setInput(0, dot_leftover)
 
-    if choosen_type == "material":
-        ### START OF MERGE DIVIDE / MULTIPLY SECTION ON EXTRA PIPE ###
+    if choosen_type == "material" or choosen_type == "full_setup":
+        if texture_group:
+            ### START OF MERGE DIVIDE / MULTIPLY SECTION ON EXTRA PIPE ###
 
-        # creating dot_albedo
-        dot_albedo = nuke.nodes.Dot()
-        dot_albedo['xpos'].setValue(int(dotUpCorner['xpos'].value()) - X_DIST)
-        dot_albedo['ypos'].setValue(int(dotUpCorner['ypos'].value()))
-        dot_albedo.setSelected(SELECT_VAL)
-        dot_albedo.setInput(0, dotUpCorner)
+            # creating dot_albedo
+            dot_albedo = nuke.nodes.Dot()
+            dot_albedo['xpos'].setValue(int(dotUpCorner['xpos'].value()) - X_DIST)
+            dot_albedo['ypos'].setValue(int(dotUpCorner['ypos'].value()))
+            dot_albedo.setSelected(SELECT_VAL)
+            dot_albedo.setInput(0, dotUpCorner)
 
-        # creating albedo_shuffle
-        albedo_shuffle = nuke.nodes.Shuffle2()
-        albedo_shuffle['in1'].setValue('T_albedo')
-        albedo_shuffle['label'].setValue("<b>T_albedo")
-        albedo_shuffle['note_font_size'].setValue(25)
-        albedo_shuffle['xpos'].setValue(
-            int(dot_albedo['xpos'].value()) - (albedo_shuffle.screenWidth() / 2) + (dot_albedo.screenWidth() / 2))
-        albedo_shuffle['ypos'].setValue(int(dot_albedo['ypos'].value()) + 100)
-        albedo_shuffle.setSelected(SELECT_VAL)
-        albedo_shuffle.setInput(0, dot_albedo)
+            # creating albedo_shuffle
+            albedo_shuffle = nuke.nodes.Shuffle2()
+            albedo_shuffle['in1'].setValue(texture_group[0])
+            albedo_shuffle['label'].setValue("<b>albedo")
+            albedo_shuffle['note_font_size'].setValue(25)
+            albedo_shuffle['xpos'].setValue(
+                int(dot_albedo['xpos'].value()) - (albedo_shuffle.screenWidth() / 2) + (dot_albedo.screenWidth() / 2))
+            albedo_shuffle['ypos'].setValue(int(dot_albedo['ypos'].value()) + 100)
+            albedo_shuffle.setSelected(SELECT_VAL)
+            albedo_shuffle.setInput(0, dot_albedo)
 
-        # creating albedo_copy
-        albedo_copy = nuke.nodes.Copy()
-        albedo_copy['from0'].setValue('alpha')
-        albedo_copy['to0'].setValue('alpha')
-        albedo_copy['xpos'].setValue(int(albedo_shuffle['xpos'].value()))
-        albedo_copy['ypos'].setValue(int(albedo_shuffle['ypos'].value()) + 100)
-        albedo_copy.setSelected(SELECT_VAL)
-        albedo_copy.setInput(0, albedo_shuffle)
-        albedo_copy.setInput(1, dot_albedo)
+            # creating albedo_copy
+            albedo_copy = nuke.nodes.Copy()
+            albedo_copy['from0'].setValue('alpha')
+            albedo_copy['to0'].setValue('alpha')
+            albedo_copy['xpos'].setValue(int(albedo_shuffle['xpos'].value()))
+            albedo_copy['ypos'].setValue(int(albedo_shuffle['ypos'].value()) + 100)
+            albedo_copy.setSelected(SELECT_VAL)
+            albedo_copy.setInput(0, albedo_shuffle)
+            albedo_copy.setInput(1, dot_albedo)
 
-        # creating albedo_unprem
-        albedo_unprem = nuke.nodes.Unpremult()
-        albedo_unprem['xpos'].setValue(int(albedo_copy['xpos'].value()))
-        albedo_unprem['ypos'].setValue(int(unprem['ypos'].value()))
-        albedo_unprem.setSelected(SELECT_VAL)
-        albedo_unprem.setInput(0, albedo_copy)
+            # creating albedo_unprem
+            albedo_unprem = nuke.nodes.Unpremult()
+            albedo_unprem['xpos'].setValue(int(albedo_copy['xpos'].value()))
+            albedo_unprem['ypos'].setValue(int(unprem['ypos'].value()))
+            albedo_unprem.setSelected(SELECT_VAL)
+            albedo_unprem.setInput(0, albedo_copy)
 
-        # creating dot_divide_extra
-        dot_divide_extra = nuke.nodes.Dot()
-        dot_divide_extra['xpos'].setValue(int(dot_albedo['xpos'].value()))
-        dot_divide_extra['ypos'].setValue(int(unprem_extra['ypos'].value()) + 100)
-        dot_divide_extra.setSelected(SELECT_VAL)
-        old_dot_divide.setInput(0, dot_divide_extra)
-        dot_divide_extra.setInput(0, albedo_unprem)
+            # creating dot_divide_extra
+            dot_divide_extra = nuke.nodes.Dot()
+            dot_divide_extra['xpos'].setValue(int(dot_albedo['xpos'].value()))
+            dot_divide_extra['ypos'].setValue(int(unprem_extra['ypos'].value()) + 100)
+            dot_divide_extra.setSelected(SELECT_VAL)
+            old_dot_divide.setInput(0, dot_divide_extra)
+            dot_divide_extra.setInput(0, albedo_unprem)
 
-        # creating merge_divide_extra
-        merge_divide_extra = nuke.nodes.Merge2()
-        merge_divide_extra['xpos'].setValue(int(unprem_extra['xpos'].value()))
-        merge_divide_extra['ypos'].setValue(int(unprem_extra['ypos'].value()) + 200)
-        merge_divide_extra['operation'].setValue('divide')
-        merge_divide_extra.setSelected(SELECT_VAL)
-        merge_divide_extra.setInput(0, dot_divide_extra)
-        merge_divide_extra.setInput(1, unprem_extra)
+            # creating merge_divide_extra
+            merge_divide_extra = nuke.nodes.Merge2()
+            merge_divide_extra['xpos'].setValue(int(unprem_extra['xpos'].value()))
+            merge_divide_extra['ypos'].setValue(int(unprem_extra['ypos'].value()) + 200)
+            merge_divide_extra['operation'].setValue('divide')
+            merge_divide_extra['Achannels'].setValue('rgb')
+            merge_divide_extra['Bchannels'].setValue('rgb')
+            merge_divide_extra['output'].setValue('rgb')
+            merge_divide_extra.setSelected(SELECT_VAL)
+            merge_divide_extra.setInput(0, dot_divide_extra)
+            merge_divide_extra.setInput(1, unprem_extra)
 
-        # creating dot_multiply_extra
-        dot_multiply_extra = nuke.nodes.Dot()
-        dot_multiply_extra['xpos'].setValue(int(dot_albedo['xpos'].value()))
-        dot_multiply_extra['ypos'].setValue(int(dot_leftover['ypos'].value()) + GRADE_DIST - 300)
-        dot_multiply_extra.setSelected(SELECT_VAL)
-        old_dot_multiply.setInput(0, dot_multiply_extra)
-        dot_multiply_extra.setInput(0, dot_divide_extra)
+            # creating dot_multiply_extra
+            dot_multiply_extra = nuke.nodes.Dot()
+            dot_multiply_extra['xpos'].setValue(int(dot_albedo['xpos'].value()))
+            dot_multiply_extra['ypos'].setValue(int(dot_leftover['ypos'].value()) + GRADE_DIST - 300)
+            dot_multiply_extra.setSelected(SELECT_VAL)
+            old_dot_multiply.setInput(0, dot_multiply_extra)
+            dot_multiply_extra.setInput(0, dot_divide_extra)
 
-        # creating merge_mult_extra
-        merge_mult_extra = nuke.nodes.Merge2()
-        merge_mult_extra['xpos'].setValue(int(merge_divide_extra['xpos'].value()))
-        merge_mult_extra['ypos'].setValue(int(dot_leftover['ypos'].value()) + GRADE_DIST - 200)
-        merge_mult_extra['operation'].setValue('multiply')
-        merge_mult_extra.setSelected(SELECT_VAL)
-        merge_mult_extra.setInput(0, merge_divide_extra)
-        merge_mult_extra.setInput(1, dot_multiply_extra)
+            # creating merge_mult_extra
+            merge_mult_extra = nuke.nodes.Merge2()
+            merge_mult_extra['xpos'].setValue(int(merge_divide_extra['xpos'].value()))
+            merge_mult_extra['ypos'].setValue(int(dot_leftover['ypos'].value()) + GRADE_DIST - 200)
+            merge_mult_extra['operation'].setValue('multiply')
+            merge_mult_extra['Achannels'].setValue('rgb')
+            merge_mult_extra['Bchannels'].setValue('rgb')
+            merge_mult_extra['output'].setValue('rgb')
+            merge_mult_extra.setSelected(SELECT_VAL)
+            merge_mult_extra.setInput(0, merge_divide_extra)
+            merge_mult_extra.setInput(1, dot_multiply_extra)
 
-        ### END OF MERGE DIVIDE / MULTIPLY SECTION ON EXTRA PIPE
+            ### END OF MERGE DIVIDE / MULTIPLY SECTION ON EXTRA PIPE
 
     # creating prem
     prem_extra = nuke.nodes.Premult()
     prem_extra['xpos'].setValue(int(copy_extra['xpos'].value()))
     prem_extra['ypos'].setValue(int(prem['ypos'].value()))
     prem_extra.setSelected(SELECT_VAL)
-    if choosen_type == "material":
-        prem_extra.setInput(0, merge_mult_extra)
-    else:
+    if choosen_type == "material" or choosen_type == "full_setup":
+        if texture_group:
+            prem_extra.setInput(0, merge_mult_extra)
+    if not texture_group:
         prem_extra.setInput(0, unprem_extra)
 
     # creating dot_leftover2
     dot_leftover2 = nuke.nodes.Dot()
     dot_leftover2['xpos'].setValue(int(dotUpCorner['xpos'].value()))
     dot_leftover2['ypos'].setValue(int(dotgrade2['ypos'].value()))
-    if choosen_group == "material":
-        dot_leftover2['label'].setValue("  <h1>M_Left_Over</h1>")
-    else:
-        dot_leftover2['label'].setValue("  <h1>C_Left_Over</h1>")
+    dot_leftover2['label'].setValue("  <h1>Left_Over</h1>")
     dot_leftover2['note_font_size'].setValue(30)
     dot_leftover2.setSelected(SELECT_VAL)
     dot_leftover2.setInput(0, prem_extra)
-
-    # creating expAlphaSide
-    expAlphaSide = nuke.nodes.Expression()
-    expAlphaSide['channel0'].setValue('alpha')
-    expAlphaSide['expr0'].setValue('clamp(r+g+b)')
-    expAlphaSide['xpos'].setValue(int(prem_extra['xpos'].value()))
-    expAlphaSide['ypos'].setValue(int(expAlpha['ypos'].value()))
-    expAlphaSide.setSelected(SELECT_VAL)
-    expAlphaSide.setInput(0, dot_leftover2)
 
     # creating dotExprSide
     dotExprSide = nuke.nodes.Dot()
     dotExprSide['xpos'].setValue(int(dot_leftover2['xpos'].value()))
     dotExprSide['ypos'].setValue(int(dotExpr['ypos'].value()) + int(Y_DIST))
     dotExprSide.setSelected(SELECT_VAL)
-    dotExprSide.setInput(0, expAlphaSide)
+    dotExprSide.setInput(0, dot_leftover2)
 
     # creating mergePlusSide
     mergePlusSide = nuke.nodes.Merge2()
     mergePlusSide['xpos'].setValue(int(mergePlus['xpos'].value()))
     mergePlusSide['ypos'].setValue(int(dotExprSide['ypos'].value()) - int(mergePlusSide.screenHeight()/2) + int(dotExprSide.screenHeight()/2))
     mergePlusSide['operation'].setValue('plus')
-    if choosen_group == "material":
-        mergePlusSide['label'].setValue("M_Left_Over")
-    else:
-        mergePlusSide['label'].setValue("C_Left_Over")
+    mergePlusSide['Achannels'].setValue('rgb')
+    mergePlusSide['Bchannels'].setValue('rgb')
+    mergePlusSide['output'].setValue('rgb')
+    mergePlusSide['label'].setValue("Left_Over")
     mergePlusSide.setSelected(SELECT_VAL)
     mergePlusSide.setInput(1, dotExprSide)
     mergePlusSide.setInput(0, mergePlusOld)
@@ -503,19 +503,17 @@ def loop_part(choosen_group, dotMain, choosen_type):
 
     return bottom_right_corner, top_left_corner
 
-
 def lighting_setup(channel_layers):
     color_group, color_combined_group = get_color_layers(channel_layers)
 
-    if color_group and color_combined_group:
+    if color_combined_group and color_group:
         ### TOP PART ###
         dotMain, middle_dot = top_part(channel_layers)
 
         ### FIRST LOOP ###
         choosen_group = color_group
-        bottom_right_corner_first, top_left_corner_first = loop_part(choosen_group, dotMain, "lighting")
+        bottom_right_corner_first, top_left_corner_first = loop_part(choosen_group, dotMain, "lighting", None)
 
-        print("dotMain name in main color_group is: " + str(dotMain.name()) + "\n")
         ### DOT BETWEEN LOOPS ###
         dot_corner = nuke.nodes.Dot()
         dot_corner['xpos'].setValue(int(top_left_corner_first['xpos'].value()) - 880)
@@ -523,12 +521,9 @@ def lighting_setup(channel_layers):
         dot_corner.setSelected(SELECT_VAL)
         dot_corner.setInput(0, top_left_corner_first)
 
-        print("dot_corner name in main is: " + str(dot_corner.name()) + "\n")
-        print("top_left_corner name in main color_group is: " + str(top_left_corner_first.name()) + "\n")
-
         ### SECOND LOOP ###
         choosen_group = color_combined_group
-        bottom_right_corner_second, top_left_corner_second = loop_part(choosen_group, dot_corner, "lighting")
+        bottom_right_corner_second, top_left_corner_second = loop_part(choosen_group, dot_corner, "lighting", None)
 
         # creating dot_divide_bty
         dot_divide_bty = nuke.nodes.Dot()
@@ -542,6 +537,9 @@ def lighting_setup(channel_layers):
         merge_divide_bty['xpos'].setValue(int(bottom_right_corner_first['xpos'].value()))
         merge_divide_bty['ypos'].setValue(int(dot_divide_bty['ypos'].value()))
         merge_divide_bty['operation'].setValue('divide')
+        merge_divide_bty['Achannels'].setValue('rgb')
+        merge_divide_bty['Bchannels'].setValue('rgb')
+        merge_divide_bty['output'].setValue('rgb')
         merge_divide_bty.setSelected(SELECT_VAL)
         merge_divide_bty.setInput(0, dot_divide_bty)
         merge_divide_bty.setInput(1, bottom_right_corner_first)
@@ -551,6 +549,9 @@ def lighting_setup(channel_layers):
         merge_multiply_bty['xpos'].setValue(int(merge_divide_bty['xpos'].value()))
         merge_multiply_bty['ypos'].setValue(int(bottom_right_corner_second['ypos'].value()))
         merge_multiply_bty['operation'].setValue('multiply')
+        merge_multiply_bty['Achannels'].setValue('rgb')
+        merge_multiply_bty['Bchannels'].setValue('rgb')
+        merge_multiply_bty['output'].setValue('rgb')
         merge_multiply_bty.setSelected(SELECT_VAL)
         merge_multiply_bty.setInput(0, merge_divide_bty)
         merge_multiply_bty.setInput(1, bottom_right_corner_second)
@@ -564,43 +565,42 @@ def lighting_setup(channel_layers):
 
         middle_dot = dot_divide_bty
 
-    if color_group:
-        if not color_combined_group:
-            ### TOP PART ###
-            dotMain, middle_dot = top_part(channel_layers)
-            ### LOOP PART ###
-            choosen_group = color_group
-            bottom_right_corner, top_left_corner = loop_part(choosen_group, dotMain, "lighting")
-            # creating dot_result
-            dot_result = nuke.nodes.Dot()
-            dot_result['xpos'].setValue(int(bottom_right_corner['xpos'].value()) - int(dot_result.screenWidth() / 2) + int(bottom_right_corner.screenWidth() / 2))
-            dot_result['ypos'].setValue(int(bottom_right_corner['ypos'].value()) + (Y_DIST * 4))
-            dot_result.setSelected(SELECT_VAL)
-            dot_result.setInput(0, bottom_right_corner)
+    if color_group and not color_combined_group:
+        ### TOP PART ###
+        dotMain, middle_dot = top_part(channel_layers)
+        ### LOOP PART ###
+        choosen_group = color_group
+        bottom_right_corner, top_left_corner = loop_part(choosen_group, dotMain, "lighting", None)
+        # creating dot_result
+        dot_result = nuke.nodes.Dot()
+        dot_result['xpos'].setValue(int(bottom_right_corner['xpos'].value()) - int(dot_result.screenWidth() / 2) + int(bottom_right_corner.screenWidth() / 2))
+        dot_result['ypos'].setValue(int(bottom_right_corner['ypos'].value()) + (Y_DIST * 4))
+        dot_result.setSelected(SELECT_VAL)
+        dot_result.setInput(0, bottom_right_corner)
 
-    if color_combined_group:
-        if not color_group:
-            ### TOP PART ###
-            dotMain, middle_dot = top_part(channel_layers)
-            ### LOOP PART ###
-            choosen_group = color_combined_group
-            bottom_right_corner, top_left_corner = loop_part(choosen_group, dotMain, "lighting")
-            # creating dot_result
-            dot_result = nuke.nodes.Dot()
-            dot_result['xpos'].setValue(int(bottom_right_corner['xpos'].value()) - int(dot_result.screenWidth() / 2) + int(bottom_right_corner.screenWidth() / 2))
-            dot_result['ypos'].setValue(int(bottom_right_corner['ypos'].value()) + (Y_DIST * 4))
-            dot_result.setSelected(SELECT_VAL)
-            dot_result.setInput(0, bottom_right_corner)
+    if color_combined_group and not color_group:
+        ### TOP PART ###
+        dotMain, middle_dot = top_part(channel_layers)
+        ### LOOP PART ###
+        choosen_group = color_combined_group
+        bottom_right_corner, top_left_corner = loop_part(choosen_group, dotMain, "lighting", None)
+        # creating dot_result
+        dot_result = nuke.nodes.Dot()
+        dot_result['xpos'].setValue(int(bottom_right_corner['xpos'].value()) - int(dot_result.screenWidth() / 2) + int(bottom_right_corner.screenWidth() / 2))
+        dot_result['ypos'].setValue(int(bottom_right_corner['ypos'].value()) + (Y_DIST * 4))
+        dot_result.setSelected(SELECT_VAL)
+        dot_result.setInput(0, bottom_right_corner)
 
     return dot_result, middle_dot
 
 def material_setup(channel_layers, dotMain, middle_dot):
     material_group = get_material_layers(channel_layers)
+    texture_group = get_texture_layer(channel_layers)
 
     ### TOP PART ###
     # dotMain, middle_dot = top_part(channel_layers)
     ### LOOP PART ###
-    bottom_right_corner, top_left_corner = loop_part(material_group, dotMain, "material")
+    bottom_right_corner, top_left_corner = loop_part(material_group, dotMain, "material", texture_group)
     # creating dot_result
     dot_result = nuke.nodes.Dot()
     dot_result['xpos'].setValue(
@@ -611,70 +611,94 @@ def material_setup(channel_layers, dotMain, middle_dot):
 
     return dot_result
 
-
 def main(chosen_type):
     channel_layers = get_layers()
+    color_group, color_combined_group = get_color_layers(channel_layers)
+    material_group = get_material_layers(channel_layers)
+    texture_group = get_texture_layer(channel_layers)
 
     if chosen_type == "lighting":
-        dot_result, middle_dot = lighting_setup(channel_layers)
+        if not color_combined_group and not color_group:
+            nuke.alert('<font color=orange><center><h3>Please, select a single node with lighting passes!\n(Layers that start with "C_")')
+        else:
+            lighting_setup(channel_layers)
 
     if chosen_type == "material":
-        ### TOP PART ###
-        dotMain, middle_dot = top_part(channel_layers)
-        ### LOOP PART ###
-        material_setup(channel_layers, dotMain, middle_dot)
+
+        if not material_group:
+            nuke.alert('<font color=orange><center><h3>Please, select a single node with material passes!\n(Layers that start with "M_")')
+        else:
+            ### TOP PART ###
+            dotMain, middle_dot = top_part(channel_layers)
+            ### LOOP PART ###
+            material_setup(channel_layers, dotMain, middle_dot)
 
     if chosen_type == "full_setup":
-        ### LIGHT PART ###
-        dot_result, middle_dot = lighting_setup(channel_layers)
+        if not color_combined_group and not color_group and not material_group:
+            nuke.alert('<font color=orange><center><h3>Please, select a single node with lighting and material passes!\n(Lighting passes start with "C_" and material passes start with "M_")')
+        else:
+            if not color_combined_group and not color_group:
+                nuke.alert('<font color=orange><center><h3>Please, select a single node with lighting passes!\n(Layers that start with "C_")')
+            if not material_group:
+                nuke.alert('<font color=orange><center><h3>Please, select a single node with material passes!\n(Layers that start with "M_")')
+        if color_combined_group or color_group:
+            if material_group:
+                ### LIGHT PART ###
+                dot_result, middle_dot = lighting_setup(channel_layers)
 
-        ### INBETWEEN PART ###
-        # creating dot_divide_bty
-        dot_divide_bty = nuke.nodes.Dot()
-        dot_divide_bty['xpos'].setValue(int(middle_dot['xpos'].value()))
-        dot_divide_bty['ypos'].setValue(int(dot_result['ypos'].value()) + (Y_DIST * 1))
-        dot_divide_bty.setSelected(SELECT_VAL)
-        dot_divide_bty.setInput(0, middle_dot)
+                ### INBETWEEN PART ###
+                # creating dot_divide_bty
+                dot_divide_bty = nuke.nodes.Dot()
+                dot_divide_bty['xpos'].setValue(int(middle_dot['xpos'].value()))
+                dot_divide_bty['ypos'].setValue(int(dot_result['ypos'].value()) + (Y_DIST * 1))
+                dot_divide_bty.setSelected(SELECT_VAL)
+                dot_divide_bty.setInput(0, middle_dot)
 
-        # creating merge_divide_bty
-        merge_divide_bty = nuke.nodes.Merge2()
-        merge_divide_bty['xpos'].setValue(int(dot_result['xpos'].value()) - int(merge_divide_bty.screenWidth()/2) + int(dot_result.screenWidth()/2))
-        merge_divide_bty['ypos'].setValue(int(dot_divide_bty['ypos'].value()))
-        merge_divide_bty['operation'].setValue('divide')
-        merge_divide_bty.setSelected(SELECT_VAL)
-        merge_divide_bty.setInput(0, dot_divide_bty)
-        merge_divide_bty.setInput(1, dot_result)
+                # creating merge_divide_bty
+                merge_divide_bty = nuke.nodes.Merge2()
+                merge_divide_bty['xpos'].setValue(int(dot_result['xpos'].value()) - int(merge_divide_bty.screenWidth()/2) + int(dot_result.screenWidth()/2))
+                merge_divide_bty['ypos'].setValue(int(dot_divide_bty['ypos'].value()))
+                merge_divide_bty['operation'].setValue('divide')
+                merge_divide_bty['Achannels'].setValue('rgb')
+                merge_divide_bty['Bchannels'].setValue('rgb')
+                merge_divide_bty['output'].setValue('rgb')
+                merge_divide_bty.setSelected(SELECT_VAL)
+                merge_divide_bty.setInput(0, dot_divide_bty)
+                merge_divide_bty.setInput(1, dot_result)
 
-        # creating dot_material_corner
-        dot_material_corner = nuke.nodes.Dot()
-        dot_material_corner['xpos'].setValue(int(dot_divide_bty['xpos'].value()))
-        dot_material_corner['ypos'].setValue(int(dot_divide_bty['ypos'].value()) + (Y_DIST))
-        dot_material_corner.setSelected(SELECT_VAL)
-        dot_material_corner.setInput(0, dot_divide_bty)
+                # creating dot_material_corner
+                dot_material_corner = nuke.nodes.Dot()
+                dot_material_corner['xpos'].setValue(int(dot_divide_bty['xpos'].value()))
+                dot_material_corner['ypos'].setValue(int(dot_divide_bty['ypos'].value()) + (Y_DIST))
+                dot_material_corner.setSelected(SELECT_VAL)
+                dot_material_corner.setInput(0, dot_divide_bty)
 
-        # creating dot_material_main
-        dot_material_main = nuke.nodes.Dot()
-        dot_material_main['xpos'].setValue(int(dot_material_corner['xpos'].value()) - (X_DIST * 2))
-        dot_material_main['ypos'].setValue(int(dot_material_corner['ypos'].value()))
-        dot_material_main.setSelected(SELECT_VAL)
-        dot_material_main.setInput(0, dot_material_corner)
+                # creating dot_material_main
+                dot_material_main = nuke.nodes.Dot()
+                dot_material_main['xpos'].setValue(int(dot_material_corner['xpos'].value()) - (X_DIST * 2))
+                dot_material_main['ypos'].setValue(int(dot_material_corner['ypos'].value()))
+                dot_material_main.setSelected(SELECT_VAL)
+                dot_material_main.setInput(0, dot_material_corner)
 
-        ### MATERIAL PART ###
-        dot_result = material_setup(channel_layers, dot_material_main, dot_material_corner)
+                ### MATERIAL PART ###
+                dot_result = material_setup(channel_layers, dot_material_main, dot_material_corner)
 
-        ### CONNECTING PART ###
-        # creating merge_multiply_bty
-        merge_multiply_bty = nuke.nodes.Merge2()
-        merge_multiply_bty['xpos'].setValue(int(merge_divide_bty['xpos'].value()))
-        merge_multiply_bty['ypos'].setValue(int(dot_result['ypos'].value()))
-        merge_multiply_bty['operation'].setValue('multiply')
-        merge_multiply_bty.setSelected(SELECT_VAL)
-        merge_multiply_bty.setInput(0, merge_divide_bty)
-        merge_multiply_bty.setInput(1, dot_result)
+                ### CONNECTING PART ###
+                # creating merge_multiply_bty
+                merge_multiply_bty = nuke.nodes.Merge2()
+                merge_multiply_bty['xpos'].setValue(int(merge_divide_bty['xpos'].value()))
+                merge_multiply_bty['ypos'].setValue(int(dot_result['ypos'].value()))
+                merge_multiply_bty['operation'].setValue('multiply')
+                merge_multiply_bty['Achannels'].setValue('rgb')
+                merge_multiply_bty['Bchannels'].setValue('rgb')
+                merge_multiply_bty['output'].setValue('rgb')
+                merge_multiply_bty.setSelected(SELECT_VAL)
+                merge_multiply_bty.setInput(0, merge_divide_bty)
+                merge_multiply_bty.setInput(1, dot_result)
 
-        # creating dot_result
-        dot_result = nuke.nodes.Dot()
-        dot_result['xpos'].setValue(int(merge_multiply_bty['xpos'].value()) - int(dot_result.screenWidth() / 2) + int(merge_multiply_bty.screenWidth() / 2))
-        dot_result['ypos'].setValue(int(merge_multiply_bty['ypos'].value()) + (Y_DIST * 4))
-        dot_result.setSelected(SELECT_VAL)
-        dot_result.setInput(0, merge_multiply_bty)
+                # creating dot_result
+                dot_result = nuke.nodes.Dot()
+                dot_result['xpos'].setValue(int(merge_multiply_bty['xpos'].value()) - int(dot_result.screenWidth() / 2) + int(merge_multiply_bty.screenWidth() / 2))
+                dot_result['ypos'].setValue(int(merge_multiply_bty['ypos'].value()) + (Y_DIST * 4))
+                dot_result.setSelected(SELECT_VAL)
+                dot_result.setInput(0, merge_multiply_bty)
