@@ -377,6 +377,12 @@ except:
     pass
 
 try:
+    import change_label
+    utilitiesMenu.addCommand('Set Label', 'change_label.setLabel()', 'alt+l', icon='StickyNote.png')
+except:
+    pass
+
+try:
     import cg_grade_setup
     cg_grade_menu = utilitiesMenu.addMenu('Dynamic CG Grade Setups (BETA)', icon='Geometry.png')
     cg_grade_menu.addCommand('CG_Lighting_new', 'cg_grade_setup.main("lighting")')
