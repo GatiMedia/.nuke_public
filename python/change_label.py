@@ -1,7 +1,7 @@
 # --------------------------------------------------------------
 #  change_label.py
 #  Version: 1.0
-#  Last Updated: 12/02/2024
+#  Last Updated: 13/02/2024
 #  Last updated by: Attila Gasparetz
 # --------------------------------------------------------------
 import nuke
@@ -45,4 +45,7 @@ def setLabel():
                 if label_mode == "Add to label":
                     node['label'].setValue(new_label)
                 else:
-                    node['label'].setValue(str(node['label'].value()) + "\n" + str(new_label))
+                    if not node['label'].value() == "":
+                        node['label'].setValue(str(node['label'].value()) + "\n" + str(new_label))
+                    else:
+                        node['label'].setValue(new_label)
