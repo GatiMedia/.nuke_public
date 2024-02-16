@@ -1,7 +1,7 @@
 # --------------------------------------------------------------
 #  change_channels.py
 #  Last Updated by: Attila Gasparetz
-#  Last Updated: 26/09/2023
+#  Last Updated: 16/02/2024
 # --------------------------------------------------------------
 
 import nuke
@@ -27,14 +27,15 @@ def changeChannels():
             # setting up for output knob
             if sel_node.knob('output'):
                 if not sel_node.Class() == "Merge2":
-                    try:
-                        if not sel_node['output'].value() == "alpha" and sel_node.knob('output').value() in ok_channels:
-                            channel_index = ok_channels.index(sel_node['output'].value())
-                            sel_node['output'].setValue(ok_channels[channel_index + 1])
-                        else:
-                            sel_node['output'].setValue('all')
-                    except:
-                        pass
+                    if not sel_node.Class() == "ChannelMerge":
+                        try:
+                            if not sel_node['output'].value() == "alpha" and sel_node.knob('output').value() in ok_channels:
+                                channel_index = ok_channels.index(sel_node['output'].value())
+                                sel_node['output'].setValue(ok_channels[channel_index + 1])
+                            else:
+                                sel_node['output'].setValue('all')
+                        except:
+                            pass
 
             # setting up for retimedChannels knob
             if sel_node.knob('retimedChannels'):
