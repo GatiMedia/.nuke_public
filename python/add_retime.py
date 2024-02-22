@@ -1,22 +1,23 @@
 # --------------------------------------------------------------
 #  add_retime.py
-#  Last Updated by: Attila Gasparetz
-#  Last Updated: 26/09/2023
+#  Last Updated: 22/02/2024
+#  Last updated by: Attila Gasparetz
 # --------------------------------------------------------------
 
 import nuke
 
 def addRetime():
     multipleNodes = nuke.selectedNodes()
-    if len(multipleNodes) == 0 or len(multipleNodes) > 1:
+    if len(multipleNodes) == 0:
         nuke.message("""<center><font color=orange>Select a node/nodes first!""")
-    for node in multipleNodes:
-        try:
-            retime = nuke.createNode('Retime')
-            retime['output.first_lock'].setValue(1)
-            retime['output.first'].setValue(nuke.Root().firstFrame())
-            retime['xpos'].setValue(node['xpos'].value())
-            retime['ypos'].setValue(node['ypos'].value() + 100)
-            retime.setInput(0, node)
-        except Exception:
-            pass
+    else:
+        for node in multipleNodes:
+            try:
+                retime = nuke.createNode('Retime')
+                retime['output.first_lock'].setValue(1)
+                retime['output.first'].setValue(nuke.Root().firstFrame())
+                retime['xpos'].setValue(node['xpos'].value())
+                retime['ypos'].setValue(node['ypos'].value() + 220)
+                retime.setInput(0, node)
+            except:
+                pass
