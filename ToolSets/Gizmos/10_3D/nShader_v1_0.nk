@@ -1,34 +1,25 @@
 set cut_paste_input [stack 0]
-version 12.2 v3
+version 14.1 v1
 push $cut_paste_input
-add_layer {normal normal.red normal.green normal.blue normal.alpha}
+add_layer {N N.red N.green N.blue N.alpha N.x N.y N.z}
 Group {
- name nShader
+ name nShader1
  selected true
- xpos 17670
- ypos 2342
+ xpos 6230
+ ypos 6399
  addUserKnob {20 User}
  addUserKnob {41 normal_vectors l "Normal Vectors" t "define Normal Pass" T Shuffle1.in}
  addUserKnob {41 equator_angle l "Equator Angle" t "controls the left to right angle of the light" T Constant2.equator_angle}
  addUserKnob {41 polar_height l "Polar Height" t "controls the top to bottom angle of the light" T Constant2.polar_height}
  addUserKnob {41 light_color l "Light Color" t "Color of light" T Grade1.multiply}
- addUserKnob {41 only_light l "Only Light" t "Enable gives you only light impact and disable gives you compose output." T Merge1.disable}
 }
- Input {
-  inputs 0
-  name Input1
-  xpos -78
-  ypos -228
- }
-set N9aff5d00 [stack 0]
-push $N9aff5d00
  Constant {
   inputs 0
   channels rgb
   color {{cos(radians(polar_height))*cos(radians(equator_angle))} {-sin(radians(polar_height))} {-sin(radians(equator_angle))*cos(radians(polar_height))} {curve}}
   name Constant2
-  xpos 66
-  ypos -225
+  xpos 70
+  ypos -249
   addUserKnob {20 User}
   addUserKnob {7 equator_angle l "Equator Angle" R 0 360}
   equator_angle 90
@@ -38,31 +29,31 @@ push $N9aff5d00
   addUserKnob {41 color_1 l color T Constant2.color}
  }
  Crop {
-  box {0 0 {Input1.width} {Input1.height}}
+  box {0 0 {Input.width} {Input.height}}
   reformat true
   crop false
   name Crop1
-  xpos 66
-  ypos -143
+  xpos 70
+  ypos -153
  }
-push $N9aff5d00
- Dot {
-  name Dot1
-  xpos -44
-  ypos -190
+ Input {
+  inputs 0
+  name Input
+  xpos -40
+  ypos -225
  }
  Shuffle {
-  in normal
+  in N
   alpha white
   name Shuffle1
-  xpos -78
-  ypos -39
+  xpos -40
+  ypos -57
  }
  Difference {
   inputs 2
   name Difference1
-  xpos 66
-  ypos -45
+  xpos 70
+  ypos -63
  }
  Shuffle {
   red alpha
@@ -70,31 +61,33 @@ push $N9aff5d00
   blue alpha
   alpha black
   name Shuffle2
-  xpos 66
-  ypos -7
+  xpos 70
+  ypos -9
  }
  Invert {
   name Invert1
-  xpos 66
-  ypos 35
+  xpos 70
+  ypos 33
  }
  Grade {
-  whitepoint 2
   white_clamp true
   name Grade1
-  xpos 66
-  ypos 90
+  selected true
+  xpos 70
+  ypos 87
  }
- Merge2 {
-  inputs 2+1
-  operation plus
-  name Merge1
-  xpos 66
-  ypos 162
+ Shuffle2 {
+  fromInput1 {{0} B}
+  fromInput2 {{0} B}
+  mappings "4 rgba.red 0 0 rgba.red 0 0 rgba.red 0 0 rgba.green 0 1 rgba.red 0 0 rgba.blue 0 2 rgba.red 0 0 rgba.alpha 0 3"
+  name Shuffle3
+  label "\[value in1]"
+  xpos 70
+  ypos 201
  }
  Output {
   name Output1
-  xpos 66
-  ypos 227
+  xpos 70
+  ypos 255
  }
 end_group
