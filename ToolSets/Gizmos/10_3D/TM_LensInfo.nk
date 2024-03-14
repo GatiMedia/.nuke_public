@@ -1,0 +1,77 @@
+NoOp {
+ name TM_LensInfo1
+ label "\[metadata exr/r3d/lens_name]\n\[value focal_length]mm, f/\[value fstop] @ \[value focus_distance]\[value outunit]\n"
+ selected true
+ xpos 111013
+ ypos 42411
+ addUserKnob {20 lensinfotab l LensInfo}
+ addUserKnob {4 inunit l "input unit" M {mm cm m "" ""}}
+ addUserKnob {4 outunit l "output unit" -STARTLINE M {mm cm m ""}}
+ outunit m
+ addUserKnob {7 focal_length l "focal length (mm)" R 15 250}
+ focal_length {{"max(r3d_focal, cooke_focal)"}}
+ addUserKnob {7 fstop l "aperture (ƒ/)" R 2 16}
+ fstop {{"max(fstop_exr, fstop_r3d)"}}
+ addUserKnob {7 focus_distance l "focus distance" R 0.2 25}
+ focus_distance {{"max(r3d_focus, cooke_focus)/inmult*outmult"}}
+ addUserKnob {20 advancedgroup l Advanced n 1}
+ advancedgroup 0
+ addUserKnob {7 dof l "focus region size" R 0 5}
+ dof {{r3d_focus_region_size/inmult*outmult}}
+ addUserKnob {7 hyperfocal l "hyperfocal distance" R 0.2 50}
+ hyperfocal {{r3d_hyperfocal/inmult*outmult}}
+ addUserKnob {7 pixelaspect l "pixel aspect ratio" R 1 2}
+ pixelaspect {{"\[metadata exr/pixelAspectRatio]"}}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {22 create_bokeh l "create Bokeh" T "import defocus\nn = defocus.create_Bokeh()\ndefocus.link(n)" +STARTLINE}
+ addUserKnob {22 create_ozd l "create OpticalZDefocus" -STARTLINE T "import defocus\nn = defocus.create_OpticalZDefocus()\ndefocus.link(n)"}
+ addUserKnob {22 create_pzd l "create PxF_ZDefocus" T "import defocus\nn = defocus.create_PxFZDefocus()\ndefocus.link(n)" +STARTLINE}
+ addUserKnob {22 create_pdd l "create PxFDeepDefocus" -STARTLINE T "import defocus\nn = defocus.create_PxFDeepDefocus()\ndefocus.link(n)"}
+ addUserKnob {22 link_existing l "link existing defocus" T "import defocus\ndefocus.link()" +STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 howto l "" +STARTLINE T "1. Connect a plate with lens metadata\n\n2. Create or link an existing defocus node\n\n3. Manually adjust the film back size taken from \nthe Tracking camera or the internet.\n\n4. Adjust the max defocus value to avoid clamping\n if you're using OpticalZDefocus or the PxF nodes\n"}
+ addUserKnob {26 ""}
+ addUserKnob {26 text_version l "" +STARTLINE T "<font color=#808080 size=\"5\" >v0.6</font>"}
+ addUserKnob {26 text_author l "" +STARTLINE T "<font color=#808080 size=\"2\">Lens Info © 2024 by Tom Mortelette</font>"}
+ addUserKnob {20 debugtab l Debug}
+ addUserKnob {7 inmult R 1 1000}
+ inmult {{"\[switch \[value inunit]  \{m \{expr \{1\}\} cm \{expr \{100\}\} mm \{expr \{1000\}\} inch \{expr \{39.27\}\} feet  \{expr \{1.094\}\} default \{expr \{0\}\}\}]"}}
+ addUserKnob {7 outmult R 1 1000}
+ outmult {{"\[switch \[value outunit]  \{m \{expr \{1\}\} cm \{expr \{100\}\} mm \{expr \{1000\}\} inch \{expr \{39.27\}\} feet  \{expr \{1.094\}\} default \{expr \{0\}\}\}]"}}
+ addUserKnob {7 cooke_focal t "In mm" R 10 400}
+ cooke_focal {{"\[metadata exr/cooke/zoom]"}}
+ addUserKnob {7 r3d_focal R 10 400}
+ r3d_focal {{"\[metadata exr/r3d/lens_focal_length]"}}
+ addUserKnob {7 r3d_hyperfocal R 1 100000}
+ r3d_hyperfocal {{"\[metadata exr/r3d/lens_hyperfocal_distance]"}}
+ addUserKnob {7 r3d_focus R 0 100000}
+ r3d_focus {{"\[metadata exr/r3d/lens_focus_distance]"}}
+ addUserKnob {7 cooke_focus R 0 100000}
+ cooke_focus {{"\[metadata exr/cooke/focus_distance_mm]"}}
+ addUserKnob {7 r3d_far_focus R 0 100000}
+ r3d_far_focus {{"\[metadata exr/r3d/lens_focus_distance_far]"}}
+ addUserKnob {7 r3d_close_focus R 0 100000}
+ r3d_close_focus {{"\[metadata exr/r3d/lens_focus_distance_near]"}}
+ addUserKnob {7 r3d_focus_region_size R 0 1000}
+ r3d_focus_region_size {{(r3d_far_focus-r3d_close_focus)}}
+ addUserKnob {7 fstop_exr R 1 16}
+ fstop_exr {{"\[metadata exr/aperture]"}}
+ addUserKnob {7 fstop_r3d R 1 16}
+ fstop_r3d {{"\[metadata exr/r3d/lens_aperture]/10"}}
+ addUserKnob {7 tstop_cooke R 1 16}
+ tstop_cooke {{"\[metadata exr/cooke/aperture_ring_t_stop]"}}
+ addUserKnob {6 focal_disagree +STARTLINE}
+ focal_disagree {{r3d_focal-cooke_focal}}
+ addUserKnob {6 focus_disagree -STARTLINE}
+ focus_disagree {{r3d_focus-cooke_focus}}
+ addUserKnob {6 fstop_disagree -STARTLINE}
+ fstop_disagree {{max(fstop_exr,fstop_r3d,tstop_cooke)-min(fstop_exr,fstop_r3d,tstop_cooke)}}
+ addUserKnob {3 prime_mm}
+ prime_mm {{"\[metadata exr/cooke/prime_mm]"}}
+ addUserKnob {6 is_prime -STARTLINE}
+ is_prime {{"\[expr \[metadata exr/cooke/is_prime]\[metadata exr/cooke/prime_mm]>0]"}}
+ addUserKnob {3 zoom_min_mm}
+ zoom_min_mm {{"\[metadata exr/cooke/zoom_min_mm]"}}
+ addUserKnob {3 zoom_max_mm -STARTLINE}
+ zoom_max_mm {{"\[metadata exr/cooke/zoom_max_mm]"}}
+}
