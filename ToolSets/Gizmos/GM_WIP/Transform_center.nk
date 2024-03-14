@@ -1,0 +1,8 @@
+Transform {
+ center {{input.width/2} {input.height/2}}
+ shutteroffset centred
+ name Transform_center1
+ selected true
+ xpos 108420
+ ypos 40695
+}
