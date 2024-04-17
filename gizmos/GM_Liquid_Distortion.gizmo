@@ -7,9 +7,10 @@ Group {
  contrast_liq 3
  addUserKnob {41 scale1 l Scale T CONTROL.scale1}
  addUserKnob {7 speed_liq l Speed R 1 100}
- speed_liq 50
+ speed_liq 30
  addUserKnob {41 slid_03 l Offset T CONTROL.slid_03}
  addUserKnob {41 size l Blur T Blur_liq.size}
+ addUserKnob {41 time_offset l Chroma T TimeOffset1_liq.time_offset}
  addUserKnob {6 crop l Crop +STARTLINE}
  crop true
  addUserKnob {26 ""}
@@ -18,34 +19,34 @@ Group {
  addUserKnob {26 ""}
  addUserKnob {22 tut l Tutorial T "import webbrowser\nwebbrowser.open('https://www.gatimedia.co.uk/liquid-distortion', new=2)\n" +STARTLINE}
  addUserKnob {26 ""}
- addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.1 version</font>"}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.2 version</font>"}
  addUserKnob {26 credit l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Liquid Distortion© by Attila Gasparetz</font>"}
 }
  Input {
   inputs 0
   name mask
   xpos -260
-  ypos -202
+  ypos -201
   number 1
  }
  Input {
   inputs 0
   name Input
   xpos 400
-  ypos -514
+  ypos -513
  }
  Dot {
   name Dot18
   xpos 434
   ypos -270
  }
-set N8bc81ef0 [stack 0]
+set N41df9ee0 [stack 0]
  Dot {
   name Dot12
   xpos 214
   ypos -270
  }
-set N8bc80f70 [stack 0]
+set Na0499d90 [stack 0]
  Dot {
   name Dot17
   xpos 214
@@ -56,7 +57,7 @@ set N8bc80f70 [stack 0]
   xpos -6
   ypos -438
  }
-set N8bc81350 [stack 0]
+set N22815580 [stack 0]
  Shuffle {
   red black
   green black
@@ -64,17 +65,17 @@ set N8bc81350 [stack 0]
   alpha white
   name Shuffle1
   xpos -40
-  ypos -298
+  ypos -297
  }
  ChannelMerge {
   inputs 2
   operation multiply
   name ChannelMerge1
   xpos -40
-  ypos -215
+  ypos -213
   disable {{"!\[exists parent.input1]"}}
  }
-push $N8bc81350
+push $N22815580
  Expression {
   temp_name0 seed
   temp_expr0 "\[ regexp -inline \{\\d+\}  \[knob name] ]"
@@ -87,87 +88,87 @@ push $N8bc81350
   expr2 0
   name ELEMENTS_liq
   xpos -590
-  ypos -442
+  ypos -441
  }
  ColorCorrect {
   contrast {{contrast_liq}}
   shadows 0
   name ColorCorrect_liq
   xpos -590
-  ypos -346
+  ypos -345
  }
  Dot {
   name Dot13
   xpos -556
   ypos -294
  }
-set N8bc85150 [stack 0]
+set Na69972d0 [stack 0]
  TimeOffset {
   time_offset 2
   time ""
   name TimeOffset_to_red
   xpos -700
-  ypos -298
+  ypos -297
  }
-push $N8bc85150
+push $Na69972d0
  Copy {
   inputs 2
   from0 rgba.red
   to0 rgba.red
   name Copy3
   xpos -590
-  ypos -232
+  ypos -231
  }
  Dot {
   name Dot14
   xpos -556
   ypos -150
  }
-set N8bc860d0 [stack 0]
+set Ne32f5490 [stack 0]
  TimeOffset {
   time_offset {{-TimeOffset_to_red.time_offset}}
   time ""
   name TimeOffset_to_green
   xpos -700
-  ypos -154
+  ypos -153
  }
-push $N8bc860d0
+push $Ne32f5490
  Copy {
   inputs 2
   from0 rgba.green
   to0 rgba.green
   name Copy4
   xpos -590
-  ypos -88
+  ypos -87
  }
  Blur {
   channels rgb
   size 30
   name Blur_liq
   xpos -370
-  ypos -82
+  ypos -81
  }
  Merge2 {
   inputs 2
   operation mask
   name Merge1
   xpos -40
-  ypos -82
+  ypos -81
  }
-push $N8bc80f70
+push $Na0499d90
  Expression {
   expr0 (x+0.5)/width
   expr1 (y+0.5)/height
   name Expression_STmap
   xpos 180
-  ypos -178
+  ypos -177
  }
  Merge2 {
   inputs 2
-  mix {{(parent.mix)/100 x1005 0.1}}
+  mix {{(parent.mix)/100}}
   name Merge_dist_to_st
   xpos 180
-  ypos -82
+  ypos -81
  }
  Dot {
   name Dot1
@@ -177,25 +178,79 @@ push $N8bc80f70
   xpos 214
   ypos -6
  }
-push $N8bc81ef0
+set Ne6cf0160 [stack 0]
+ TimeOffset {
+  time_offset 3
+  time ""
+  name TimeOffset1_liq
+  label "Value: \[value time_offset]"
+  xpos 180
+  ypos 33
+ }
+ Dot {
+  name Dot5
+  tile_color 0x949494ff
+  note_font_size 22
+  note_font_color 0xffffffff
+  xpos 214
+  ypos 90
+ }
+set N43efcfe0 [stack 0]
+ TimeOffset {
+  time_offset {{parent.TimeOffset1_liq.time_offset}}
+  time ""
+  name TimeOffset2_liq
+  label "Value: \[value time_offset]"
+  xpos 180
+  ypos 129
+ }
+ Dot {
+  name Dot6
+  tile_color 0x949494ff
+  note_font_size 22
+  note_font_color 0xffffffff
+  xpos 214
+  ypos 186
+ }
+push $N43efcfe0
+push $Ne6cf0160
+push $N41df9ee0
  STMap {
   inputs 2
+  channels {rgba.red -rgba.green -rgba.blue}
   uv rgb
   name STMap_liq
   xpos 400
-  ypos -16
+  ypos -15
+ }
+ STMap {
+  inputs 2
+  channels {-rgba.red rgba.green -rgba.blue none}
+  uv rgb
+  name STMap_liq1
+  xpos 400
+  ypos 87
+ }
+ STMap {
+  inputs 2
+  channels {-rgba.red -rgba.green rgba.blue none}
+  uv rgb
+  name STMap_liq2
+  xpos 400
+  ypos 183
  }
  Crop {
   box {{input.format.x} {input.format.y} {input.width} {input.height}}
   name Crop_liq
+  selected true
   xpos 400
-  ypos 62
+  ypos 279
   disable {{!parent.crop}}
  }
  Output {
   name Output
   xpos 400
-  ypos 110
+  ypos 375
  }
  NoOp {
   inputs 0
@@ -203,7 +258,7 @@ push $N8bc81ef0
   tile_color 0x444444ff
   note_font_size 30
   xpos -590
-  ypos -523
+  ypos -522
   addUserKnob {20 User}
   addUserKnob {7 slid_01 l slider01_speed R 1 100}
   slid_01 {{101-(speed_liq)}}
