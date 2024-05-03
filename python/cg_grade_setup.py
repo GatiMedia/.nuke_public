@@ -93,12 +93,6 @@ def get_texture_layer(channel_layers):
     # Updated this function to return None as it seems unnecessary to divide/multiply material passes with the albedo
     return None
 
-# def combine_layers_to_unpremult(channel_layers):
-#     color_group, color_combined_group = get_color_layers(channel_layers)
-#     materials = get_material_layers(channel_layers)
-#     unpremult_layers = color_group + color_combined_group + materials
-#     return unpremult_layers
-
 def set_center_x(thisnode, othernode):
     thisnode['xpos'].setValue(int(othernode['xpos'].value()+(othernode.screenWidth()/2)-(thisnode.screenWidth()/2)))
 
