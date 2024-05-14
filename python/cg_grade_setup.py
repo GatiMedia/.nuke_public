@@ -1,10 +1,12 @@
 # --------------------------------------------------------------
 #  cg_grade_setup.py
-#  Version: 2.3
-#  Last Updated: 03/05/2024
+#  Version: 2.4
+#  Last Updated: 14/05/2024
 #  Last updated by: Attila Gasparetz
 # --------------------------------------------------------------
 # This tool is based on an AOV naming customization where Color ( Lighting ), Material and Texture groups gets prefixes, respectively "C_", "M_" and "T_"
+
+#TODO - make B pipe straight
 
 import nuke
 
@@ -203,6 +205,16 @@ def loop_part(choosen_group, dotMain, choosen_type, texture_group):
     dot.setSelected(SELECT_VAL)
     dot.setInput(0, dotMain)
 
+
+    # color_group, color_combined_group = get_color_layers(channel_layers)
+    # color_layers = color_combined_group + color_group
+    # material_group = get_material_layers(channel_layers)
+
+
+    # # creating unpremult group for lighting layers
+    # group_unprem_color = create_unpremult_group(dot, color_layers)
+
+
     # create remove_all
     remove_all = nuke.nodes.Remove()
     remove_all['operation'].setValue('remove')
@@ -224,7 +236,15 @@ def loop_part(choosen_group, dotMain, choosen_type, texture_group):
         dot['xpos'].setValue(int(newX) - X_DIST)
         dot['ypos'].setValue(newY)
         dot.setSelected(SELECT_VAL)
+        # adding color variations to dots
+        if index % 2 == 0:
+            dot['tile_color'].setValue(2857762815)
+        else:
+            dot['tile_color'].setValue(4290707711)
         new_dot = dot
+        # if index == 0:
+        #     new_dot.setInput(0, group_unprem_color)
+        # else:
         new_dot.setInput(0, old_dot)
 
         # creating shuffle
@@ -245,6 +265,11 @@ def loop_part(choosen_group, dotMain, choosen_type, texture_group):
         dotshuf['ypos'].setValue(int(dot['ypos'].value()) + int(index * Y_DIST) + (Y_DIST*3))
         dotshuf.setSelected(SELECT_VAL)
         dotshuf.setInput(0, shuffle)
+        # adding color variations to dots
+        if index % 2 == 0:
+            dotshuf['tile_color'].setValue(2857762815)
+        else:
+            dotshuf['tile_color'].setValue(4290707711)
 
         # creating merge_from
         merge_from = nuke.nodes.Merge2()
@@ -291,6 +316,11 @@ def loop_part(choosen_group, dotMain, choosen_type, texture_group):
         dot_grade['note_font_size'].setValue(DOT_GRADE_FONT_SIZE)
         dot_grade.setSelected(SELECT_VAL)
         dot_grade.setInput(0, dotshuf)
+        # adding color variations to dots
+        if index % 2 == 0:
+            dot_grade['tile_color'].setValue(2857762815)
+        else:
+            dot_grade['tile_color'].setValue(4290707711)
 
         if choosen_type == "material" or choosen_type == "full_setup":
             if texture_group:
@@ -356,6 +386,11 @@ def loop_part(choosen_group, dotMain, choosen_type, texture_group):
                 dotgrade2.setInput(0, merge_mult)
         if not texture_group:
             dotgrade2.setInput(0, dot_grade)
+        # adding color variations to dots
+        if index % 2 == 0:
+            dotgrade2['tile_color'].setValue(2857762815)
+        else:
+            dotgrade2['tile_color'].setValue(4290707711)
 
         # creating dot_expr
         dot_expr = nuke.nodes.Dot()
@@ -363,6 +398,11 @@ def loop_part(choosen_group, dotMain, choosen_type, texture_group):
         dot_expr['ypos'].setValue(int(dotgrade2['ypos'].value()) + int(index * Y_DIST) + Y_DIST)
         dot_expr.setSelected(SELECT_VAL)
         dot_expr.setInput(0, dotgrade2)
+        # adding color variations to dots
+        if index % 2 == 0:
+            dot_expr['tile_color'].setValue(2857762815)
+        else:
+            dot_expr['tile_color'].setValue(4290707711)
 
         # creating merge_plus
         merge_plus = nuke.nodes.Merge2()
@@ -584,6 +624,8 @@ def lighting_setup(channel_layers):
         ### FIRST LOOP ###
         choosen_group = color_group
         bottom_right_corner_first, top_left_corner_first = loop_part(choosen_group, group_unprem_color, "lighting", None)
+        # bottom_right_corner_first, top_left_corner_first = loop_part(choosen_group, dotMain, "lighting", None)
+
 
         ### DOT BETWEEN LOOPS ###
         dot_corner = nuke.nodes.Dot()
@@ -612,17 +654,24 @@ def lighting_setup(channel_layers):
         merge_divide_bty.setInput(0, bottom_right_corner_first)
         merge_divide_bty.setInput(1, dot_divide_bty)
 
+        # creating dot_second_loop_corner
+        dot_second_loop_corner = nuke.nodes.Dot()
+        set_center_x(dot_second_loop_corner,bottom_right_corner_second)
+        dot_second_loop_corner['ypos'].setValue(int(merge_divide_bty['ypos'].value()) + (Y_DIST * 2))
+        dot_second_loop_corner.setSelected(SELECT_VAL)
+        dot_second_loop_corner.setInput(0, bottom_right_corner_second)
+
         # creating merge_multiply_bty
         merge_multiply_bty = nuke.nodes.Merge2()
         merge_multiply_bty['xpos'].setValue(int(merge_divide_bty['xpos'].value()))
-        set_center_y(merge_multiply_bty,bottom_right_corner_second)
+        set_center_y(merge_multiply_bty,dot_second_loop_corner)
         merge_multiply_bty['operation'].setValue('multiply')
         merge_multiply_bty['Achannels'].setValue('rgb')
         merge_multiply_bty['Bchannels'].setValue('rgb')
         merge_multiply_bty['output'].setValue('rgb')
         merge_multiply_bty.setSelected(SELECT_VAL)
         merge_multiply_bty.setInput(0, merge_divide_bty)
-        merge_multiply_bty.setInput(1, bottom_right_corner_second)
+        merge_multiply_bty.setInput(1, dot_second_loop_corner)
 
         # creating dot_result
         dot_result = nuke.nodes.Dot()
