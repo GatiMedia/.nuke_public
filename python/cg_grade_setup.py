@@ -1,12 +1,11 @@
 # --------------------------------------------------------------
 #  cg_grade_setup.py
-#  Version: 2.4
-#  Last Updated: 14/05/2024
+#  Version: 2.5
+#  Last Updated: 28/05/2024
 #  Last updated by: Attila Gasparetz
 # --------------------------------------------------------------
 # This tool is based on an AOV naming customization where Color ( Lighting ), Material and Texture groups gets prefixes, respectively "C_", "M_" and "T_"
 
-#TODO - make B pipe straight
 
 import nuke
 
@@ -205,15 +204,8 @@ def loop_part(choosen_group, dotMain, choosen_type, texture_group):
     dot.setSelected(SELECT_VAL)
     dot.setInput(0, dotMain)
 
-
-    # color_group, color_combined_group = get_color_layers(channel_layers)
-    # color_layers = color_combined_group + color_group
-    # material_group = get_material_layers(channel_layers)
-
-
-    # # creating unpremult group for lighting layers
-    # group_unprem_color = create_unpremult_group(dot, color_layers)
-
+    # creating unpremult group for lighting layers
+    group_unprem_color = create_unpremult_group(dot, choosen_group)
 
     # create remove_all
     remove_all = nuke.nodes.Remove()
@@ -242,10 +234,10 @@ def loop_part(choosen_group, dotMain, choosen_type, texture_group):
         else:
             dot['tile_color'].setValue(4290707711)
         new_dot = dot
-        # if index == 0:
-        #     new_dot.setInput(0, group_unprem_color)
-        # else:
-        new_dot.setInput(0, old_dot)
+        if index == 0:
+            new_dot.setInput(0, group_unprem_color)
+        else:
+            new_dot.setInput(0, old_dot)
 
         # creating shuffle
         shuffle = nuke.nodes.Shuffle2()
@@ -347,7 +339,6 @@ def loop_part(choosen_group, dotMain, choosen_type, texture_group):
                 merge_divide.setSelected(SELECT_VAL)
                 merge_divide.setInput(0, dot_grade)
                 merge_divide.setInput(1, old_dot_divide)
-
 
                 # creating dot_multiply
                 dot_multiply = nuke.nodes.Dot()
@@ -578,10 +569,6 @@ def loop_part(choosen_group, dotMain, choosen_type, texture_group):
     # creating prem_all
     prem_all = nuke.nodes.Premult()
     prem_all['xpos'].setValue(int(merge_plus_side['xpos'].value()))
-    # if "C_direct" in choosen_group:
-    #     prem_all['ypos'].setValue(int(dot_grade_bty_2['ypos'].value()) + (Y_DIST * 4))
-    # else:
-    #     prem_all['ypos'].setValue(int(dot_grade_bty_2['ypos'].value()) + Y_DIST)
     prem_all['ypos'].setValue(int(dot_grade_bty_2['ypos'].value()) + Y_DIST)
     prem_all.setSelected(SELECT_VAL)
     prem_all.setInput(0, dot_grade_bty_2)
@@ -618,24 +605,20 @@ def lighting_setup(channel_layers):
         ### TOP PART ###
         dotMain, middle_dot = top_part(channel_layers)
 
-        # creating unpremult group for lighting layers
-        group_unprem_color = create_unpremult_group(dotMain, color_layers)
-
         ### FIRST LOOP ###
         choosen_group = color_group
-        bottom_right_corner_first, top_left_corner_first = loop_part(choosen_group, group_unprem_color, "lighting", None)
-        # bottom_right_corner_first, top_left_corner_first = loop_part(choosen_group, dotMain, "lighting", None)
+        bottom_right_corner_first, top_left_corner_first = loop_part(choosen_group, dotMain, "lighting", None)
 
+        ### PREMULT BETWEEN LOOPS ###
+        premult_corner = nuke.nodes.Premult()
+        premult_corner['xpos'].setValue(int(top_left_corner_first['xpos'].value()) - X_DIST)
+        premult_corner['ypos'].setValue(int(top_left_corner_first['ypos'].value()))
+        premult_corner.setSelected(SELECT_VAL)
+        premult_corner.setInput(0, top_left_corner_first)
 
-        ### DOT BETWEEN LOOPS ###
-        dot_corner = nuke.nodes.Dot()
-        dot_corner['xpos'].setValue(int(top_left_corner_first['xpos'].value()) - X_DIST)
-        dot_corner['ypos'].setValue(int(top_left_corner_first['ypos'].value()))
-        dot_corner.setSelected(SELECT_VAL)
-        dot_corner.setInput(0, top_left_corner_first)
         ### SECOND LOOP ###
         choosen_group = color_combined_group
-        bottom_right_corner_second, top_left_corner_second = loop_part(choosen_group, dot_corner, "lighting", None)
+        bottom_right_corner_second, top_left_corner_second = loop_part(choosen_group, premult_corner, "lighting", None)
         # creating dot_divide_bty
         dot_divide_bty = nuke.nodes.Dot()
         dot_divide_bty['xpos'].setValue(int(middle_dot['xpos'].value()))
@@ -685,12 +668,9 @@ def lighting_setup(channel_layers):
         ### TOP PART ###
         dotMain, middle_dot = top_part(channel_layers)
 
-        # creating unpremult group for lighting layers
-        group_unprem_color = create_unpremult_group(dotMain, color_layers)
-
         ### LOOP PART ###
         choosen_group = color_group
-        bottom_right_corner, top_left_corner = loop_part(choosen_group, group_unprem_color, "lighting", None)
+        bottom_right_corner, top_left_corner = loop_part(choosen_group, dotMain, "lighting", None)
         # creating dot_result
         dot_result = nuke.nodes.Dot()
         set_center_x(dot_result,bottom_right_corner)
@@ -702,12 +682,9 @@ def lighting_setup(channel_layers):
         ### TOP PART ###
         dotMain, middle_dot = top_part(channel_layers)
 
-        # creating unpremult group for lighting layers
-        group_unprem_color = create_unpremult_group(dotMain, color_layers)
-
         ### LOOP PART ###
         choosen_group = color_combined_group
-        bottom_right_corner, top_left_corner = loop_part(choosen_group, group_unprem_color, "lighting", None)
+        bottom_right_corner, top_left_corner = loop_part(choosen_group, dotMain, "lighting", None)
         # creating dot_result
         dot_result = nuke.nodes.Dot()
         set_center_x(dot_result,bottom_right_corner)
@@ -754,11 +731,8 @@ def main(chosen_type):
                 ### TOP PART ###
                 dotMain, middle_dot = top_part(channel_layers)
 
-                # creating unpremult group for material layers
-                group_unprem_color = create_unpremult_group(dotMain, material_group)
-
                 ### LOOP PART ###
-                material_setup(channel_layers, group_unprem_color, middle_dot)
+                material_setup(channel_layers, dotMain, middle_dot)
 
         if chosen_type == "full_setup":
             if not color_combined_group and not color_group and not material_group:
@@ -795,15 +769,19 @@ def main(chosen_type):
                     # creating dot_material_corner
                     dot_material_corner = nuke.nodes.Dot()
                     dot_material_corner['xpos'].setValue(int(dot_divide_bty['xpos'].value()))
-                    dot_material_corner['ypos'].setValue(int(dot_divide_bty['ypos'].value()) + (Y_DIST))
+                    dot_material_corner['ypos'].setValue(int(dot_divide_bty['ypos'].value()) + (Y_DIST * 2))
                     dot_material_corner.setSelected(SELECT_VAL)
                     dot_material_corner.setInput(0, dot_divide_bty)
 
-                    # creating unpremult group
-                    group_unprem_color = create_unpremult_group(dot_material_corner, material_group)
+                    # creating dot_material_start
+                    dot_material_start = nuke.nodes.Dot()
+                    dot_material_start['xpos'].setValue(int(dot_divide_bty['xpos'].value()) - (X_DIST))
+                    dot_material_start['ypos'].setValue(int(dot_material_corner['ypos'].value()))
+                    dot_material_start.setSelected(SELECT_VAL)
+                    dot_material_start.setInput(0, dot_material_corner)
 
                     ### MATERIAL PART ###
-                    dot_result = material_setup(channel_layers, group_unprem_color, dot_material_corner)
+                    dot_result = material_setup(channel_layers, dot_material_start, dot_material_corner)
 
                     ### CONNECTING PART ###
                     # creating merge_multiply_bty
