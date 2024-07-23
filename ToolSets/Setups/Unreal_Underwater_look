@@ -1,5 +1,3 @@
-set cut_paste_input [stack 0]
-version 14.1 v4
 BackdropNode {
  inputs 0
  name Backdrop_Adjust23
@@ -8,8 +6,8 @@ BackdropNode {
  label "<p align=\"\[value align]\"><font color=\[value note_color]> \[if \{\[value bold]==true\} \{return <b>\} \{return \"\"\}] \[if \{\[value italian]==true\} \{return <i>\} \{return \"\"\}] \[if \{\[value under]==true\} \{return <u>\} \{return \"\"\}] \[if \{\[value strike]==true\} \{return <s>\} \{return \"\"\}] \[value note]"
  note_font_size 182
  selected true
- xpos 13922
- ypos -30830
+ xpos 12932
+ ypos -12110
  bdwidth 4056
  bdheight 6604
  addUserKnob {20 User}
@@ -136,8 +134,8 @@ StickyNote {
  label "Orange\n8m"
  note_font_size 22
  selected true
- xpos 14920
- ypos -29258
+ xpos 13930
+ ypos -10538
 }
 StickyNote {
  inputs 0
@@ -145,8 +143,8 @@ StickyNote {
  label "Yellow\n15m"
  note_font_size 22
  selected true
- xpos 15470
- ypos -29258
+ xpos 14480
+ ypos -10538
 }
 StickyNote {
  inputs 0
@@ -154,8 +152,8 @@ StickyNote {
  label "Blue\n35m"
  note_font_size 22
  selected true
- xpos 17010
- ypos -29258
+ xpos 16020
+ ypos -10538
 }
 StickyNote {
  inputs 0
@@ -163,8 +161,8 @@ StickyNote {
  label "Red\n5m"
  note_font_size 22
  selected true
- xpos 14480
- ypos -29258
+ xpos 13490
+ ypos -10538
 }
 StickyNote {
  inputs 0
@@ -174,8 +172,8 @@ StickyNote {
  note_font "DejaVu Sans"
  note_font_size 42
  selected true
- xpos 14431
- ypos -29354
+ xpos 13441
+ ypos -10634
 }
 StickyNote {
  inputs 0
@@ -185,8 +183,8 @@ StickyNote {
  note_font "DejaVu Sans"
  note_font_size 42
  selected true
- xpos 15394
- ypos -29354
+ xpos 14404
+ ypos -10634
 }
 StickyNote {
  inputs 0
@@ -196,8 +194,8 @@ StickyNote {
  note_font "DejaVu Sans"
  note_font_size 42
  selected true
- xpos 16402
- ypos -29330
+ xpos 15412
+ ypos -10610
 }
 StickyNote {
  inputs 0
@@ -205,8 +203,8 @@ StickyNote {
  label "Cyan\n30m"
  note_font_size 22
  selected true
- xpos 16570
- ypos -29258
+ xpos 15580
+ ypos -10538
 }
 StickyNote {
  inputs 0
@@ -214,48 +212,49 @@ StickyNote {
  label "Green\n25m"
  note_font_size 22
  selected true
- xpos 16020
- ypos -29258
+ xpos 15030
+ ypos -10538
 }
 push $cut_paste_input
 Dot {
- name Dot178
- note_font_size 22
+ name Dot3
+ label " Unreal render"
+ note_font_size 62
  selected true
- xpos 17484
- ypos -31110
+ xpos 16494
+ ypos -12342
 }
 Dot {
  name Dot197
  note_font_size 22
  selected true
- xpos 17484
- ypos -30414
+ xpos 16494
+ ypos -11694
 }
-set N29426be0 [stack 0]
+set N2a12c760 [stack 0]
 Dot {
  name Dot199
  note_font_size 22
  selected true
- xpos 17484
- ypos -29430
+ xpos 16494
+ ypos -10710
 }
-set N3588a1a0 [stack 0]
+set N29cacec0 [stack 0]
 Dot {
  name Dot200
  note_font_size 22
  selected true
- xpos 17704
- ypos -29430
+ xpos 16714
+ ypos -10710
 }
 Dot {
  name Dot201
  note_font_size 22
  selected true
- xpos 17704
- ypos -24966
+ xpos 16714
+ ypos -6246
 }
-push $N29426be0
+push $N2a12c760
 add_layer {FinalImageSceneDepthWorldUnits FinalImageSceneDepthWorldUnits.red FinalImageSceneDepthWorldUnits.green FinalImageSceneDepthWorldUnits.blue FinalImageSceneDepthWorldUnits.alpha}
 Shuffle2 {
  fromInput1 {{0} B}
@@ -265,24 +264,24 @@ Shuffle2 {
  name Shuffle33
  label "\[value in1]"
  selected true
- xpos 14700
- ypos -30423
+ xpos 13710
+ ypos -11703
 }
 Dot {
  name Dot240
  note_font_size 22
  selected true
- xpos 14514
- ypos -30414
+ xpos 13524
+ ypos -11694
 }
-set N16664770 [stack 0]
+set N2a076f20 [stack 0]
 Keyer {
  operation "luminance key"
  range {25504 66504 4 4}
  name Keyer11
  selected true
- xpos 14260
- ypos -30423
+ xpos 13270
+ ypos -11703
 }
 Grade {
  channels all
@@ -290,15 +289,15 @@ Grade {
  white_clamp true
  name Grade42
  selected true
- xpos 14260
- ypos -30255
+ xpos 13270
+ ypos -11535
 }
 Group {
  name key_chew2
  help "======== KeyChew beta ========\n=============================\n\nThis is a port of the KeyChew macro for Shake to Nuke.\n\nThere might be tiny differences on the results given in both apps. Some of them are caused by the internal algorithms of each app, and others by the way I faked the JSplineV\nexpression of Shake in Nuke. If you know a better way to solve this, let\nme know!!\n\n=============================\n             2009 Cuco Bures\n============================="
  selected true
- xpos 14260
- ypos -30201
+ xpos 13270
+ ypos -11481
  addUserKnob {20 Controls}
  addUserKnob {7 chew t "\t\t" R -200 200}
  chew 82
@@ -312,20 +311,20 @@ Group {
   xpos -40
   ypos -9
  }
-set N17afe3e0 [stack 0]
+set N29c1c230 [stack 0]
  Dot {
   name Dot1
   xpos 324
   ypos -6
  }
-set N29bb41f0 [stack 0]
-push $N29bb41f0
+set N2a0cfba0 [stack 0]
+push $N2a0cfba0
  Invert {
   name Invert1
   xpos 176
   ypos 33
  }
-push $N29bb41f0
+push $N2a0cfba0
  Switch {
   inputs 2
   which {{"\[value chew]>=0?0:1"}}
@@ -357,7 +356,7 @@ push $N29bb41f0
   addUserKnob {7 JSplineVFake}
   JSplineVFake {{curve l 0.9958 k x5 0.95 0.8 x20 0.5 x40 0.3 x80 0.2 l x200 0.1}}
  }
-set N29e7c8f0 [stack 0]
+set N29cedfd0 [stack 0]
  Merge2 {
   inputs 2
   operation minus
@@ -365,7 +364,7 @@ set N29e7c8f0 [stack 0]
   xpos 290
   ypos 231
  }
-push $N29e7c8f0
+push $N29cedfd0
  Switch {
   inputs 2
   which {{"\[value chew]>=0?0:1"}}
@@ -384,7 +383,7 @@ push $N29e7c8f0
   xpos 180
   ypos 441
  }
-push $N17afe3e0
+push $N29c1c230
  ShuffleCopy {
   inputs 2
   name ShuffleCopy1
@@ -410,276 +409,276 @@ Constant {
  name Constant4
  label "Res: \[value width] * \[value height]"
  selected true
- xpos 14590
- ypos -30230
+ xpos 13600
+ ypos -11510
 }
-push $N16664770
+push $N2a076f20
 Keymix {
  inputs 3
  name Keymix5
  selected true
- xpos 14480
- ypos -30207
+ xpos 13490
+ ypos -11487
  disable true
 }
 Dot {
  name Dot222
  note_font_size 22
  selected true
- xpos 14514
- ypos -29622
+ xpos 13524
+ ypos -10902
 }
-set N165ebaa0 [stack 0]
+set N2a1a3af0 [stack 0]
 Dot {
  name Dot223
  note_font_size 22
  selected true
- xpos 14954
- ypos -29622
+ xpos 13964
+ ypos -10902
 }
-set N29ccf370 [stack 0]
+set N2a1a8df0 [stack 0]
 Dot {
  name Dot224
  note_font_size 22
  selected true
- xpos 15504
- ypos -29622
+ xpos 14514
+ ypos -10902
 }
-set N1652cd60 [stack 0]
+set N29c63890 [stack 0]
 Keyer {
  invert true
  operation "luminance key"
  range {{"15*UnderWater_proxy_BG1.mult_val\n"} {range.A+UnderWater_proxy_BG1.fall_off} 352 {range.C}}
  name Keyer12
  selected true
- xpos 15470
- ypos -29559
+ xpos 14480
+ ypos -10839
 }
 Invert {
  channels alpha
  name Invert5
  tile_color 0xdfff00ff
  selected true
- xpos 15470
- ypos -27063
+ xpos 14480
+ ypos -8343
 }
-set N29fb26f0 [stack 0]
+set N29c41cd0 [stack 0]
 Dot {
  name Dot225
  note_font_size 22
  selected true
- xpos 15504
- ypos -25422
+ xpos 14514
+ ypos -6702
 }
-push $N1652cd60
+push $N29c63890
 Dot {
  name Dot226
  note_font_size 22
  selected true
- xpos 16054
- ypos -29622
+ xpos 15064
+ ypos -10902
 }
-set N164aef20 [stack 0]
+set N29e3d6a0 [stack 0]
 Dot {
  name Dot227
  note_font_size 22
  selected true
- xpos 16604
- ypos -29622
+ xpos 15614
+ ypos -10902
 }
-set N164c3e10 [stack 0]
+set N29e42600 [stack 0]
 Keyer {
  invert true
  operation "luminance key"
  range {{"30*UnderWater_proxy_BG1.mult_val\n"} {range.A+UnderWater_proxy_BG1.fall_off} 352 {range.C}}
  name Keyer13
  selected true
- xpos 16570
- ypos -29559
+ xpos 15580
+ ypos -10839
 }
 Invert {
  channels alpha
  name Invert7
  tile_color 0xffffff
  selected true
- xpos 16570
- ypos -28407
+ xpos 15580
+ ypos -9687
 }
-set N29c3a840 [stack 0]
+set N2a1656c0 [stack 0]
 Dot {
  name Dot228
  note_font_size 22
  selected true
- xpos 16604
- ypos -28302
+ xpos 15614
+ ypos -9582
 }
-set N29f26f40 [stack 0]
+set N2a1bf7b0 [stack 0]
 Dot {
  name Dot229
  note_font_size 22
  selected true
- xpos 16604
- ypos -28230
+ xpos 15614
+ ypos -9510
 }
-set N2a0c6150 [stack 0]
+set N2a1c4960 [stack 0]
 Dot {
  name Dot230
  note_font_size 22
  selected true
- xpos 16604
- ypos -28086
+ xpos 15614
+ ypos -9366
 }
-set N2904b6b0 [stack 0]
+set N2a1c9da0 [stack 0]
 Dot {
  name Dot231
  note_font_size 22
  selected true
- xpos 16604
- ypos -26982
+ xpos 15614
+ ypos -8262
 }
-set N29e8d6a0 [stack 0]
+set N2a1cefd0 [stack 0]
 Dot {
  name Dot232
  note_font_size 22
  selected true
- xpos 16604
- ypos -25542
+ xpos 15614
+ ypos -6822
 }
-push $N165ebaa0
+push $N2a1a3af0
 Keyer {
  invert true
  operation "luminance key"
  range {{"5*UnderWater_proxy_BG1.mult_val\n"} {range.A+UnderWater_proxy_BG1.fall_off} 352 {range.C}}
  name Keyer14
  selected true
- xpos 14480
- ypos -29559
+ xpos 13490
+ ypos -10839
 }
 Invert {
  channels alpha
  name Invert9
  tile_color 0xff0000ff
  selected true
- xpos 14480
- ypos -25671
+ xpos 13490
+ ypos -6951
 }
-set N29b064d0 [stack 0]
+set N29cc6760 [stack 0]
 ChannelMerge {
  inputs 2
  operation stencil
  name ChannelMerge19
  selected true
- xpos 14480
- ypos -25557
+ xpos 13490
+ ypos -6837
 }
 ChannelMerge {
  inputs 2
  operation stencil
  name ChannelMerge20
  selected true
- xpos 14480
- ypos -25437
+ xpos 13490
+ ypos -6717
 }
 Dot {
  name Dot233
  note_font_size 22
  selected true
- xpos 14514
- ypos -25326
+ xpos 13524
+ ypos -6606
 }
-set N29fb3040 [stack 0]
+set N287ef250 [stack 0]
 Dot {
  name Dot234
  note_font_size 22
  selected true
- xpos 14514
- ypos -25206
+ xpos 13524
+ ypos -6486
 }
-push $N29fb3040
-push $N29b064d0
-push $N29ccf370
+push $N287ef250
+push $N29cc6760
+push $N2a1a8df0
 Keyer {
  invert true
  operation "luminance key"
  range {{"8*UnderWater_proxy_BG1.mult_val\n"} {range.A+UnderWater_proxy_BG1.fall_off} 352 {range.C}}
  name Keyer15
  selected true
- xpos 14920
- ypos -29559
+ xpos 13930
+ ypos -10839
 }
 Invert {
  channels alpha
  name Invert11
  tile_color 0xff5f00ff
  selected true
- xpos 14920
- ypos -26151
+ xpos 13930
+ ypos -7431
 }
-push $N29e8d6a0
-push $N29fb26f0
+push $N2a1cefd0
+push $N29c41cd0
 ChannelMerge {
  inputs 2
  operation stencil
  name ChannelMerge21
  selected true
- xpos 15470
- ypos -26997
+ xpos 14480
+ ypos -8277
 }
 Dot {
  name Dot235
  note_font_size 22
  selected true
- xpos 15504
- ypos -26862
+ xpos 14514
+ ypos -8142
 }
-set N29b916d0 [stack 0]
+set N29d19e30 [stack 0]
 Dot {
  name Dot236
  note_font_size 22
  selected true
- xpos 15504
- ypos -26766
+ xpos 14514
+ ypos -8046
 }
-set N29def740 [stack 0]
+set N29d1f0a0 [stack 0]
 Dot {
  name Dot237
  note_font_size 22
  selected true
- xpos 15504
- ypos -26622
+ xpos 14514
+ ypos -7902
 }
-push $N29def740
-push $N29b916d0
-push $N29fb26f0
-push $N164aef20
+push $N29d1f0a0
+push $N29d19e30
+push $N29c41cd0
+push $N29e3d6a0
 Keyer {
  invert true
  operation "luminance key"
  range {{"25*UnderWater_proxy_BG1.mult_val\n"} {range.A+UnderWater_proxy_BG1.fall_off} 352 {range.C}}
  name Keyer16
  selected true
- xpos 16020
- ypos -29559
+ xpos 15030
+ ypos -10839
 }
 Invert {
  channels alpha
  name Invert13
  tile_color 0x1fff00ff
  selected true
- xpos 16020
- ypos -27447
+ xpos 15030
+ ypos -8727
 }
-push $N2904b6b0
-push $N2a0c6150
-push $N29f26f40
-push $N29c3a840
-push $N164c3e10
+push $N2a1c9da0
+push $N2a1c4960
+push $N2a1bf7b0
+push $N2a1656c0
+push $N29e42600
 Dot {
  name Dot238
  note_font_size 22
  selected true
- xpos 17044
- ypos -29622
+ xpos 16054
+ ypos -10902
 }
 Keyer {
  invert true
@@ -687,23 +686,23 @@ Keyer {
  range {{"35*UnderWater_proxy_BG1.mult_val\n"} {range.A+UnderWater_proxy_BG1.fall_off} 352 {range.C}}
  name Keyer17
  selected true
- xpos 17010
- ypos -29583
+ xpos 16020
+ ypos -10863
 }
 Invert {
  channels alpha
  name Invert15
  tile_color 0x3fffff
  selected true
- xpos 17010
- ypos -28767
+ xpos 16020
+ ypos -10047
 }
-push $N3588a1a0
+push $N29cacec0
 Unpremult {
  name Unpremult3
  selected true
- xpos 17450
- ypos -29289
+ xpos 16460
+ ypos -10569
 }
 HueCorrect {
  inputs 1+1
@@ -721,8 +720,8 @@ HueCorrect {
  tile_color 0x3fffff
  label BLUE
  selected true
- xpos 17450
- ypos -28767
+ xpos 16460
+ ypos -10047
 }
 HueCorrect {
  inputs 1+1
@@ -740,8 +739,8 @@ HueCorrect {
  tile_color 0xffffff
  label CYAN
  selected true
- xpos 17450
- ypos -28407
+ xpos 16460
+ ypos -9687
 }
 Grade {
  inputs 1+1
@@ -749,8 +748,8 @@ Grade {
  name Grade43
  label "FAR LIFT"
  selected true
- xpos 17450
- ypos -28311
+ xpos 16460
+ ypos -9591
 }
 ColorLookup {
  inputs 1+1
@@ -765,15 +764,15 @@ ColorLookup {
  tile_color 0xff005fff
  label "BLUE SPECTRUM"
  selected true
- xpos 17450
- ypos -28239
+ xpos 16460
+ ypos -9519
 }
 Log2Lin {
  operation lin2log
  name Log2Lin3
  selected true
- xpos 17450
- ypos -28137
+ xpos 16460
+ ypos -9417
 }
 Soften {
  inputs 1+1
@@ -783,14 +782,14 @@ Soften {
  name Soften4
  label "Far Amount: \[value amount]\n"
  selected true
- xpos 17450
- ypos -28095
+ xpos 16460
+ ypos -9375
 }
 Log2Lin {
  name Log2Lin4
  selected true
- xpos 17450
- ypos -28041
+ xpos 16460
+ ypos -9321
 }
 HueCorrect {
  inputs 1+1
@@ -808,8 +807,8 @@ HueCorrect {
  tile_color 0x1fff00ff
  label GREEN
  selected true
- xpos 17450
- ypos -27447
+ xpos 16460
+ ypos -8727
 }
 HueCorrect {
  inputs 1+1
@@ -827,8 +826,8 @@ HueCorrect {
  tile_color 0xdfff00ff
  label YELLOW
  selected true
- xpos 17450
- ypos -27063
+ xpos 16460
+ ypos -8343
 }
 Grade {
  inputs 1+1
@@ -836,8 +835,8 @@ Grade {
  name Grade44
  label "MID LIFT"
  selected true
- xpos 17450
- ypos -26871
+ xpos 16460
+ ypos -8151
 }
 ColorLookup {
  inputs 1+1
@@ -852,15 +851,15 @@ ColorLookup {
  tile_color 0xff005fff
  label "GREEN SPECTRUM"
  selected true
- xpos 17450
- ypos -26775
+ xpos 16460
+ ypos -8055
 }
 Log2Lin {
  operation lin2log
  name Log2Lin5
  selected true
- xpos 17450
- ypos -26673
+ xpos 16460
+ ypos -7953
 }
 Soften {
  inputs 1+1
@@ -870,14 +869,14 @@ Soften {
  name Soften5
  label "Mid Amount: \[value amount]"
  selected true
- xpos 17450
- ypos -26631
+ xpos 16460
+ ypos -7911
 }
 Log2Lin {
  name Log2Lin6
  selected true
- xpos 17450
- ypos -26577
+ xpos 16460
+ ypos -7857
 }
 HueCorrect {
  inputs 1+1
@@ -895,8 +894,8 @@ HueCorrect {
  tile_color 0xff5f00ff
  label ORANGE
  selected true
- xpos 17450
- ypos -26151
+ xpos 16460
+ ypos -7431
 }
 HueCorrect {
  inputs 1+1
@@ -914,8 +913,8 @@ HueCorrect {
  tile_color 0xff0000ff
  label RED
  selected true
- xpos 17450
- ypos -25671
+ xpos 16460
+ ypos -6951
 }
 Grade {
  inputs 1+1
@@ -923,15 +922,15 @@ Grade {
  name Grade45
  label "CLOSE LIFT"
  selected true
- xpos 17450
- ypos -25335
+ xpos 16460
+ ypos -6615
 }
 Log2Lin {
  operation lin2log
  name Log2Lin7
  selected true
- xpos 17450
- ypos -25257
+ xpos 16460
+ ypos -6537
 }
 Soften {
  inputs 1+1
@@ -941,62 +940,42 @@ Soften {
  name Soften6
  label "Close Amount: \[value amount]"
  selected true
- xpos 17450
- ypos -25215
+ xpos 16460
+ ypos -6495
 }
 Log2Lin {
  name Log2Lin8
  selected true
- xpos 17450
- ypos -25161
+ xpos 16460
+ ypos -6441
 }
 CopyBBox {
  inputs 2
  name CopyBBox1
  selected true
- xpos 17450
- ypos -24969
+ xpos 16460
+ ypos -6249
 }
 Premult {
  name Premult7
  selected true
- xpos 17450
- ypos -24537
+ xpos 16460
+ ypos -5817
 }
 Dot {
  name Dot239
  note_font_size 22
  selected true
- xpos 17484
- ypos -24198
-}
-StickyNote {
- inputs 0
- name StickyNote30
- label " CONTROL HERE -->> "
- note_font "DejaVu Sans Bold"
- note_font_size 122
- selected true
- xpos 14932
- ypos -30117
-}
-StickyNote {
- inputs 0
- name StickyNote31
- label "strong edge fix\n( need to be tailored for the shot )"
- note_font "DejaVu Sans Bold"
- note_font_size 32
- selected true
- xpos 14236
- ypos -30541
+ xpos 16494
+ ypos -5478
 }
 push $cut_paste_input
 NoOp {
  name UnderWater_proxy_BG1
  note_font_size 41
  selected true
- xpos 16570
- ypos -30071
+ xpos 15580
+ ypos -11351
  addUserKnob {20 User}
  addUserKnob {26 depth_ l DEPTH}
  addUserKnob {7 mult_val l Multiplier R 0 10}
@@ -1025,4 +1004,24 @@ NoOp {
  addUserKnob {19 close_lift l "Close Lift"}
  close_lift {0 0 0 0}
  addUserKnob {6 close_lift_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
+}
+StickyNote {
+ inputs 0
+ name StickyNote30
+ label " CONTROL HERE -->> "
+ note_font "DejaVu Sans Bold"
+ note_font_size 122
+ selected true
+ xpos 13942
+ ypos -11397
+}
+StickyNote {
+ inputs 0
+ name StickyNote31
+ label "strong edge fix\n( need to be tailored for the shot )"
+ note_font "DejaVu Sans Bold"
+ note_font_size 32
+ selected true
+ xpos 13246
+ ypos -11821
 }
