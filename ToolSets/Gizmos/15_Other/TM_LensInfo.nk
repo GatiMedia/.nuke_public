@@ -1,0 +1,107 @@
+# Tom Mortelette 2024
+version 14.1 v1
+PostageStamp {
+ name TM_LensInfo1
+ label "\[value focal]mm, T/\[value tstop] @ \[value focus]\[value outunit]\n\[metadata exr/r3d/camera_model]\[metadata exr/CameraModel]\n\[metadata exr/r3d/lens_brand] \[metadata exr/r3d/lens_name]\[metadata exr/LensModel]"
+ addUserKnob {20 lensinfotab l LensInfo}
+ addUserKnob {26 step1 l "<b>1. " T "Connect a plate with metadata"}
+ addUserKnob {4 inunit l "input unit" M {mm cm m "" ""}}
+ addUserKnob {4 outunit l "output unit" -STARTLINE M {mm cm m ""}}
+ outunit m
+ addUserKnob {7 tstop l T-Stop +LOG_SLIDER R 2 16}
+ tstop {{"rint(max(fstop_exr, fstop_r3d, tstop_cooke, tstop_arri)*10)/10"}}
+ addUserKnob {7 fstop l "aperture ƒ/" +LOG_SLIDER R 2 16}
+ fstop {{rint(tstop*sqrt(transmission/100)*10)/10}}
+ addUserKnob {7 focal l "focal length (mm)" +LOG_SLIDER R 15 300}
+ focal {{"max(focal_r3d, focal_cooke, focal_arri)"}}
+ addUserKnob {7 focus l "focus distance" +LOG_SLIDER R 0.5 50}
+ focus {{"max(focus_r3d, focus_cooke, focus_arri)/inmult*outmult"}}
+ addUserKnob {20 advanced_group l advanced n 1}
+ advanced_group 0
+ addUserKnob {7 transmission l "transmittance (%)" R 75 100}
+ transmission {{transmission_factor_cooke}}
+ addUserKnob {7 dof l "focus region size" +LOG_SLIDER R 0 5}
+ dof {{focus_region_r3d/inmult*outmult}}
+ addUserKnob {7 hyperfocal l "hyperfocal dist." +LOG_SLIDER R 0 100}
+ hyperfocal {{hyperfocal_r3d/inmult*outmult}}
+ addUserKnob {7 pixelaspect l "pixel aspect ratio" R 1 2}
+ pixelaspect {{"\[metadata exr/pixelAspectRatio]"}}
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 step2 l "<b>2. " T "Create a defocus node"}
+ addUserKnob {22 create_bokeh l Bokeh T "import defocus\nn = defocus.create_Bokeh()\ndefocus.link(n)" +STARTLINE}
+ addUserKnob {22 create_ozd l OpticalZDefocus -STARTLINE T "import defocus\nn = defocus.create_OpticalZDefocus()\ndefocus.link(n)"}
+ addUserKnob {22 create_pzd l PxF_ZDefocus T "import defocus\nn = defocus.create_PxFZDefocus()\ndefocus.link(n)" +STARTLINE}
+ addUserKnob {22 create_pdd l PxF_DeepDefocus -STARTLINE T "import defocus\nn = defocus.create_PxFDeepDefocus()\ndefocus.link(n)"}
+ addUserKnob {26 step2a l " " T "(Or link an existing one)"}
+ addUserKnob {22 link_existing l "link existing defocus" -STARTLINE T "import defocus\ndefocus.link()"}
+ addUserKnob {26 step3 l "<b>3. " T "Adjust film back size (41 on surv)"}
+ addUserKnob {26 step4 l "<b>4. " T "Adjust the max defocus value to avoid clamping/slowdowns\nif you're using OpticalZDefocus or the PxF nodes"}
+ addUserKnob {26 step5_1 l "<b>5. " T "Read the help section if you need help."}
+ addUserKnob {20 help_group l help n 1}
+ help_group 0
+ addUserKnob {22 which_node_help l "Which node should I use?" T "import webbrowser\nwebbrowser.open('https://www.youtube.com/watch?v=HTM59OFuQfQ')" +STARTLINE}
+ addUserKnob {22 dof_help l "How does DoF work?" T "import webbrowser\nwebbrowser.open('https://en.wikipedia.org/wiki/Depth_of_field')" +STARTLINE}
+ addUserKnob {22 tstop_help l " What's a T-stop??" -STARTLINE T "import webbrowser\nwebbrowser.open('https://expertphotography.com/t-stop-vs-f-stop/')"}
+ addUserKnob {26 text_tips l <b>Tips T "Connect a shadow pass or render the ground geometry\nChange the defocus mode to \"ZDefocus layers\" \nor \"focal distance visualization\" \nto view the areas in focus\nUse an Add in the Z channel to adjust the focus plane to match the plate\n\nI recommend using OpticalZDefoxus \nunless your get artefacts, thenPxF_ZDefocus or \nPxF_DeepDefocus if you need deep."}
+ addUserKnob {26 text_note l <b>Note T "Some information is not available with some cameras/lenses"}
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {26 text_version l "" +STARTLINE T "<font color=#808080 size=\"5\" >v0.7</font>"}
+ addUserKnob {26 text_author l "" +STARTLINE T "<font color=#808080 size=\"2\">Lens Info © 2024 by Tom Mortelette</font>"}
+ addUserKnob {20 debugtab l Debug +INVISIBLE}
+ addUserKnob {3 inmult R 1 1000}
+ inmult {{"\[switch \[value inunit]  \{m \{expr \{1\}\} cm \{expr \{100\}\} mm \{expr \{1000\}\} inch \{expr \{39.27\}\} feet  \{expr \{1.094\}\} default \{expr \{0\}\}\}]"}}
+ addUserKnob {3 outmult -STARTLINE R 1 1000}
+ outmult {{"\[switch \[value outunit]  \{m \{expr \{1\}\} cm \{expr \{100\}\} mm \{expr \{1000\}\} inch \{expr \{39.27\}\} feet  \{expr \{1.094\}\} default \{expr \{0\}\}\}]"}}
+ addUserKnob {26 exr_div l <b>EXR}
+ addUserKnob {7 fstop_exr l fstop R 2 16}
+ fstop_exr {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/aperture'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {26 cooke_div l <b>Cooke}
+ addUserKnob {7 tstop_cooke l tstop R 2 16}
+ tstop_cooke {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/cooke/aperture_ring_t_stop'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {3 transmission_factor_cooke l transmission}
+ transmission_factor_cooke {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/cooke/transmission_factor'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0\\n]"}}
+ addUserKnob {3 focal_cooke l focal R 10 250}
+ focal_cooke {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/cooke/zoom'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {3 focus_cooke l focus -STARTLINE R 0 100000}
+ focus_cooke {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/cooke/focus_distance_mm'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {3 prime_mm}
+ prime_mm {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/cooke/prime_mm'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ 0]"}}
+ addUserKnob {6 is_prime -STARTLINE}
+ is_prime {{"\[expr \[metadata exr/cooke/is_prime]\[metadata exr/cooke/prime_mm]>0]"}}
+ addUserKnob {3 zoom_min_mm}
+ zoom_min_mm {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/cooke/zoom_min_mm'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ 0]"}}
+ addUserKnob {3 zoom_max_mm -STARTLINE}
+ zoom_max_mm {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/cooke/zoom_max_mm'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ 0]"}}
+ addUserKnob {26 r3d_div l <b>R3D}
+ addUserKnob {7 fstop_r3d l fstop R 1 16}
+ fstop_r3d {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/r3d/lens_aperture'\\]/10\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {3 focal_r3d l focal R 10 250}
+ focal_r3d {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/r3d/lens_focal_length'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {3 focus_r3d l focus -STARTLINE R 0 100000}
+ focus_r3d {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/r3d/lens_focus_distance'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {3 focus_far_r3d l focus_far R 0 100000}
+ focus_far_r3d {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/r3d/lens_focus_distance_far'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {3 focus_near_r3d l focus_near -STARTLINE R 0 100000}
+ focus_near_r3d {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/r3d/lens_focus_distance_near'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {3 focus_region_r3d l focus_region R 0 1000}
+ focus_region_r3d {{focus_far_r3d-focus_near_r3d}}
+ addUserKnob {3 hyperfocal_r3d l hyperfocal -STARTLINE R 1 100000}
+ hyperfocal_r3d {{"\[python -execlocal try:\\n\\ \\ \\ \\ ret\\ =\\ nuke.thisNode().metadata()\\\['exr/r3d/lens_hyperfocal_distance'\\]\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {26 ARRI_div l <b>ARRI}
+ addUserKnob {7 fstop_arri l fstop R 2 16}
+ fstop_arri {{"\[python -execlocal try:\\n\\ \\ \\ \\ iris\\ =\\ nuke.thisNode().metadata()\\\['exr/LensIris'\\]\\n\\ \\ \\ \\ if\\ iris\\ ==\\ 'Infinite':\\n\\ \\ \\ \\ \\ \\ \\ \\ ret\\ =\\ 0\\n\\ \\ \\ \\ else:\\n\\ \\ \\ \\ \\ \\ \\ \\ ret\\ =\\ iris\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {7 tstop_arri l tstop R 2 16}
+ tstop_arri {{"\[python -execlocal try:\\n\\ \\ \\ \\ iris\\ =\\ nuke.thisNode().metadata()\\\['exr/T-Stop'\\]\\n\\ \\ \\ \\ if\\ iris\\ ==\\ 'Infinite':\\n\\ \\ \\ \\ \\ \\ \\ \\ ret\\ =\\ 0\\n\\ \\ \\ \\ else:\\n\\ \\ \\ \\ \\ \\ \\ \\ ret\\ =\\ iris\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ \\ 0]"}}
+ addUserKnob {3 focal_arri l focal}
+ focal_arri {{"\[python -execlocal try:\\n\\ \\ \\ \\ m\\ =\\ nuke.thisNode().metadata()\\\['exr/FocalLength'\\]\\n\\ \\ \\ \\ ret\\ =\\ m.rstrip('\\ m')\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ 0]"}}
+ addUserKnob {3 focus_arri l focus -STARTLINE}
+ focus_arri {{"\[python -execlocal try:\\n\\ \\ \\ \\ m\\ =\\ nuke.thisNode().metadata()\\\['exr/FocusDistance'\\]\\n\\ \\ \\ \\ if\\ m\\ ==\\ 'Invalid':\\n\\ \\ \\ \\ \\ \\ \\ \\ ret\\ =\\ 0\\n\\ \\ \\ \\ else:\\n\\ \\ \\ \\ \\ \\ \\ \\ ret\\ =\\ m\\nexcept:\\n\\ \\ \\ \\ ret\\ =\\ 0]"}}
+ addUserKnob {26 calc_div l <b>calculated}
+ addUserKnob {6 fstop_disagree +STARTLINE}
+ fstop_disagree {{"max(fstop_exr, fstop_r3d, tstop_cooke)-min(fstop_exr, fstop_r3d, tstop_cooke)"}}
+ addUserKnob {6 focal_disagree -STARTLINE}
+ focal_disagree {{focal_cooke-focal_r3d}}
+ addUserKnob {6 focus_disagree -STARTLINE}
+ focus_disagree {{focus_cooke-focus_r3d}}
+}
