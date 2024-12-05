@@ -13,6 +13,7 @@ def changeChannels():
         ok_channels_shuffle = ['none', 'rgba', 'rgb', 'alpha']
         ok_operation_merge = ['max', 'min', 'multiply', 'over', 'plus', 'screen', 'stencil']
         ok_operation_channelmerge = ['max', 'min', 'multiply', 'plus', 'stencil', 'union']
+        ok_operation_deepmerge = ['combine', 'holdout', 'plus']
 
         for sel_node in sel_nodes:
 
@@ -67,7 +68,18 @@ def changeChannels():
                             sel_node['operation'].setValue('max')
                     else:
                         sel_node['operation'].setValue('max')
-
+                        
+            # setting up for operation knob on DeepMerge
+                if sel_node.Class() == 'DeepMerge2':
+                    if not sel_node['operation'].value() == "plus":
+                        if sel_node['operation'].value() in ok_operation_deepmerge:
+                            channel_index = ok_operation_deepmerge.index(sel_node['operation'].value())
+                            sel_node['operation'].setValue(ok_operation_deepmerge[channel_index + 1])
+                        else:
+                            sel_node['operation'].setValue('combine')
+                    else:
+                        sel_node['operation'].setValue('combine')
+            
             # setting up for old shuffle node
             if sel_node.knob('in'):
                 channels = ['red','green','blue','alpha']
