@@ -387,7 +387,7 @@ try:
     cg_grade_menu = utilitiesMenu.addMenu('Dynamic CG Grade Setups (BETA)', icon='Geometry.png')
     cg_grade_menu.addCommand('CG_Lighting_new', 'cg_grade_setup.main("lighting")')
     cg_grade_menu.addCommand('CG_Material_new', 'cg_grade_setup.main("material")')
-    cg_grade_menu.addCommand('CG_Full_new', 'cg_grade_setup.main("full_setup")'))
+    cg_grade_menu.addCommand('CG_Full_new', 'cg_grade_setup.main("full_setup")')
 except:
     pass
 
