@@ -49,16 +49,22 @@ def changeChannels():
             if sel_node.knob('operation'):
                 if sel_node.Class() == 'Merge2':
                     if not sel_node['operation'].value() == "stencil":
-                        channel_index = ok_operation_merge.index(sel_node['operation'].value())
-                        sel_node['operation'].setValue(ok_operation_merge[channel_index + 1])
+                        if sel_node['operation'].value() in ok_operation_merge:
+                            channel_index = ok_operation_merge.index(sel_node['operation'].value())
+                            sel_node['operation'].setValue(ok_operation_merge[channel_index + 1])
+                        else:
+                            sel_node['operation'].setValue('max')
                     else:
                         sel_node['operation'].setValue('max')
 
             # setting up for operation knob on ChannelMerge
                 if sel_node.Class() == 'ChannelMerge':
                     if not sel_node['operation'].value() == "union":
-                        channel_index = ok_operation_channelmerge.index(sel_node['operation'].value())
-                        sel_node['operation'].setValue(ok_operation_channelmerge[channel_index + 1])
+                        if sel_node['operation'].value() in ok_operation_channelmerge:
+                            channel_index = ok_operation_channelmerge.index(sel_node['operation'].value())
+                            sel_node['operation'].setValue(ok_operation_channelmerge[channel_index + 1])
+                        else:
+                            sel_node['operation'].setValue('max')
                     else:
                         sel_node['operation'].setValue('max')
 
