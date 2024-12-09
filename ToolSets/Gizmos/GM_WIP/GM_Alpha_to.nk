@@ -1,0 +1,86 @@
+Group {
+name GM_Alpha_to1
+selected true
+xpos -21380
+ypos -63442
+addUserKnob {20 User}
+addUserKnob {4 alpha_to l "Alpha to" M {Unchained "Not 0 to 1" "Less than 1 to 0" "r + g+ b" ""}}
+alpha_to "Not 0 to 1"
+addUserKnob {26 ""}
+addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Alpha_to© by Attila Gasparetz</font>"}
+}
+Input {
+inputs 0
+name Input
+selected true
+xpos -810
+ypos -322
+}
+Dot {
+name Dot1
+note_font_size 22
+xpos -776
+ypos -270
+}
+set N87b7b520 [stack 0]
+Dot {
+name Dot624
+note_font_size 22
+xpos -556
+ypos -270
+}
+set N9ea63a00 [stack 0]
+Expression {
+temp_name0 clamp
+temp_expr0 1
+expr3 "clamp==1 ? clamp(r+g+b) : r+g+b"
+name r_plus_g_plus_b
+xpos -370
+ypos -202
+}
+push $N9ea63a00
+Expression {
+expr3 "a == 1 ? a:0"
+name Expression13
+xpos -480
+ypos -202
+}
+push $N9ea63a00
+Expression {
+expr3 "a < 0.000000001 ? a:1"
+name Expression3
+xpos -590
+ypos -202
+}
+push $N9ea63a00
+Dot {
+name Dot625
+note_font_size 22
+xpos -666
+ypos -198
+}
+Switch {
+inputs 4
+which {{parent.alpha_to}}
+name Switch1
+label "Which: \[value which]"
+xpos -590
+ypos -112
+}
+push $N87b7b520
+Copy {
+inputs 2
+from0 rgba.alpha
+to0 rgba.alpha
+name Copy1
+xpos -810
+ypos -112
+disable {{parent.disable}}
+}
+Output {
+name Output1
+xpos -810
+ypos -10
+}
+end_group
