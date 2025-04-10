@@ -2,12 +2,14 @@ Group {
 name GM_StackGrade1
 tile_color 0x3e80a4ff
 selected true
-xpos 1573
-ypos 9902
+xpos -6530
+ypos 16022
 addUserKnob {20 User}
-addUserKnob {6 show_range l "Show Range" +STARTLINE}
+addUserKnob {6 show_range l "<b>&nbsp;Show Range" +STARTLINE}
+addUserKnob {26 inf l "" -STARTLINE T "<font color=grey>( sets all alpha to 1 to show whole range )"}
 addUserKnob {26 range l <b>RANGE}
 addUserKnob {41 operation T Keyer30.operation}
+addUserKnob {41 invert -STARTLINE T Keyer30.invert}
 addUserKnob {41 range_1 l range T Keyer30.range}
 addUserKnob {26 grade l <b>GRADE}
 addUserKnob {4 strength l Strength M {Low Mid High}}
@@ -15,7 +17,10 @@ strength Mid
 addUserKnob {41 white l gain T Grade85.white}
 addUserKnob {41 multiply T Grade85.multiply}
 addUserKnob {41 gamma T Grade85.gamma}
-addUserKnob {26 "" +STARTLINE}
+addUserKnob {41 saturation T Saturation1.saturation}
+addUserKnob {26 ""}
+addUserKnob {41 size l details T Blur1.size}
+addUserKnob {26 ""}
 addUserKnob {7 mix_overall l mix}
 mix_overall 1
 addUserKnob {26 ""}
@@ -24,101 +29,108 @@ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_S
 }
 Input {
 inputs 0
-name Input1
+name img
 xpos -480
-ypos 38
+ypos -442
 }
 Dot {
 name Dot3
 note_font_size 22
 xpos -446
-ypos 114
+ypos -366
 }
-set Nedbe4c0 [stack 0]
+set N478fc5f0 [stack 0]
 Log2Lin {
 operation lin2log
 name Log2Lin5
 xpos -480
-ypos 158
+ypos -154
 }
+Dot {
+name Dot17
+note_font_size 22
+xpos -446
+ypos -30
+}
+set Nbd6f31c0 [stack 0]
 Dot {
 name Dot562
 note_font_size 22
 xpos -446
-ypos 210
+ypos 114
 }
-set N1f9aa140 [stack 0]
+set Nb58a6ae0 [stack 0]
 Keyer {
 operation "luminance key"
-range {0.5 0.7 1 1}
+range {0.5 1 2 2}
 name Keyer30
 xpos -370
-ypos 200
+ypos 104
 }
-set N1fadd670 [stack 0]
+set Nbf4f1370 [stack 0]
 Dot {
 name Dot4
 note_font_size 22
 xpos -226
-ypos 210
+ypos 114
 }
 Expression {
 channel3 alpha
 expr3 a<0.000001?a:1
 name Expression1
 xpos -260
-ypos 2582
+ypos 3062
 }
-push $Nedbe4c0
+push $N478fc5f0
 Dot {
 name Dot7
 note_font_size 22
 xpos -6
-ypos 114
+ypos -366
 }
 Dot {
 name Dot5
 note_font_size 22
 xpos -6
-ypos 2658
+ypos 3138
 }
-set Nbc78dc0 [stack 0]
+set Ne0ecdba0 [stack 0]
 Clamp {
 channels rgba
 name Clamp1
 xpos -150
-ypos 2654
+ypos 3134
 }
 Grade {
 inputs 1+1
-multiply {88 1 1 1}
+multiply {99 1 1 1}
 multiply_panelDropped true
 black_clamp false
 name Grade4
 xpos -260
-ypos 2654
+ypos 3134
 }
 Dot {
 name Dot16
 note_font_size 22
 xpos -226
-ypos 3306
+ypos 3786
 }
 Input {
 inputs 0
 name mask
 xpos 180
-ypos 2966
+ypos 3446
 number 1
 }
-push $Nbc78dc0
+push $Ne0ecdba0
 Dot {
 name Dot6
 note_font_size 22
 xpos -6
-ypos 2802
+ypos 3282
 }
-set N187da8b0 [stack 0]
+set Nc57a1cf0 [stack 0]
 Shuffle2 {
 fromInput1 {{0} B}
 fromInput2 {{0} B}
@@ -126,41 +138,96 @@ mappings "4 black -1 -1 rgba.red 0 0 black -1 -1 rgba.green 0 1 black -1 -1 rgba
 name Shuffle1
 label "\[string toupper \[value in1]]"
 xpos -40
-ypos 2882
+ypos 3338
 }
 ChannelMerge {
 inputs 2
 operation multiply
 name ChannelMerge1
 xpos -40
-ypos 2954
+ypos 3434
 disable {{"!\[exists parent.input1]"}}
 }
-push $N1fadd670
-push $N1f9aa140
+push $Nbd6f31c0
+Dot {
+name Dot18
+note_font_size 22
+xpos -996
+ypos -30
+}
+Dot {
+name Dot19
+note_font_size 22
+xpos -996
+ypos 2658
+}
+set Ne0f739f0 [stack 0]
+Dot {
+name Dot20
+note_font_size 22
+xpos -886
+ypos 2658
+}
+push $Ne0f739f0
+Blur {
+channels rgba
+size 0.5
+name Blur1
+label "Size: \[value size]"
+xpos -1030
+ypos 2768
+}
+Merge2 {
+inputs 2
+operation divide
+name Merge1
+label "\[knob tile_color \[ expr \{\[value disable]? 4278190335:0\}]]"
+xpos -920
+ypos 2774
+}
+push $Nbf4f1370
+push $Nbf4f1370
+push $Nb58a6ae0
+Saturation {
+inputs 1+1
+name Saturation1
+label "Value: \[value saturation]"
+xpos -480
+ypos 152
+}
 Grade {
 inputs 1+1
-white 0.98
 black_clamp false
 name Grade85
 xpos -480
-ypos 254
+ypos 206
 }
 Dot {
 name Dot563
 note_font_size 22
 xpos -446
-ypos 306
+ypos 258
 }
-set Ne58acf0 [stack 0]
+set N960f53f0 [stack 0]
 Keyer {
+invert {{parent.Keyer30.invert}}
 operation "luminance key"
 range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
 name Keyer31
 xpos -370
-ypos 296
+ypos 248
 }
-push $Ne58acf0
+set N50d5520 [stack 0]
+push $N50d5520
+push $N960f53f0
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation2
+label "Value: \[value saturation]"
+xpos -480
+ypos 272
+}
 Grade {
 inputs 1+1
 white {{parent.Grade85.white}}
@@ -175,390 +242,5 @@ Dot {
 name Dot568
 note_font_size 22
 xpos -446
-ypos 402
+ypos 378
 }
-set N1f7d9cc0 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer32
-xpos -370
-ypos 392
-}
-push $N1f7d9cc0
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade87
-xpos -480
-ypos 446
-}
-Dot {
-name Dot570
-note_font_size 22
-xpos -446
-ypos 474
-}
-set N1f1cc840 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer33
-xpos -370
-ypos 464
-}
-push $N1f1cc840
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade88
-xpos -480
-ypos 518
-}
-Dot {
-name Dot571
-note_font_size 22
-xpos -446
-ypos 570
-}
-set N204eb380 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer34
-xpos -370
-ypos 560
-}
-push $N204eb380
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade89
-xpos -480
-ypos 614
-}
-set N204fb3d0 [stack 0]
-Dot {
-name Dot572
-note_font_size 22
-xpos -446
-ypos 882
-}
-set Ne5df120 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer35
-xpos -370
-ypos 872
-}
-push $Ne5df120
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade90
-xpos -480
-ypos 926
-}
-Dot {
-name Dot573
-note_font_size 22
-xpos -446
-ypos 978
-}
-set N1f9c2730 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer36
-xpos -370
-ypos 968
-}
-push $N1f9c2730
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade91
-xpos -480
-ypos 1022
-}
-Dot {
-name Dot574
-note_font_size 22
-xpos -446
-ypos 1050
-}
-set Ne55ed10 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer37
-xpos -370
-ypos 1040
-}
-push $Ne55ed10
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade92
-xpos -480
-ypos 1094
-}
-Dot {
-name Dot1
-note_font_size 22
-xpos -446
-ypos 1146
-}
-set Ne5f6320 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer1
-xpos -370
-ypos 1136
-}
-push $Ne5f6320
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade1
-xpos -480
-ypos 1190
-}
-Dot {
-name Dot2
-note_font_size 22
-xpos -446
-ypos 1218
-}
-set Ne617080 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer2
-xpos -370
-ypos 1208
-}
-push $Ne617080
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade2
-xpos -480
-ypos 1262
-}
-set Ne627130 [stack 0]
-Dot {
-name Dot8
-note_font_size 22
-xpos -446
-ypos 1482
-}
-set N1fb33c60 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer3
-xpos -370
-ypos 1472
-}
-push $N1fb33c60
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade3
-xpos -480
-ypos 1526
-}
-Dot {
-name Dot11
-note_font_size 22
-xpos -446
-ypos 1578
-}
-set N140fae60 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer4
-xpos -370
-ypos 1568
-}
-push $N140fae60
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade5
-xpos -480
-ypos 1622
-}
-Dot {
-name Dot12
-note_font_size 22
-xpos -446
-ypos 1650
-}
-set N1756f870 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer5
-xpos -370
-ypos 1640
-}
-push $N1756f870
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade6
-xpos -480
-ypos 1694
-}
-Dot {
-name Dot13
-note_font_size 22
-xpos -446
-ypos 1746
-}
-set Ne54c6f0 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer6
-xpos -370
-ypos 1736
-}
-push $Ne54c6f0
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade7
-xpos -480
-ypos 1790
-}
-Dot {
-name Dot14
-note_font_size 22
-xpos -446
-ypos 1818
-}
-set N1fb37b50 [stack 0]
-Keyer {
-operation "luminance key"
-range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
-name Keyer7
-xpos -370
-ypos 1808
-}
-push $N1fb37b50
-Grade {
-inputs 1+1
-white {{parent.Grade85.white}}
-multiply {{parent.Grade85.multiply}}
-gamma {{parent.Grade85.gamma}}
-black_clamp false
-name Grade8
-xpos -480
-ypos 1862
-}
-push $Ne627130
-push $N204fb3d0
-Dot {
-name Dot15
-note_font_size 22
-selected true
-xpos -666
-ypos 834
-}
-Switch {
-inputs 3
-which {{parent.strength}}
-name Switch2
-label "Which: \[value which]"
-xpos -700
-ypos 1976
-}
-Log2Lin {
-name Log2Lin6
-xpos -700
-ypos 2150
-}
-push $N187da8b0
-Keymix {
-inputs 3
-name Keymix1
-xpos -700
-ypos 2960
-}
-push $Nedbe4c0
-Dot {
-name Dot10
-note_font_size 22
-xpos -996
-ypos 114
-}
-Dot {
-name Dot9
-note_font_size 22
-xpos -996
-ypos 3114
-}
-Dissolve {
-inputs 2
-which {{mix_overall}}
-name Dissolve1
-label "Which: \[value which]"
-xpos -700
-ypos 3098
-}
-Switch {
-inputs 2
-which {{show_range}}
-name Switch1
-label "Which: \[value which]"
-xpos -700
-ypos 3296
-}
-Output {
-name Output1
-xpos -700
-ypos 3422
-}
-end_group
