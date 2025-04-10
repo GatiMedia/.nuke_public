@@ -554,3 +554,229 @@ label "Value: \[value saturation]"
 xpos -480
 ypos 1928
 }
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade3
+xpos -480
+ypos 1982
+}
+Dot {
+name Dot11
+note_font_size 22
+xpos -446
+ypos 2034
+}
+set Nc451a860 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer4
+xpos -370
+ypos 2024
+}
+set Nc451fb40 [stack 0]
+push $Nc451fb40
+push $Nc451a860
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation14
+label "Value: \[value saturation]"
+xpos -480
+ypos 2072
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade5
+xpos -480
+ypos 2126
+}
+Dot {
+name Dot12
+note_font_size 22
+xpos -446
+ypos 2154
+}
+set N2d3f3420 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer5
+xpos -370
+ypos 2144
+}
+set N2d3f8220 [stack 0]
+push $N2d3f8220
+push $N2d3f3420
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation13
+label "Value: \[value saturation]"
+xpos -480
+ypos 2168
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade6
+xpos -480
+ypos 2246
+}
+Dot {
+name Dot13
+note_font_size 22
+xpos -446
+ypos 2298
+}
+set N967f2ff0 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer6
+xpos -370
+ypos 2288
+}
+set N967f7f00 [stack 0]
+push $N967f7f00
+push $N967f2ff0
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation12
+label "Value: \[value saturation]"
+xpos -480
+ypos 2312
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade7
+xpos -480
+ypos 2390
+}
+Dot {
+name Dot14
+note_font_size 22
+xpos -446
+ypos 2442
+}
+set N7437e970 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer7
+xpos -370
+ypos 2432
+}
+set N742739f0 [stack 0]
+push $N742739f0
+push $N7437e970
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation11
+label "Value: \[value saturation]"
+xpos -480
+ypos 2480
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade8
+xpos -480
+ypos 2558
+}
+push $Nbf4fbfe0
+push $N2dcf62a0
+Dot {
+name Dot15
+note_font_size 22
+xpos -666
+ypos 954
+}
+Switch {
+inputs 3
+which {{parent.strength}}
+name Switch2
+label "Which: \[value which]\nGrade / Strength"
+xpos -700
+ypos 2618
+}
+Merge2 {
+inputs 2
+operation multiply
+name Merge3
+label "\[knob tile_color \[ expr \{\[value disable]? 4278190335:0\}]]"
+xpos -700
+ypos 2774
+}
+Log2Lin {
+name Log2Lin6
+xpos -700
+ypos 3110
+}
+push $Nc57a1cf0
+Keymix {
+inputs 3
+name Keymix1
+xpos -700
+ypos 3440
+}
+push $N478fc5f0
+Dot {
+name Dot10
+note_font_size 22
+xpos -1436
+ypos -366
+}
+Dot {
+name Dot9
+note_font_size 22
+xpos -1436
+ypos 3618
+}
+Dissolve {
+inputs 2
+which {{mix_overall}}
+name Dissolve1
+label "Which: \[value which]\nOverall Mix"
+xpos -700
+ypos 3596
+}
+Switch {
+inputs 2
+which {{show_range}}
+name Switch1
+label "Which: \[value which]\nShow Range"
+selected true
+xpos -700
+ypos 3770
+}
+Output {
+name Output1
+xpos -700
+ypos 3902
+}
+end_group
