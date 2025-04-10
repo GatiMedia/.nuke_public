@@ -543,3 +543,14 @@ name Keyer3
 xpos -370
 ypos 1880
 }
+set N966f67c0 [stack 0]
+push $N966f67c0
+push $Nbd0fd290
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation15
+label "Value: \[value saturation]"
+xpos -480
+ypos 1928
+}
