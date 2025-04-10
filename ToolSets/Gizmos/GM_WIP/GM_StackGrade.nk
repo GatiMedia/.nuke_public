@@ -244,3 +244,302 @@ note_font_size 22
 xpos -446
 ypos 378
 }
+set Ndb3fddf0 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer32
+xpos -370
+ypos 368
+}
+set N9cf283a0 [stack 0]
+push $N9cf283a0
+push $Ndb3fddf0
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation3
+label "Value: \[value saturation]"
+xpos -480
+ypos 392
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade87
+xpos -480
+ypos 446
+}
+Dot {
+name Dot570
+note_font_size 22
+xpos -446
+ypos 522
+}
+set N44699fa0 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer33
+xpos -370
+ypos 512
+}
+set Nd8ff1c40 [stack 0]
+push $Nd8ff1c40
+push $N44699fa0
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation4
+label "Value: \[value saturation]"
+xpos -480
+ypos 536
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade88
+xpos -480
+ypos 590
+}
+Dot {
+name Dot571
+note_font_size 22
+xpos -446
+ypos 666
+}
+set Nd90f1dd0 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer34
+xpos -370
+ypos 656
+}
+set N2cfab9d0 [stack 0]
+push $N2cfab9d0
+push $Nd90f1dd0
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation5
+label "Value: \[value saturation]"
+xpos -480
+ypos 680
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade89
+xpos -480
+ypos 734
+}
+set N2dcf62a0 [stack 0]
+Dot {
+name Dot572
+note_font_size 22
+xpos -446
+ypos 978
+}
+set N478f8f20 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer35
+xpos -370
+ypos 968
+}
+set N2edd40c0 [stack 0]
+push $N2edd40c0
+push $N478f8f20
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation6
+label "Value: \[value saturation]"
+xpos -480
+ypos 1016
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade90
+xpos -480
+ypos 1094
+}
+Dot {
+name Dot573
+note_font_size 22
+xpos -446
+ypos 1146
+}
+set N74ee9150 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer36
+xpos -370
+ypos 1136
+}
+set Nbe5f2110 [stack 0]
+push $Nbe5f2110
+push $N74ee9150
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation10
+label "Value: \[value saturation]"
+xpos -480
+ypos 1160
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade91
+xpos -480
+ypos 1238
+}
+Dot {
+name Dot574
+note_font_size 22
+xpos -446
+ypos 1290
+}
+set Nda0f9ee0 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer37
+xpos -370
+ypos 1280
+}
+set Nda0fee40 [stack 0]
+push $Nda0fee40
+push $Nda0f9ee0
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation9
+label "Value: \[value saturation]"
+xpos -480
+ypos 1304
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade92
+xpos -480
+ypos 1358
+}
+Dot {
+name Dot1
+note_font_size 22
+xpos -446
+ypos 1410
+}
+set N44ca1bb0 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer1
+xpos -370
+ypos 1400
+}
+set N44ca6af0 [stack 0]
+push $N44ca6af0
+push $N44ca1bb0
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation8
+label "Value: \[value saturation]"
+xpos -480
+ypos 1448
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade1
+xpos -480
+ypos 1502
+}
+Dot {
+name Dot2
+note_font_size 22
+xpos -446
+ypos 1554
+}
+set N7f68a660 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer2
+xpos -370
+ypos 1544
+}
+set N7f68f5a0 [stack 0]
+push $N7f68f5a0
+push $N7f68a660
+Saturation {
+inputs 1+1
+saturation {{parent.Saturation1.saturation}}
+name Saturation7
+label "Value: \[value saturation]"
+xpos -480
+ypos 1592
+}
+Grade {
+inputs 1+1
+white {{parent.Grade85.white}}
+multiply {{parent.Grade85.multiply}}
+gamma {{parent.Grade85.gamma}}
+black_clamp false
+name Grade2
+xpos -480
+ypos 1646
+}
+set Nbf4fbfe0 [stack 0]
+Dot {
+name Dot8
+note_font_size 22
+xpos -446
+ypos 1890
+}
+set Nbd0fd290 [stack 0]
+Keyer {
+invert {{parent.Keyer30.invert}}
+operation "luminance key"
+range {{parent.Keyer30.range.A} {parent.Keyer30.range.B} 1 1}
+name Keyer3
+xpos -370
+ypos 1880
+}
