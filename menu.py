@@ -318,6 +318,14 @@ except:
     pass
 
 try:
+    import reload_read
+    rr_menu = utilitiesMenu.addMenu('Reload Read', icon='Read.png')
+    rr_menu.addCommand('Reload All', 'reload_read.reload_all_read()', shortcut='ctrl+shift+r')
+    rr_menu.addCommand('Reload Selected', 'reload_read.reload_sel_read()', shortcut='ctrl+r')
+except:
+    pass
+
+try:
     import close_properties
     utilitiesMenu.addCommand('Close Properties', 'close_properties.close()', 'shift+d', icon='Tile.png')
 except:
