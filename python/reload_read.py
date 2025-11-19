@@ -7,9 +7,19 @@
 import nuke
 
 def reload_all_read():
-  for node in nuke.allNodes('Read'):
-    node['reload'].execute()
+    nodes_classes = ["Read", "DeepRead", "Camera2", "Camera3", "ReadGeo", "ReadGeo2"]
+    for node in nuke.allNodes(group=nuke.root()):
+        if node.Class() in nodes_classes:
+            try:
+                node["reload"].execute()
+            except Exception:
+                pass
 
-def reload_sel_nodes():
-  for node in nuke.selectedNodes('Read'):
-    node['reload'].execute()
+def reload_sel_read():
+    nodes_classes = ["Read", "DeepRead", "Camera2", "Camera3", "ReadGeo", "ReadGeo2"]
+    for node in nuke.selectedNodes():
+        if node.Class() in nodes_classes:
+            try:
+                node["reload"].execute()
+            except Exception:
+                pass
