@@ -1,0 +1,69 @@
+Dot {
+ name Dot13
+ selected true
+ xpos 1424
+ ypos 186
+}
+set N623e5c00 [stack 0]
+Reformat {
+ type scale
+ scale 1.2
+ resize none
+ pbb true
+ name ReformatOS2
+ selected true
+ xpos 1390
+ ypos 231
+}
+Dot {
+ name Dot17
+ label " Bokeh"
+ note_font "Verdana Bold"
+ note_font_size 21
+ selected true
+ xpos 1424
+ ypos 306
+}
+Reformat {
+ type scale
+ scale {{1/parent.ReformatOS2.scale}}
+ resize none
+ pbb true
+ name ReformatOSinv2
+ selected true
+ xpos 1390
+ ypos 375
+}
+Dot {
+ name Dot16
+ selected true
+ xpos 1424
+ ypos 426
+}
+push $N623e5c00
+Dot {
+ name Dot14
+ selected true
+ xpos 1534
+ ypos 186
+}
+DeepReformat {
+ type scale
+ scale {{parent.ReformatOS2.scale}}
+ resize none
+ pbb true
+ name DeepReformatOS2
+ label "\[knob tile_color \[ expr \{\[value disable]? 4278190335:0\}]]"
+ selected true
+ xpos 1500
+ ypos 231
+}
+Dot {
+ name Dot15
+ label " deep input"
+ note_font "Verdana Bold"
+ note_font_size 21
+ selected true
+ xpos 1534
+ ypos 306
+}
