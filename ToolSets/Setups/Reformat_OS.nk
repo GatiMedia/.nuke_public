@@ -10,7 +10,7 @@ Reformat {
  scale 1.2
  resize none
  pbb true
- name ReformatOS2
+ name ReformatOS1
  selected true
  xpos 1390
  ypos 231
@@ -26,10 +26,10 @@ Dot {
 }
 Reformat {
  type scale
- scale {{1/parent.ReformatOS2.scale}}
+ scale {{1/parent.ReformatOS1.scale}}
  resize none
  pbb true
- name ReformatOSinv2
+ name ReformatOSinv1
  selected true
  xpos 1390
  ypos 375
@@ -49,10 +49,10 @@ Dot {
 }
 DeepReformat {
  type scale
- scale {{parent.ReformatOS2.scale}}
+ scale {{parent.ReformatOS1.scale}}
  resize none
  pbb true
- name DeepReformatOS2
+ name DeepReformatOS1
  label "\[knob tile_color \[ expr \{\[value disable]? 4278190335:0\}]]"
  selected true
  xpos 1500
