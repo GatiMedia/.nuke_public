@@ -1,9 +1,11 @@
 Group {
  name GM_Crop1
- knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nkn = k.name()\npixel_knobs = \['all_dir','vertical','horizontal','left','right','top','bottom']\npercentage_knobs = \['all_dir_perc','vertical_perc','horizontal_perc','left_perc','right_perc','top_perc','bottom_perc']\nif kn == 'calculate':\n    if n\['calculate'].value() == 'Pixel values':\n        for knob in pixel_knobs:\n            n\[knob].setVisible(True)\n        for knob in percentage_knobs:\n            n\[knob].setVisible(False)\n    else:\n        for knob in pixel_knobs:\n            n\[knob].setVisible(False)\n        for knob in percentage_knobs:\n            n\[knob].setVisible(True)"
+ knobChanged "n = nuke.thisNode()\nk = nuke.thisKnob()\nkn = k.name()\npixel_knobs = \['all_dir','vertical','horizontal','left','right','top','bottom']\npercentage_knobs = \['all_dir_perc','vertical_perc','horizontal_perc','left_perc','right_perc','top_perc','bottom_perc']\nif kn == 'calculate':\n    if n\['calculate'].value() == 'Pixel values':\n        for knob in pixel_knobs:\n            n\[knob].setVisible(True)\n        for knob in percentage_knobs:\n            n\[knob].setVisible(False)\n        # percentage to pixel width\n        all_p = n\['all_dir_perc'].value()\n        hor_p = n\['horizontal_perc'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").width()\n        n\['all_dir'].setValue(0)\n        n\['horizontal'].setValue((inp_all / 100) * (all_p + hor_p - 100) - inp_all)\n        # percentage to pixel height\n        all_p = n\['all_dir_perc'].value()\n        ver_p = n\['vertical_perc'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").height()\n        n\['vertical'].setValue((inp_all / 100) * (all_p + ver_p - 100) - inp_all)\n        # percentage to pixel left\n        left_p = n\['left_perc'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").width()\n        n\['left'].setValue((inp_all / 100) * (left_p) - inp_all)\n        # percentage to pixel right\n        right_p = n\['right_perc'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").width()\n        n\['right'].setValue((inp_all / 100) * (right_p) - inp_all)\n        # percentage to pixel top\n        top_p = n\['top_perc'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").height()\n        n\['top'].setValue((inp_all / 100) * (top_p) - inp_all)\n        # percentage to pixel bottom\n        bottom_p = n\['bottom_perc'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").height()\n        n\['bottom'].setValue((inp_all / 100) * (bottom_p) - inp_all)\n    else:\n        for knob in pixel_knobs:\n            n\[knob].setVisible(False)\n        for knob in percentage_knobs:\n            n\[knob].setVisible(True)\n        # pixel to percentage width\n        all = n\['all_dir'].value()\n        hor = n\['horizontal'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").width()\n        n\['all_dir_perc'].setValue(100)\n        n\['horizontal_perc'].setValue((((all + hor) + inp_all) / inp_all) * 100)\n        # pixel to percentage height\n        all = n\['all_dir'].value()\n        ver = n\['vertical'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").height()\n        n\['all_dir_perc'].setValue(100)\n        n\['vertical_perc'].setValue((((all + ver) + inp_all) / inp_all) * 100)\n        # pixel to percentage left\n        left = n\['left'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").width()\n        n\['left_perc'].setValue(((left + inp_all) / inp_all) * 100)\n        # pixel to percentage right\n        right = n\['right'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").width()\n        n\['right_perc'].setValue(((right + inp_all) / inp_all) * 100)\n        # pixel to percentage top\n        top = n\['top'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").height()\n        n\['top_perc'].setValue(((top + inp_all) / inp_all) * 100)\n        # pixel to percentage bottom\n        bottom = n\['bottom'].value()\n        with n:\n            inp_all = nuke.toNode(\"Input\").height()\n        n\['bottom_perc'].setValue(((bottom + inp_all) / inp_all) * 100)"
  tile_color 0xaa55ffff
  label "Box: x:\[value this.Crop_GM.box.x]  y:\[value this.Crop_GM.box.y]  r:\[value this.Crop_GM.box.r]  t:\[value this.Crop_GM.box.t]  "
  selected true
+ xpos 901
+ ypos 33
  addUserKnob {20 User}
  addUserKnob {4 calculate l Use: M {"Pixel values" Percentage}}
  addUserKnob {26 ""}
@@ -35,16 +37,16 @@ Group {
  addUserKnob {41 intersect -STARTLINE T Crop_GM.intersect}
  addUserKnob {41 crop l "black outside" -STARTLINE T Crop_GM.crop}
  addUserKnob {26 ""}
- addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 BETA version</font>"}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.1 version</font>"}
  addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_Crop© by Attila Gasparetz</font>"}
 }
  Input {
   inputs 0
   name Input
   xpos 510
-  ypos 279
+  ypos 255
  }
-set N139361e0 [stack 0]
+set N1eadb000 [stack 0]
  Crop {
   box {{"-((((((((all_dir_perc * input.format.r)/100 \n+(horizontal_perc * input.format.r) /100\n+(left_perc * input.format.r) /100) /3)\n-input.format.r) *3)+input.format.r))\n-(input.format.r))"} {"-(((((((all_dir_perc * input.format.t)/100 \n+(vertical_perc * input.format.t) /100\n+(bottom_perc * input.format.t) /100) /3)\n-input.format.t) *3)+input.format.t )\n-input.format.t)"} {"(((((all_dir_perc * input.format.r)/100 \n+(horizontal_perc * input.format.r) /100\n+(right_perc * input.format.r) /100) /3)\n-input.format.r) *3)+input.format.r"} {"(((((all_dir_perc * input.format.t)/100 \n+(vertical_perc * input.format.t) /100\n+(top_perc * input.format.t) /100) /3)\n-input.format.t) *3)+input.format.t\n"}}
   reformat {{Crop_GM.reformat}}
@@ -55,7 +57,7 @@ set N139361e0 [stack 0]
   xpos 620
   ypos 321
  }
-push $N139361e0
+push $N1eadb000
  Crop {
   box {{"-(((input.format.r + all_dir) + horizontal + left) - input.format.r )"} {"-(((input.format.t + all_dir) + vertical + bottom) - input.format.t )"} {"(input.format.r + all_dir) + horizontal + right"} {"(input.format.t + all_dir) + vertical + top"}}
   name Crop_GM
