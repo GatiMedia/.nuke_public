@@ -1,0 +1,12 @@
+DeepExpression {
+ chans1 deep
+ deep.front "deep.front-(\[value deepblur])"
+ deep.back "deep.front+(\[value deepblur])"
+ name Deepblur1
+ selected true
+ xpos -1910
+ ypos 10934
+ addUserKnob {20 User}
+ addUserKnob {7 deepblur}
+ deepblur 65
+}
