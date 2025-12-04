@@ -1,0 +1,2193 @@
+Group {
+ name VectorFrameBlend1
+ help "FrameBlend the input with awareness of the motion"
+ knobChanged "n = nuke.thisNode()\n\nif nuke.thisKnob().name() == \"vectors\":\n    mode = False\n    \n    if n\['vectors'].getValue() == 0 or n\['vectors'].getValue() == 1:\n        mode = True\n        \n    n.knobs()\['vectorDetail'].setVisible(mode)\n    n.knobs()\['strength'].setVisible(mode)\n    n.knobs()\['matteChannel'].setVisible(mode)"
+ tile_color 0xffffffff
+ label "\[expr \[value radius]*2+1] Frames"
+ selected true
+ addUserKnob {20 VectorFrameBlend}
+ addUserKnob {26 title l "" t "Blend together up to 11 frames with motion-awareness regarding to the input." +STARTLINE T "<b>VectorFrameBlend v1.1</b>"}
+ addUserKnob {26 author l "" t "The inside mechanics are inspired by (= stolen from) Erwan Leroys Morph_Dissolve and Riley Grays Vector_FrameBlend." +STARTLINE T "<font color=\"#888\" size=\"2\">by Nikolai Wüstemann</font>"}
+ addUserKnob {26 ""}
+ addUserKnob {41 "Local GPU: " T BlinkScript_Blend.gpuName}
+ addUserKnob {41 useGPUIfAvailable l "Use GPU if available" T BlinkScript_Blend.useGPUIfAvailable}
+ addUserKnob {41 vectorize l "Vectorize on CPU" -STARTLINE T BlinkScript_Blend.vectorize}
+ addUserKnob {26 ""}
+ addUserKnob {4 radius l "Temporal Radius" t "Example: Radius 2 will average 5 frames (-2, -1, current, +1, +2)" M {1 2 3 4 5}}
+ radius 2
+ addUserKnob {26 divider1 l "" -STARTLINE T "    "}
+ addUserKnob {4 operation l Operation -STARTLINE M {average median min max plus}}
+ addUserKnob {26 ""}
+ addUserKnob {4 vectors l Vectors t "Generate (Direct): \nCreate vectors using the VectorGenerator node with a direct comparison between current frame and target frames. Good for shots with little motion.\n\nGenerate (Accumulated): \nCreate vectors using the VectorGenerator node with accumulated frames, similar to SmartVectors. Good for shots with heavy motion.\n\nExternal: \nPlug another VectorFrameBlend into the vec input and use its already existing vectors" M {"Generate (Direct)" "Generate (Accumulated)" External "" "" ""}}
+ addUserKnob {26 ""}
+ addUserKnob {7 vectorDetail l "Vector Detail" t "Use this to adjust the density of the calculated motion vector field. Higher details capture finer movements, but take will longer to calculate." R 0.01 1}
+ vectorDetail 0.75
+ addUserKnob {7 strength l Strength t "Match Strength : Stonger values will match larger differences between the two plates." R 0 1.5}
+ strength 1.5
+ addUserKnob {41 matteChannel l Matte T VectorGenerator.matteChannel}
+ addUserKnob {41 blurSize l "Blur Vectors" T Blur_Vectors.size}
+ addUserKnob {41 overscan l Overscan t "The VectorGenerator node inside cannot handle overscan, so we can choose to fix it here. An overscan of 1 does nothing, 1.1 would be 10% overscan." T Reformat_OverscanFix.scale}
+ addUserKnob {26 ""}
+ addUserKnob {41 filter T STMap.filter}
+ addUserKnob {6 use_log l "process in log" t "Distort the neighboring frames in log space. This avoids filtering artifacts, when using a sharp filter." -STARTLINE}
+ use_log true
+ addUserKnob {6 use_unpremult l "process rgb unpremultiplied" t "For a premultiplied input. This option does a slight edge extension on the input, using the blur-unpremult technique. This avoids high contrast areas around the edges of objects, caused by the premultiplied nature of the image." -STARTLINE}
+ addUserKnob {6 keep_alpha l "keep original alpha" +STARTLINE}
+ addUserKnob {6 clamp_alpha l "clamp alpha" -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {26 "" l mask T ""}
+ addUserKnob {41 maskChannelInput l "" -STARTLINE T Merge_Mixer.maskChannelInput}
+ addUserKnob {41 inject -STARTLINE T Merge_Mixer.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Merge_Mixer.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T Merge_Mixer.fringe}
+ addUserKnob {41 mix T Merge_Mixer.mix}
+}
+ Input {
+  inputs 0
+  name img
+  xpos 1499
+  ypos -1903
+ }
+ Dot {
+  name Dot55
+  xpos 1533
+  ypos -1317
+ }
+set Nc54c7c00 [stack 0]
+ Dot {
+  name Dot44
+  xpos 1533
+  ypos 3867
+ }
+set Nc54c7800 [stack 0]
+ Dot {
+  name Dot95
+  xpos 3157
+  ypos 3867
+ }
+ Reformat {
+  type scale
+  resize none
+  filter impulse
+  name Reformat_OverscanFix
+  xpos 3123
+  ypos 3979
+ }
+ set Cc41ed400 [stack 0]
+ Dot {
+  name Dot53
+  xpos 3157
+  ypos 4116
+ }
+set Nc41ec000 [stack 0]
+ Dot {
+  name Dot93
+  xpos 3013
+  ypos 4116
+ }
+ Expression {
+  expr0 a>0.0001?r:0
+  expr1 a>0.0001?g:0
+  expr2 a>0.0001?b:0
+  channel3 alpha
+  expr3 a>0.0001?a:0
+  name Expression_ConformRGB
+  xpos 2979
+  ypos 4177
+ }
+ Expression {
+  expr0 a>0?r/a:0
+  expr1 a>0?g/a:0
+  expr2 a>0?b/a:0
+  channel3 alpha
+  expr3 a>0?1:0
+  name Expression_UnpremultAll
+  xpos 2979
+  ypos 4211
+ }
+set N9c88ac00 [stack 0]
+ Dot {
+  name Dot90
+  xpos 2905
+  ypos 4214
+ }
+ Dot {
+  name Dot91
+  xpos 2905
+  ypos 4319
+ }
+push $N9c88ac00
+ Blur {
+  size 2
+  name Blur
+  xpos 2979
+  ypos 4241
+ }
+ Expression {
+  expr0 a>0?r/a:0
+  expr1 a>0?g/a:0
+  expr2 a>0?b/a:0
+  channel3 alpha
+  expr3 a>0?1:0
+  name Expression_UnpremultAll1
+  xpos 2979
+  ypos 4284
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 2979
+  ypos 4316
+ }
+ Dot {
+  name Dot92
+  xpos 3013
+  ypos 4391
+ }
+push $Nc41ec000
+ Merge2 {
+  inputs 2
+  operation under
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge_EdgeExtend
+  xpos 3123
+  ypos 4388
+  disable {{!use_unpremult}}
+ }
+ Dot {
+  name Dot94
+  xpos 3157
+  ypos 4470
+ }
+ Input {
+  inputs 0
+  name vec
+  xpos 3686
+  ypos -1864
+  number 1
+ }
+ Dot {
+  name Dot73
+  xpos 3720
+  ypos -737
+ }
+set Nc442cc00 [stack 0]
+ Dot {
+  name Dot75
+  xpos 3720
+  ypos -635
+ }
+set Nc442c800 [stack 0]
+ Dot {
+  name Dot85
+  xpos 3720
+  ypos -541
+ }
+set Nc442d400 [stack 0]
+ Dot {
+  name Dot76
+  xpos 3720
+  ypos -445
+ }
+set N9c81f400 [stack 0]
+ Dot {
+  name Dot86
+  xpos 3720
+  ypos -357
+ }
+add_layer {vec5 vec5.red vec5.green vec5.blue vec5.alpha}
+ Expression {
+  channel0 vec5
+  expr0 "(x+0.5)/width + vec5.red/width"
+  channel1 vec5
+  expr1 "(y+0.5)/height + vec5.green/height"
+  channel2 vec5
+  expr2 "(x+0.5)/width + vec5.blue/width"
+  channel3 vec5
+  expr3 "(y+0.5)/height + vec5.alpha/height"
+  name Expression_VecIn5
+  xpos 3478
+  ypos -360
+ }
+push $N9c81f400
+add_layer {vec4 vec4.red vec4.green vec4.blue vec4.alpha}
+ Expression {
+  channel0 vec4
+  expr0 "(x+0.5)/width + vec4.red/width"
+  channel1 vec4
+  expr1 "(y+0.5)/height + vec4.green/height"
+  channel2 vec4
+  expr2 "(x+0.5)/width + vec4.blue/width"
+  channel3 vec4
+  expr3 "(y+0.5)/height + vec4.alpha/height"
+  name Expression_VecIn4
+  xpos 3481
+  ypos -448
+ }
+push $Nc442d400
+add_layer {vec3 vec3.red vec3.green vec3.blue vec3.alpha}
+ Expression {
+  channel0 {vec3.red -vec3.green -vec3.blue -vec3.alpha}
+  expr0 "(x+0.5)/width + vec3.red/width"
+  channel1 {-vec3.red vec3.green -vec3.blue -vec3.alpha}
+  expr1 "(y+0.5)/height + vec3.green/height"
+  channel2 {-vec3.red -vec3.green vec3.blue -vec3.alpha}
+  expr2 "(x+0.5)/width + vec3.blue/width"
+  channel3 {-vec3.red -vec3.green -vec3.blue vec3.alpha}
+  expr3 "(y+0.5)/height + vec3.alpha/height"
+  name Expression_VecIn3
+  xpos 3480
+  ypos -544
+ }
+push $Nc442c800
+add_layer {vec2 vec2.red vec2.green vec2.blue vec2.alpha}
+ Expression {
+  channel0 {vec2.red -vec2.green -vec2.blue -vec2.alpha}
+  expr0 "(x+0.5)/width + vec2.red/width"
+  channel1 {-vec2.red vec2.green -vec2.blue -vec2.alpha}
+  expr1 "(y+0.5)/height + vec2.green/height"
+  channel2 {-vec2.red -vec2.green vec2.blue -vec2.alpha}
+  expr2 "(x+0.5)/width + vec2.blue/width"
+  channel3 {-vec2.red -vec2.green -vec2.blue vec2.alpha}
+  expr3 "(y+0.5)/height + vec2.alpha/height"
+  name Expression_VecIn2
+  xpos 3480
+  ypos -638
+ }
+push $Nc442cc00
+add_layer {vec1 vec1.red vec1.green vec1.blue vec1.alpha}
+ Expression {
+  channel0 {vec1.red -vec1.green -vec1.blue -vec1.alpha}
+  expr0 "(x+0.5)/width + vec1.red/width"
+  channel1 {-vec1.red vec1.green -vec1.blue -vec1.alpha}
+  expr1 "(y+0.5)/height + vec1.green/height"
+  channel2 {-vec1.red -vec1.green vec1.blue -vec1.alpha}
+  expr2 "(x+0.5)/width + vec1.blue/width"
+  channel3 {-vec1.red -vec1.green -vec1.blue vec1.alpha}
+  expr3 "(y+0.5)/height + vec1.alpha/height"
+  name Expression_VecIn1
+  xpos 3480
+  ypos -740
+ }
+ Input {
+  inputs 0
+  name matte
+  xpos 3506
+  ypos -1861
+  number 3
+ }
+ Dot {
+  name Dot88
+  xpos 3540
+  ypos -859
+ }
+push $Nc54c7c00
+ Dot {
+  name Dot50
+  xpos 3319
+  ypos -1317
+ }
+add_layer {matte matte.alpha}
+ ShuffleCopy {
+  inputs 2
+  in alpha
+  red red
+  alpha alpha2
+  black alpha
+  out matte
+  name ShuffleCopy_MatteIn
+  xpos 3285
+  ypos -862
+ }
+ Copy {
+  inputs 2
+  channels vec1
+  name Copy_VecIn1
+  xpos 3285
+  ypos -752
+  disable {{!(parent.vectors==2&&parent.radius>=0)}}
+ }
+ Copy {
+  inputs 2
+  channels vec2
+  name Copy_VecIn2
+  xpos 3285
+  ypos -650
+  disable {{!(parent.vectors==2&&parent.radius>=1)}}
+ }
+ Copy {
+  inputs 2
+  channels vec3
+  name Copy_VecIn3
+  xpos 3285
+  ypos -556
+  disable {{!(parent.vectors==2&&parent.radius>=2)}}
+ }
+ Copy {
+  inputs 2
+  channels vec4
+  name Copy_VecIn4
+  xpos 3285
+  ypos -460
+  disable {{!(parent.vectors==2&&parent.radius>=3)}}
+ }
+ Copy {
+  inputs 2
+  channels vec5
+  name Copy_VecIn5
+  xpos 3285
+  ypos -372
+  disable {{!(parent.vectors==2&&parent.radius>=4)}}
+ }
+ NoOp {
+  name NoOp_OrigFormat
+  xpos 3285
+  ypos -227
+ }
+clone $Cc41ed400 {
+  xpos 3285
+  ypos -184
+  selected false
+ }
+ Crop {
+  box {0 0 {width} {height}}
+  crop false
+  name Crop1
+  xpos 3285
+  ypos -152
+ }
+ Dot {
+  name Dot89
+  xpos 3319
+  ypos -48
+ }
+set Nc445c000 [stack 0]
+ Shuffle {
+  in matte
+  blue black
+  alpha black
+  out alpha
+  name Shuffle_Matte
+  xpos 3170
+  ypos -51
+ }
+push $Nc445c000
+ VectorGenerator {
+  inputs 2
+  useGPUIfAvailable {{parent.BlinkScript_Blend.useGPUIfAvailable}}
+  motionEstimation Regularized
+  vectorDetailReg {{parent.vectorDetail}}
+  strengthReg {{parent.strength}}
+  name VectorGenerator
+  xpos 3285
+  ypos 34
+  disable {{parent.vectors==2}}
+ }
+ set Cc4b68800 [stack 0]
+set Nc4b68800 [stack 0]
+ Shuffle {
+  in forward
+  blue black
+  alpha black
+  name Shuffle_Forward
+  xpos 3618
+  ypos 143
+ }
+ Expression {
+  expr0 "(x+0.5)/width + r/width"
+  expr1 "(y+0.5)/height + g/height"
+  name Expression_VecToSTMap
+  xpos 3618
+  ypos 216
+ }
+ set Cc4b68000 [stack 0]
+ Dot {
+  name Dot28
+  xpos 3652
+  ypos 312
+ }
+set Nc443f400 [stack 0]
+ Dot {
+  name Dot33
+  xpos 3652
+  ypos 478
+ }
+set Nc443e000 [stack 0]
+push $Nc443f400
+ Dot {
+  name Dot29
+  xpos 3782
+  ypos 312
+ }
+set Nc3f70000 [stack 0]
+ TimeOffset {
+  time_offset -1
+  time ""
+  name TimeOffset17
+  xpos 3748
+  ypos 406
+ }
+ Grade {
+  black_clamp false
+  name Grade14
+  xpos 3748
+  ypos 430
+ }
+ set Cc3f71800 [stack 0]
+ Dot {
+  name Dot34
+  xpos 3782
+  ypos 749
+ }
+ STMap {
+  inputs 2
+  channels rgba
+  uv rgb
+  name STMap
+  xpos 3618
+  ypos 746
+ }
+ set Cc45ad400 [stack 0]
+set Nc45ad400 [stack 0]
+push $Nc3f70000
+ Dot {
+  name Dot30
+  xpos 3930
+  ypos 312
+ }
+set Nc45ac400 [stack 0]
+ TimeOffset {
+  time_offset -2
+  time ""
+  name TimeOffset18
+  xpos 3896
+  ypos 407
+ }
+clone $Cc3f71800 {
+  xpos 3896
+  ypos 431
+  selected false
+ }
+ Dot {
+  name Dot7
+  xpos 3930
+  ypos 926
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 3618
+  ypos 922
+  selected false
+ }
+set N1d7d3800 [stack 0]
+push $Nc45ac400
+ Dot {
+  name Dot31
+  xpos 4074
+  ypos 312
+ }
+set N1d7d3400 [stack 0]
+ TimeOffset {
+  time_offset -3
+  time ""
+  name TimeOffset15
+  xpos 4040
+  ypos 406
+ }
+clone $Cc3f71800 {
+  xpos 4040
+  ypos 430
+  selected false
+ }
+ Dot {
+  name Dot36
+  xpos 4074
+  ypos 1125
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 3618
+  ypos 1122
+  selected false
+ }
+set N9c7d0800 [stack 0]
+push $N1d7d3400
+ Dot {
+  name Dot32
+  xpos 4224
+  ypos 312
+ }
+ TimeOffset {
+  time_offset -4
+  time ""
+  name TimeOffset16
+  xpos 4190
+  ypos 405
+ }
+clone $Cc3f71800 {
+  xpos 4190
+  ypos 429
+  selected false
+ }
+ Dot {
+  name Dot9
+  xpos 4224
+  ypos 1316
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 3618
+  ypos 1313
+  selected false
+ }
+push $Nc4b68800
+ Shuffle {
+  in backward
+  blue black
+  alpha black
+  name Shuffle_Backward
+  xpos 2958
+  ypos 141
+ }
+clone $Cc4b68000 {
+  xpos 2958
+  ypos 212
+  selected true
+ }
+ Dot {
+  name Dot19
+  xpos 2992
+  ypos 314
+ }
+set Nc403d400 [stack 0]
+ Dot {
+  name Dot3
+  xpos 2992
+  ypos 418
+ }
+set Nc403dc00 [stack 0]
+push $Nc403d400
+ Dot {
+  name Dot20
+  xpos 2836
+  ypos 314
+ }
+set N1d7c0800 [stack 0]
+ TimeOffset {
+  time_offset 1
+  time ""
+  name TimeOffset11
+  xpos 2802
+  ypos 408
+ }
+clone $Cc3f71800 {
+  xpos 2802
+  ypos 432
+  selected false
+ }
+ Dot {
+  name Dot24
+  xpos 2836
+  ypos 686
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 2958
+  ypos 683
+  selected false
+ }
+set N1d7c0400 [stack 0]
+push $N1d7c0800
+ Dot {
+  name Dot21
+  xpos 2688
+  ypos 314
+ }
+set N1d7c1400 [stack 0]
+ TimeOffset {
+  time_offset 2
+  time ""
+  name TimeOffset14
+  xpos 2654
+  ypos 408
+ }
+clone $Cc3f71800 {
+  xpos 2654
+  ypos 432
+  selected false
+ }
+ Dot {
+  name Dot25
+  xpos 2688
+  ypos 864
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 2958
+  ypos 861
+  selected false
+ }
+set Nc492a000 [stack 0]
+push $N1d7c1400
+ Dot {
+  name Dot22
+  xpos 2538
+  ypos 314
+ }
+set Nc492bc00 [stack 0]
+ TimeOffset {
+  time_offset 3
+  time ""
+  name TimeOffset12
+  xpos 2504
+  ypos 408
+ }
+clone $Cc3f71800 {
+  xpos 2504
+  ypos 432
+  selected false
+ }
+ Dot {
+  name Dot4
+  xpos 2538
+  ypos 1063
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 2958
+  ypos 1060
+  selected false
+ }
+set Nc492b000 [stack 0]
+push $Nc492bc00
+ Dot {
+  name Dot23
+  xpos 2394
+  ypos 314
+ }
+ TimeOffset {
+  time_offset 4
+  time ""
+  name TimeOffset13
+  xpos 2360
+  ypos 408
+ }
+clone $Cc3f71800 {
+  xpos 2360
+  ypos 432
+  selected false
+ }
+ Dot {
+  name Dot27
+  xpos 2394
+  ypos 1250
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 2958
+  ypos 1247
+  selected false
+ }
+push $N9c7d0800
+push $Nc492b000
+push $N1d7d3800
+push $Nc492a000
+push $Nc45ad400
+push $N1d7c0400
+push $Nc443e000
+push $Nc403dc00
+push $Nc4b68800
+ Remove {
+  operation keep
+  channels rgba
+  name Remove_KeepRGBA
+  xpos 3285
+  ypos 143
+  disable {{parent.vectors==2}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec1.red
+  from1 rgba.green
+  to1 vec1.green
+  name Copy_Vec1Backward
+  xpos 3285
+  ypos 403
+  disable {{parent.vectors==2}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec1.blue
+  from1 rgba.green
+  to1 vec1.alpha
+  name Copy_Vec1Forward
+  xpos 3285
+  ypos 463
+  disable {{parent.vectors==2}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec2.red
+  from1 rgba.green
+  to1 vec2.green
+  name Copy_Vec2Backward
+  xpos 3285
+  ypos 671
+  disable {{!(parent.vectors==1&&parent.radius>=1)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec2.blue
+  from1 rgba.green
+  to1 vec2.alpha
+  name Copy_Vec2Forward
+  xpos 3285
+  ypos 734
+  disable {{!(parent.vectors==1&&parent.radius>=1)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec3.red
+  from1 rgba.green
+  to1 vec3.green
+  name Copy_Vec3Backward
+  xpos 3285
+  ypos 849
+  disable {{!(parent.vectors==1&&parent.radius>=2)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec3.blue
+  from1 rgba.green
+  to1 vec3.alpha
+  name Copy_Vec3Forward
+  xpos 3285
+  ypos 910
+  disable {{!(parent.vectors==1&&parent.radius>=2)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec4.red
+  from1 rgba.green
+  to1 vec4.green
+  name Copy_Vec4Backward
+  xpos 3285
+  ypos 1048
+  disable {{!(parent.vectors==1&&parent.radius>=3)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec4.blue
+  from1 rgba.green
+  to1 vec4.alpha
+  name Copy_Vec4Forward
+  xpos 3285
+  ypos 1110
+  disable {{!(parent.vectors==1&&parent.radius>=3)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec5.red
+  from1 rgba.green
+  to1 vec5.green
+  name Copy_Vec5Backward
+  xpos 3285
+  ypos 1235
+  disable {{!(parent.vectors==1&&parent.radius>=4)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec5.blue
+  from1 rgba.green
+  to1 vec5.alpha
+  name Copy_Vec5Forward
+  xpos 3285
+  ypos 1301
+  disable {{!(parent.vectors==1&&parent.radius>=4)}}
+ }
+ NoTimeBlur {
+  rounding floor
+  single false
+  name NoTimeBlur2
+  xpos 3285
+  ypos 1799
+  disable {{!(parent.vectors==0&&parent.radius>=1)}}
+ }
+ Retime {
+  input.first 1001
+  input.first_lock true
+  input.last 2072
+  output.first 1001
+  output.last 3144
+  speed 0.5
+  before continue
+  after continue
+  filter none
+  time ""
+  name Retime_SlowDown
+  label "x\[value input.first]-->x\[value output.first]\n\[if \{\[value speed] == 1\} then \{return \"\"\} else \{return \"spd \[value speed]\"\}]"
+  xpos 3285
+  ypos 1851
+  disable {{!(parent.vectors==0&&parent.radius>=1)}}
+ }
+ Dot {
+  name Dot26
+  xpos 3319
+  ypos 1951
+ }
+set Nc43c7c00 [stack 0]
+ Dot {
+  name Dot8
+  xpos 3319
+  ypos 2157
+ }
+set Nc43c7800 [stack 0]
+ Shuffle {
+  in matte
+  blue black
+  alpha black
+  out alpha
+  name Shuffle_MatteOut
+  xpos 3285
+  ypos 2314
+ }
+set Nc43c6400 [stack 0]
+push $Nc43c7800
+push $Nc43c7c00
+ Dot {
+  name Dot15
+  xpos 3650
+  ypos 1951
+ }
+set Nc43c6000 [stack 0]
+ Dot {
+  name Dot16
+  xpos 3923
+  ypos 1951
+ }
+set Nc43c6800 [stack 0]
+ Dot {
+  name Dot42
+  xpos 4189
+  ypos 1951
+ }
+set Nc4619800 [stack 0]
+ Dot {
+  name Dot69
+  xpos 4458
+  ypos 1951
+ }
+ TimeOffset {
+  time_offset -10
+  time ""
+  name TimeOffset26
+  label "\[value this.time_offset]"
+  xpos 4424
+  ypos 2032
+ }
+ Switch {
+  inputs 2
+  which {{frame%2}}
+  name Switch1
+  xpos 4424
+  ypos 2294
+ }
+ set Cc4619c00 [stack 0]
+clone $Cc4b68800 {
+  inputs 2
+  xpos 4424
+  ypos 2452
+  selected false
+ }
+ Shuffle {
+  in forward
+  name Shuffle12
+  xpos 4424
+  ypos 2546
+ }
+ set Cc4619400 [stack 0]
+ Expression {
+  channel0 {rgba.red -rgba.green -rgba.blue -rgba.alpha}
+  expr0 "(x+0.5)/width + r/width"
+  channel1 {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+  expr1 "(y+0.5)/height + g/height"
+  channel2 none
+  channel3 none
+  name Expression9
+  xpos 4424
+  ypos 2604
+ }
+ set Cc4618800 [stack 0]
+ Dot {
+  name Dot70
+  xpos 4458
+  ypos 3422
+ }
+push $Nc43c6400
+push $Nc43c7800
+push $Nc43c7c00
+ Dot {
+  name Dot14
+  xpos 3004
+  ypos 1951
+ }
+set N1d8eb800 [stack 0]
+ Dot {
+  name Dot2
+  xpos 2740
+  ypos 1951
+ }
+set N1d8eb400 [stack 0]
+ Dot {
+  name Dot65
+  xpos 2473
+  ypos 1951
+ }
+set N1d8eb000 [stack 0]
+ Dot {
+  name Dot67
+  xpos 2219
+  ypos 1951
+ }
+ TimeOffset {
+  time_offset 10
+  time ""
+  name TimeOffset25
+  label "\[value this.time_offset]"
+  xpos 2185
+  ypos 2031
+ }
+clone $Cc4619c00 {
+  inputs 2
+  xpos 2185
+  ypos 2296
+  selected false
+ }
+clone $Cc4b68800 {
+  inputs 2
+  xpos 2185
+  ypos 2442
+  selected false
+ }
+clone $Cc4619400 {
+  xpos 2185
+  ypos 2546
+  selected false
+ }
+clone $Cc4618800 {
+  xpos 2185
+  ypos 2602
+  selected false
+ }
+ Dot {
+  name Dot68
+  xpos 2219
+  ypos 3356
+ }
+push $Nc43c6400
+push $Nc43c7800
+push $Nc4619800
+ TimeOffset {
+  time_offset -8
+  time ""
+  name TimeOffset23
+  label "\[value this.time_offset]"
+  xpos 4155
+  ypos 2032
+ }
+clone $Cc4619c00 {
+  inputs 2
+  xpos 4155
+  ypos 2294
+  selected false
+ }
+clone $Cc4b68800 {
+  inputs 2
+  xpos 4155
+  ypos 2452
+  selected false
+ }
+clone $Cc4619400 {
+  xpos 4155
+  ypos 2546
+  selected false
+ }
+clone $Cc4618800 {
+  xpos 4155
+  ypos 2604
+  selected false
+ }
+ Dot {
+  name Dot51
+  xpos 4189
+  ypos 3231
+ }
+push $Nc43c6400
+push $Nc43c7800
+push $N1d8eb000
+ TimeOffset {
+  time_offset 8
+  time ""
+  name TimeOffset24
+  label "\[value this.time_offset]"
+  xpos 2439
+  ypos 2031
+ }
+clone $Cc4619c00 {
+  inputs 2
+  xpos 2439
+  ypos 2296
+  selected false
+ }
+clone $Cc4b68800 {
+  inputs 2
+  xpos 2439
+  ypos 2442
+  selected false
+ }
+clone $Cc4619400 {
+  xpos 2439
+  ypos 2546
+  selected false
+ }
+clone $Cc4618800 {
+  xpos 2439
+  ypos 2604
+  selected false
+ }
+ Dot {
+  name Dot66
+  xpos 2473
+  ypos 3169
+ }
+push $Nc43c6400
+push $Nc43c7800
+push $Nc43c6800
+ TimeOffset {
+  time_offset -6
+  time ""
+  name TimeOffset22
+  label "\[value this.time_offset]"
+  xpos 3889
+  ypos 2032
+ }
+clone $Cc4619c00 {
+  inputs 2
+  xpos 3889
+  ypos 2294
+  selected false
+ }
+clone $Cc4b68800 {
+  inputs 2
+  xpos 3889
+  ypos 2452
+  selected false
+ }
+clone $Cc4619400 {
+  xpos 3889
+  ypos 2546
+  selected false
+ }
+clone $Cc4618800 {
+  xpos 3889
+  ypos 2604
+  selected false
+ }
+ Dot {
+  name Dot38
+  xpos 3923
+  ypos 3039
+ }
+push $Nc43c6400
+push $Nc43c7800
+push $N1d8eb400
+ TimeOffset {
+  time_offset 6
+  time ""
+  name TimeOffset21
+  label "\[value this.time_offset]"
+  xpos 2706
+  ypos 2031
+ }
+clone $Cc4619c00 {
+  inputs 2
+  xpos 2706
+  ypos 2296
+  selected false
+ }
+clone $Cc4b68800 {
+  inputs 2
+  xpos 2706
+  ypos 2442
+  selected false
+ }
+clone $Cc4619400 {
+  xpos 2706
+  ypos 2546
+  selected false
+ }
+clone $Cc4618800 {
+  xpos 2706
+  ypos 2604
+  selected false
+ }
+ Dot {
+  name Dot10
+  xpos 2740
+  ypos 2977
+ }
+push $Nc43c6400
+push $Nc43c7800
+push $Nc43c6000
+ TimeOffset {
+  time_offset -4
+  time ""
+  name TimeOffset1
+  label "\[value this.time_offset]"
+  xpos 3616
+  ypos 2031
+ }
+clone $Cc4619c00 {
+  inputs 2
+  xpos 3616
+  ypos 2294
+  selected false
+ }
+clone $Cc4b68800 {
+  inputs 2
+  xpos 3616
+  ypos 2452
+  selected false
+ }
+clone $Cc4619400 {
+  xpos 3616
+  ypos 2546
+  selected false
+ }
+clone $Cc4618800 {
+  xpos 3616
+  ypos 2604
+  selected false
+ }
+ Dot {
+  name Dot37
+  xpos 3650
+  ypos 2840
+ }
+push $Nc43c6400
+push $Nc43c7800
+push $N1d8eb800
+ TimeOffset {
+  time_offset 4
+  time ""
+  name TimeOffset2
+  label "\[value this.time_offset]"
+  xpos 2970
+  ypos 2031
+ }
+clone $Cc4619c00 {
+  inputs 2
+  xpos 2970
+  ypos 2296
+  selected false
+ }
+clone $Cc4b68800 {
+  inputs 2
+  xpos 2970
+  ypos 2442
+  selected false
+ }
+clone $Cc4619400 {
+  xpos 2970
+  ypos 2545
+  selected false
+ }
+clone $Cc4618800 {
+  xpos 2970
+  ypos 2603
+  selected false
+ }
+ Dot {
+  name Dot35
+  xpos 3004
+  ypos 2776
+ }
+push $Nc43c6400
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec2.red
+  from1 rgba.green
+  to1 vec2.green
+  name Copy3
+  xpos 3285
+  ypos 2761
+  disable {{!(parent.vectors==0&&parent.radius>=1)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec2.blue
+  from1 rgba.green
+  to1 vec2.alpha
+  name Copy4
+  xpos 3285
+  ypos 2825
+  disable {{!(parent.vectors==0&&parent.radius>=1)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec3.red
+  from1 rgba.green
+  to1 vec3.green
+  name Copy1
+  xpos 3285
+  ypos 2962
+  disable {{!(parent.vectors==0&&parent.radius>=2)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec3.blue
+  from1 rgba.green
+  to1 vec3.alpha
+  name Copy2
+  xpos 3285
+  ypos 3024
+  disable {{!(parent.vectors==0&&parent.radius>=2)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec4.red
+  from1 rgba.green
+  to1 vec4.green
+  name Copy5
+  xpos 3285
+  ypos 3154
+  disable {{!(parent.vectors==0&&parent.radius>=3)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec4.blue
+  from1 rgba.green
+  to1 vec4.alpha
+  name Copy17
+  xpos 3285
+  ypos 3216
+  disable {{!(parent.vectors==0&&parent.radius>=3)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec5.red
+  from1 rgba.green
+  to1 vec5.green
+  name Copy18
+  xpos 3285
+  ypos 3341
+  disable {{!(parent.vectors==0&&parent.radius>=4)}}
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 vec5.blue
+  from1 rgba.green
+  to1 vec5.alpha
+  name Copy19
+  xpos 3285
+  ypos 3407
+  disable {{!(parent.vectors==0&&parent.radius>=4)}}
+ }
+ Retime {
+  input.first 1001
+  input.first_lock true
+  input.last 2072
+  output.first 1001
+  output.last 1536
+  speed 2
+  before continue
+  after continue
+  filter none
+  time ""
+  name Retime_SpeedUp
+  label "x\[value input.first]-->x\[value output.first]\n\[if \{\[value speed] == 1\} then \{return \"\"\} else \{return \"spd \[value speed]\"\}]"
+  xpos 3285
+  ypos 3539
+  disable {{!(parent.vectors==0&&parent.radius>=1)}}
+ }
+ Blur {
+  name Blur_Vectors
+  xpos 3285
+  ypos 3629
+ }
+ Dot {
+  name Dot84
+  xpos 3319
+  ypos 3745
+ }
+ Merge2 {
+  inputs 2
+  operation copy
+  name Merge_CopyRGBA
+  xpos 3285
+  ypos 4467
+ }
+ Log2Lin {
+  channels rgba
+  operation lin2log
+  black 0
+  white 1023
+  gamma 1
+  name Log2Lin_Apply
+  xpos 3285
+  ypos 4749
+  disable {{!parent.use_log}}
+ }
+ Dot {
+  name Dot11
+  xpos 3319
+  ypos 4826
+ }
+set Nc54e5000 [stack 0]
+ Dot {
+  name Dot43
+  xpos 3319
+  ypos 5074
+ }
+set Nc54e5800 [stack 0]
+ Dot {
+  name Dot61
+  xpos 3319
+  ypos 5194
+ }
+set Nc54e5400 [stack 0]
+ Dot {
+  name Dot62
+  xpos 3319
+  ypos 5301
+ }
+set Nc54e4c00 [stack 0]
+ Dot {
+  name Dot63
+  xpos 3319
+  ypos 5405
+ }
+set Nc411a400 [stack 0]
+ Dot {
+  name Dot64
+  xpos 3319
+  ypos 5505
+ }
+set Nc411bc00 [stack 0]
+ Shuffle {
+  in vec5
+  red blue
+  green alpha
+  blue black
+  out rgb
+  name Shuffle11
+  xpos 3385
+  ypos 5502
+ }
+push $Nc54e5000
+ Dot {
+  name Dot41
+  xpos 3559
+  ypos 4826
+ }
+set Nc411b400 [stack 0]
+ Dot {
+  name Dot45
+  xpos 3707
+  ypos 4826
+ }
+set Nc411b000 [stack 0]
+ Dot {
+  name Dot46
+  xpos 3851
+  ypos 4826
+ }
+set Nc411a000 [stack 0]
+ Dot {
+  name Dot47
+  xpos 4001
+  ypos 4826
+ }
+set Nc411a800 [stack 0]
+ Dot {
+  name Dot48
+  xpos 4149
+  ypos 4826
+ }
+ TimeOffset {
+  time_offset -5
+  time ""
+  name TimeOffset19
+  xpos 4115
+  ypos 4920
+ }
+ Grade {
+  name Grade_Bugfix
+  xpos 4115
+  ypos 4944
+ }
+ set C343ea400 [stack 0]
+clone $Cc45ad400 {
+  inputs 2
+  xpos 4115
+  ypos 5502
+  selected false
+ }
+ Remove {
+  name Remove5
+  xpos 4115
+  ypos 5558
+  disable {{"parent.radius+1 >= 5"}}
+ }
+ set C343ea000 [stack 0]
+ Log2Lin {
+  black 0
+  white 1023
+  gamma 1
+  name Log2Lin_Reverse
+  xpos 4115
+  ypos 5786
+  disable {{!parent.use_log}}
+ }
+ set C29979c00 [stack 0]
+ Dot {
+  name Dot60
+  xpos 4149
+  ypos 5871
+ }
+push $Nc411bc00
+ Shuffle {
+  in vec5
+  blue black
+  out rgb
+  name Shuffle10
+  xpos 3182
+  ypos 5502
+ }
+push $Nc54e5000
+ Dot {
+  name Dot12
+  xpos 3065
+  ypos 4826
+ }
+set N29979000 [stack 0]
+ Dot {
+  name Dot13
+  xpos 2917
+  ypos 4826
+ }
+set N29978c00 [stack 0]
+ Dot {
+  name Dot39
+  xpos 2767
+  ypos 4826
+ }
+set N29978800 [stack 0]
+ Dot {
+  name Dot40
+  xpos 2623
+  ypos 4826
+ }
+set N29978400 [stack 0]
+ Dot {
+  name Dot49
+  xpos 2475
+  ypos 4826
+ }
+ TimeOffset {
+  time_offset 5
+  time ""
+  name TimeOffset20
+  xpos 2441
+  ypos 4920
+ }
+clone $C343ea400 {
+  xpos 2441
+  ypos 4944
+  selected false
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 2441
+  ypos 5502
+  selected false
+ }
+clone $C343ea000 {
+  xpos 2441
+  ypos 5556
+  selected false
+ }
+clone $C29979c00 {
+  xpos 2441
+  ypos 5779
+  selected false
+ }
+ Dot {
+  name Dot56
+  xpos 2475
+  ypos 5855
+ }
+push $Nc411a400
+ Shuffle {
+  in vec4
+  red blue
+  green alpha
+  blue black
+  out rgb
+  name Shuffle9
+  xpos 3381
+  ypos 5402
+ }
+push $Nc411a800
+ TimeOffset {
+  time_offset -4
+  time ""
+  name TimeOffset7
+  xpos 3967
+  ypos 4920
+ }
+clone $C343ea400 {
+  xpos 3967
+  ypos 4944
+  selected false
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 3967
+  ypos 5402
+  selected false
+ }
+ Remove {
+  name Remove4
+  xpos 3967
+  ypos 5454
+  disable {{"parent.radius+1 >= 4"}}
+ }
+ set Cb0561c00 [stack 0]
+clone $C29979c00 {
+  xpos 3967
+  ypos 5784
+  selected false
+ }
+ Dot {
+  name Dot59
+  xpos 4001
+  ypos 5856
+ }
+push $Nc411a400
+ Shuffle {
+  in vec4
+  blue black
+  out rgb
+  name Shuffle8
+  xpos 3182
+  ypos 5402
+ }
+push $N29978400
+ TimeOffset {
+  time_offset 4
+  time ""
+  name TimeOffset6
+  xpos 2589
+  ypos 4920
+ }
+clone $C343ea400 {
+  xpos 2589
+  ypos 4944
+  selected false
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 2589
+  ypos 5402
+  selected false
+ }
+clone $Cb0561c00 {
+  xpos 2589
+  ypos 5450
+  selected false
+ }
+clone $C29979c00 {
+  xpos 2589
+  ypos 5779
+  selected false
+ }
+ Dot {
+  name Dot54
+  xpos 2623
+  ypos 5855
+ }
+push $Nc54e4c00
+ Shuffle {
+  in vec3
+  red blue
+  green alpha
+  blue black
+  out rgb
+  name Shuffle7
+  xpos 3381
+  ypos 5298
+ }
+push $Nc411a000
+ TimeOffset {
+  time_offset -3
+  time ""
+  name TimeOffset8
+  xpos 3817
+  ypos 4921
+ }
+clone $C343ea400 {
+  xpos 3817
+  ypos 4945
+  selected false
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 3817
+  ypos 5298
+  selected false
+ }
+ Remove {
+  name Remove3
+  xpos 3817
+  ypos 5344
+  disable {{"parent.radius+1 >= 3"}}
+ }
+ set C8ad50c00 [stack 0]
+clone $C29979c00 {
+  xpos 3817
+  ypos 5781
+  selected false
+ }
+ Dot {
+  name Dot58
+  xpos 3851
+  ypos 5854
+ }
+push $Nc54e4c00
+ Shuffle {
+  in vec3
+  blue black
+  out rgb
+  name Shuffle6
+  xpos 3182
+  ypos 5298
+ }
+push $N29978800
+ TimeOffset {
+  time_offset 3
+  time ""
+  name TimeOffset5
+  xpos 2733
+  ypos 4919
+ }
+clone $C343ea400 {
+  xpos 2733
+  ypos 4943
+  selected false
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 2733
+  ypos 5298
+  selected false
+ }
+clone $C8ad50c00 {
+  xpos 2733
+  ypos 5342
+  selected false
+ }
+clone $C29979c00 {
+  xpos 2733
+  ypos 5775
+  selected false
+ }
+ Dot {
+  name Dot52
+  xpos 2767
+  ypos 5851
+ }
+push $Nc54e5400
+ Shuffle {
+  in vec2
+  red blue
+  green alpha
+  blue black
+  out rgb
+  name Shuffle5
+  xpos 3381
+  ypos 5191
+ }
+push $Nc411b000
+ TimeOffset {
+  time_offset -2
+  time ""
+  name TimeOffset9
+  xpos 3673
+  ypos 4920
+ }
+clone $C343ea400 {
+  xpos 3673
+  ypos 4944
+  selected false
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 3673
+  ypos 5191
+  selected false
+ }
+ Remove {
+  name Remove2
+  xpos 3673
+  ypos 5233
+  disable {{"parent.radius+1 >= 2"}}
+ }
+ set C7041fc00 [stack 0]
+clone $C29979c00 {
+  xpos 3673
+  ypos 5778
+  selected false
+ }
+ Dot {
+  name Dot57
+  xpos 3707
+  ypos 5861
+ }
+push $Nc54e5400
+ Shuffle {
+  in vec2
+  blue black
+  out rgb
+  name Shuffle4
+  xpos 3181
+  ypos 5191
+ }
+push $N29978c00
+ TimeOffset {
+  time_offset 2
+  time ""
+  name TimeOffset4
+  xpos 2883
+  ypos 4920
+ }
+clone $C343ea400 {
+  xpos 2883
+  ypos 4944
+  selected false
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 2883
+  ypos 5191
+  selected false
+ }
+clone $C7041fc00 {
+  xpos 2883
+  ypos 5231
+  selected false
+ }
+clone $C29979c00 {
+  xpos 2883
+  ypos 5780
+  selected false
+ }
+ Dot {
+  name Dot1
+  xpos 2917
+  ypos 5856
+ }
+push $Nc54e5800
+ Shuffle {
+  in vec1
+  red blue
+  green alpha
+  blue black
+  out rgb
+  name Shuffle3
+  xpos 3381
+  ypos 5071
+ }
+push $Nc411b400
+ TimeOffset {
+  time_offset -1
+  time ""
+  name TimeOffset10
+  xpos 3525
+  ypos 4921
+ }
+clone $C343ea400 {
+  xpos 3525
+  ypos 4945
+  selected false
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 3525
+  ypos 5071
+  selected false
+ }
+ Remove {
+  name Remove1
+  xpos 3525
+  ypos 5114
+  disable {{"parent.radius+1 >= 1"}}
+ }
+ set Cc0a52c00 [stack 0]
+clone $C29979c00 {
+  xpos 3525
+  ypos 5775
+  selected false
+ }
+ Dot {
+  name Dot6
+  xpos 3559
+  ypos 5860
+ }
+push $Nc54e5800
+ Shuffle {
+  in vec1
+  blue black
+  out rgb
+  name Shuffle
+  xpos 3182
+  ypos 5071
+ }
+push $N29979000
+ TimeOffset {
+  time_offset 1
+  time ""
+  name TimeOffset3
+  xpos 3031
+  ypos 4919
+ }
+clone $C343ea400 {
+  xpos 3031
+  ypos 4943
+  selected false
+ }
+clone $Cc45ad400 {
+  inputs 2
+  xpos 3031
+  ypos 5071
+  selected false
+ }
+clone $Cc0a52c00 {
+  xpos 3031
+  ypos 5112
+  selected false
+ }
+clone $C29979c00 {
+  xpos 3031
+  ypos 5782
+  selected false
+ }
+ Dot {
+  name Dot18
+  xpos 3065
+  ypos 5858
+ }
+push $Nc411bc00
+clone $C29979c00 {
+  xpos 3285
+  ypos 5776
+  selected false
+ }
+ Dot {
+  name Dot17
+  xpos 3319
+  ypos 5863
+ }
+ BlinkScript {
+  inputs 11
+  recompileCount 45
+  ProgramGroup 1
+  KernelDescription "2 \"BlendKernel\" iterate componentWise 2a0f0567088ed9ae07571a4533a80ac3104efcf287d67bc336b5b4d3c3c7821b 12 \"f01\" Read Point \"f02\" Read Point \"f03\" Read Point \"f04\" Read Point \"f05\" Read Point \"f06\" Read Point \"f07\" Read Point \"f08\" Read Point \"f09\" Read Point \"f10\" Read Point \"f11\" Read Point \"dst\" Write Point 2 \"frames\" Int 1 AAAAAA== \"operation\" Int 1 AAAAAA== 2 \"frames\" 1 1 \"operation\" 1 1 0"
+  kernelSource "inline float add(float data\[], int frames)\{\n  float sum = data\[0];\n  for (int i = 1; i < frames; i++)\{\n    sum += data\[i];\n  \}\n  return sum;\n\}\n\ninline float average(float data\[], int frames)\{\n  float sum = add(data, frames);\n  return sum / frames;\n\}\n\ninline float minimum(float data\[], int frames)\{\n  float minval = data\[0];\n  for (int i = 1; i < frames; i++)\{\n    minval = min(minval, data\[i]);\n  \}\n  return minval;\n\}\n\ninline float maximum(float data\[], int frames)\{\n  float maxval = data\[0];\n  for (int i = 1; i < frames; i++)\{\n    maxval = max(maxval, data\[i]);\n  \}\n  return maxval;\n\}\n\nkernel BlendKernel: ImageComputationKernel<eComponentWise>\n\{\n  Image<eRead, eAccessPoint, eEdgeClamped> f01;\n  Image<eRead, eAccessPoint, eEdgeClamped> f02;\n  Image<eRead, eAccessPoint, eEdgeClamped> f03;\n  Image<eRead, eAccessPoint, eEdgeClamped> f04;\n  Image<eRead, eAccessPoint, eEdgeClamped> f05;\n  Image<eRead, eAccessPoint, eEdgeClamped> f06;\n  Image<eRead, eAccessPoint, eEdgeClamped> f07;\n  Image<eRead, eAccessPoint, eEdgeClamped> f08;\n  Image<eRead, eAccessPoint, eEdgeClamped> f09;\n  Image<eRead, eAccessPoint, eEdgeClamped> f10;\n  Image<eRead, eAccessPoint, eEdgeClamped> f11;\n  Image<eWrite> dst;\n\n  param:\n    int frames;\n    int operation;\n\n  void process() \{\n    float values\[] = \{f01(), f02(), f03(), f04(), f05(), f06(), f07(), f08(), f09(), f10(), f11()\};\n    if(operation == 0)\{\n      dst() = average(values, frames);\n    \}\n    else if(operation == 1)\{\n      dst() = median(values, frames);\n    \}\n    else if(operation == 2)\{\n      dst() = minimum(values, frames);\n    \}\n    else if(operation == 3)\{\n      dst() = maximum(values, frames);\n    \}\n    else if(operation == 4)\{\n      dst() = add(values, frames);\n    \}\n  \}\n\};"
+  rebuild ""
+  BlendKernel_frames {{(parent.radius+1)*2+1}}
+  BlendKernel_operation {{parent.operation}}
+  rebuild_finalise ""
+  name BlinkScript_Blend
+  xpos 3285
+  ypos 6032
+ }
+ Reformat {
+  type "to box"
+  box_width {{NoOp_OrigFormat.width}}
+  box_height {{NoOp_OrigFormat.height}}
+  box_pixel_aspect {{NoOp_OrigFormat.pixel_aspect}}
+  resize none
+  filter impulse
+  pbb true
+  name Reformat_OrigFormat
+  xpos 3285
+  ypos 6166
+ }
+ Dot {
+  name Dot5
+  xpos 3321
+  ypos 6575
+ }
+ Unpremult {
+  name Unpremult1
+  xpos 2539
+  ypos 6572
+  disable {{"!(keep_alpha && !use_unpremult)"}}
+ }
+ Dot {
+  name Dot74
+  xpos 2384
+  ypos 6575
+ }
+set N6e256c00 [stack 0]
+ Dot {
+  name Dot87
+  xpos 2384
+  ypos 6741
+ }
+set N6e256800 [stack 0]
+ Dot {
+  name Dot77
+  xpos 2384
+  ypos 7699
+ }
+set N6e256400 [stack 0]
+ Dot {
+  name Dot78
+  xpos 2384
+  ypos 7767
+ }
+set N6e256000 [stack 0]
+ Dot {
+  name Dot79
+  xpos 2384
+  ypos 7837
+ }
+set N5459c00 [stack 0]
+ Dot {
+  name Dot80
+  xpos 2384
+  ypos 7904
+ }
+set N5459800 [stack 0]
+ Dot {
+  name Dot81
+  xpos 2384
+  ypos 7968
+ }
+ Expression {
+  channel0 vec5
+  expr0 vec5.red*width-x-0.5
+  channel1 vec5
+  expr1 vec5.green*height-y-0.5
+  channel2 vec5
+  expr2 vec5.blue*width-x-0.5
+  channel3 vec5
+  expr3 vec5.alpha*height-y-0.5
+  name Expression_VecOut5
+  xpos 1658
+  ypos 7965
+ }
+push $N5459800
+ Expression {
+  channel0 vec4
+  expr0 vec4.red*width-x-0.5
+  channel1 vec4
+  expr1 vec4.green*height-y-0.5
+  channel2 vec4
+  expr2 vec4.blue*width-x-0.5
+  channel3 vec4
+  expr3 vec4.alpha*height-y-0.5
+  name Expression_VecOut4
+  xpos 1658
+  ypos 7901
+ }
+push $N5459c00
+ Expression {
+  channel0 vec3
+  expr0 vec3.red*width-x-0.5
+  channel1 vec3
+  expr1 vec3.green*height-y-0.5
+  channel2 vec3
+  expr2 vec3.blue*width-x-0.5
+  channel3 vec3
+  expr3 vec3.alpha*height-y-0.5
+  name Expression_VecOut3
+  xpos 1661
+  ypos 7834
+ }
+push $N6e256000
+ Expression {
+  channel0 vec2
+  expr0 vec2.red*width-x-0.5
+  channel1 vec2
+  expr1 vec2.green*height-y-0.5
+  channel2 vec2
+  expr2 vec2.blue*width-x-0.5
+  channel3 vec2
+  expr3 vec2.alpha*height-y-0.5
+  name Expression_VecOut2
+  xpos 1660
+  ypos 7764
+ }
+push $N6e256400
+ Expression {
+  channel0 {vec1.red -vec1.green -vec1.blue -vec1.alpha}
+  expr0 vec1.red*width-x-0.5
+  channel1 {-vec1.red vec1.green -vec1.blue -vec1.alpha}
+  expr1 vec1.green*height-y-0.5
+  channel2 {-vec1.red -vec1.green vec1.blue -vec1.alpha}
+  expr2 vec1.blue*width-x-0.5
+  channel3 {-vec1.red -vec1.green -vec1.blue vec1.alpha}
+  expr3 vec1.alpha*height-y-0.5
+  name Expression_VecOut1
+  xpos 1664
+  ypos 7696
+ }
+ Input {
+  inputs 0
+  name mask
+  xpos 1303
+  ypos -1905
+  number 2
+ }
+ Dot {
+  name Dot82
+  xpos 1337
+  ypos 7396
+ }
+push $N6e256800
+push $N6e256c00
+push $Nc54c7800
+ Dot {
+  name Dot71
+  xpos 1533
+  ypos 6388
+ }
+set N269a9400 [stack 0]
+ Dot {
+  name Dot72
+  xpos 1793
+  ypos 6388
+ }
+ Copy {
+  inputs 2
+  channels rgb
+  name Copy31
+  xpos 1759
+  ypos 6560
+ }
+ Copy {
+  inputs 2
+  channels rgba
+  name Copy16
+  xpos 1759
+  ypos 6726
+  disable {{keep_alpha}}
+ }
+ Clamp {
+  channels alpha
+  name Clamp1
+  xpos 1759
+  ypos 6851
+  disable {{!parent.clamp_alpha}}
+ }
+ Premult {
+  name Premult1
+  xpos 1759
+  ypos 6958
+  disable {{"!(keep_alpha || use_unpremult)"}}
+ }
+ Dot {
+  name Dot83
+  xpos 1793
+  ypos 7396
+ }
+push $N269a9400
+ Merge2 {
+  inputs 2+1
+  operation copy
+  name Merge_Mixer
+  xpos 1499
+  ypos 7393
+ }
+ Copy {
+  inputs 2
+  channels vec1
+  name Copy_VecOut1
+  xpos 1499
+  ypos 7684
+ }
+ Copy {
+  inputs 2
+  channels vec2
+  name Copy_VecOut2
+  xpos 1499
+  ypos 7752
+  disable {{radius<1}}
+ }
+ Copy {
+  inputs 2
+  channels vec3
+  name Copy_VecOut3
+  xpos 1499
+  ypos 7822
+  disable {{radius<2}}
+ }
+ Copy {
+  inputs 2
+  channels vec4
+  name Copy_VecOut4
+  xpos 1499
+  ypos 7889
+  disable {{radius<3}}
+ }
+ Copy {
+  inputs 2
+  channels vec5
+  name Copy_VecOut5
+  xpos 1499
+  ypos 7953
+  disable {{radius<4}}
+ }
+ Output {
+  name Output1
+  xpos 1499
+  ypos 8290
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote1
+  label backward
+  note_font_size 50
+  xpos 2546
+  ypos 171
+ }
+ StickyNote {
+  inputs 0
+  name StickyNote2
+  label forward
+  note_font_size 50
+  xpos 3878
+  ypos 144
+ }
+end_group
