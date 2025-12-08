@@ -1,0 +1,84 @@
+Group {
+ inputs 2
+ name GM_CopyReformat1
+ onCreate "nuke.thisNode()\['output_width'].setFlag(nuke.READ_ONLY)\nnuke.thisNode()\['output_height'].setFlag(nuke.READ_ONLY)"
+ tile_color 0xaa55ffff
+ selected true
+ xpos 2380
+ ypos 63
+ addUserKnob {20 User}
+ addUserKnob {41 output_width l "output w" T CReformat3.box_width}
+ addUserKnob {41 output_height l h -STARTLINE T CReformat3.box_height}
+ addUserKnob {26 info1 l "" -STARTLINE T (locked)}
+ addUserKnob {26 ""}
+ addUserKnob {41 box_pixel_aspect l "pixel aspect" T CReformat1.box_pixel_aspect}
+ addUserKnob {41 resize l "resize type" T CReformat1.resize}
+ addUserKnob {41 center -STARTLINE T CReformat1.center}
+ addUserKnob {41 flip -STARTLINE T CReformat1.flip}
+ addUserKnob {41 flop -STARTLINE T CReformat1.flop}
+ addUserKnob {41 turn -STARTLINE T CReformat1.turn}
+ addUserKnob {41 filter T CReformat1.filter}
+ addUserKnob {41 clamp -STARTLINE T CReformat1.clamp}
+ addUserKnob {41 black_outside l "black outside" -STARTLINE T CReformat1.black_outside}
+ addUserKnob {41 pbb l "preserve bounding box" -STARTLINE T CReformat1.pbb}
+ addUserKnob {26 ""}
+ addUserKnob {26 TEXT l "" +STARTLINE T "<font color=#808080 size=\"5\" >1.0 version</font>"}
+ addUserKnob {26 HeadlineB l "" +STARTLINE T "<font color=#808080 size=\"2\">GM_CopyReformat© by Attila Gasparetz</font>"}
+}
+ Input {
+  inputs 0
+  name to
+  xpos 290
+  ypos -57
+ }
+ Reformat {
+  type "to box"
+  box_width {{parent.CReformat2.box_width}}
+  box_height {{parent.CReformat2.box_height}}
+  box_fixed true
+  resize none
+  pbb true
+  name CReformat1
+  xpos 290
+  ypos 39
+ }
+set Nad6efc00 [stack 0]
+ Dot {
+  name Dot13
+  xpos 324
+  ypos 138
+ }
+push $Nad6efc00
+ Output {
+  name Output1
+  xpos 290
+  ypos 135
+ }
+ Reformat {
+  inputs 0
+  type "to box"
+  box_width {{parent.CReformat1.box_width}}
+  box_height {{parent.CReformat1.box_height}}
+  box_fixed true
+  name CReformat3
+  xpos 400
+  ypos 87
+ }
+ Input {
+  inputs 0
+  name from
+  xpos 510
+  ypos -57
+  number 1
+ }
+ Reformat {
+  type "to box"
+  box_width {{"\[if \{\[exists input1]\} \{return \[value input1.width]\} \{return \[value root.width]\}]"}}
+  box_height {{"\[if \{\[exists input1]\} \{return \[value input1.height]\} \{return \[value root.height]\}]"}}
+  box_fixed true
+  name CReformat2
+  selected true
+  xpos 510
+  ypos 39
+ }
+end_group
