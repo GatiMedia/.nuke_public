@@ -179,6 +179,14 @@ GM_Menu.addCommand('GM_Switch_Highlight', 'nuke.createNode("GM_Switch_Highlight"
 #  USEFUL SNIPPETS :::::::::::::::::::::::::::::::::::::::::::::
 # --------------------------------------------------------------
 
+def noGroupView():
+    try:
+        nuke.thisNode()['disable_group_view'].setValue(True)
+    except:
+        pass
+nuke.addOnCreate(noGroupView)
+
+
 # From http://www.lookinvfx.com/nuke-python-snippets/
 def disconnectViewers():
     nuke.selectAll()
