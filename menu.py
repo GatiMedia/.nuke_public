@@ -137,6 +137,12 @@ nuke.knobDefault('BackdropNode.note_font_size', "22")
 nuke.knobDefault('StickyNote.note_font_size', "22")
 nuke.knobDefault('LayerContactSheet.showLayerNames', "true")
 
+def noGroupView():
+    try:
+        nuke.thisNode()['disable_group_view'].setValue(True)
+    except:
+        pass
+nuke.addOnCreate(noGroupView)
 
 # --------------------------------------------------------------
 #  SHORTCUTS ::::::::::::::::::::::::::::::::::::::::::::::::::
