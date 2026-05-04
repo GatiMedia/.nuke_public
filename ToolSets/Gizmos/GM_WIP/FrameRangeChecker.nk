@@ -1,0 +1,9 @@
+NoOp {
+ name FrameRangeChecker1
+ knobChanged "\nif int(nuke.Root()\['first_frame'].value())==(nuke.thisNode().input(0)\['first'].value()) and int(nuke.Root()\['last_frame'].value())==(nuke.thisNode().input(0)\['last'].value()):\n    nuke.thisNode()\['tile_color'].setValue(16711935)\nelse:\n    nuke.thisNode()\['tile_color'].setValue(4281270527)"
+ autolabel "\" \""
+ tile_color 0xff2f00ff
+ selected true
+ xpos 1280
+ ypos -249
+}
